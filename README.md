@@ -7,6 +7,13 @@ FONTS:
   - Monserrat: --> Descripciones generales (menúes de trabajo, letra clara y facil de leer)
   - 3er font a definir
 
+# PALETA DE COLORES
+  - ROJO ANARANJADO
+    RGB: #b24d39
+  - VERDE OLIVA
+    RGB: #283720
+  - BEIGE
+    RGB: #ede5d2
 # LOGOTIPO 
   url:
 # ICONO

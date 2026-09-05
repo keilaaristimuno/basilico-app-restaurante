@@ -3,7 +3,7 @@
 
 **Tecnicatura Universitaria en Programación - UTN Avellaneda**
 
-Link del proyecto supabase: https://xmlcpvfjlnuakqehrvom.supabase.co --> integrado al repo
+´Link del proyecto Supabase:´https://xmlcpvfjlnuakqehrvom.supabase.co --> integrado al repo
 
 ---
 

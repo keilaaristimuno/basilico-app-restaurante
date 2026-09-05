@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Supabase } from '../../services/supabase';
+
 //import { confirmarClaveValidator, datoExisteAsyncValidator } from '../../validaciones/usuario.validator';
 
 // Componentes UI de Ionic Standalone
@@ -14,7 +15,9 @@ import {
   IonInput, 
   IonButton, 
   IonNote,
-  IonLabel, 
+  IonLabel,
+  IonSelect,
+  IonSelectOption
 } from '@ionic/angular';
 
 @Component({
@@ -33,6 +36,8 @@ import {
     IonButton, 
     IonNote,
     IonLabel,
+    IonSelect,
+    IonSelectOption
   ],
   templateUrl: './registro.page.html',
   styleUrl: './registro.page.scss',
@@ -63,6 +68,7 @@ export class RegistroPage implements OnInit {
       }],
       clave: ['', [Validators.required, Validators.minLength(6)]],
       repetirClave: [null, [Validators.required]],
+      perfil : ['', [Validators.required]],
       fotoPerfil: [''],
     }) //{ validators: confirmarClaveValidator() });
   }
@@ -94,7 +100,7 @@ export class RegistroPage implements OnInit {
       return;
     }
 
-    this.registrarUsuario();
+    this.registrarEmpleado();
   }
 
   resetearForm() {
@@ -113,15 +119,14 @@ export class RegistroPage implements OnInit {
     this.miFormulario.get('foto')?.updateValueAndValidity();
   }
 } */
-  async registrarUsuario() {
+  async registrarEmpleado() {
     const apellidos = this.miFormulario.get('apellidos')?.value;
     const nombres = this.miFormulario.get('nombres')?.value;
     const dni = this.miFormulario.get('dni')?.value;
     const cuil = this.miFormulario.get('cuil')?.value;
     const correo = this.miFormulario.get('correo')?.value;
     const clave = this.miFormulario.get('clave')?.value;
-    const perfil = "cocinero";
-    const estado = "pendiente";
+    const perfil = this.miFormulario.get('perfil')?.value;
     const foto_url = "foto";
 
     /* const { data, error } = await this.supabase.registrar(correo, clave);
@@ -132,7 +137,7 @@ export class RegistroPage implements OnInit {
     } */
 
     //console.log('User registrado:', data.user);
-    await this.supabase.guardarDatosUsuario(apellidos, nombres, dni, cuil, correo, clave, perfil, estado, foto_url);
+    await this.supabase.guardarDatosEmpleados(apellidos, nombres, dni, cuil, correo, clave, perfil, foto_url);
     
     //localStorage.setItem('nickname', usuarioValido);
     this.router.navigate(['/bienvenido']);

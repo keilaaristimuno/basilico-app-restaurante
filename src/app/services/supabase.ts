@@ -31,9 +31,9 @@ export class Supabase {
   }
   //registrar (Se guardan en la BD)
   //Para guardar un usuario cuando se registra
-  guardarDatosUsuario(apellidos: string, nombres: string, dni:number, cuil:number, correo:string, clave:string, perfil:string, estado:string, foto_url:string){
-    this.clienteSupabase.from('usuarios').insert([ //'usuarios hace rerencia a la bla que cree en SB'
-      {apellidos:apellidos, nombres: nombres, dni:dni, cuil: cuil, correo:correo, clave:clave, perfil:perfil, estado:estado, foto_url:foto_url}
+  guardarDatosEmpleados(apellidos: string, nombres: string, dni:number, cuil:number, correo:string, clave:string, perfil:string, foto_url:string){
+    this.clienteSupabase.from('empleados').insert([ //'empleados hace rerencia a la bla que cree en SB'
+      {apellidos:apellidos, nombres: nombres, dni:dni, cuil: cuil, correo:correo, clave:clave, perfil:perfil, foto_url:foto_url}
     ]).then(({ data, error }) => {
       if(error){
         console.error('Error: ',error.message);

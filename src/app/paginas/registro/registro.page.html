@@ -93,7 +93,18 @@
         <ion-note color="danger" class="ion-padding-start">
            {{repetirClave?.getError('noCoincide')}} 
         </ion-note>
-      } --> 
+      } -->
+      <ion-item>
+        <ion-label position="stacked">Perfil</ion-label>
+        <ion-select formControlName="perfil" placeholder="Selecciona un perfil">
+          <ion-select-option value="cocinero">Cocinero</ion-select-option>
+          <ion-select-option value="cantinero">Cantinero</ion-select-option>
+          <ion-select-option value="mozo">Mozo</ion-select-option>
+          <ion-select-option value="metre">Metre</ion-select-option>
+          <ion-select-option value="supervisor">Supervisor</ion-select-option>
+          <ion-select-option value="duenio">Dueño</ion-select-option>
+        </ion-select>
+      </ion-item>
       <!-- Foto de Perfil -->
     <!-- <ion-item>
       <ion-label labelPlacement="stacked">Foto de perfil</ion-label>

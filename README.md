@@ -16,7 +16,7 @@ De acuerdo con las pautas del Trabajo Final Integrador, a continuación se detal
 | Tarea / Módulo | Fecha Inicio | Fecha Fin (Estimada/Real) | Branch | Estado |
 | :--- | :---: | :---: | :---: | :---: |
 | Configuración inicial del repositorio | 28/08/2026 | 28/08/2026 | `main` / `develop` | Finalizado |
-| Estilos generales | 05/09/2026 | 05/09/2026 | `` | Finalizado|
+| Estilos generales | 05/09/2026 | 05/09/2026 | `feature/estilos-globales` | Finalizado|
 
 
 *Nota aclaratoria (si aplica):* Si una tarea cambia de responsable o se extiende el plazo, se registrará la modificación aquí de forma obligatoria.

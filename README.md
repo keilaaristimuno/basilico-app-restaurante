@@ -1,6 +1,8 @@
 # Basilico - Proyecto de Gestión de Restaurante 🍽️
-**Grupo:** Basilico - 2026  
-**Tecnicatura Universitaria en Programación - UTN Avellaneda**    
+**Grupo:** Basilico - 2026
+
+**Tecnicatura Universitaria en Programación - UTN Avellaneda**
+
 Link del proyecto supabase: https://xmlcpvfjlnuakqehrvom.supabase.co --> integrado al repo
 
 ---

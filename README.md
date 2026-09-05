@@ -1,7 +1,9 @@
 # Basilico - Proyecto de Gestión de Restaurante 🍽️
-**Grupo:** Basilico - 2026  
-**Tecnicatura Universitaria en Programación - UTN Avellaneda**    
-Link del proyecto supabase: https://xmlcpvfjlnuakqehrvom.supabase.co --> integrado al repo
+### **Grupo:** Basilico - 2026
+
+### **Tecnicatura Universitaria en Programación - UTN Avellaneda**
+
+ `Link del proyecto Supabase:` https://xmlcpvfjlnuakqehrvom.supabase.co --> integrado al repo
 
 ---
 
@@ -9,7 +11,7 @@ Link del proyecto supabase: https://xmlcpvfjlnuakqehrvom.supabase.co --> integra
 
 De acuerdo con las pautas del Trabajo Final Integrador, a continuación se detallan los módulos asignados, las fechas estimadas de desarrollo y las ramas de trabajo de cada integrante:
 
-### 👤 [Aristimuño, Keila del Integrante 1 - Líder del Grupo]
+### 👤 [Aristimuño, Keila - Líder del Grupo]
 * **Módulos / Objetivos a desarrollar:** 
   -  Alta de plato (nombre, descripción, tiempo, precio, 3 fotos con carrusel
 * **Planificación de Tareas:**
@@ -35,27 +37,23 @@ De acuerdo con las pautas del Trabajo Final Integrador, a continuación se detal
 
 ---
 
-### 👤 [Apellido, Nombre del Integrante 3]
-* **Módulos / Objetivos a desarrollar:** 
-  - [Ejemplo: Carga de Platos y Bebidas, Gestión del Menú]
+### 👤 [Apellido, Nombre]
+
 * **Planificación de Tareas:**
 
 | Tarea / Módulo | Fecha Inicio | Fecha Fin (Estimada/Real) | Branch | Estado |
 | :--- | :---: | :---: | :---: | :---: |
-| Formulario Alta de Platos (fotos/validación) | DD/MM/2026 | DD/MM/2026 | `feature/alta-platos` | Pendiente |
-| [Módulo Z] | DD/MM/2026 | DD/MM/2026 | `feature/modulo-z` | Pendiente |
+| [Módulo W] | DD/MM/2026 | DD/MM/2026 | DD/MM/2026 | `feature/modulo-x` | Pendiente |
 
 ---
 
-### 👤 [Apellido, Nombre del Integrante 4]
-* **Módulos / Objetivos a desarrollar:** 
-  - [Ejemplo: Juegos de Descuento, Gráficos de Encuestas]
+### 👤 [Apellido, Nombre]
+
 * **Planificación de Tareas:**
 
 | Tarea / Módulo | Fecha Inicio | Fecha Fin (Estimada/Real) | Branch | Estado |
 | :--- | :---: | :---: | :---: | :---: |
-| Desarrollo del Juego de Descuento (10%, 15%, 20%) | DD/MM/2026 | DD/MM/2026 | `feature/juegos` | Pendiente |
-| [Módulo W] | DD/MM/2026 | DD/MM/2026 | `feature/modulo-w` | Pendiente |
+| [Módulo W] | DD/MM/2026 | DD/MM/2026 | DD/MM/2026 | `feature/modulo-x` | Pendiente |
 
 ---
 

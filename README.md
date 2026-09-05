@@ -23,11 +23,11 @@ De acuerdo con las pautas del Trabajo Final Integrador, a continuación se detal
 
 ---
 
-### 👤 [Cuenca, Francisco del Integrante 2]
+### 👤 [Cuenca, Francisco]
 
 * **Planificación de Tareas:**
 
-| Tarea / Módulo | Fecha Inicio | Fecha Fin (Estimada/Real) | Branch | Estado |
+| Tarea / Módulo | Fecha Inicio | Fecha Fin | Branch | Estado |
 | :--- | :---: | :---: | :---: | :---: |
 | Sevicio reutilizable de QR | 04/09/2026 | 04/09/2026 | `feature/qr-service` | Finalizado |
 

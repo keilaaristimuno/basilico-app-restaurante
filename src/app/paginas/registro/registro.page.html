@@ -1,0 +1,119 @@
+<ion-card>
+  <ion-card-header>
+    <ion-card-title>Registrate</ion-card-title>
+  </ion-card-header>
+
+  <ion-card-content>
+    <form [formGroup]="miFormulario" (ngSubmit)="enviarFormulario()">
+
+      <!-- Usuario -->
+      <ion-item>
+        <ion-input
+          label="Apellidos"
+          labelPlacement="floating"
+          type="text"
+          formControlName="apellidos">
+        </ion-input>
+      </ion-item>
+
+      <!-- Nombre -->
+      <ion-item>
+        <ion-input
+          label="Nombre"
+          labelPlacement="floating"
+          type="text"
+          formControlName="nombres">
+        </ion-input>
+      </ion-item>
+      @if (nombres?.hasError('pattern')) {
+        <ion-note color="danger" class="ion-padding-start">
+          Sólo debe contener letras
+        </ion-note>
+      }
+      <!-- DNI -->
+      <ion-item>
+        <ion-input
+          label="DNI"
+          labelPlacement="floating"
+          type="number"
+          formControlName="dni">
+        </ion-input>
+      </ion-item>
+
+      <!-- CUIL -->
+      <ion-item>
+        <ion-input
+          label="CUIL"
+          labelPlacement="floating"
+          type="number"
+          formControlName="cuil">
+        </ion-input>
+      </ion-item>
+
+      <!-- Mail -->
+      <ion-item>
+        <ion-input
+          label="Correo"
+          labelPlacement="floating"
+          type="email"
+          formControlName="correo">
+        </ion-input>
+      </ion-item>
+      @if (correo?.hasError('datoExiste')) {
+        <ion-note color="danger" class="ion-padding-start">
+          El mail ya existe
+        </ion-note>
+      }
+
+      <!-- Clave -->
+      <ion-item>
+        <ion-input
+          label="Clave"
+          labelPlacement="floating"
+          type="password"
+          formControlName="clave">
+        </ion-input>
+      </ion-item>
+      @if (clave?.hasError('minlength')) {
+        <ion-note color="danger" class="ion-padding-start">
+          <!-- La clave debe tener mínimo {{clave?.getError('minlength').requiredLength}} caracteres -->
+        </ion-note>
+      }
+
+      <!-- Repetir Clave -->
+      <ion-item>
+        <ion-input
+          label="Repetir clave"
+          labelPlacement="floating"
+          type="password"
+          formControlName="repetirClave">
+        </ion-input>
+      </ion-item>
+      <!-- @if (repetirClave?.hasError('noCoincide')) {
+        <ion-note color="danger" class="ion-padding-start">
+           {{repetirClave?.getError('noCoincide')}} 
+        </ion-note>
+      } --> 
+      <!-- Foto de Perfil -->
+    <!-- <ion-item>
+      <ion-label labelPlacement="stacked">Foto de perfil</ion-label>
+      <input 
+        type="file" 
+        accept="image/*" 
+        (change)="onFileSelected($event)" 
+        style="margin-top: 8px;" />
+    </ion-item> -->
+
+      <!-- Botones -->
+      <div class="ion-margin-top ion-text-center">
+        <ion-button type="submit" [disabled]="miFormulario.invalid">
+          Enviar Form
+        </ion-button>
+        <ion-button type="button" fill="outline" color="medium" (click)="resetearForm()">
+          Resetear
+        </ion-button>
+      </div>
+
+    </form>
+  </ion-card-content>
+</ion-card>

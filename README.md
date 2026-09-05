@@ -23,15 +23,13 @@ De acuerdo con las pautas del Trabajo Final Integrador, a continuación se detal
 
 ---
 
-### 👤 [Apellido, Nombre del Integrante 2]
-* **Módulos / Objetivos a desarrollar:** 
-  - [Ejemplo: Gestión de Mesas y generación de códigos QR de mesa]
+### 👤 [Cuenca, Francisco del Integrante 2]
+
 * **Planificación de Tareas:**
 
 | Tarea / Módulo | Fecha Inicio | Fecha Fin (Estimada/Real) | Branch | Estado |
 | :--- | :---: | :---: | :---: | :---: |
-| Lector de QR de DNI | DD/MM/2026 | DD/MM/2026 | `feature/lector-dni` | En proceso |
-| [Módulo Y] | DD/MM/2026 | DD/MM/2026 | `feature/modulo-y` | Pendiente |
+| Sevicio reutilizable de QR | 04/09/2026 | 04/09/2026 | `feature/qr-service` | Finalizado |
 
 ---
 

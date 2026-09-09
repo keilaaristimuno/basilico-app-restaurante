@@ -1,0 +1,59 @@
+<ion-content class="login-content">
+  <div class="login-container">
+    
+    <!-- Header / Logo -->
+    <div class="header-section">
+      <img class="logo" src="assets/Basilico/Basiloco_beige.png" alt="Logotipo" />
+      <h1 class="titulo-login">Iniciar Sesión</h1>
+    </div>
+
+    <!-- Formulario -->
+    <div class="form-section inicio">
+      <ion-list lines="none" class="login-list">
+        
+        <ion-item class="custom-item">
+          <ion-input 
+            type="email" 
+            label="Correo electrónico" 
+            labelPlacement="floating" 
+            fill="outline" 
+            [(ngModel)]="mail" 
+            placeholder="Ingrese su correo">
+          </ion-input>
+        </ion-item>
+
+        <ion-item class="custom-item">
+          <ion-input 
+            type="password" 
+            label="Clave" 
+            labelPlacement="floating" 
+            fill="outline" 
+            [(ngModel)]="clave" 
+            placeholder="Ingrese su clave">
+          </ion-input>
+        </ion-item>
+
+      </ion-list>
+
+      <!-- Botones -->
+      <div class="">
+        <ion-button class="btonVerde" (click)="ingresar()">
+          Ingresar
+        </ion-button>
+        
+        <ion-button expand="block" fill="outline" class="btonTerracota" routerLink="/registro">
+          Ingreso Rápido
+        </ion-button>
+        
+      </div>
+
+      <!-- Errores -->
+      @if (ingresoIncorrecto()) {
+        <ion-text color="danger" class="error-text">
+          <p>Correo o clave incorrectos</p>
+        </ion-text>
+      }
+    </div>
+
+  </div>
+</ion-content>

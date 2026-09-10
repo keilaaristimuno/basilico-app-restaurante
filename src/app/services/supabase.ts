@@ -44,5 +44,22 @@ export class Supabase {
     });
 
   }
+  async obtenerPerfilUsuarioLogueado() {
+    const { data: { user } } = await this.clienteSupabase.auth.getUser();
 
+    if (!user) return null;
+
+    const { data, error } = await this.clienteSupabase
+      .from('perfiles_completos')
+      .select('nombres, perfil, tipo')
+      .eq('mail', user.email)
+      .single();
+
+    if (error) {
+      console.error('Error al obtener perfil:', error.message);
+      return null;
+    }
+
+    return data;
+  }
 }

@@ -120,10 +120,10 @@ ion-content {
 
 .header-section {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 8rem;
 
   .logo {
-    width: 60%;
+    width: 75%;
     padding:-30%;
     height: auto;
     margin: 0 auto auto;
@@ -160,36 +160,37 @@ ion-content {
     font-family: montserrat, sans-serif;
     color:  #ede5d2;
     --border-radius: 18px;
-    height: 80px; // Botones más grandes para el pulgar
+    height: 130px; // Botones más grandes para el pulgar
     font-size: 1.8rem;
     font-weight: 600;
     width: 50%;
+    margin-top: 40px;
     margin: 0 auto; // Centrar el botón
-    --background: #283720;
+    --background: #152c08;
     
   }
   .btonTerracota {
     font-family: montserrat, sans-serif;
     color:  #ede5d2;
     --border-radius: 12px;
-    height: 80px; // Botones más grandes para el pulgar
+    height: 130px; // Botones más grandes para el pulgar
     font-size: 1.8rem;
     font-weight: 600;
     width: 50%;
     margin: 0 auto; // Centrar el botón
-    margin-top: 15px;
+    margin-top: 40px;
     --background: #b24d39;
   }
    .btonBeige {
     font-family: montserrat, sans-serif;
     color:  #283720;
     --border-radius: 12px;
-    height: 80px; // Botones más grandes para el pulgar
+    height: 130px; // Botones más grandes para el pulgar
     font-size: 1.8rem;
     font-weight: 600;
     width: 50%;
     margin: 0 auto; // Centrar el botón
-    margin-top: 15px;
+    margin-top: 40px;
     --background: #ede5d2;;
   }
 

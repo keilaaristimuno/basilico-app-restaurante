@@ -3,7 +3,7 @@
     
     <!-- Header / Logo -->
     <div class="header-section">
-      <img class="logo" src="assets/Basilico/Basiloco_beige.png" alt="Logotipo" />
+      <img class="logo" src="assets/Basilico/Basiloco_beige.png" alt="Logotipo" routerLink="/accesoRapido" />
       <h1 class="titulo-login">Iniciar Sesión</h1>
     </div>
 
@@ -14,7 +14,6 @@
         <ion-item class="custom-item">
           <ion-input 
             type="email" 
-            label="Correo electrónico" 
             labelPlacement="floating" 
             fill="outline" 
             [(ngModel)]="mail" 
@@ -24,8 +23,7 @@
 
         <ion-item class="custom-item">
           <ion-input 
-            type="password" 
-            label="Clave" 
+            type="password"
             labelPlacement="floating" 
             fill="outline" 
             [(ngModel)]="clave" 
@@ -50,7 +48,7 @@
       <!-- Errores -->
       @if (ingresoIncorrecto()) {
         <ion-text color="danger" class="error-text">
-          <p>Correo o clave incorrectos</p>
+          <p>Credenciales incorrectas</p>
         </ion-text>
       }
     </div>

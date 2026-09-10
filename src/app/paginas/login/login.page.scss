@@ -51,7 +51,7 @@
     --padding-end: 16px;
     
     // Usar height directo o min-height en lugar de --height
-    height: 75px; 
+    height: 85px; 
     font-size: 1.1rem;
     background: #ede5d2;
     border-radius: 18px; // Mantiene los bordes redondeados en el fondo del input
@@ -76,38 +76,15 @@
 }
 
 
-.btonVerde {
-    font-family: montserrat, sans-serif;
-    color:  #ede5d2;
-    --border-radius: 18px;
-    height: 80px; // Botones más grandes para el pulgar
-    font-size: 1.8rem;
-    font-weight: 600;
-    width: 50%;
-    margin: 0 auto; // Centrar el botón
-    --background: #283720;
-    
-  }
-  .btonTerracota {
-    font-family: montserrat, sans-serif;
-    color:  #ede5d2;
-    --border-radius: 12px;
-    height: 80px; // Botones más grandes para el pulgar
-    font-size: 1.8rem;
-    font-weight: 600;
-    width: 50%;
-    margin: 0 auto; // Centrar el botón
-    margin-top: 15px;
-    --background: #b24d39;
-  }
-
 .error-text {
   text-align: center;
-  margin-top: 1rem;
+  margin-top: 5rem;
   
   p {
-    font-size: 1rem;
+    font-family: montserrat, sans-serif;
+    color: #5c0000;
+    font-size: 2rem;
     font-weight: 500;
-    margin: 0;
+    margin: 15px 0;
   }
 }

@@ -28,6 +28,7 @@ export class LoginPage {
   mail = '';
   clave = '';
   ingresoIncorrecto: WritableSignal<boolean> = signal(false);
+  perfil: WritableSignal<string> = signal("");
   constructor(private supabase: Supabase, private router: Router) { }
 
   async ingresar(){
@@ -37,12 +38,19 @@ export class LoginPage {
       console.error('Error: ',error?.message);
       this.ingresoIncorrecto.set(true);
     }else{
-      const nicknameUsuario = "guchy";
-      console.log('Nickname del usuario:', nicknameUsuario);
-      if(nicknameUsuario){
-        localStorage.setItem('nickname', nicknameUsuario);
+      const dataUsuarioLogueado =  await this.supabase.obtenerPerfilUsuarioLogueado();
+      console.log('nombre del usuario:', dataUsuarioLogueado?.nombres);
+      if(dataUsuarioLogueado){
+        localStorage.setItem('nombre', dataUsuarioLogueado?.nombres);
+        localStorage.setItem('perfil', dataUsuarioLogueado?.perfil);
+        this.perfil.set(dataUsuarioLogueado?.perfil);
       }
-      this.router.navigate(['/bienvenido']);
+      if(this.perfil() === 'cocinero'){
+        this.router.navigate(['/inicio']);
+      }
+       if(this.perfil() === 'usuario'){
+        this.router.navigate(['/registro']);
+      }
     }
   }
 

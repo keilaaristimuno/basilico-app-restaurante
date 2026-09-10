@@ -46,11 +46,15 @@ export class LoginPage {
         this.perfil.set(dataUsuarioLogueado?.perfil);
       }
       if(this.perfil() === 'cocinero'){
-        this.router.navigate(['/inicio']);
+        this.router.navigate(['/']);
       }
-       if(this.perfil() === 'usuario'){
-        this.router.navigate(['/registro']);
+      if(this.perfil() === 'cocinero'){
+        this.router.navigate(['/']);
       }
+       if(this.perfil() === 'cliente'){
+        this.router.navigate(['/']);
+      }
+      //Agregar a donde dirigir segun el perfil del usuario logueado
     }
   }
 

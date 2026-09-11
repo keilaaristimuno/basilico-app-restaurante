@@ -23,6 +23,11 @@
           [(ngModel)]="nombre" 
           placeholder="Ingrese el nombre del plato">
         </ion-input>
+        @if (errorNombre) {
+          <ion-note color="danger" class="ion-padding-start">
+            El nombre debe tener al menos 3 caracteres
+          </ion-note>
+        }
       </ion-item>
 
       <ion-item class="custom-item">
@@ -33,6 +38,11 @@
           [(ngModel)]="descripcion" 
           placeholder="Ingrese la descripción del plato">
         </ion-input>
+        @if(errorDescripcion) {
+          <ion-note color="danger" class="ion-padding-start">
+            La descripción debe tener al menos 10 caracteres
+          </ion-note>
+        }
       </ion-item>
 
       <ion-item class="custom-item">
@@ -43,6 +53,11 @@
           [(ngModel)]="tiempoElaboracion" 
           placeholder="Ingrese el tiempo de elaboración">
         </ion-input>
+        @if(errorTiempoElaboracion) {
+          <ion-note color="danger" class="ion-padding-start">
+            El tiempo de elaboración debe ser mayor a 0
+          </ion-note>
+        }
       </ion-item>
 
       <ion-item class="custom-item">
@@ -53,6 +68,11 @@
           [(ngModel)]="precio" 
           placeholder="Ingrese el precio del plato">
         </ion-input>
+        @if(errorPrecio) {
+          <ion-note color="danger" class="ion-padding-start">
+            El precio debe ser mayor a 0
+          </ion-note>
+        }
       </ion-item>
 
     </ion-list>

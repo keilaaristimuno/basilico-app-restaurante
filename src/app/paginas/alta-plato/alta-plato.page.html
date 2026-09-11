@@ -1,0 +1,93 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>alta-plato</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">alta-plato</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+   <!-- Formulario de alta de plato -->
+  <div class="form-section">
+    <ion-list lines="none" class="alta-plato-list">
+      
+      <ion-item class="custom-item">
+        <ion-input 
+          type="text" 
+          labelPlacement="floating" 
+          fill="outline" 
+          [(ngModel)]="nombre" 
+          placeholder="Ingrese el nombre del plato">
+        </ion-input>
+        @if (errorNombre) {
+          <ion-note color="danger" class="ion-padding-start">
+            El nombre debe tener al menos 3 caracteres
+          </ion-note>
+        }
+      </ion-item>
+
+      <ion-item class="custom-item">
+        <ion-input 
+          type="text"
+          labelPlacement="floating" 
+          fill="outline" 
+          [(ngModel)]="descripcion" 
+          placeholder="Ingrese la descripción del plato">
+        </ion-input>
+        @if(errorDescripcion) {
+          <ion-note color="danger" class="ion-padding-start">
+            La descripción debe tener al menos 10 caracteres
+          </ion-note>
+        }
+      </ion-item>
+
+      <ion-item class="custom-item">
+        <ion-input 
+          type="number"
+          labelPlacement="floating" 
+          fill="outline" 
+          [(ngModel)]="tiempoElaboracion" 
+          placeholder="Ingrese el tiempo de elaboración">
+        </ion-input>
+        @if(errorTiempoElaboracion) {
+          <ion-note color="danger" class="ion-padding-start">
+            El tiempo de elaboración debe ser mayor a 0
+          </ion-note>
+        }
+      </ion-item>
+
+      <ion-item class="custom-item">
+        <ion-input 
+          type="number"
+          labelPlacement="floating" 
+          fill="outline" 
+          [(ngModel)]="precio" 
+          placeholder="Ingrese el precio del plato">
+        </ion-input>
+        @if(errorPrecio) {
+          <ion-note color="danger" class="ion-padding-start">
+            El precio debe ser mayor a 0
+          </ion-note>
+        }
+      </ion-item>
+
+    </ion-list>
+
+    <!-- Botón de alta de plato -->
+    <div class="">
+      <ion-button class="btonVerde" (click)="altaPlato()">
+        Dar de alta el plato
+      </ion-button>
+    <!-- boton para cargar fotos -->
+      <ion-button class="btonVerde" (click)="seleccionarFoto()">
+        Agregar foto
+      </ion-button>
+    </div>
+  </div>
+
+
+</ion-content>

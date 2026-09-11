@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonInput, IonButton, IonItem, IonNote } from '@ionic/angular';
 
 @Component({
@@ -18,6 +19,7 @@ export class AltaPlatoPage implements OnInit {
   errorDescripcion:boolean = false
   errorTiempoElaboracion:boolean = false;
   errorPrecio:boolean = false
+  fotoSeleccionada: File | null = null;
 
   constructor() { }
 
@@ -32,14 +34,28 @@ export class AltaPlatoPage implements OnInit {
     this.errorPrecio = this.precio <= 0;
 
     if(this.errorNombre || this.errorDescripcion || this.errorTiempoElaboracion || this.errorPrecio) {
-      console.error('Hay campos invalidos');
-      console.log(this.errorNombre, this.errorDescripcion, this.errorTiempoElaboracion, this.errorPrecio);
-      return;
-      
-      
+      return;  
     }
     console.log('Formulario valido');
-    
-    
   }
+
+  //funcion que llamara a camera para tomar la foto del plato y guardarla en la variable fotoSeleccionada
+  seleccionarFoto() {
+    console.log('Entré a seleccionarFoto');
+    Camera.getPhoto({
+      quality: 90,
+      allowEditing: false,
+      resultType: CameraResultType.Uri,
+      source: CameraSource.Prompt
+    })
+    .then((image) => {
+      // Procesar la imagen seleccionada
+      console.log('Imagen seleccionada:', image);
+    })
+    .catch((error) => {
+      console.error('Error al seleccionar la foto:', error);
+    });
+  }
+
+
 }

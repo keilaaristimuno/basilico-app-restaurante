@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, RouterLink } from '@angular/router';
 import { Supabase } from '../../services/supabase';
 
 //import { confirmarClaveValidator, datoExisteAsyncValidator } from '../../validaciones/usuario.validator';
@@ -37,7 +37,8 @@ import {
     IonNote,
     IonLabel,
     IonSelect,
-    IonSelectOption
+    IonSelectOption,
+    RouterLink
   ],
   templateUrl: './registro.page.html',
   styleUrl: './registro.page.scss',

@@ -77,17 +77,52 @@
 
     </ion-list>
 
+    <ion-button (click)="probarSubidaFoto()">
+      Probar subida
+    </ion-button>
+
     <!-- Botón de alta de plato -->
     <div class="">
       <ion-button class="btonVerde" (click)="altaPlato()">
         Dar de alta el plato
       </ion-button>
     <!-- boton para cargar fotos -->
-      <ion-button class="btonVerde" (click)="seleccionarFoto()">
-        Agregar foto
+      <ion-button (click)="seleccionarFoto(0)">
+        Agregar foto 1
+      </ion-button>
+
+      <ion-button (click)="seleccionarFoto(1)">
+        Agregar foto 2
+      </ion-button>
+
+      <ion-button (click)="seleccionarFoto(2)">
+        Agregar foto 3
       </ion-button>
     </div>
+    @if(errorFotos) {
+      <ion-note color="danger" class="ion-padding-start">
+        Debe cargar 3 fotos del plato
+      </ion-note>
+    }
   </div>
+
+  <!-- Vista previa de la foto -->
+  @if (fotos[0] ) {
+    <div class="foto-preview">
+      <img [src]="fotos[0] " alt="Foto 1 del plato" />
+    </div>
+  }
+  @if (fotos[1] ) {
+    <div class="foto-preview">
+      <img [src]="fotos[1] " alt="Foto 2 del plato" />
+    </div>
+  }
+  @if (fotos[2] ) {
+    <div class="foto-preview">
+      <img [src]="fotos[2] " alt="Foto 3 del plato" />
+    </div>
+  }
+
 
 
 </ion-content>

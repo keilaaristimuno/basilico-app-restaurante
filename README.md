@@ -36,15 +36,17 @@ De acuerdo con las pautas del Trabajo Final Integrador, a continuación se detal
 
 ---
 
-### 👤 [Apellido, Nombre del Integrante 3]
+### 👤 Seggiaro, Agustina Anabel
 * **Módulos / Objetivos a desarrollar:** 
-  - [Ejemplo: Carga de Platos y Bebidas, Gestión del Menú]
+ - Login principal
 * **Planificación de Tareas:**
 
 | Tarea / Módulo | Fecha Inicio | Fecha Fin (Estimada/Real) | Branch | Estado |
 | :--- | :---: | :---: | :---: | :---: |
-| Formulario Alta de Platos (fotos/validación) | DD/MM/2026 | DD/MM/2026 | `feature/alta-platos` | Pendiente |
-| [Módulo Z] | DD/MM/2026 | DD/MM/2026 | `feature/modulo-z` | Pendiente |
+| Login principal (Validaciones) | 08/09/2026 | 10/09/2026 | `feature/registro-login` | Finalizado |
+| Pantalla de incio (Redirigir) | 08/09/2026 | 10/09/2026 | `feature/registro-login` | Finalizado |
+| Acceso rápido (Redirigir) | 10/09/2026 | - | `feature/registro-login` | En procceso |
+| Pantalla inicio Metre | 10/09/2026 | - | `feature/registro-login` | En procceso |
 
 ---
 

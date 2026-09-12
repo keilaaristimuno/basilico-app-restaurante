@@ -1,0 +1,32 @@
+.contenido{
+    background-color: #ede5d2;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1.5rem; // Padding amplio para bordes de pantalla
+    box-sizing: border-box;
+}
+.titulo {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
+    font-weight: 800;
+    color: #283720;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+.fondoRegistro{
+    background: #b24d39;
+    border-radius: 18px;
+}
+.btn {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
+    font-weight: 800;
+    color: #ede5d2;
+    justify-content: center;
+    margin-bottom: 1rem;
+    text-align: center;
+    
+
+    
+}

@@ -10,6 +10,44 @@
 
 De acuerdo con las pautas del Trabajo Final Integrador, a continuación se detallan los módulos asignados, las fechas estimadas de desarrollo y las ramas de trabajo de cada integrante:
 
+### Francisco Cuenca Backoffice (Dueño / Supervisor)
+Puntos del enunciado: 1, 4, 6, 7, 8, 22, 25
+Punto 1 — Alta de empleado (foto desde cámara, lectura QR de DNI, validaciones)
+Punto 4 — Alta y gestión de mesas (tipo, disponibilidad, foto) + generación automática de QR de mesa
+Punto 6 — Listado de clientes pendientes de aprobación (con push notification)
+Punto 7 y 8 — Aceptar/rechazar cliente + envío de correo automático personalizado (logo, fuentes,
+colores propios)
+Punto 22 — Generación de factura en PDF + notificación automática a dueño/supervisor tras el pago
+Punto 25 — Aprobación/rechazo de reservas (segunda/tercera fecha)
+
+### Keila Aristimuño— Cocina y Bar (Productos)
+Puntos del enunciado: 2, 3, 16, 17, 18
+Punto 2 — Alta de plato (nombre, descripción, tiempo, precio, 3 fotos con carrusel)
+Punto 3 — Alta de bebida (misma lógica que plato)
+Punto 16 — Pantalla de pedidos pendientes en cocina, agrupados por mesa
+Punto 17 — Pantalla de pedidos pendientes en bar, agrupados por mesa
+Punto 18 — Marcar productos listos y avisar al mozo cuando el pedido está completo (push notification)
+
+### Ignacio Arriaga — Experiencia del Cliente
+Puntos del enunciado: 5, 9, 11, 12, 13, 14, 15, 20, 21
+Punto 5 — Registro de cliente registrado (foto, DNI con QR, estado "pendiente de aprobación")
+Punto 9 — Ingreso como cliente anónimo + anotarse en lista de espera
+Punto 11 — Ver menú de productos (carrusel de imágenes, precio, descripción, tiempo)
+Punto 12, 13, 14 — Armar pedido (con importe acumulado siempre visible), modificarlo si el mozo lo
+rechaza, ver estado
+Punto 15 — Sección de juegos (3 juegos simples con descuentos 10/15/20%)
+Punto 20 — Encuesta de satisfacción + visualización de resultados en gráficos
+Punto 21 — Pedir la cuenta, elegir propina vía QR, ver detalle y total
+
+### Seggiaro Agustina — Mozo / Metre + Infraestructura transversal
+Puntos del enunciado: 10, 11 (consulta al mozo), 19, + tareas transversales
+Punto 10 — Lista de espera del metre + asignación de mesa a cliente
+Punto 11 (parte mozo) — Recepción de "consulta al mozo" + sala de conversación estilo chat
+Punto 12/13/14 (parte mozo) — Confirmar o rechazar pedido, derivarlo a sectores
+Punto 19 — Entrega del pedido completo + cambio de estado
+Liderar el servicio central de Supabase y el sistema de notificaciones push (por ser quien más interactúacon todos los flujos)
+
+
 ### 👤 [Aristimuño, Keila del Integrante 1 - Líder del Grupo]
 * **Módulos / Objetivos a desarrollar:** 
   -  Alta de plato (nombre, descripción, tiempo, precio, 3 fotos con carrusel

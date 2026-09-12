@@ -2,14 +2,15 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
-    path: 'home',
-    loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
+    path: 'inicio',
+    loadComponent: () => import('./paginas/inicio/inicio.component').then((m) => m.InicioComponent),
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'inicio',
     pathMatch: 'full',
-  },  {
+  },
+  {
     path: 'registro',
     loadComponent: () => import('./paginas/registro/registro.page').then( m => m.RegistroPage)
   },
@@ -17,5 +18,13 @@ export const routes: Routes = [
     path: 'login',
     loadComponent: () => import('./paginas/login/login.page').then( m => m.LoginPage)
   },
+   {
+    path: 'accesoRapido',
+    loadComponent: () => import('./paginas/acceso-rapido/acceso-rapido.component').then( m => m.AccesoRapidoComponent)
+  },  {
+    path: 'alta-plato',
+    loadComponent: () => import('./paginas/alta-plato/alta-plato.page').then( m => m.AltaPlatoPage)
+  },
+
 
 ];

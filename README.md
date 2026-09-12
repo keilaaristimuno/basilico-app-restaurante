@@ -1,14 +1,54 @@
 # Basilico - Proyecto de Gestión de Restaurante 🍽️
-**Grupo:** Basilico - 2026  
-**Tecnicatura Universitaria en Programación - UTN Avellaneda**  
-Link del proyecto supabase: https://xmlcpvfjlnuakqehrvom.supabase.co --> integrado al repo
+### **Grupo:** Basilico - 2026
+
+### **Tecnicatura Universitaria en Programación - UTN Avellaneda**
+
+ `Link del proyecto Supabase:` https://xmlcpvfjlnuakqehrvom.supabase.co --> integrado al repo
 ---
 
 ## 👥 Integrantes y Responsabilidades
 
 De acuerdo con las pautas del Trabajo Final Integrador, a continuación se detallan los módulos asignados, las fechas estimadas de desarrollo y las ramas de trabajo de cada integrante:
 
-### 👤 [Aristimuño, Keila del Integrante 1 - Líder del Grupo]
+### Francisco Cuenca Backoffice (Dueño / Supervisor)
+Puntos del enunciado: 1, 4, 6, 7, 8, 22, 25
+Punto 1 — Alta de empleado (foto desde cámara, lectura QR de DNI, validaciones)
+Punto 4 — Alta y gestión de mesas (tipo, disponibilidad, foto) + generación automática de QR de mesa
+Punto 6 — Listado de clientes pendientes de aprobación (con push notification)
+Punto 7 y 8 — Aceptar/rechazar cliente + envío de correo automático personalizado (logo, fuentes,
+colores propios)
+Punto 22 — Generación de factura en PDF + notificación automática a dueño/supervisor tras el pago
+Punto 25 — Aprobación/rechazo de reservas (segunda/tercera fecha)
+
+### Keila Aristimuño— Cocina y Bar (Productos)
+Puntos del enunciado: 2, 3, 16, 17, 18
+Punto 2 — Alta de plato (nombre, descripción, tiempo, precio, 3 fotos con carrusel)
+Punto 3 — Alta de bebida (misma lógica que plato)
+Punto 16 — Pantalla de pedidos pendientes en cocina, agrupados por mesa
+Punto 17 — Pantalla de pedidos pendientes en bar, agrupados por mesa
+Punto 18 — Marcar productos listos y avisar al mozo cuando el pedido está completo (push notification)
+
+### Ignacio Arriaga — Experiencia del Cliente
+Puntos del enunciado: 5, 9, 11, 12, 13, 14, 15, 20, 21
+Punto 5 — Registro de cliente registrado (foto, DNI con QR, estado "pendiente de aprobación")
+Punto 9 — Ingreso como cliente anónimo + anotarse en lista de espera
+Punto 11 — Ver menú de productos (carrusel de imágenes, precio, descripción, tiempo)
+Punto 12, 13, 14 — Armar pedido (con importe acumulado siempre visible), modificarlo si el mozo lo
+rechaza, ver estado
+Punto 15 — Sección de juegos (3 juegos simples con descuentos 10/15/20%)
+Punto 20 — Encuesta de satisfacción + visualización de resultados en gráficos
+Punto 21 — Pedir la cuenta, elegir propina vía QR, ver detalle y total
+
+### Seggiaro Agustina — Mozo / Metre + Infraestructura transversal
+Puntos del enunciado: 10, 11 (consulta al mozo), 19, + tareas transversales
+Punto 10 — Lista de espera del metre + asignación de mesa a cliente
+Punto 11 (parte mozo) — Recepción de "consulta al mozo" + sala de conversación estilo chat
+Punto 12/13/14 (parte mozo) — Confirmar o rechazar pedido, derivarlo a sectores
+Punto 19 — Entrega del pedido completo + cambio de estado
+Liderar el servicio central de Supabase y el sistema de notificaciones push (por ser quien más interactúacon todos los flujos)
+
+
+### 👤 Aristimuño, Keila del Integrante 1 - Líder del Grupo
 * **Módulos / Objetivos a desarrollar:** 
   -  Alta de plato (nombre, descripción, tiempo, precio, 3 fotos con carrusel
 * **Planificación de Tareas:**
@@ -16,44 +56,43 @@ De acuerdo con las pautas del Trabajo Final Integrador, a continuación se detal
 | Tarea / Módulo | Fecha Inicio | Fecha Fin (Estimada/Real) | Branch | Estado |
 | :--- | :---: | :---: | :---: | :---: |
 | Configuración inicial del repositorio | 28/08/2026 | 28/08/2026 | `main` / `develop` | Finalizado |
-| Pantalla de carga (Splash Screen) | DD/MM/2026 | DD/MM/2026 | `feature/splash` | En proceso |
-| [Módulo X] | DD/MM/2026 | DD/MM/2026 | `feature/modulo-x` | Pendiente |
+| Estilos generales | 05/09/2026 | 05/09/2026 | `feature/estilos-globales` | Finalizado|
+|Punto 2 — Alta de plato | 10/09 | 12/09 |feature/alta-plato |En proceso |
 
-*Nota aclaratoria (si aplica):* Si una tarea cambia de responsable o se extiende el plazo, se registrará la modificación aquí de forma obligatoria.
 
 ---
 
-### 👤 [Cuenca, Francisco]
+### 👤 Cuenca, Francisco
 
 * **Planificación de Tareas:**
 
 | Tarea / Módulo | Fecha Inicio | Fecha Fin | Branch | Estado |
 | :--- | :---: | :---: | :---: | :---: |
 | Sevicio reutilizable de QR | 04/09/2026 | 04/09/2026 | `feature/qr-service` | Finalizado |
+| Punto 1 — Alta de empleado | 05/09/2026 | - | `feature/alta-empleado` | En proceso |
 
 ---
-
-### 👤 [Apellido, Nombre del Integrante 3]
+### 👤 Ignacio Arriaga
 * **Módulos / Objetivos a desarrollar:** 
-  - [Ejemplo: Carga de Platos y Bebidas, Gestión del Menú]
-* **Planificación de Tareas:**
-
-| Tarea / Módulo | Fecha Inicio | Fecha Fin (Estimada/Real) | Branch | Estado |
-| :--- | :---: | :---: | :---: | :---: |
-| Formulario Alta de Platos (fotos/validación) | DD/MM/2026 | DD/MM/2026 | `feature/alta-platos` | Pendiente |
-| [Módulo Z] | DD/MM/2026 | DD/MM/2026 | `feature/modulo-z` | Pendiente |
-
----
-
-### 👤 [Apellido, Nombre del Integrante 4]
-* **Módulos / Objetivos a desarrollar:** 
-  - [Ejemplo: Juegos de Descuento, Gráficos de Encuestas]
 * **Planificación de Tareas:**
 
 | Tarea / Módulo | Fecha Inicio | Fecha Fin (Estimada/Real) | Branch | Estado |
 | :--- | :---: | :---: | :---: | :---: |
 | Desarrollo del Juego de Descuento (10%, 15%, 20%) | DD/MM/2026 | DD/MM/2026 | `feature/juegos` | Pendiente |
 | [Módulo W] | DD/MM/2026 | DD/MM/2026 | `feature/modulo-w` | Pendiente |
+
+---
+### 👤 Seggiaro, Agustina Anabel
+* **Módulos / Objetivos a desarrollar:** 
+ - Login principal
+* **Planificación de Tareas:**
+
+| Tarea / Módulo | Fecha Inicio | Fecha Fin (Estimada/Real) | Branch | Estado |
+| :--- | :---: | :---: | :---: | :---: |
+| Login principal (Validaciones) | 08/09/2026 | 10/09/2026 | `feature/registro-login` | Finalizado |
+| Pantalla de incio (Redirigir) | 08/09/2026 | 10/09/2026 | `feature/registro-login` | Finalizado |
+| Acceso rápido (Redirigir) | 10/09/2026 | - | `feature/registro-login` | En procceso |
+| Pantalla inicio Metre | 10/09/2026 | - | `feature/registro-login` | En procceso |
 
 ---
 
@@ -93,10 +132,6 @@ De acuerdo con las pautas del Trabajo Final Integrador, a continuación se detal
 *(Agregaremos aquí capturas de todas las pantallas y elementos visuales a medida que los vayan desarrollando).*
 
 ---
-FONTS: 
-  - Avenue de Madison --> Logo, Menúes, Carta
-  - Monserrat: --> Descripciones generales (menúes de trabajo, letra clara y facil de leer)
-  - 3er font a definir
 
 # PALETA DE COLORES
   - ROJO ANARANJADO

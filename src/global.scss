@@ -34,4 +34,163 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
+/*@import '@ionic/angular/css/palettes/dark.system.css';*/
+
+
+//Aca van las clases utilitarias custom (.btn-confirm, .text-accent, estilos de ion-content, etc.)
+/* ---------- Aplicar las tipografías a los elementos ---------- */
+body {
+  font-family: var(--font-body);
+}
+
+.font-logo {
+  font-family: var(--font-title);
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/assets/fonts/montserrat-v31-latin-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/assets/fonts/montserrat-v31-latin-600.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/assets/fonts/montserrat-v31-latin-700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Alex Brush';
+  src: url('/assets/fonts/alex-brush-v23-latin-regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+//__________Responsive__________
+/* Tipografía fluida: se adapta sola entre celu chico y tablet grande */
+h1, .font-logo {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+p, ion-label, ion-item {
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+}
+
+/* Que el contenido respete las zonas seguras (notch, barra inferior) */
+ion-content {
+  --padding-top: env(safe-area-inset-top);
+  --padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Grillas que se acomodan solas según el ancho de pantalla */
+.grid-responsive {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+/* Evitar que las imágenes se corten o deformen */
+.img-contenedor {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.header-section {
+  text-align: center;
+  margin-bottom: 8rem;
+
+  .logo {
+    width: 75%;
+    padding:-30%;
+    height: auto;
+    margin: 0 auto auto;
+  }
+
+  .titulo-login {
+    font-family: montserrat, sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #ede5d2;
+    margin: 0;
+  }
+}
+
+
+
+
+  .login-content {
+    --background:#283720; // O el color de fondo de tu app
+
+  .login-container {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem 1.5rem; // Padding amplio para bordes de pantalla
+    box-sizing: border-box;
+  }
+}
+
+//--- botones ---
+
+.btonVerde {
+    font-family: montserrat, sans-serif;
+    color:  #ede5d2;
+    --border-radius: 18px;
+    height: 130px; // Botones más grandes para el pulgar
+    font-size: 1.8rem;
+    font-weight: 600;
+    width: 50%;
+    margin-top: 40px;
+    margin: 0 auto; // Centrar el botón
+    --background: #152c08;
+    
+  }
+  .btonTerracota {
+    font-family: montserrat, sans-serif;
+    color:  #ede5d2;
+    --border-radius: 12px;
+    height: 130px; // Botones más grandes para el pulgar
+    font-size: 1.8rem;
+    font-weight: 600;
+    width: 50%;
+    margin: 0 auto; // Centrar el botón
+    margin-top: 40px;
+    --background: #b24d39;
+  }
+   .btonBeige {
+    font-family: montserrat, sans-serif;
+    color:  #283720;
+    --border-radius: 12px;
+    height: 130px; // Botones más grandes para el pulgar
+    font-size: 1.8rem;
+    font-weight: 600;
+    width: 50%;
+    margin: 0 auto; // Centrar el botón
+    margin-top: 40px;
+    --background: #ede5d2;;
+  }
+

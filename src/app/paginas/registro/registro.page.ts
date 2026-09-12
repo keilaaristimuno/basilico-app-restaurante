@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, RouterLink } from '@angular/router';
 import { Supabase } from '../../services/supabase';
 
 //import { confirmarClaveValidator, datoExisteAsyncValidator } from '../../validaciones/usuario.validator';
@@ -37,7 +37,8 @@ import {
     IonNote,
     IonLabel,
     IonSelect,
-    IonSelectOption
+    IonSelectOption,
+    RouterLink
   ],
   templateUrl: './registro.page.html',
   styleUrl: './registro.page.scss',
@@ -129,18 +130,21 @@ export class RegistroPage implements OnInit {
     const perfil = this.miFormulario.get('perfil')?.value;
     const foto_url = "foto";
 
-    /* const { data, error } = await this.supabase.registrar(correo, clave);
+    //Llamo al metodo de Supabase para registrar el usuario, le paso el email y la clave
+    const { data, error } = await this.supabase.registrar(correo, clave);
+
+
 
     if (error) {
       console.error('Error: ', error.message);
       return;
-    } */
+    }
 
     //console.log('User registrado:', data.user);
     await this.supabase.guardarDatosEmpleados(apellidos, nombres, dni, cuil, correo, clave, perfil, foto_url);
     
     //localStorage.setItem('nickname', usuarioValido);
-    this.router.navigate(['/bienvenido']);
+    //this.router.navigate(['/bienvenido']);
   }
 }
 import { from } from 'rxjs';

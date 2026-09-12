@@ -1,6 +1,8 @@
 <ion-card>
+  <!-- Título con la tipografía Alex Brush -->
+  <h1 class="font-logo ion-text-center">Basílico</h1>
   <ion-card-header>
-    <ion-card-title>Registrate</ion-card-title>
+    <ion-card-title class="ion-text-center">Registrate</ion-card-title>
   </ion-card-header>
 
   <ion-card-content>
@@ -117,13 +119,18 @@
 
       <!-- Botones -->
       <div class="ion-margin-top ion-text-center">
+        <ion-button type="button" fill="outline" color="medium" routerLink="/alta-plato">
+          Ir a alta plato
+        </ion-button>
         <ion-button type="submit" [disabled]="miFormulario.invalid">
           Enviar Form
         </ion-button>
         <ion-button type="button" fill="outline" color="medium" (click)="resetearForm()">
           Resetear
         </ion-button>
+        
       </div>
+
 
     </form>
   </ion-card-content>

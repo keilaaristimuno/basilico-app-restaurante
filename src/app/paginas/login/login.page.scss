@@ -1,0 +1,90 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=SN+Pro:ital,wght@0,200..900;1,200..900&display=swap');
+
+.login-content {
+  --background:#283720; // O el color de fondo de tu app
+
+  .login-container {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem 1.5rem; // Padding amplio para bordes de pantalla
+    box-sizing: border-box;
+  }
+}
+
+.header-section {
+  text-align: center;
+  margin-bottom: 2rem;
+
+  .logo {
+    width: 60%;
+    padding:-30%;
+    height: auto;
+    margin: 0 auto auto;
+  }
+
+  .titulo-login {
+    font-family: montserrat, sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #ede5d2;
+    margin: 0;
+  }
+}
+
+.login-list {
+  background: transparent;
+  padding: 0;
+
+  .custom-item {
+  --background: transparent;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  --min-height: 70px; // Permite que el ion-item crezca para dar espacio al input
+  margin: 25px;
+  border-radius: 18px;
+
+  ion-input {
+    --padding-start: 16px;
+    --padding-end: 16px;
+    
+    // Usar height directo o min-height en lugar de --height
+    height: 85px; 
+    font-size: 1.1rem;
+    background: #ede5d2;
+    border-radius: 18px; // Mantiene los bordes redondeados en el fondo del input
+  }
+}
+}
+.inicio{
+    background: #98a791;
+    text-align: center;
+    margin-top: 1rem;
+    margin: 0 auto;
+    padding: 15px;
+    border-radius: 12px;
+    width: 90%;
+    
+    p {
+        font-family: montserrat, sans-serif;
+        font-size: 1rem;
+        color: var(--ion-color-dark, #ede5d2);
+        margin: 0;
+    }
+}
+
+
+.error-text {
+  text-align: center;
+  margin-top: 5rem;
+  
+  p {
+    font-family: montserrat, sans-serif;
+    color: #5c0000;
+    font-size: 2rem;
+    font-weight: 500;
+    margin: 15px 0;
+  }
+}

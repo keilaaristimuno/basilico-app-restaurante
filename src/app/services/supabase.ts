@@ -110,5 +110,19 @@ export class Supabase {
   return data;
   }
 
+  //verificar si un plato ya existe en la base de datos por su nombre
+  async platoExiste(nombre: string) {
+    const { data, error } = await this.clienteSupabase
+      .from('productos')
+      .select('id')
+      .eq('tipo', 'plato')
+      .like('nombre', nombre.trim())
+      .limit(1);
+
+    if (error) {
+      throw Error(`Error al verificar existencia del plato: ${error.message}`);
+    }
+    return data.length > 0; // Retorna true si el plato existe, false si no 
+  }
 
 }

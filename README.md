@@ -48,7 +48,7 @@ Punto 19 — Entrega del pedido completo + cambio de estado
 Liderar el servicio central de Supabase y el sistema de notificaciones push (por ser quien más interactúacon todos los flujos)
 
 
-### 👤 [Aristimuño, Keila del Integrante 1 - Líder del Grupo]
+### 👤 Aristimuño, Keila del Integrante 1 - Líder del Grupo
 * **Módulos / Objetivos a desarrollar:** 
   -  Alta de plato (nombre, descripción, tiempo, precio, 3 fotos con carrusel
 * **Planificación de Tareas:**
@@ -57,13 +57,12 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 | :--- | :---: | :---: | :---: | :---: |
 | Configuración inicial del repositorio | 28/08/2026 | 28/08/2026 | `main` / `develop` | Finalizado |
 | Estilos generales | 05/09/2026 | 05/09/2026 | `feature/estilos-globales` | Finalizado|
+|Punto 2 — Alta de plato | 10/09 | 11/09 |feature/alta-plato |En proceso |
 
-
-*Nota aclaratoria (si aplica):* Si una tarea cambia de responsable o se extiende el plazo, se registrará la modificación aquí de forma obligatoria.
 
 ---
 
-### 👤 [Cuenca, Francisco]
+### 👤 Cuenca, Francisco
 
 * **Planificación de Tareas:**
 
@@ -73,7 +72,16 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 | Punto 1 — Alta de empleado | 05/09/2026 | - | `feature/alta-empleado` | En proceso |
 
 ---
+### 👤 Ignacio Arriaga
+* **Módulos / Objetivos a desarrollar:** 
+* **Planificación de Tareas:**
 
+| Tarea / Módulo | Fecha Inicio | Fecha Fin (Estimada/Real) | Branch | Estado |
+| :--- | :---: | :---: | :---: | :---: |
+| Desarrollo del Juego de Descuento (10%, 15%, 20%) | DD/MM/2026 | DD/MM/2026 | `feature/juegos` | Pendiente |
+| [Módulo W] | DD/MM/2026 | DD/MM/2026 | `feature/modulo-w` | Pendiente |
+
+---
 ### 👤 Seggiaro, Agustina Anabel
 * **Módulos / Objetivos a desarrollar:** 
  - Login principal
@@ -85,18 +93,6 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 | Pantalla de incio (Redirigir) | 08/09/2026 | 10/09/2026 | `feature/registro-login` | Finalizado |
 | Acceso rápido (Redirigir) | 10/09/2026 | - | `feature/registro-login` | En procceso |
 | Pantalla inicio Metre | 10/09/2026 | - | `feature/registro-login` | En procceso |
-
----
-
-### 👤 [Apellido, Nombre del Integrante 4]
-* **Módulos / Objetivos a desarrollar:** 
-  - [Ejemplo: Juegos de Descuento, Gráficos de Encuestas]
-* **Planificación de Tareas:**
-
-| Tarea / Módulo | Fecha Inicio | Fecha Fin (Estimada/Real) | Branch | Estado |
-| :--- | :---: | :---: | :---: | :---: |
-| Desarrollo del Juego de Descuento (10%, 15%, 20%) | DD/MM/2026 | DD/MM/2026 | `feature/juegos` | Pendiente |
-| [Módulo W] | DD/MM/2026 | DD/MM/2026 | `feature/modulo-w` | Pendiente |
 
 ---
 
@@ -136,10 +132,6 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 *(Agregaremos aquí capturas de todas las pantallas y elementos visuales a medida que los vayan desarrollando).*
 
 ---
-FONTS: 
-  - Avenue de Madison --> Logo, Menúes, Carta
-  - Monserrat: --> Descripciones generales (menúes de trabajo, letra clara y facil de leer)
-  - 3er font a definir
 
 # PALETA DE COLORES
   - ROJO ANARANJADO

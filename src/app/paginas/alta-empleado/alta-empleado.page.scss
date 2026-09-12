@@ -1,0 +1,22 @@
+.seccion-foto {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.contenedor-foto {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.preview-foto {
+  width: 130px;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 2px solid var(--ion-color-primary, #b24d39);
+}
+
+.d-block {
+  display: block;
+}

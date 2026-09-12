@@ -82,7 +82,13 @@
 
     </ion-list>
 
-
+    <!-- Mensaje de éxito al dar de alta el plato -->
+      @if (mensajeExito) {
+      <ion-note color="success">
+        Plato dado de alta correctamente
+      </ion-note>
+      } 
+      
     <!-- Botón de alta de plato -->
     <div class="">
       <ion-button class="btonVerde" (click)="altaPlato()" [disabled]="cargando">

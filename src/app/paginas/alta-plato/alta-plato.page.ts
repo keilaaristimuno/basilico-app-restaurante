@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { Haptics } from '@capacitor/haptics';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonInput, IonButton, IonItem, IonNote, IonSpinner} from '@ionic/angular';
 import { Supabase } from '../../services/supabase';
 
@@ -25,6 +26,7 @@ export class AltaPlatoPage implements OnInit {
   urlsFotos: string[] =[];
   errorPlatoExistente: boolean = false;
   cargando: boolean = false;
+  mensajeExito: boolean = false;
 
   constructor(private cdr: ChangeDetectorRef, private supabase: Supabase) {}
 
@@ -37,7 +39,8 @@ export class AltaPlatoPage implements OnInit {
     this.errorDescripcion = this.descripcion.trim().length < 10;
     this.errorTiempoElaboracion = this.tiempoElaboracion <= 0;
     this.errorPrecio = this.precio <= 0;
-    this.errorFotos = this.fotos.some(foto => foto === ''); // Verifica si alguna foto está vacía
+    // Verifica si alguna foto está vacía:
+    this.errorFotos = this.fotos.some(foto => foto === ''); 
 
     if(this.errorNombre || 
       this.errorDescripcion || 
@@ -45,6 +48,8 @@ export class AltaPlatoPage implements OnInit {
       this.errorPrecio || 
       this.errorFotos
     ) {
+      // Si hay algún error, se activa la vibración y se retorna sin continuar
+      await Haptics.vibrate({ duration: 1000 });
       return;  
     }
     // Verificar si el plato ya existe antes de intentar guardarlo
@@ -52,6 +57,8 @@ export class AltaPlatoPage implements OnInit {
     console.log('¿Existe el plato?', existePlato);
     if (existePlato) {
       this.errorPlatoExistente = true;
+      await Haptics.vibrate({ duration: 300 });
+
       return;
     }
     this.errorPlatoExistente = false; // Resetear el error si el plato no existe
@@ -68,9 +75,32 @@ export class AltaPlatoPage implements OnInit {
         this.precio,
         urls
       );
-      console.log('Plato guardado exitosamente');
+      this.mensajeExito = true;
+      this.cdr.detectChanges();
+
+      setTimeout(() => {
+        this.mensajeExito = false;
+        this.cdr.detectChanges(); // Forzar la detección de cambios para actualizar la vista
+      }, 3000);
+
+      this.nombre = '';
+      this.descripcion = '';
+      this.tiempoElaboracion = 0;
+      this.precio = 0;
+      this.fotos = ['', '', ''];
+      this.urlsFotos = [];
+
+      this.errorNombre = false;
+      this.errorDescripcion = false;
+      this.errorTiempoElaboracion = false;
+      this.errorPrecio = false;
+      this.errorFotos = false;
+      this.errorPlatoExistente = false;
+
+      
 
     } catch (error) {
+      await Haptics.vibrate({ duration: 300 });
       console.error('Error al guardar el plato:', error);
     } finally {
       this.cargando = false;
@@ -117,29 +147,5 @@ export class AltaPlatoPage implements OnInit {
   console.log('URLs DE LAS FOTOS:', this.urlsFotos);
   return this.urlsFotos;
 }
-
-
-//   // Función para subir la foto a Supabase Storage
-//   async probarSubidaFoto() {
-//   const webPath = this.fotos[0];
-
-//   if (!webPath) {
-//     console.log('No hay foto 1');
-//     return;
-//   }
-//   const nombreArchivo = `platos/${Date.now()}-0.jpg`;
-
-//   try {
-
-//     const resultado = await this.supabase.subirFotoProducto(
-//       webPath,
-//       nombreArchivo
-//     );
-//     console.log('FOTO SUBIDA:', resultado);
-//   } catch (error) {
-//     console.error('ERROR AL SUBIR:', error);
-//   }
-// }
-
 
 }

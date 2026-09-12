@@ -21,9 +21,14 @@ export const routes: Routes = [
    {
     path: 'accesoRapido',
     loadComponent: () => import('./paginas/acceso-rapido/acceso-rapido.component').then( m => m.AccesoRapidoComponent)
-  },  {
+  },
+  {
     path: 'alta-plato',
     loadComponent: () => import('./paginas/alta-plato/alta-plato.page').then( m => m.AltaPlatoPage)
+  },
+  {
+    path: 'metreInicio',
+    loadComponent: () => import('./metre/metre-inicio/metre-inicio.component').then( m => m.MetreInicioComponent)
   },
 
 

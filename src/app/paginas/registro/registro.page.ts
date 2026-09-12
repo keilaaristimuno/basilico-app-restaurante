@@ -63,8 +63,8 @@ export class RegistroPage implements OnInit {
       nombres: ['', [Validators.required, Validators.pattern(/^[a-zA-Z]+$/)]],
       dni: ['', [Validators.required]],
       cuil: ['', [Validators.required]],
-      correo: ['', [Validators.required, Validators.email], {
-        //asyncValidators: [datoExisteAsyncValidator(this.supabase, 'mail')],
+      correo: ['', {
+        validators: [Validators.required, Validators.email],
         updateOn: 'blur'
       }],
       clave: ['', [Validators.required, Validators.minLength(6)]],

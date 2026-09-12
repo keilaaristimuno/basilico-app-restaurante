@@ -1,3 +1,37 @@
+.fotos-container {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  width: 100%;
+}
+
+.foto-card {
+  flex: 1;
+  max-width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.foto-card img {
+  width: 100%;
+  aspect-ratio: 1 / 1; // Mantener la proporción cuadrada
+  object-fit: cover; //llena el cuadrado sin deformar la imagen.
+  border-radius: 12px;
+}
+
+.foto-card ion-button {
+  width: 100%;
+  margin: 0;
+}
+
+//diseño para el boton de alta plato
+.accion-alta {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
 
 // Overlay de carga por ahora lo dejo aca pero conviene
 //pasarlo en global porque lo usaremos en varias paginas los sppiner y las cargas de datos

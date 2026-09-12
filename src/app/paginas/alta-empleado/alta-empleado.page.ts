@@ -1,19 +1,21 @@
 import { Component, OnInit, inject, signal } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
-import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
+import { Camera } from "@capacitor/camera";
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonItem, IonInput, IonButton, IonNote, IonSelect, IonSelectOption, IonCard, IonCardHeader, IonCardTitle, IonCardContent } from "@ionic/angular";
+import { QrService } from "../../services/qr.service";
 
 @Component({
   selector: "app-alta-empleado",
   templateUrl: "./alta-empleado.page.html",
   styleUrls: ["./alta-empleado.page.scss"],
-  standalone: true,
   imports: [CommonModule, FormsModule, ReactiveFormsModule, IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonItem, IonInput, IonButton, IonNote, IonSelect, IonSelectOption, IonCard, IonCardHeader, IonCardTitle, IonCardContent]
 })
 export class AltaEmpleadoPage implements OnInit {
 
   private constructorFormulario = inject(FormBuilder);
+  private servicioQr = inject(QrService);
+
   formularioEmpleado!: FormGroup;
 
   // Signals para el manejo reactivo del estado de la foto
@@ -38,19 +40,51 @@ export class AltaEmpleadoPage implements OnInit {
     });
   }
 
-  // Captura de foto obligatoria exclusivamente desde la cámara directa
+  // Captura de foto obligatoria con el método moderno takePhoto de Capacitor 8
   async tomarFoto() {
     try {
-      const imagen = await Camera.getPhoto({
-        quality: 90,
-        resultType: CameraResultType.DataUrl,
-        source: CameraSource.Camera // Forzamos cámara física sin acceso a galería
+      const imagen = await Camera.takePhoto({
+        quality: 90
       });
 
-      this.fotoEmpleado.set(imagen.dataUrl ?? "");
+      const ruta = imagen.webPath ?? imagen.uri ?? "";
+      this.fotoEmpleado.set(ruta);
       this.errorFoto.set(false);
     } catch (error) {
       console.log("Captura de foto cancelada o error:", error);
+    }
+  }
+
+  // Abre el lector QR para escanear el DNI argentino
+  async escanearDni() {
+    try {
+      const codigoLeido = await this.servicioQr.leerQR();
+      if (codigoLeido) {
+        this.procesarDatosDni(codigoLeido);
+      }
+    } catch (error) {
+      console.log("Error al escanear el DNI:", error);
+    }
+  }
+
+  // Parsea la cadena del DNI argentino separada por @ y autocompleta el formulario
+  procesarDatosDni(texto: string) {
+    const partes = texto.split("@");
+
+    // Formato estándar DNI: nro_tramite@apellidos@nombres@sexo@dni@...
+    if (partes.length >= 5) {
+      const apellidos = partes[1]?.trim() || "";
+      const nombres = partes[2]?.trim() || "";
+      const dni = partes[4]?.trim() || "";
+
+      this.formularioEmpleado.patchValue({
+        apellidos: apellidos,
+        nombres: nombres,
+        dni: dni
+      });
+      console.log("Datos del DNI cargados exitosamente:", { apellidos, nombres, dni });
+    } else {
+      console.log("El formato del código escaneado no coincide con un DNI argentino.");
     }
   }
 

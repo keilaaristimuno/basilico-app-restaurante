@@ -23,6 +23,7 @@ export class AltaPlatoPage implements OnInit {
   fotos: string[] = ['', '', ''];
   errorFotos: boolean = false;
   urlsFotos: string[] =[];
+  errorPlatoExistente: boolean = false;
 
   constructor(private cdr: ChangeDetectorRef, private supabase: Supabase) {}
 
@@ -45,8 +46,15 @@ export class AltaPlatoPage implements OnInit {
     ) {
       return;  
     }
+    // Verificar si el plato ya existe antes de intentar guardarlo
+    const existePlato = await this.supabase.platoExiste(this.nombre);
+    console.log('¿Existe el plato?', existePlato);
+    if (existePlato) {
+      this.errorPlatoExistente = true;
+      return;
+    }
+    this.errorPlatoExistente = false; // Resetear el error si el plato no existe
     try{
-      console.log('Formulario válido');
       const urls = await this.subirFotos();
       await this.supabase.guardarPlato(
         this.nombre,

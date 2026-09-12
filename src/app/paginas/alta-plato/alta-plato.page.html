@@ -28,6 +28,11 @@
             El nombre debe tener al menos 3 caracteres
           </ion-note>
         }
+        @if (errorPlatoExistente) {
+          <ion-note color="danger" class="ion-padding-start">
+            Ya existe un plato con ese nombre
+          </ion-note>
+        }
       </ion-item>
 
       <ion-item class="custom-item">

@@ -62,4 +62,67 @@ export class Supabase {
 
     return data;
   }
+//Para subir foto a Supabase Storage
+  async subirFotoProducto(webPath: string, nombreArchivo: string) {
+    const respuesta = await fetch(webPath);
+    const blob = await respuesta.blob();
+    const { data, error } = await this.clienteSupabase.storage
+    .from('productos') // Nombre del bucket
+    .upload(nombreArchivo, blob);
+
+    if (error) {
+      throw Error(`Error al subir la foto: ${error.message}`);
+    }
+    return data;
+  }
+
+  //Para obtener la URL pública de una foto en Supabase Storage
+  obtenerUrlFotoProducto(ruta: string) {
+    const {data} = this.clienteSupabase.storage
+    .from('productos') // Nombre del bucket
+    .getPublicUrl(ruta);
+
+    return data.publicUrl;
+  }
+
+  async guardarPlato(nombre: string, 
+    descripcion: string,
+    tiempoElaboracion: number, 
+    precio: number, 
+    fotos: string[]
+  ){
+    const { data, error } = await this.clienteSupabase
+    .from('productos')
+    .insert([
+      {
+        tipo: 'plato',
+        nombre: nombre,
+        descripcion: descripcion,
+        tiempo_elaboracion: tiempoElaboracion,
+        precio: precio,
+        fotos: fotos
+      }
+    ]);
+
+  if (error) {
+    throw Error(`Error al guardar el plato: ${error.message}`);
+  }
+  return data;
+  }
+
+  //verificar si un plato ya existe en la base de datos por su nombre
+  async platoExiste(nombre: string) {
+    const { data, error } = await this.clienteSupabase
+      .from('productos')
+      .select('id')
+      .eq('tipo', 'plato')
+      .like('nombre', nombre.trim())
+      .limit(1);
+
+    if (error) {
+      throw Error(`Error al verificar existencia del plato: ${error.message}`);
+    }
+    return data.length > 0; // Retorna true si el plato existe, false si no 
+  }
+
 }

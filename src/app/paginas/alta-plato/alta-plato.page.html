@@ -28,6 +28,11 @@
             El nombre debe tener al menos 3 caracteres
           </ion-note>
         }
+        @if (errorPlatoExistente) {
+          <ion-note color="danger" class="ion-padding-start">
+            Ya existe un plato con ese nombre
+          </ion-note>
+        }
       </ion-item>
 
       <ion-item class="custom-item">
@@ -77,17 +82,79 @@
 
     </ion-list>
 
+    <!-- Mensaje de éxito al dar de alta el plato -->
+      @if (mensajeExito) {
+      <ion-note color="success">
+        Plato dado de alta correctamente
+      </ion-note>
+      } 
+
     <!-- Botón de alta de plato -->
-    <div class="">
-      <ion-button class="btonVerde" (click)="altaPlato()">
+    <div class="fotos-container">
+
+      <div class = "foto-card">
+        @if (fotos[0]) {
+          <img [src]="fotos[0] " alt="Foto 1 del plato" />
+        } 
+    <!-- boton para cargar foto 1 -->
+      <ion-button (click)="seleccionarFoto(0)">
+         {{ fotos[0] ? 'Cambiar foto 1' : 'Agregar foto 1' }}
+      </ion-button>
+      </div>
+      <!-- Vista previa de la foto 2 -->
+      <div class="foto-card">
+        @if (fotos[1]) {
+          <img [src]="fotos[1]" alt="Foto 2 del plato">
+        }
+
+        <ion-button (click)="seleccionarFoto(1)">
+          {{ fotos[1] ? 'Cambiar foto 2' : 'Agregar foto 2' }}
+        </ion-button>
+      </div>
+    <!-- Vista previa de la foto 3 -->
+      <div class="foto-card">
+        @if (fotos[2]) {
+          <img [src]="fotos[2]" alt="Foto 3 del plato">
+        }
+
+        <ion-button (click)="seleccionarFoto(2)">
+          {{ fotos[2] ? 'Cambiar foto 3' : 'Agregar foto 3' }}
+        </ion-button>
+      </div>
+  </div>
+    <div class="accion-alta">
+      <ion-button 
+      class="btonVerde" 
+      (click)="altaPlato()" 
+      [disabled]="cargando">
+      
         Dar de alta el plato
       </ion-button>
-    <!-- boton para cargar fotos -->
-      <ion-button class="btonVerde" (click)="seleccionarFoto()">
-        Agregar foto
-      </ion-button>
     </div>
+      
+
+    @if(errorFotos) {
+      <ion-note color="danger" class="ion-padding-start">
+        Debe cargar 3 fotos del plato
+      </ion-note>
+    }
   </div>
+
+
+   <!-- Mostrar spinner de carga mientras se suben las fotos -->
+  @if(cargando) {
+    <div class="overlay-carga">
+      <div class="contenido-carga">
+
+        <img src="assets/Basilico/Logo_terracota.png" alt="Logo Basilico">
+
+        <ion-spinner name="crescent"></ion-spinner>
+
+        <p>Guardando plato...</p>
+
+      </div>
+    </div>
+  }
 
 
 </ion-content>

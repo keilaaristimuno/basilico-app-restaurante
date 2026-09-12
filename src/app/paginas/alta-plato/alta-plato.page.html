@@ -82,13 +82,10 @@
 
     </ion-list>
 
-    <ion-button (click)="probarSubidaFoto()">
-      Probar subida
-    </ion-button>
 
     <!-- Botón de alta de plato -->
     <div class="">
-      <ion-button class="btonVerde" (click)="altaPlato()">
+      <ion-button class="btonVerde" (click)="altaPlato()" [disabled]="cargando">
         Dar de alta el plato
       </ion-button>
     <!-- boton para cargar fotos -->
@@ -128,6 +125,20 @@
     </div>
   }
 
+   <!-- Mostrar spinner de carga mientras se suben las fotos -->
+  @if(cargando) {
+    <div class="overlay-carga">
+      <div class="contenido-carga">
+
+        <img src="assets/Basilico/Logo_terracota.png" alt="Logo Basilico">
+
+        <ion-spinner name="crescent"></ion-spinner>
+
+        <p>Guardando plato...</p>
+
+      </div>
+    </div>
+  }
 
 
 </ion-content>

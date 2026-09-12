@@ -2,14 +2,14 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonInput, IonButton, IonItem, IonNote } from '@ionic/angular';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonInput, IonButton, IonItem, IonNote, IonSpinner} from '@ionic/angular';
 import { Supabase } from '../../services/supabase';
 
 @Component({
   selector: 'app-alta-plato',
   templateUrl: './alta-plato.page.html',
   styleUrls: ['./alta-plato.page.scss'],
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonInput, IonButton,IonItem, IonNote, CommonModule, FormsModule ]
+  imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonInput, IonButton,IonItem, IonNote, IonSpinner, CommonModule, FormsModule ]
 })
 export class AltaPlatoPage implements OnInit {
   nombre:string = '';
@@ -24,6 +24,7 @@ export class AltaPlatoPage implements OnInit {
   errorFotos: boolean = false;
   urlsFotos: string[] =[];
   errorPlatoExistente: boolean = false;
+  cargando: boolean = false;
 
   constructor(private cdr: ChangeDetectorRef, private supabase: Supabase) {}
 
@@ -55,7 +56,11 @@ export class AltaPlatoPage implements OnInit {
     }
     this.errorPlatoExistente = false; // Resetear el error si el plato no existe
     try{
+      this.cargando = true;
+      this.cdr.detectChanges();
+
       const urls = await this.subirFotos();
+      
       await this.supabase.guardarPlato(
         this.nombre,
         this.descripcion,
@@ -64,8 +69,12 @@ export class AltaPlatoPage implements OnInit {
         urls
       );
       console.log('Plato guardado exitosamente');
+
     } catch (error) {
       console.error('Error al guardar el plato:', error);
+    } finally {
+      this.cargando = false;
+      this.cdr.detectChanges();
     }
   }
 
@@ -109,31 +118,28 @@ export class AltaPlatoPage implements OnInit {
   return this.urlsFotos;
 }
 
-  
 
+//   // Función para subir la foto a Supabase Storage
+//   async probarSubidaFoto() {
+//   const webPath = this.fotos[0];
 
+//   if (!webPath) {
+//     console.log('No hay foto 1');
+//     return;
+//   }
+//   const nombreArchivo = `platos/${Date.now()}-0.jpg`;
 
-  // Función para subir la foto a Supabase Storage
-  async probarSubidaFoto() {
-  const webPath = this.fotos[0];
+//   try {
 
-  if (!webPath) {
-    console.log('No hay foto 1');
-    return;
-  }
-  const nombreArchivo = `platos/${Date.now()}-0.jpg`;
-
-  try {
-
-    const resultado = await this.supabase.subirFotoProducto(
-      webPath,
-      nombreArchivo
-    );
-    console.log('FOTO SUBIDA:', resultado);
-  } catch (error) {
-    console.error('ERROR AL SUBIR:', error);
-  }
-}
+//     const resultado = await this.supabase.subirFotoProducto(
+//       webPath,
+//       nombreArchivo
+//     );
+//     console.log('FOTO SUBIDA:', resultado);
+//   } catch (error) {
+//     console.error('ERROR AL SUBIR:', error);
+//   }
+// }
 
 
 }

@@ -30,6 +30,10 @@ export const routes: Routes = [
     path: 'metreInicio',
     loadComponent: () => import('./metre/metre-inicio/metre-inicio.component').then( m => m.MetreInicioComponent)
   },
+  {
+    path: 'qrIngreso',
+    loadComponent: () => import('./paginas/qr-ingreso/qr-ingreso.component').then( m => m.QrIngresoComponent)
+  },
 
 
 ];

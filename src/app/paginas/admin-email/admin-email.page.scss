@@ -1,0 +1,41 @@
+.form-card {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--basilico-beige);
+    border-radius: 16px;
+    padding: 1.5rem 1rem;
+    backdrop-filter: blur(8px);
+}
+
+.input-item {
+    --background: transparent;
+    --color: #ffffff;
+    --placeholder-color: #d1cab9;
+    --highlight-color-focused: var(--basilico-beige);
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(237, 229, 210, 0.3);
+
+    ion-label {
+        color: var(--basilico-beige) !important;
+        font-weight: 600;
+    }
+}
+
+.feedback-box {
+    padding: 12px;
+    border-radius: 10px;
+    text-align: center;
+    margin: 1rem 0;
+    font-weight: 600;
+}
+
+.success-box {
+    background-color: rgba(39, 174, 96, 0.2);
+    border: 1px solid #27ae60;
+    color: #2ecc71;
+}
+
+.error-box {
+    background-color: rgba(178, 77, 57, 0.2);
+    border: 1px solid var(--basilico-terracotta);
+    color: #ff6b6b;
+}

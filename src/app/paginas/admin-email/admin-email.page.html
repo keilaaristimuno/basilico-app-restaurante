@@ -1,0 +1,53 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar style="--background: var(--basilico-olive); --color: var(--basilico-beige);">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/inicio" style="color: var(--basilico-beige);"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="font-logo">Gestión de Envíos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="login-content">
+  <div class="login-container">
+    <div class="header-section">
+      <h1 class="titulo-login">Enviar Notificación</h1>
+      <p style="color: var(--basilico-beige); margin-top: 5px;">Panel Administrativo - Resto Basílico</p>
+    </div>
+
+    <div class="form-card">
+      <ion-item class="input-item">
+        <ion-label position="stacked">Categoría / Remitente</ion-label>
+        <ion-select [(ngModel)]="category" interface="popover">
+          <ion-select-option value="notificaciones">Notificaciones (notificaciones@...)</ion-select-option>
+          <ion-select-option value="factura">Facturación (tufactura@...)</ion-select-option>
+          <ion-select-option value="reservas">Reservas (reservas@...)</ion-select-option>
+          <ion-select-option value="delivery">Delivery (delivery@...)</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item class="input-item">
+        <ion-label position="stacked">Correo Destinatario *</ion-label>
+        <ion-input type="email" [(ngModel)]="to" placeholder="cliente@email.com"></ion-input>
+      </ion-item>
+
+      <ion-item class="input-item">
+        <ion-label position="stacked">Asunto / Título *</ion-label>
+        <ion-input type="text" [(ngModel)]="title" placeholder="Ej: Confirmación de Reserva"></ion-input>
+      </ion-item>
+
+      <ion-item class="input-item">
+        <ion-label position="stacked">Mensaje *</ion-label>
+        <ion-textarea [(ngModel)]="message" rows="4" placeholder="Escriba el contenido del correo..."></ion-textarea>
+      </ion-item>
+
+      <div *ngIf="mensajeResultado" [class.error-box]="esError" [class.success-box]="!esError" class="feedback-box">
+        {{ mensajeResultado }}
+      </div>
+
+      <ion-button (click)="enviar()" [disabled]="cargando" class="btonBeige">
+        <span *ngIf="!cargando">Enviar Correo</span>
+        <ion-spinner *ngIf="cargando" name="crescent" style="color: var(--basilico-olive);"></ion-spinner>
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

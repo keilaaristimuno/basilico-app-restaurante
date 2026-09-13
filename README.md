@@ -47,7 +47,7 @@ Punto 12/13/14 (parte mozo) — Confirmar o rechazar pedido, derivarlo a sectore
 Punto 19 — Entrega del pedido completo + cambio de estado
 Liderar el servicio central de Supabase y el sistema de notificaciones push (por ser quien más interactúacon todos los flujos)
 
-
+---
 ### 👤 Aristimuño, Keila del Integrante 1 - Líder del Grupo
 * **Módulos / Objetivos a desarrollar:** 
   -  Alta de plato (nombre, descripción, tiempo, precio, 3 fotos con carrusel

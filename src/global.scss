@@ -1,14 +1,3 @@
-/*
- * App Global CSS
- * ----------------------------------------------------------------------------
- * Put style rules here that you want to apply globally. These styles are for
- * the entire app and not just one component. Additionally, this file can be
- * used as an entry point to import other CSS/Sass files to be included in the
- * output CSS.
- * For more information on global stylesheets, visit the documentation:
- * https://ionicframework.com/docs/layout/global-stylesheets
- */
-
 /* Core CSS required for Ionic components to work properly */
 @import "@ionic/angular/css/core.css";
 
@@ -27,14 +16,7 @@
 
 /**
  * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
  */
-
-/* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; */
-/*@import '@ionic/angular/css/palettes/dark.system.css';*/
 
 
 //Aca van las clases utilitarias custom (.btn-confirm, .text-accent, estilos de ion-content, etc.)
@@ -47,9 +29,10 @@ body {
   font-family: var(--font-title);
 }
 
+/* Rutas relativas para que funcionen dentro del APK de Android */
 @font-face {
   font-family: 'Montserrat';
-  src: url('/assets/fonts/montserrat-v31-latin-regular.woff2') format('woff2');
+  src: url('assets/fonts/montserrat-v31-latin-regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -57,7 +40,7 @@ body {
 
 @font-face {
   font-family: 'Montserrat';
-  src: url('/assets/fonts/montserrat-v31-latin-600.woff2') format('woff2');
+  src: url('assets/fonts/montserrat-v31-latin-600.woff2') format('woff2');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -65,7 +48,7 @@ body {
 
 @font-face {
   font-family: 'Montserrat';
-  src: url('/assets/fonts/montserrat-v31-latin-700.woff2') format('woff2');
+  src: url('assets/fonts/montserrat-v31-latin-700.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -73,14 +56,13 @@ body {
 
 @font-face {
   font-family: 'Alex Brush';
-  src: url('/assets/fonts/alex-brush-v23-latin-regular.woff2') format('woff2');
+  src: url('assets/fonts/alex-brush-v23-latin-regular.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 
 //__________Responsive__________
-/* Tipografía fluida: se adapta sola entre celu chico y tablet grande */
 h1, .font-logo {
   font-size: clamp(1.5rem, 4vw, 2.5rem);
 }
@@ -89,20 +71,18 @@ p, ion-label, ion-item {
   font-size: clamp(0.9rem, 2vw, 1.1rem);
 }
 
-/* Que el contenido respete las zonas seguras (notch, barra inferior) */
+/* Manejo de notch y barras nativas */
 ion-content {
   --padding-top: env(safe-area-inset-top);
   --padding-bottom: env(safe-area-inset-bottom);
 }
 
-/* Grillas que se acomodan solas según el ancho de pantalla */
 .grid-responsive {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 12px;
 }
 
-/* Evitar que las imágenes se corten o deformen */
 .img-contenedor {
   width: 100%;
   aspect-ratio: 1 / 1;
@@ -120,17 +100,16 @@ ion-content {
 
 .header-section {
   text-align: center;
-  margin-bottom: 8rem;
+  margin-bottom: 2rem; /* Se redujo de 8rem porque en celu desplaza todo fuera de pantalla */
 
   .logo {
     width: 75%;
-    padding:-30%;
     height: auto;
-    margin: 0 auto auto;
+    margin: 0 auto;
   }
 
   .titulo-login {
-    font-family: montserrat, sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 1.8rem;
     font-weight: 800;
     color: #ede5d2;
@@ -138,59 +117,72 @@ ion-content {
   }
 }
 
-
-
-
-  .login-content {
-    --background:#283720; // O el color de fondo de tu app
+.login-content {
+  --background: #283720;
 
   .login-container {
     min-height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 1rem 1.5rem; // Padding amplio para bordes de pantalla
+    padding: 1rem 1.5rem;
     box-sizing: border-box;
   }
 }
 
-//--- botones ---
+//--- Botones Ionic Adaptados ---
 
 .btonVerde {
-    font-family: montserrat, sans-serif;
-    color:  #ede5d2;
-    --border-radius: 18px;
-    height: 130px; // Botones más grandes para el pulgar
-    font-size: 1.8rem;
-    font-weight: 600;
-    width: 50%;
-    margin-top: 40px;
-    margin: 0 auto; // Centrar el botón
-    --background: #152c08;
-    
-  }
-  .btonTerracota {
-    font-family: montserrat, sans-serif;
-    color:  #ede5d2;
-    --border-radius: 12px;
-    height: 130px; // Botones más grandes para el pulgar
-    font-size: 1.8rem;
-    font-weight: 600;
-    width: 50%;
-    margin: 0 auto; // Centrar el botón
-    margin-top: 40px;
-    --background: #b24d39;
-  }
-   .btonBeige {
-    font-family: montserrat, sans-serif;
-    color:  #283720;
-    --border-radius: 12px;
-    height: 130px; // Botones más grandes para el pulgar
-    font-size: 1.8rem;
-    font-weight: 600;
-    width: 50%;
-    margin: 0 auto; // Centrar el botón
-    margin-top: 40px;
-    --background: #ede5d2;;
-  }
+  font-family: 'Montserrat', sans-serif;
+  --color: #ede5d2;
+  --background: #152c08;
+  --border-radius: 18px;
+  height: 80px; /* 130px suele ser demasiado alto para pantallas físicas */
+  font-size: 1.2rem;
+  font-weight: 600;
+  width: 80%;
+  margin: 20px auto 0 auto;
+  display: block;
+}
 
+.btonTerracota {
+  font-family: 'Montserrat', sans-serif;
+  --color: #ede5d2;
+  --background: #b24d39;
+  --border-radius: 12px;
+  height: 70px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  width: 80%;
+  margin: 20px auto 0 auto;
+  display: block;
+}
+
+.btonBeige {
+  font-family: 'Montserrat', sans-serif;
+  --color: #283720;
+  --background: #ede5d2;
+  --border-radius: 12px;
+  height: 70px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  width: 80%;
+  margin: 20px auto 0 auto;
+  display: block;
+}
+
+.btonVerdeBorde {
+  font-family: 'Montserrat', sans-serif;
+  --color: #ede5d2;
+  --background: #283720;
+  --border-color: #ede5d2;
+  --border-style: solid;
+  --border-width: 2px;
+  --border-radius: 12px;
+  height: 80px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  width: 80%;
+  margin: 20px auto 0 auto;
+  display: block;
+}

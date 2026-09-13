@@ -2,8 +2,10 @@ import { Component, OnInit, inject, signal } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Camera } from "@capacitor/camera";
+import { ToastController } from "@ionic/angular";
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonItem, IonInput, IonButton, IonNote, IonSelect, IonSelectOption, IonCard, IonCardHeader, IonCardTitle, IonCardContent } from "@ionic/angular";
 import { QrService } from "../../services/qr.service";
+import { Supabase } from "../../services/supabase";
 
 @Component({
   selector: "app-alta-empleado",
@@ -15,18 +17,19 @@ export class AltaEmpleadoPage implements OnInit {
 
   private constructorFormulario = inject(FormBuilder);
   private servicioQr = inject(QrService);
+  private servicioSupabase = inject(Supabase);
+  private toastCtrl = inject(ToastController);
 
   formularioEmpleado!: FormGroup;
 
-  // Signals para el manejo reactivo del estado de la foto
   fotoEmpleado = signal<string>("");
   errorFoto = signal<boolean>(false);
+  cargando = signal<boolean>(false);
 
   ngOnInit() {
     this.inicializarFormulario();
   }
 
-  // Creación del formulario reactivo con nombres alineados a la tabla de Supabase
   inicializarFormulario() {
     this.formularioEmpleado = this.constructorFormulario.group({
       apellidos: ["", [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]],
@@ -40,13 +43,9 @@ export class AltaEmpleadoPage implements OnInit {
     });
   }
 
-  // Captura de foto obligatoria con el método moderno takePhoto de Capacitor 8
   async tomarFoto() {
     try {
-      const imagen = await Camera.takePhoto({
-        quality: 90
-      });
-
+      const imagen = await Camera.takePhoto({ quality: 90 });
       const ruta = imagen.webPath ?? imagen.uri ?? "";
       this.fotoEmpleado.set(ruta);
       this.errorFoto.set(false);
@@ -55,7 +54,6 @@ export class AltaEmpleadoPage implements OnInit {
     }
   }
 
-  // Abre el lector QR para escanear el DNI argentino
   async escanearDni() {
     try {
       const codigoLeido = await this.servicioQr.leerQR();
@@ -67,47 +65,29 @@ export class AltaEmpleadoPage implements OnInit {
     }
   }
 
-  // Parsea la cadena del DNI argentino separada por @ y autocompleta el formulario
   procesarDatosDni(texto: string) {
     const partes = texto.split("@");
-
-    // Formato estándar DNI: nro_tramite@apellidos@nombres@sexo@dni@...
     if (partes.length >= 5) {
       const apellidos = partes[1]?.trim() || "";
       const nombres = partes[2]?.trim() || "";
       const dni = partes[4]?.trim() || "";
-
-      this.formularioEmpleado.patchValue({
-        apellidos: apellidos,
-        nombres: nombres,
-        dni: dni
-      });
-      console.log("Datos del DNI cargados exitosamente:", { apellidos, nombres, dni });
-    } else {
-      console.log("El formato del código escaneado no coincide con un DNI argentino.");
+      this.formularioEmpleado.patchValue({ apellidos, nombres, dni });
     }
   }
 
-  // Verifica de forma simple si la contraseña y su repetición son iguales
   clavesCoinciden(): boolean {
     const clave = this.formularioEmpleado.get("clave")?.value;
     const repetir = this.formularioEmpleado.get("repetirClave")?.value;
     return clave === repetir;
   }
 
-  // Verifica con .includes() si el número de DNI está dentro del CUIL
   dniEstaEnCuil(): boolean {
     const dni = String(this.formularioEmpleado.get("dni")?.value || "");
     const cuil = String(this.formularioEmpleado.get("cuil")?.value || "");
-
-    // Si aún no ingresó alguno de los dos, no mostramos error prematuro
-    if (!dni || !cuil) {
-      return true;
-    }
+    if (!dni || !cuil) return true;
     return cuil.includes(dni);
   }
 
-  // Accesos rápidos (getters) para consultar los campos desde la vista HTML
   get apellidos() { return this.formularioEmpleado.get("apellidos"); }
   get nombres() { return this.formularioEmpleado.get("nombres"); }
   get dni() { return this.formularioEmpleado.get("dni"); }
@@ -117,25 +97,55 @@ export class AltaEmpleadoPage implements OnInit {
   get repetirClave() { return this.formularioEmpleado.get("repetirClave"); }
   get perfil() { return this.formularioEmpleado.get("perfil"); }
 
-  // Función para procesar el envío del formulario
-  guardarEmpleado() {
+  private async mostrarToast(mensaje: string, color: "success" | "danger") {
+    const toast = await this.toastCtrl.create({
+      message: mensaje,
+      duration: 3000,
+      color,
+      position: "bottom"
+    });
+    await toast.present();
+  }
+
+  async guardarEmpleado() {
     this.formularioEmpleado.markAllAsTouched();
 
-    // Verificamos si falta la foto
     if (!this.fotoEmpleado()) {
       this.errorFoto.set(true);
     }
 
-    // Verificamos validaciones de Angular, coincidencia de claves, DNI en CUIL y foto
     if (this.formularioEmpleado.invalid || !this.clavesCoinciden() || !this.dniEstaEnCuil() || !this.fotoEmpleado()) {
-      console.log("El formulario contiene errores o falta la foto. Revise los campos.");
       return;
     }
 
-    console.log("Formulario válido listo para guardar:", {
-      ...this.formularioEmpleado.value,
-      foto: this.fotoEmpleado()
-    });
+    try {
+      this.cargando.set(true);
+
+      const nombreArchivo = `empleados/${Date.now()}.jpg`;
+      const resultado = await this.servicioSupabase.subirFotoEmpleado(this.fotoEmpleado(), nombreArchivo);
+      const urlFoto = this.servicioSupabase.obtenerUrlFotoEmpleado(resultado.path);
+
+      const { apellidos, nombres, dni, cuil, correo, clave, perfil } = this.formularioEmpleado.value;
+
+      await this.servicioSupabase.guardarDatosEmpleados(
+        apellidos,
+        nombres,
+        Number(dni),
+        Number(cuil),
+        correo,
+        clave,
+        perfil,
+        urlFoto
+      );
+
+      await this.mostrarToast("Empleado registrado con éxito.", "success");
+      this.limpiarFormulario();
+    } catch (error: any) {
+      console.error("Error al guardar el empleado:", error);
+      await this.mostrarToast(`Error: ${error?.message ?? "No se pudo guardar."}`, "danger");
+    } finally {
+      this.cargando.set(false);
+    }
   }
 
   limpiarFormulario() {

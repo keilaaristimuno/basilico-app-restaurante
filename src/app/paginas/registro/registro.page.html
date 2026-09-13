@@ -5,6 +5,12 @@
     <ion-card-title class="ion-text-center">Registrate</ion-card-title>
   </ion-card-header>
 
+  <div class="ion-padding-horizontal ion-margin-bottom">
+    <ion-button expand="block" fill="outline" color="secondary" routerLink="/alta-empleado">
+      Ir a Alta de Empleado (Pruebas)
+    </ion-button>
+  </div>
+
   <ion-card-content>
     <form [formGroup]="miFormulario" (ngSubmit)="enviarFormulario()">
 

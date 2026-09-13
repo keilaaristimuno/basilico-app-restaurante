@@ -31,18 +31,29 @@ export class Supabase {
   }
   //registrar (Se guardan en la BD)
   //Para guardar un usuario cuando se registra
-  guardarDatosEmpleados(apellidos: string, nombres: string, dni:number, cuil:number, correo:string, clave:string, perfil:string, foto_url:string){
-    this.clienteSupabase.from('empleados').insert([ //'empleados hace rerencia a la bla que cree en SB'
-      {apellidos:apellidos, nombres: nombres, dni:dni, cuil: cuil, correo:correo, clave:clave, perfil:perfil, foto_url:foto_url}
-    ]).then(({ data, error }) => {
-      if(error){
-        console.error('Error: ',error.message);
-      }else{
-        //this.router.navigate(['/bienvenido']);
-      }
-      console.log('Datos guardados:', data);
-    });
+  async guardarDatosEmpleados(apellidos: string, nombres: string, dni:number, cuil:number, correo:string, clave:string, perfil:string, foto_url:string){
+    const { data, error } = await this.clienteSupabase
+      .from('empleados')
+      .insert([
+        {
+          apellidos: apellidos,
+          nombres: nombres,
+          dni: dni,
+          cuil: cuil,
+          correo: correo,
+          clave: clave,
+          perfil: perfil,
+          foto_url: foto_url
+        }
+      ]);
 
+    if (error) {
+      console.error('Error al guardar empleado:', error.message);
+      throw new Error(error.message);
+    }
+
+    console.log('Datos guardados:', data);
+    return data;
   }
   async obtenerPerfilUsuarioLogueado() {
     const { data: { user } } = await this.clienteSupabase.auth.getUser();
@@ -104,11 +115,33 @@ export class Supabase {
       }
     ]);
 
-  if (error) {
-    throw Error(`Error al guardar el plato: ${error.message}`);
-  }
-  return data;
+    if (error) {
+      throw Error(`Error al guardar el plato: ${error.message}`);
+    }
+    return data;
   }
 
+  // Para subir la foto del empleado a Supabase Storage (bucket 'empleados')
+  async subirFotoEmpleado(rutaFoto: string, nombreArchivo: string) {
+    const respuesta = await fetch(rutaFoto);
+    const blob = await respuesta.blob();
+    const { data, error } = await this.clienteSupabase.storage
+      .from("empleados")
+      .upload(nombreArchivo, blob);
+
+    if (error) {
+      throw Error(`Error al subir la foto del empleado: ${error.message}`);
+    }
+    return data;
+  }
+
+  // Para obtener la URL pública de la foto del empleado en Supabase
+  obtenerUrlFotoEmpleado(ruta: string) {
+    const { data } = this.clienteSupabase.storage
+      .from("empleados")
+      .getPublicUrl(ruta);
+
+    return data.publicUrl;
+  }
 
 }

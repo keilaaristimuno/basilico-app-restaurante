@@ -69,7 +69,7 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 | Tarea / Módulo | Fecha Inicio | Fecha Fin | Branch | Estado |
 | :--- | :---: | :---: | :---: | :---: |
 | Sevicio reutilizable de QR | 04/09/2026 | 04/09/2026 | `feature/qr-service` | Finalizado |
-| Punto 1 — Alta de empleado | 05/09/2026 | - | `feature/alta-empleado` | En proceso |
+| Punto 1 — Alta de empleado | 05/09/2026 | 13/09/2025 | `feature/alta-empleado` | Finalizado |
 
 ---
 ### 👤 Ignacio Arriaga

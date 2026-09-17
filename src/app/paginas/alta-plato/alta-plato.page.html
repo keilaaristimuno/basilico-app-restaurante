@@ -37,6 +37,7 @@
             label="Nombre del plato"
             labelPlacement="floating"
             [(ngModel)]="nombre"
+            (ionInput)="limpiarErrorPlatoExistente()"
             placeholder="Ej: Milanesa napolitana">
           </ion-input>
         </ion-item>
@@ -48,10 +49,14 @@
         }
 
         @if (errorPlatoExistente) {
-          <ion-note class="mensaje-error">
-            Ya existe un plato con ese nombre.
-          </ion-note>
-        }
+          <div class="aviso-plato-existente">
+
+          <strong>Este plato ya está registrado.</strong>
+          <span>
+            Pruebe ingresando otro nombre o un plato diferente.
+          </span>
+        </div>
+      }
       </div>
 
       <!-- DESCRIPCIÓN -->
@@ -228,30 +233,15 @@
     }
 
     <!-- ACCIÓN PRINCIPAL -->
-
     <div class="accion-alta">
       <ion-button
         expand="block"
         class="btn-alta-plato"
-        (click)="altaPlato()"
-        [disabled]="cargando">
+        (click)="altaPlato()">
         Dar de alta el plato
       </ion-button>
     </div>
 
   </div>
 
-
-  <!-- SPINNER DE CARGA -->
-  @if (cargando) {
-    <div class="overlay-carga">
-      <div class="contenido-carga">
-        <img
-          src="assets/Basilico/Logo_terracota.png"
-          alt="Logo Basílico">
-        <ion-spinner name="crescent"></ion-spinner>
-        <p>Guardando plato...</p>
-      </div>
-    </div>
-  }
 </ion-content>

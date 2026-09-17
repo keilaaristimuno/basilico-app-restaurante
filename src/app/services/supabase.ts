@@ -142,6 +142,7 @@ export class Supabase {
       .getPublicUrl(ruta);
 
     return data.publicUrl;
+  }
   //verificar si un plato ya existe en la base de datos por su nombre
   async platoExiste(nombre: string) {
     const { data, error } = await this.clienteSupabase

@@ -40,9 +40,10 @@
         <ion-textarea [(ngModel)]="message" rows="4" placeholder="Escriba el contenido del correo..."></ion-textarea>
       </ion-item>
 
-      <div *ngIf="mensajeResultado" [class.error-box]="esError" [class.success-box]="!esError" class="feedback-box">
+      <!-- COMENTADO NO DEJABA QUE COMPILE LA PAG PORQUE NO ESTABA En TS -->
+    <!--   <div *ngIf="mensajeResultado" [class.error-box]="esError" [class.success-box]="!esError" class="feedback-box">
         {{ mensajeResultado }}
-      </div>
+      </div> -->
 
       <ion-button (click)="enviar()" [disabled]="cargando" class="btonBeige">
         <span *ngIf="!cargando">Enviar Correo</span>

@@ -41,6 +41,10 @@ export const routes: Routes = [
   {
     path: 'admin-email',
     loadComponent: () => import('./paginas/admin-email/admin-email.page').then( m => m.AdminEmailPage)
+  },
+  {
+    path: '**',
+    redirectTo: 'inicio'
   }
 
 ];

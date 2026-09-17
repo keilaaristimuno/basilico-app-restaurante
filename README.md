@@ -57,7 +57,8 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 | :--- | :---: | :---: | :---: | :---: |
 | Configuración inicial del repositorio | 28/08/2026 | 28/08/2026 | `main` / `develop` | Finalizado |
 | Estilos generales | 05/09/2026 | 05/09/2026 | `feature/estilos-globales` | Finalizado|
-|Punto 2 — Alta de plato | 10/09 | 12/09 |feature/alta-plato |En proceso |
+|Punto 2 — Alta de plato | 10/09 | 17/09 |feature/alta-plato |En proceso |
+|Diseño registro | 17/09 | 17/09 |feature/alta-plato |Finalizado |
 
 
 ---

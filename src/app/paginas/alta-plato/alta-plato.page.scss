@@ -1,75 +1,412 @@
+/* =========================================================
+   ALTA DE PLATO 
+   ========================================================= */
+.alta-plato-content {
+  --background: var(--basilico-olive);
+  --padding-bottom: calc(
+    env(safe-area-inset-bottom) + 24px
+  );
+}
+
+/* =========================================================
+   CONTENEDOR
+   ========================================================= */
+.alta-plato-container {
+  width: 100%;
+  min-height: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 2.5rem;
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   ENCABEZADO
+   ========================================================= */
+.alta-plato-header {
+  text-align: center;
+  margin-bottom: 1.8rem;
+
+  .font-logo {
+    font-family: var(--font-title);
+    font-size: clamp(3rem, 12vw, 5rem);
+    font-weight: normal;
+    line-height: 1;
+    color: var(--basilico-beige);
+    margin: 0 0 0.2rem;
+  }
+
+  h2 {
+    font-family: var(--font-body);
+    font-size: clamp(1.4rem, 5vw, 1.9rem);
+    font-weight: 700;
+    color: var(--basilico-beige);
+    margin: 0;
+  }
+
+  p {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: var(--basilico-beige);
+    opacity: 0.85;
+    margin: 0.5rem 0 0;
+  }
+}
+
+/* =========================================================
+   FORMULARIO
+   ========================================================= */
+.formulario-plato {
+  width: 100%;
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+.campo-formulario {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.custom-item {
+  --background: var(--basilico-beige);
+  --color: var(--basilico-olive);
+  --padding-start: 16px;
+  --padding-end: 12px;
+  --inner-padding-end: 8px;
+  --min-height: 62px;
+  font-family: var(--font-body);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow:
+    0 3px 8px rgba(0, 0, 0, 0.12);
+
+  ion-input {
+    --color: var(--basilico-olive);
+    --placeholder-color: #667060;
+    --placeholder-opacity: 0.8;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 500;
+  }
+}
+
+/* =========================================================
+   UNIDADES
+   ========================================================= */
+.unidad-input {
+  margin-left: 8px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--basilico-olive);
+  opacity: 0.75;
+}
+
+.simbolo-precio {
+  margin-right: 6px;
+  font-family: var(--font-body);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--basilico-olive);
+}
+
+/* =========================================================
+   ERRORES
+   ========================================================= */
+.mensaje-error {
+  display: block;
+  padding: 0 10px;
+  margin-top: 6px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ffd4cb;
+}
+
+/* =========================================================
+   SECCIÓN FOTOS
+   ========================================================= */
+.seccion-fotos {
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.titulo-seccion {
+  text-align: center;
+  margin-bottom: 1.2rem;
+
+  h3 {
+    font-family: var(--font-body);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--basilico-beige);
+    margin: 0;
+  }
+
+  p {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    color: var(--basilico-beige);
+    opacity: 0.75;
+    margin: 0.35rem 0 0;
+  }
+}
+
+/* =========================================================
+   CONTENEDOR DE LAS 3 FOTOS
+   ========================================================= */
 .fotos-container {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+  gap: 14px;
   width: 100%;
 }
 
+/* =========================================================
+   TARJETA DE CADA FOTO
+   ========================================================= */
 .foto-card {
-  flex: 1;
-  max-width: 220px;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
+  padding: 10px;
+  background: rgba(237, 229, 210, 0.08);
+  border: 1px solid rgba(237, 229, 210, 0.35);
+  border-radius: 16px;
+  box-sizing: border-box;
 }
 
-.foto-card img {
+/* =========================================================
+   PREVIEW DE LA FOTO
+   ========================================================= */
+
+.foto-preview {
   width: 100%;
-  aspect-ratio: 1 / 1; // Mantener la proporción cuadrada
-  object-fit: cover; //llena el cuadrado sin deformar la imagen.
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
   border-radius: 12px;
-}
-
-.foto-card ion-button {
-  width: 100%;
-  margin: 0;
-}
-
-//diseño para el boton de alta plato
-.accion-alta {
-  display: flex;
-  justify-content: center;
-  margin-top: 24px;
-}
-
-
-// Overlay de carga por ahora lo dejo aca pero conviene
-//pasarlo en global porque lo usaremos en varias paginas los sppiner y las cargas de datos
-.overlay-carga {
-  position: fixed;
-  top: 0;
-  left: 0;
-
-  width: 100%;
-  height: 100%;
-
+  background: rgba(237, 229, 210, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
 
-  background: rgba(0, 0, 0, 0.45);
+  img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+}
 
+/* =========================================================
+   PLACEHOLDER CUANDO TODAVÍA NO HAY FOTO
+   ========================================================= */
+.foto-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  text-align: center;
+  color: var(--basilico-beige);
+  opacity: 0.75;
+}
+
+/* cuadro de fotos */
+.numero-foto {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--basilico-beige);
+  border-radius: 50%;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+/* =========================================================
+   BOTÓN FOTO
+   ========================================================= */
+.btn-foto {
+  --background: var(--basilico-beige);
+  --background-activated:
+    var(--ion-color-secondary-shade);
+  --color: var(--basilico-olive);
+  --border-radius: 10px;
+  min-height: 46px;
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: none;
+}
+/* texto de error */
+.error-fotos {
+  margin-top: 12px;
+  text-align: center;
+}
+
+/* =========================================================
+   BOTÓN DAR DE ALTA
+   ========================================================= */
+.accion-alta {
+  width: 100%;
+  max-width: 620px;
+  margin: 2rem auto 0;
+}
+
+.btn-alta-plato {
+  --background: var(--basilico-terracotta);
+  --background-hover:
+    var(--ion-color-danger-tint);
+  --background-activated:
+    var(--ion-color-danger-shade);
+  --color: #ffffff;
+  --border-radius: 14px;
+  width: 100%;
+  height: 58px;
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: none;
+}
+
+/* =========================================================
+   MENSAJE DE ÉXITO
+   ========================================================= */
+.mensaje-exito {
+  width: 100%;
+  max-width: 620px;
+  margin: 1.5rem auto 0;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-sizing: border-box;
+  background: var(--basilico-beige);
+  color: var(--basilico-olive);
+  border-radius: 12px;
+  text-align: center;
+  font-family: var(--font-body);
+
+  strong {
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  span {
+    font-size: 0.85rem;
+  }
+}
+
+/* =========================================================
+   OVERLAY DE CARGA
+   ========================================================= */
+.overlay-carga {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(20, 30, 15, 0.75);
   z-index: 9999;
 }
 
 .contenido-carga {
+  width: min(85%, 320px);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
-  background: white;
-  padding: 30px;
+  padding: 28px 20px;
+  box-sizing: border-box;
+  background: var(--basilico-beige);
   border-radius: 20px;
+  font-family: var(--font-body);
+  color: var(--basilico-olive);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.25);
+
+  img {
+    width: 105px;
+    height: auto;
+    margin-bottom: 18px;
+  }
+
+  ion-spinner {
+    width: 46px;
+    height: 46px;
+    color: var(--basilico-terracotta);
+    margin-bottom: 10px;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
 }
 
-.contenido-carga img {
-  width: 120px;
-  margin-bottom: 20px;
+/* =========================================================
+   HEADER / VOLVER
+   ========================================================= */
+
+.header-transparente {
+  ion-toolbar {
+    --background: var(--basilico-olive);
+    --border-width: 0;
+    --color: var(--basilico-beige);
+    font-family: var(--font-body);
+  }
+
+  ion-back-button {
+    --color: var(--basilico-beige);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-transform: none;
+  }
 }
 
-.contenido-carga ion-spinner {
-  width: 50px;
-  height: 50px;
-  margin-bottom: 10px;
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 650px) {
+  .fotos-container {
+    grid-template-columns: 1fr;
+  }
+  .foto-card {
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+  .foto-preview {
+    aspect-ratio: 16 / 10;
+  }
+}
+
+@media (max-width: 360px) {
+
+  .alta-plato-container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  .alta-plato-header {
+    .font-logo {
+      font-size: 3rem;
+    }
+  }
+  .custom-item {
+    --min-height: 56px;
+  }
 }

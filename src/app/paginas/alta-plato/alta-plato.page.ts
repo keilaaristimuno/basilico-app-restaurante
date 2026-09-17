@@ -3,20 +3,25 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Haptics } from '@capacitor/haptics';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonInput, IonButton, IonItem, IonNote, IonSpinner} from '@ionic/angular';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonInput, IonButton, IonItem, IonNote, IonSpinner, IonButtons, IonBackButton} from '@ionic/angular';
 import { Supabase } from '../../services/supabase';
 
 @Component({
   selector: 'app-alta-plato',
   templateUrl: './alta-plato.page.html',
   styleUrls: ['./alta-plato.page.scss'],
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonInput, IonButton,IonItem, IonNote, IonSpinner, CommonModule, FormsModule ]
+  imports: [IonContent, IonInput, IonButton,IonItem, IonNote, IonSpinner, CommonModule, FormsModule,
+    IonHeader,
+    IonToolbar,
+    IonButtons,
+    IonBackButton
+   ]
 })
 export class AltaPlatoPage implements OnInit {
   nombre:string = '';
   descripcion:string = '';
-  tiempoElaboracion:number = 0;
-  precio:number = 0;
+  tiempoElaboracion:number | null = null;
+  precio:number | null = null;
   errorNombre:boolean = false;
   errorDescripcion:boolean = false
   errorTiempoElaboracion:boolean = false;
@@ -37,8 +42,8 @@ export class AltaPlatoPage implements OnInit {
 //validación de campos
     this.errorNombre = this.nombre.trim().length < 3;
     this.errorDescripcion = this.descripcion.trim().length < 10;
-    this.errorTiempoElaboracion = this.tiempoElaboracion <= 0;
-    this.errorPrecio = this.precio <= 0;
+    this.errorTiempoElaboracion = this.tiempoElaboracion === null || this.tiempoElaboracion <= 0;
+    this.errorPrecio = this.precio === null || this.precio <= 0;
     // Verifica si alguna foto está vacía:
     this.errorFotos = this.fotos.some(foto => foto === ''); 
 
@@ -58,7 +63,6 @@ export class AltaPlatoPage implements OnInit {
     if (existePlato) {
       this.errorPlatoExistente = true;
       await Haptics.vibrate({ duration: 300 });
-
       return;
     }
     this.errorPlatoExistente = false; // Resetear el error si el plato no existe
@@ -71,8 +75,9 @@ export class AltaPlatoPage implements OnInit {
       await this.supabase.guardarPlato(
         this.nombre,
         this.descripcion,
-        this.tiempoElaboracion,
-        this.precio,
+        /* el ! le indica a ts que ya fue comprobado que NO es null */
+        this.tiempoElaboracion!,
+        this.precio!,
         urls
       );
       this.mensajeExito = true;
@@ -85,8 +90,8 @@ export class AltaPlatoPage implements OnInit {
 
       this.nombre = '';
       this.descripcion = '';
-      this.tiempoElaboracion = 0;
-      this.precio = 0;
+      this.tiempoElaboracion = null;
+      this.precio = null;
       this.fotos = ['', '', ''];
       this.urlsFotos = [];
 
@@ -96,8 +101,6 @@ export class AltaPlatoPage implements OnInit {
       this.errorPrecio = false;
       this.errorFotos = false;
       this.errorPlatoExistente = false;
-
-      
 
     } catch (error) {
       await Haptics.vibrate({ duration: 300 });

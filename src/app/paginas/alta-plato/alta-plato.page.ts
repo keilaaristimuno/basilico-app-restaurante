@@ -5,6 +5,7 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Haptics } from '@capacitor/haptics';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonInput, IonButton, IonItem, IonNote, IonSpinner, IonButtons, IonBackButton} from '@ionic/angular';
 import { Supabase } from '../../services/supabase';
+import { VibracionService } from '../../services/vibracion';
 
 @Component({
   selector: 'app-alta-plato',
@@ -33,7 +34,11 @@ export class AltaPlatoPage implements OnInit {
   cargando: boolean = false;
   mensajeExito: boolean = false;
 
-  constructor(private cdr: ChangeDetectorRef, private supabase: Supabase) {}
+  constructor(
+    private cdr: ChangeDetectorRef, 
+    private supabase: Supabase,
+    private vibracion: VibracionService
+  ) {}
 
   ngOnInit() {
   }
@@ -54,7 +59,7 @@ export class AltaPlatoPage implements OnInit {
       this.errorFotos
     ) {
       // Si hay algún error, se activa la vibración y se retorna sin continuar
-      await Haptics.vibrate({ duration: 1000 });
+      await this.vibracion.errorFuerte();
       return;  
     }
     // Verificar si el plato ya existe antes de intentar guardarlo
@@ -62,7 +67,7 @@ export class AltaPlatoPage implements OnInit {
     console.log('¿Existe el plato?', existePlato);
     if (existePlato) {
       this.errorPlatoExistente = true;
-      await Haptics.vibrate({ duration: 300 });
+      await this.vibracion.errorFuerte();
       return;
     }
     this.errorPlatoExistente = false; // Resetear el error si el plato no existe
@@ -103,7 +108,7 @@ export class AltaPlatoPage implements OnInit {
       this.errorPlatoExistente = false;
 
     } catch (error) {
-      await Haptics.vibrate({ duration: 300 });
+      await this.vibracion.errorFuerte();
       console.error('Error al guardar el plato:', error);
     } finally {
       this.cargando = false;

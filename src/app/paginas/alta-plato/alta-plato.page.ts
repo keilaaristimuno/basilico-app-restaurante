@@ -2,10 +2,10 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import { Haptics } from '@capacitor/haptics';
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonInput, IonButton, IonItem, IonNote, IonSpinner, IonButtons, IonBackButton} from '@ionic/angular';
 import { Supabase } from '../../services/supabase';
 import { VibracionService } from '../../services/vibracion';
+import { Carga } from '../../services/carga';
 
 @Component({
   selector: 'app-alta-plato',
@@ -31,13 +31,13 @@ export class AltaPlatoPage implements OnInit {
   errorFotos: boolean = false;
   urlsFotos: string[] =[];
   errorPlatoExistente: boolean = false;
-  cargando: boolean = false;
   mensajeExito: boolean = false;
 
   constructor(
     private cdr: ChangeDetectorRef, 
     private supabase: Supabase,
-    private vibracion: VibracionService
+    private vibracion: VibracionService,
+    public carga: Carga
   ) {}
 
   ngOnInit() {
@@ -52,6 +52,7 @@ export class AltaPlatoPage implements OnInit {
     // Verifica si alguna foto está vacía:
     this.errorFotos = this.fotos.some(foto => foto === ''); 
 
+    //SI HAY ERRORES, NO CONTINUA
     if(this.errorNombre || 
       this.errorDescripcion || 
       this.errorTiempoElaboracion || 
@@ -62,29 +63,45 @@ export class AltaPlatoPage implements OnInit {
       await this.vibracion.errorFuerte();
       return;  
     }
+
+    try{
     // Verificar si el plato ya existe antes de intentar guardarlo
-    const existePlato = await this.supabase.platoExiste(this.nombre);
-    console.log('¿Existe el plato?', existePlato);
+    const existePlato = await this.carga.ejecutar(
+      'Verificando plato...',
+      () => this.supabase.platoExiste(
+      this.nombre
+      )
+    );
+    
     if (existePlato) {
       this.errorPlatoExistente = true;
+      // Forzamos actualización visual
+      this.cdr.detectChanges();
+
       await this.vibracion.errorFuerte();
       return;
     }
     this.errorPlatoExistente = false; // Resetear el error si el plato no existe
-    try{
-      this.cargando = true;
-      this.cdr.detectChanges();
+    
+      //OPERACION QUE REQUIERE ESPERA
+        await this.carga.ejecutar(
+          'Guardando plato...',
+          async () => {
 
-      const urls = await this.subirFotos();
-      
-      await this.supabase.guardarPlato(
-        this.nombre,
-        this.descripcion,
-        /* el ! le indica a ts que ya fue comprobado que NO es null */
-        this.tiempoElaboracion!,
-        this.precio!,
-        urls
-      );
+            const urls = await this.subirFotos();
+
+            await this.supabase.guardarPlato(
+              this.nombre,
+              this.descripcion,
+              this.tiempoElaboracion!, //el ! avisa a ts que ya valido que NO es null:
+              this.precio!,
+              urls
+            );
+          }
+        );
+
+    //EXITOOOO
+
       this.mensajeExito = true;
       this.cdr.detectChanges();
 
@@ -93,6 +110,7 @@ export class AltaPlatoPage implements OnInit {
         this.cdr.detectChanges(); // Forzar la detección de cambios para actualizar la vista
       }, 3000);
 
+      //LIMPIA FORMULARIO
       this.nombre = '';
       this.descripcion = '';
       this.tiempoElaboracion = null;
@@ -110,10 +128,14 @@ export class AltaPlatoPage implements OnInit {
     } catch (error) {
       await this.vibracion.errorFuerte();
       console.error('Error al guardar el plato:', error);
-    } finally {
-      this.cargando = false;
-      this.cdr.detectChanges();
+    };
+  }
+
+  limpiarErrorPlatoExistente(): void {
+    if (this.errorPlatoExistente) {
+      this.errorPlatoExistente = false;
     }
+
   }
 
   // Función para seleccionar una foto usando la cámara o la galería

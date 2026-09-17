@@ -296,63 +296,36 @@
   border-radius: 12px;
   text-align: center;
   font-family: var(--font-body);
-
   strong {
     font-size: 1rem;
     font-weight: 700;
   }
-
   span {
     font-size: 0.85rem;
   }
 }
 
-/* =========================================================
-   OVERLAY DE CARGA
-   ========================================================= */
-.overlay-carga {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  background: rgba(20, 30, 15, 0.75);
-  z-index: 9999;
-}
-
-.contenido-carga {
-  width: min(85%, 320px);
+.aviso-plato-existente {
+  width: 100%;
+  margin-top: 8px;
+  padding: 12px 14px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 28px 20px;
-  box-sizing: border-box;
-  background: var(--basilico-beige);
-  border-radius: 20px;
+  gap: 4px;
+  background: rgba(178, 77, 57, 0.18);
+  border: 1px solid var(--basilico-terracotta);
+  border-radius: 10px;
   font-family: var(--font-body);
-  color: var(--basilico-olive);
-  box-shadow:
-    0 8px 24px rgba(0, 0, 0, 0.25);
+  color: #ffd4cb;
 
-  img {
-    width: 105px;
-    height: auto;
-    margin-bottom: 18px;
+  strong {
+    font-size: 0.9rem;
+    font-weight: 700;
   }
-
-  ion-spinner {
-    width: 46px;
-    height: 46px;
-    color: var(--basilico-terracotta);
-    margin-bottom: 10px;
-  }
-
-  p {
-    margin: 0;
-    font-size: 0.95rem;
-    font-weight: 600;
+  span {
+    font-size: 0.82rem;
+    font-weight: 500;
   }
 }
 

@@ -198,25 +198,55 @@
         }
 
         <!-- Perfil del Empleado -->
-        <ion-item>
-          <ion-select
-            label="Perfil del empleado"
-            labelPlacement="floating"
-            formControlName="perfil"
-            placeholder="Seleccione un perfil">
-            <ion-select-option value="cocinero">Cocinero</ion-select-option>
-            <ion-select-option value="cantinero">Cantinero</ion-select-option>
-            <ion-select-option value="mozo">Mozo</ion-select-option>
-            <ion-select-option value="metre">Metre</ion-select-option>
-            <ion-select-option value="supervisor">Supervisor</ion-select-option>
-            <ion-select-option value="duenio">Dueño</ion-select-option>
-          </ion-select>
-        </ion-item>
-        @if (perfil?.touched && perfil?.hasError("required")) {
-          <ion-note color="danger" class="ion-padding-start">
-            Debe seleccionar un perfil.
-          </ion-note>
-        }
+    <div class="campo-formulario">
+
+      <ion-item
+        lines="none"
+        class="custom-item custom-select">
+
+        <ion-select
+          label="Perfil del empleado"
+          labelPlacement="floating"
+          formControlName="perfil"
+          placeholder="Seleccione un perfil"
+          interface="alert"
+          cancelText="Cancelar"
+          okText="Aceptar"
+          [interfaceOptions]="perfilSelectOptions">
+
+          <ion-select-option value="cocinero">
+            Cocinero
+          </ion-select-option>
+
+          <ion-select-option value="cantinero">
+            Cantinero
+          </ion-select-option>
+
+          <ion-select-option value="mozo">
+            Mozo
+          </ion-select-option>
+
+          <ion-select-option value="metre">
+            Metre
+          </ion-select-option>
+
+          <ion-select-option value="supervisor">
+            Supervisor
+          </ion-select-option>
+
+          <ion-select-option value="duenio">
+            Dueño
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      @if (perfil?.touched && perfil?.hasError("required")) {
+        <ion-note class="mensaje-error">
+          Debe seleccionar un perfil.
+        </ion-note>
+      }
+
+    </div>
 
         <!-- Botones de Acción -->
         <div class="ion-margin-top">

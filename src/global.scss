@@ -17,8 +17,6 @@
 /**
  * Ionic Dark Mode
  */
-
-
 //Aca van las clases utilitarias custom (.btn-confirm, .text-accent, estilos de ion-content, etc.)
 /* ---------- Aplicar las tipografías a los elementos ---------- */
 body {
@@ -185,4 +183,73 @@ ion-content {
   width: 80%;
   margin: 20px auto 0 auto;
   display: block;
+}
+
+
+/* =========================================================
+   SELECTOR DE PERFIL - ALTA EMPLEADO
+   ========================================================= */
+
+ion-alert.perfil-empleado-alert {
+  /* Fondo del cuadro */
+  --background: var(--basilico-beige);
+  /* Oscurece el fondo de la pantalla */
+  --backdrop-opacity: 0.65;
+
+  /* Tamaño */
+  --width: 88%;
+  --max-width: 360px;
+  font-family: var(--font-body);
+}
+
+
+/* Contenedor del alert */
+ion-alert.perfil-alert .alert-wrapper {
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+
+/* Título */
+ion-alert.perfil-alert .alert-title {
+  font-family: var(--font-body);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--basilico-olive);
+}
+
+
+/* Subtítulo */
+ion-alert.perfil-alert .alert-sub-title {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: #596254;
+}
+
+
+/* Cada perfil */
+ion-alert.perfil-alert .alert-radio-label {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--basilico-olive);
+}
+
+
+/* Botones Cancelar / Aceptar */
+ion-alert.perfil-alert .alert-button {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--basilico-terracotta);
+  text-transform: none;
+}
+
+ion-alert.perfil-alert .alert-radio-group {
+  border-top: none;
+  border-bottom: none;
+}
+
+ion-alert.perfil-alert .alert-radio-button {
+  color: var(--basilico-olive);
 }

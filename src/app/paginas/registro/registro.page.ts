@@ -18,7 +18,8 @@ import {
   IonNote,
   IonLabel,
   IonSelect,
-  IonSelectOption
+  IonSelectOption, 
+  IonContent
 } from '@ionic/angular';
 
 @Component({
@@ -39,7 +40,8 @@ import {
     IonLabel,
     IonSelect,
     IonSelectOption,
-    RouterLink
+    RouterLink,
+    IonContent
   ],
   templateUrl: './registro.page.html',
   styleUrl: './registro.page.scss',
@@ -71,7 +73,6 @@ export class RegistroPage implements OnInit {
       }],
       clave: ['', [Validators.required, Validators.minLength(6)]],
       repetirClave: [null, [Validators.required]],
-      perfil: ['', [Validators.required]],
       fotoPerfil: [''],
     }) //{ validators: confirmarClaveValidator() });
   }

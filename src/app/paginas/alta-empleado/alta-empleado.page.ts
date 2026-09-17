@@ -97,6 +97,13 @@ export class AltaEmpleadoPage implements OnInit {
   get repetirClave() { return this.formularioEmpleado.get("repetirClave"); }
   get perfil() { return this.formularioEmpleado.get("perfil"); }
 
+
+  perfilSelectOptions = {
+    header: 'Seleccioná un perfil',
+    subHeader: 'Elegí el puesto del empleado',
+    cssClass: 'perfil-alert'
+  };
+
   private async mostrarToast(mensaje: string, color: "success" | "danger") {
     const toast = await this.toastCtrl.create({
       message: mensaje,

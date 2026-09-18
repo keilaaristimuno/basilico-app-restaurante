@@ -1,0 +1,148 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title>Alta de Mesa</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Datos de la Mesa</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-item>
+        <ion-input
+          label="Número"
+          labelPlacement="floating"
+          type="number"
+          [(ngModel)]="numero"
+          (ngModelChange)="marcarNumeroTocado()"
+          placeholder="Ingrese el número de mesa">
+        </ion-input>
+      </ion-item>
+      @if (numeroTocado && errorNumero) {
+        <ion-note color="danger">Debe ingresar un número válido.</ion-note>
+      }
+
+      <ion-item>
+        <ion-input
+          label="Cantidad de comensales"
+          labelPlacement="floating"
+          type="number"
+          [(ngModel)]="cantidadComensales"
+          (ngModelChange)="marcarCantidadTocado()"
+          placeholder="Ingrese la cantidad de comensales">
+        </ion-input>
+      </ion-item>
+      @if (cantidadTocado && errorCantidad) {
+        <ion-note color="danger">Debe ingresar una cantidad válida.</ion-note>
+      }
+      @if (cantidadTocado && errorCantidadMax) {
+        <ion-note color="danger">La cantidad máxima es 25 comensales.</ion-note>
+      }
+
+      <ion-item>
+        <ion-select
+          label="Tipo"
+          labelPlacement="floating"
+          [(ngModel)]="tipo"
+          (ionChange)="marcarTipoTocado()"
+          placeholder="Seleccione un tipo">
+          <ion-select-option value="vip">VIP</ion-select-option>
+          <ion-select-option value="estandar">Estándar</ion-select-option>
+          <ion-select-option value="movilidad_reducida">Movilidad reducida</ion-select-option>
+        </ion-select>
+      </ion-item>
+      @if (tipoTocado && errorTipo) {
+        <ion-note color="danger">Debe seleccionar un tipo de mesa.</ion-note>
+      }
+
+      <ion-item>
+        <ion-select
+          label="Disponibilidad"
+          labelPlacement="floating"
+          [(ngModel)]="disponibilidad">
+          <ion-select-option value="vacia">Vacía</ion-select-option>
+          <ion-select-option value="ocupada">Ocupada</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <div class="ion-margin-top ion-text-center">
+        @if (fotoMesa()) {
+          <div class="contenedor-foto">
+            <img [src]="fotoMesa()" alt="Foto de la mesa" class="preview-foto" />
+          </div>
+          <ion-button type="button" fill="outline" color="medium" size="small" (click)="tomarFoto()">
+            Cambiar foto
+          </ion-button>
+        } @else {
+          <ion-button type="button" expand="block" (click)="tomarFoto()">
+            Tomar foto de la mesa
+          </ion-button>
+        }
+
+        @if (errorFoto()) {
+          <ion-note color="danger" class="ion-margin-top d-block">
+            La foto de la mesa es obligatoria.
+          </ion-note>
+        }
+      </div>
+
+      <div class="ion-margin-top">
+        <ion-button expand="block" type="button" (click)="guardarMesa()" [disabled]="cargando()">
+          @if (cargando()) {
+            <ion-spinner name="crescent"></ion-spinner>
+          } @else {
+            Guardar Mesa
+          }
+        </ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  @if (qrMesa()) {
+    <ion-card class="qr-card ion-margin-top">
+      <ion-card-header>
+        <ion-card-title>QR de la mesa generada</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="qr-container">
+          <img [src]="qrMesa()" alt="QR de la mesa" class="qr-imagen" />
+        </div>
+      </ion-card-content>
+    </ion-card>
+  }
+
+  <ion-card class="mesas-card ion-margin-top">
+    <ion-card-header>
+      <ion-card-title>Mesas cargadas</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      @if (mesas().length === 0) {
+        <ion-note color="medium">Todavía no hay mesas cargadas.</ion-note>
+      } @else {
+        @for (mesa of mesas(); track mesa.id) {
+          <div class="mesa-row">
+            <div class="mesa-info">
+              <strong>Mesa {{ mesa.numero }}</strong>
+              <span>{{ mesa.cantidad_comensales }} comensales</span>
+              <span>{{ formatearTipo(mesa.tipo) }}</span>
+              <span>{{ formatearDisponibilidad(mesa.disponibilidad) }}</span>
+            </div>
+
+            <ion-select
+              label="Estado"
+              interface="popover"
+              [ngModel]="mesa.disponibilidad"
+              (ionChange)="cambiarDisponibilidad(mesa, $event)">
+              <ion-select-option value="vacia">Vacía</ion-select-option>
+              <ion-select-option value="ocupada">Ocupada</ion-select-option>
+            </ion-select>
+          </div>
+        }
+      }
+    </ion-card-content>
+  </ion-card>
+</ion-content>

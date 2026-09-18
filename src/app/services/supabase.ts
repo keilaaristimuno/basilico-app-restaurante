@@ -56,6 +56,55 @@ export class Supabase {
     console.log('Datos guardados:', data);
     return data;
   }
+
+  async guardarMesa(numero: number, cantidadComensales: number, tipo: string, disponibilidad: string, fotoUrl: string) {
+    const { data, error } = await this.clienteSupabase
+      .from('mesas')
+      .insert([
+        {
+          numero,
+          cantidad_comensales: cantidadComensales,
+          tipo,
+          disponibilidad,
+          foto_url: fotoUrl,
+          created_at: new Date().toISOString()
+        }
+      ])
+      .select();
+
+    if (error) {
+      throw new Error(`Error al guardar la mesa: ${error.message}`);
+    }
+
+    return data;
+  }
+
+  async obtenerMesas() {
+    const { data, error } = await this.clienteSupabase
+      .from('mesas')
+      .select('*')
+      .order('numero', { ascending: true });
+
+    if (error) {
+      throw new Error(`Error al obtener las mesas: ${error.message}`);
+    }
+
+    return data ?? [];
+  }
+
+  async actualizarDisponibilidadMesa(id: string, disponibilidad: string) {
+    const { data, error } = await this.clienteSupabase
+      .from('mesas')
+      .update({ disponibilidad })
+      .eq('id', id)
+      .select();
+
+    if (error) {
+      throw new Error(`Error al actualizar la mesa: ${error.message}`);
+    }
+
+    return data;
+  }
   async obtenerPerfilUsuarioLogueado() {
     const { data: { user } } = await this.clienteSupabase.auth.getUser();
 
@@ -163,6 +212,28 @@ export class Supabase {
   obtenerUrlFotoEmpleado(ruta: string) {
     const { data } = this.clienteSupabase.storage
       .from("empleados")
+      .getPublicUrl(ruta);
+
+    return data.publicUrl;
+  }
+
+  async subirFotoMesa(rutaFoto: string, nombreArchivo: string) {
+    const respuesta = await fetch(rutaFoto);
+    const blob = await respuesta.blob();
+    const { data, error } = await this.clienteSupabase.storage
+      .from('mesas')
+      .upload(nombreArchivo, blob);
+
+    if (error) {
+      throw Error(`Error al subir la foto de la mesa: ${error.message}`);
+    }
+
+    return data;
+  }
+
+  obtenerUrlFotoMesa(ruta: string) {
+    const { data } = this.clienteSupabase.storage
+      .from('mesas')
       .getPublicUrl(ruta);
 
     return data.publicUrl;

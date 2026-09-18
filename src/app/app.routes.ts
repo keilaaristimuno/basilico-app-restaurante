@@ -39,6 +39,15 @@ export const routes: Routes = [
     loadComponent: () => import('./metre/metre-inicio/metre-inicio.component').then(m => m.MetreInicioComponent)
   },
   {
+    path: 'qrIngreso',
+    loadComponent: () => import('./paginas/qr-ingreso/qr-ingreso.component').then( m => m.QrIngresoComponent)
+  },
+   {
+    path: 'clienteInicio',
+    loadComponent: () => import('./cliente-inicio/cliente-inicio.component').then( m => m.ClienteInicioComponent)
+  },
+
+
     path: 'admin-email',
     loadComponent: () => import('./paginas/admin-email/admin-email.page').then(m => m.AdminEmailPage)
   },

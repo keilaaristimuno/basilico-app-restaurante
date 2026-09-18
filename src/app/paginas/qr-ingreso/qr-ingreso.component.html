@@ -1,0 +1,18 @@
+<ion-content class="contenido">
+  <div class="contenido">
+    <img class="logo" src="assets/Basilico/Basiloco_verde.png" alt="Logotipo" />
+    <h2 class="titulo">Escaneá para ingresar a</h2>
+    <p class="titulo">LISTA DE ESPERA</p>
+    <div class="qr">
+      @if (qrImage()) {
+    <div>
+      <img [src]="qrImage()" alt="QR de Ingreso" />
+    </div>
+    } @else {
+      <p>Cargando código QR...</p>
+    }
+    </div>
+    
+  </div>
+  
+</ion-content>

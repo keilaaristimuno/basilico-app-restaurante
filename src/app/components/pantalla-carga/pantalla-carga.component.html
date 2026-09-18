@@ -1,0 +1,20 @@
+@if (carga.visible()) {
+
+  <div class="pantalla-carga">
+    <div class="contenido-carga">
+
+      <img
+        src="assets/Basilico/Logo_terracota.png"
+        alt="Logo Basílico">
+
+      <ion-spinner
+        name="crescent">
+      </ion-spinner>
+
+      <p>
+        {{ carga.mensaje() }}
+      </p>
+
+    </div>
+  </div>
+}

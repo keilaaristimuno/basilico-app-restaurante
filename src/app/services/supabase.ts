@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { Plato } from '../interfaces/plato';
 
 @Injectable({
   providedIn: 'root',
@@ -31,18 +32,78 @@ export class Supabase {
   }
   //registrar (Se guardan en la BD)
   //Para guardar un usuario cuando se registra
-  guardarDatosEmpleados(apellidos: string, nombres: string, dni:number, cuil:number, correo:string, clave:string, perfil:string, foto_url:string){
-    this.clienteSupabase.from('empleados').insert([ //'empleados hace rerencia a la bla que cree en SB'
-      {apellidos:apellidos, nombres: nombres, dni:dni, cuil: cuil, correo:correo, clave:clave, perfil:perfil, foto_url:foto_url}
-    ]).then(({ data, error }) => {
-      if(error){
-        console.error('Error: ',error.message);
-      }else{
-        //this.router.navigate(['/bienvenido']);
-      }
-      console.log('Datos guardados:', data);
-    });
+  async guardarDatosEmpleados(apellidos: string, nombres: string, dni:number, cuil:number, correo:string, clave:string, perfil:string, foto_url:string){
+    const { data, error } = await this.clienteSupabase
+      .from('empleados')
+      .insert([
+        {
+          apellidos: apellidos,
+          nombres: nombres,
+          dni: dni,
+          cuil: cuil,
+          correo: correo,
+          clave: clave,
+          perfil: perfil,
+          foto_url: foto_url
+        }
+      ]);
 
+    if (error) {
+      console.error('Error al guardar empleado:', error.message);
+      throw new Error(error.message);
+    }
+
+    console.log('Datos guardados:', data);
+    return data;
+  }
+
+  async guardarMesa(numero: number, cantidadComensales: number, tipo: string, disponibilidad: string, fotoUrl: string) {
+    const { data, error } = await this.clienteSupabase
+      .from('mesas')
+      .insert([
+        {
+          numero,
+          cantidad_comensales: cantidadComensales,
+          tipo,
+          disponibilidad,
+          foto_url: fotoUrl,
+          created_at: new Date().toISOString()
+        }
+      ])
+      .select();
+
+    if (error) {
+      throw new Error(`Error al guardar la mesa: ${error.message}`);
+    }
+
+    return data;
+  }
+
+  async obtenerMesas() {
+    const { data, error } = await this.clienteSupabase
+      .from('mesas')
+      .select('*')
+      .order('numero', { ascending: true });
+
+    if (error) {
+      throw new Error(`Error al obtener las mesas: ${error.message}`);
+    }
+
+    return data ?? [];
+  }
+
+  async actualizarDisponibilidadMesa(id: string, disponibilidad: string) {
+    const { data, error } = await this.clienteSupabase
+      .from('mesas')
+      .update({ disponibilidad })
+      .eq('id', id)
+      .select();
+
+    if (error) {
+      throw new Error(`Error al actualizar la mesa: ${error.message}`);
+    }
+
+    return data;
   }
   async obtenerPerfilUsuarioLogueado() {
     const { data: { user } } = await this.clienteSupabase.auth.getUser();
@@ -104,12 +165,79 @@ export class Supabase {
       }
     ]);
 
-  if (error) {
-    throw Error(`Error al guardar el plato: ${error.message}`);
-  }
-  return data;
+    if (error) {
+      throw Error(`Error al guardar el plato: ${error.message}`);
+    }
+    return data;
   }
 
+  /* ====================================
+          OBTIENE PLATOS desde supabase
+  =======================================*/
+  async obtenerPlatos(): Promise<Plato[]> {
+
+    const { data, error } = await this.clienteSupabase
+      .from('productos')
+      .select('*')
+      .eq('tipo', 'plato')
+      .order('nombre', {
+        ascending: true
+      });
+
+    if (error) {
+      throw Error(
+        `Error al obtener los platos: ${error.message}`
+      );
+    }
+
+    return (data ?? []) as Plato[];
+  }
+
+
+  // Para subir la foto del empleado a Supabase Storage (bucket 'empleados')
+  async subirFotoEmpleado(rutaFoto: string, nombreArchivo: string) {
+    const respuesta = await fetch(rutaFoto);
+    const blob = await respuesta.blob();
+    const { data, error } = await this.clienteSupabase.storage
+      .from("empleados")
+      .upload(nombreArchivo, blob);
+
+    if (error) {
+      throw Error(`Error al subir la foto del empleado: ${error.message}`);
+    }
+    return data;
+  }
+
+  // Para obtener la URL pública de la foto del empleado en Supabase
+  obtenerUrlFotoEmpleado(ruta: string) {
+    const { data } = this.clienteSupabase.storage
+      .from("empleados")
+      .getPublicUrl(ruta);
+
+    return data.publicUrl;
+  }
+
+  async subirFotoMesa(rutaFoto: string, nombreArchivo: string) {
+    const respuesta = await fetch(rutaFoto);
+    const blob = await respuesta.blob();
+    const { data, error } = await this.clienteSupabase.storage
+      .from('mesas')
+      .upload(nombreArchivo, blob);
+
+    if (error) {
+      throw Error(`Error al subir la foto de la mesa: ${error.message}`);
+    }
+
+    return data;
+  }
+
+  obtenerUrlFotoMesa(ruta: string) {
+    const { data } = this.clienteSupabase.storage
+      .from('mesas')
+      .getPublicUrl(ruta);
+
+    return data.publicUrl;
+  }
   //verificar si un plato ya existe en la base de datos por su nombre
   async platoExiste(nombre: string) {
     const { data, error } = await this.clienteSupabase

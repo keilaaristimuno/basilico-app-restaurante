@@ -1,160 +1,257 @@
-<ion-header [translucent]="true">
+<ion-header class="header-transparente">
   <ion-toolbar>
-    <ion-title>alta-plato</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button
+        defaultHref="/"
+        text="Volver"
+        icon="chevron-back-outline">
+      </ion-back-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">alta-plato</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content
+  [fullscreen]="true"
+  [scrollY]="true"
+  class="alta-plato-content">
 
-   <!-- Formulario de alta de plato -->
-  <div class="form-section">
-    <ion-list lines="none" class="alta-plato-list">
-      
-      <ion-item class="custom-item">
-        <ion-input 
-          type="text" 
-          labelPlacement="floating" 
-          fill="outline" 
-          [(ngModel)]="nombre" 
-          placeholder="Ingrese el nombre del plato">
-        </ion-input>
+  <div class="alta-plato-container">
+    <!-- ENCABEZADO -->
+    <section class="alta-plato-header">
+      <h1 class="font-logo"> Basílico</h1>
+      <h2>Dar de alta un plato</h2>
+      <p>
+        Completá los datos y cargá tres imágenes del plato
+      </p>
+    </section>
+
+    <!-- FORMULARIO -->
+    <section class="formulario-plato">
+      <div class="campo-formulario">
+        <ion-item
+          lines="none"
+          class="custom-item">
+
+          <ion-input
+            type="text"
+            label="Nombre del plato"
+            labelPlacement="floating"
+            [(ngModel)]="nombre"
+            (ionInput)="limpiarErrorPlatoExistente()"
+            placeholder="Ej: Milanesa napolitana">
+          </ion-input>
+        </ion-item>
+
         @if (errorNombre) {
-          <ion-note color="danger" class="ion-padding-start">
-            El nombre debe tener al menos 3 caracteres
+          <ion-note class="mensaje-error">
+            El nombre debe tener al menos 3 caracteres.
           </ion-note>
         }
+
         @if (errorPlatoExistente) {
-          <ion-note color="danger" class="ion-padding-start">
-            Ya existe un plato con ese nombre
-          </ion-note>
-        }
-      </ion-item>
+          <div class="aviso-plato-existente">
 
-      <ion-item class="custom-item">
-        <ion-input 
-          type="text"
-          labelPlacement="floating" 
-          fill="outline" 
-          [(ngModel)]="descripcion" 
-          placeholder="Ingrese la descripción del plato">
-        </ion-input>
-        @if(errorDescripcion) {
-          <ion-note color="danger" class="ion-padding-start">
-            La descripción debe tener al menos 10 caracteres
-          </ion-note>
-        }
-      </ion-item>
-
-      <ion-item class="custom-item">
-        <ion-input 
-          type="number"
-          labelPlacement="floating" 
-          fill="outline" 
-          [(ngModel)]="tiempoElaboracion" 
-          placeholder="Ingrese el tiempo de elaboración">
-        </ion-input>
-        @if(errorTiempoElaboracion) {
-          <ion-note color="danger" class="ion-padding-start">
-            El tiempo de elaboración debe ser mayor a 0
-          </ion-note>
-        }
-      </ion-item>
-
-      <ion-item class="custom-item">
-        <ion-input 
-          type="number"
-          labelPlacement="floating" 
-          fill="outline" 
-          [(ngModel)]="precio" 
-          placeholder="Ingrese el precio del plato">
-        </ion-input>
-        @if(errorPrecio) {
-          <ion-note color="danger" class="ion-padding-start">
-            El precio debe ser mayor a 0
-          </ion-note>
-        }
-      </ion-item>
-
-    </ion-list>
-
-    <!-- Mensaje de éxito al dar de alta el plato -->
-      @if (mensajeExito) {
-      <ion-note color="success">
-        Plato dado de alta correctamente
-      </ion-note>
-      } 
-
-    <!-- Botón de alta de plato -->
-    <div class="fotos-container">
-
-      <div class = "foto-card">
-        @if (fotos[0]) {
-          <img [src]="fotos[0] " alt="Foto 1 del plato" />
-        } 
-    <!-- boton para cargar foto 1 -->
-      <ion-button (click)="seleccionarFoto(0)">
-         {{ fotos[0] ? 'Cambiar foto 1' : 'Agregar foto 1' }}
-      </ion-button>
+          <strong>Este plato ya está registrado.</strong>
+          <span>
+            Pruebe ingresando otro nombre o un plato diferente.
+          </span>
+        </div>
+      }
       </div>
-      <!-- Vista previa de la foto 2 -->
-      <div class="foto-card">
-        @if (fotos[1]) {
-          <img [src]="fotos[1]" alt="Foto 2 del plato">
-        }
 
-        <ion-button (click)="seleccionarFoto(1)">
-          {{ fotos[1] ? 'Cambiar foto 2' : 'Agregar foto 2' }}
-        </ion-button>
-      </div>
-    <!-- Vista previa de la foto 3 -->
-      <div class="foto-card">
-        @if (fotos[2]) {
-          <img [src]="fotos[2]" alt="Foto 3 del plato">
-        }
+      <!-- DESCRIPCIÓN -->
+      <div class="campo-formulario">
+        <ion-item
+          lines="none"
+          class="custom-item">
 
-        <ion-button (click)="seleccionarFoto(2)">
-          {{ fotos[2] ? 'Cambiar foto 3' : 'Agregar foto 3' }}
-        </ion-button>
+          <ion-input
+            type="text"
+            label="Descripción"
+            labelPlacement="floating"
+            [(ngModel)]="descripcion"
+            placeholder="Describí brevemente el plato">
+          </ion-input>
+        </ion-item>
+
+        @if (errorDescripcion) {
+          <ion-note class="mensaje-error">
+            La descripción debe tener al menos 10 caracteres.
+          </ion-note>
+        }
       </div>
-  </div>
+
+      <!-- TIEMPO DE ELABORACION -->
+      <div class="campo-formulario">
+        <ion-item
+          lines="none"
+          class="custom-item">
+
+          <ion-input
+            type="number"
+            label="Tiempo de elaboración"
+            labelPlacement="floating"
+            [(ngModel)]="tiempoElaboracion"
+            placeholder="Tiempo en minutos">
+          </ion-input>
+          <span class="unidad-input">
+            min
+          </span>
+        </ion-item>
+
+        @if (errorTiempoElaboracion) {
+          <ion-note class="mensaje-error">
+            El tiempo de elaboración debe ser mayor a 0.
+          </ion-note>
+        }
+      </div>
+
+      <!-- PRECIO -->
+      <div class="campo-formulario">
+        <ion-item
+          lines="none"
+          class="custom-item">
+          <span class="simbolo-precio">
+            $
+          </span>
+
+          <ion-input
+            type="number"
+            label="Precio"
+            labelPlacement="floating"
+            [(ngModel)]="precio"
+            placeholder="Ingrese el precio">
+          </ion-input>
+        </ion-item>
+
+        @if (errorPrecio) {
+          <ion-note class="mensaje-error">
+            El precio debe ser mayor a 0.
+          </ion-note>
+        }
+      </div>
+    </section>
+
+    <!-- FOTOGRAFÍAS -->
+    <section class="seccion-fotos">
+      <div class="titulo-seccion">
+        <h3>Fotografías del plato</h3>
+        <p> Cargá tres imágenes diferentes </p>
+      </div>
+
+      <div class="fotos-container">
+        <!-- FOTO 1 -->
+        <div class="foto-card">
+          <div class="foto-preview">
+
+            @if (fotos[0]) {
+              <img
+                [src]="fotos[0]"
+                alt="Foto 1 del plato">
+            } @else {
+              <div class="foto-placeholder">
+                <span class="numero-foto">1</span>
+                <span>Sin fotografía</span>
+              </div>
+            }
+          </div>
+
+          <ion-button
+            expand="block"
+            class="btn-foto"
+            (click)="seleccionarFoto(0)">
+            {{ fotos[0] ? 'Cambiar foto 1' : 'Agregar foto 1' }}
+          </ion-button>
+
+        </div>
+
+
+        <!-- FOTO 2 -->
+        <div class="foto-card">
+          <div class="foto-preview">
+            @if (fotos[1]) {
+              <img
+                [src]="fotos[1]"
+                alt="Foto 2 del plato">
+            } @else {
+              <div class="foto-placeholder">
+                <span class="numero-foto">2</span>
+                <span>Sin fotografía</span>
+              </div>
+            }
+          </div>
+
+          <ion-button
+            expand="block"
+            class="btn-foto"
+            (click)="seleccionarFoto(1)">
+            {{ fotos[1] ? 'Cambiar foto 2' : 'Agregar foto 2' }}
+          </ion-button>
+
+        </div>
+
+        <!-- FOTO 3 -->
+        <div class="foto-card">
+          <div class="foto-preview">
+            @if (fotos[2]) {
+              <img
+                [src]="fotos[2]"
+                alt="Foto 3 del plato">
+            } @else {
+              <div class="foto-placeholder">
+                <span class="numero-foto">3</span>
+                <span>Sin fotografía</span>
+              </div>
+            }
+          </div>
+
+          <ion-button
+            expand="block"
+            class="btn-foto"
+            (click)="seleccionarFoto(2)">
+            {{ fotos[2] ? 'Cambiar foto 3' : 'Agregar foto 3' }}
+          </ion-button>
+        </div>
+
+      </div>
+
+      @if (errorFotos) {
+        <ion-note class="mensaje-error error-fotos">
+          Debe cargar las 3 fotografías del plato.
+        </ion-note>
+      }
+    </section>
+
+    <!-- MENSAJE ÉXITO -->
+    @if (mensajeExito) {
+      <div class="mensaje-exito">
+        <strong>¡Plato registrado!</strong>
+        <span>
+          El plato fue dado de alta correctamente.
+        </span>
+      </div>
+    }
+
+    <!-- ACCIÓN PRINCIPAL -->
     <div class="accion-alta">
-      <ion-button 
-      class="btonVerde" 
-      (click)="altaPlato()" 
-      [disabled]="cargando">
-      
+      <ion-button
+        expand="block"
+        class="btn-alta-plato"
+        (click)="altaPlato()">
         Dar de alta el plato
       </ion-button>
     </div>
-      
 
-    @if(errorFotos) {
-      <ion-note color="danger" class="ion-padding-start">
-        Debe cargar 3 fotos del plato
-      </ion-note>
-    }
+    <ion-button
+      expand="block"
+      fill="outline"
+      class="btn-ver-carta"
+      routerLink="/carta">
+
+      Ver carta
+
+    </ion-button>
+
   </div>
-
-
-   <!-- Mostrar spinner de carga mientras se suben las fotos -->
-  @if(cargando) {
-    <div class="overlay-carga">
-      <div class="contenido-carga">
-
-        <img src="assets/Basilico/Logo_terracota.png" alt="Logo Basilico">
-
-        <ion-spinner name="crescent"></ion-spinner>
-
-        <p>Guardando plato...</p>
-
-      </div>
-    </div>
-  }
-
 
 </ion-content>

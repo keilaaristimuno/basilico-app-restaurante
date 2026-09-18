@@ -1,137 +1,243 @@
-<ion-card>
-  <!-- Título con la tipografía Alex Brush -->
-  <h1 class="font-logo ion-text-center">Basílico</h1>
-  <ion-card-header>
-    <ion-card-title class="ion-text-center">Registrate</ion-card-title>
-  </ion-card-header>
+<ion-content [fullscreen]="true" [scrollY]="true" class="registro-content">
 
-  <ion-card-content>
-    <form [formGroup]="miFormulario" (ngSubmit)="enviarFormulario()">
+  <div class="registro-container">
 
-      <!-- Usuario -->
-      <ion-item>
-        <ion-input
-          label="Apellidos"
-          labelPlacement="floating"
-          type="text"
-          formControlName="apellidos">
-        </ion-input>
-      </ion-item>
+    <!-- Encabezado -->
+    <section class="registro-header">
+      <h1 class="font-logo">Basílico</h1>
+      <h2>Registrate</h2>
+      <p>Completá tus datos para crear tu cuenta</p>
+    </section>
 
-      <!-- Nombre -->
-      <ion-item>
-        <ion-input
-          label="Nombre"
-          labelPlacement="floating"
-          type="text"
-          formControlName="nombres">
-        </ion-input>
-      </ion-item>
-      @if (nombres?.hasError('pattern')) {
-        <ion-note color="danger" class="ion-padding-start">
-          Sólo debe contener letras
-        </ion-note>
-      }
-      <!-- DNI -->
-      <ion-item>
-        <ion-input
-          label="DNI"
-          labelPlacement="floating"
-          type="number"
-          formControlName="dni">
-        </ion-input>
-      </ion-item>
+    <!-- Formulario -->
+    <ion-card class="registro-card">
 
-      <!-- CUIL -->
-      <ion-item>
-        <ion-input
-          label="CUIL"
-          labelPlacement="floating"
-          type="number"
-          formControlName="cuil">
-        </ion-input>
-      </ion-item>
-
-      <!-- Mail -->
-      <ion-item>
-        <ion-input
-          label="Correo"
-          labelPlacement="floating"
-          type="email"
-          formControlName="correo">
-        </ion-input>
-      </ion-item>
-      @if (correo?.hasError('datoExiste')) {
-        <ion-note color="danger" class="ion-padding-start">
-          El mail ya existe
-        </ion-note>
-      }
-
-      <!-- Clave -->
-      <ion-item>
-        <ion-input
-          label="Clave"
-          labelPlacement="floating"
-          type="password"
-          formControlName="clave">
-        </ion-input>
-      </ion-item>
-      @if (clave?.hasError('minlength')) {
-        <ion-note color="danger" class="ion-padding-start">
-          <!-- La clave debe tener mínimo {{clave?.getError('minlength').requiredLength}} caracteres -->
-        </ion-note>
-      }
-
-      <!-- Repetir Clave -->
-      <ion-item>
-        <ion-input
-          label="Repetir clave"
-          labelPlacement="floating"
-          type="password"
-          formControlName="repetirClave">
-        </ion-input>
-      </ion-item>
-      <!-- @if (repetirClave?.hasError('noCoincide')) {
-        <ion-note color="danger" class="ion-padding-start">
-           {{repetirClave?.getError('noCoincide')}} 
-        </ion-note>
-      } -->
-      <ion-item>
-        <ion-label position="stacked">Perfil</ion-label>
-        <ion-select formControlName="perfil" placeholder="Selecciona un perfil">
-          <ion-select-option value="cocinero">Cocinero</ion-select-option>
-          <ion-select-option value="cantinero">Cantinero</ion-select-option>
-          <ion-select-option value="mozo">Mozo</ion-select-option>
-          <ion-select-option value="metre">Metre</ion-select-option>
-          <ion-select-option value="supervisor">Supervisor</ion-select-option>
-          <ion-select-option value="duenio">Dueño</ion-select-option>
-        </ion-select>
-      </ion-item>
-      <!-- Foto de Perfil -->
-    <!-- <ion-item>
-      <ion-label labelPlacement="stacked">Foto de perfil</ion-label>
-      <input 
-        type="file" 
-        accept="image/*" 
-        (change)="onFileSelected($event)" 
-        style="margin-top: 8px;" />
-    </ion-item> -->
-
-      <!-- Botones -->
-      <div class="ion-margin-top ion-text-center">
-        <ion-button type="button" fill="outline" color="medium" routerLink="/alta-plato">
-          Ir a alta plato
+      <!-- BOTÓN TEMPORAL DE PRUEBA -->
+      <div class="boton-prueba">
+        <ion-button
+          expand="block"
+          fill="outline"
+          routerLink="/alta-empleado">
+          Ir a Alta de Empleado
         </ion-button>
-        <ion-button type="submit" [disabled]="miFormulario.invalid">
-          Enviar Form
-        </ion-button>
-        <ion-button type="button" fill="outline" color="medium" (click)="resetearForm()">
-          Resetear
-        </ion-button>
-        
       </div>
 
+      <ion-card-content>
 
-    </form>
-  </ion-card-content>
-</ion-card>
+        <form
+          [formGroup]="miFormulario"
+          (ngSubmit)="enviarFormulario()">
+
+          <!-- NOMBRE -->
+          <div class="campo-formulario">
+
+            <ion-item
+              lines="none"
+              class="custom-item">
+
+              <ion-input
+                label="Nombre"
+                labelPlacement="floating"
+                type="text"
+                formControlName="nombres">
+              </ion-input>
+
+            </ion-item>
+
+            @if (nombres?.hasError('pattern')) {
+              <ion-note class="mensaje-error">
+                Sólo debe contener letras
+              </ion-note>
+            }
+
+          </div>
+
+
+          <!-- APELLIDO -->
+          <div class="campo-formulario">
+
+            <ion-item
+              lines="none"
+              class="custom-item">
+
+              <ion-input
+                label="Apellidos"
+                labelPlacement="floating"
+                type="text"
+                formControlName="apellidos">
+              </ion-input>
+
+            </ion-item>
+
+          </div>
+
+
+          <!-- DNI -->
+          <div class="campo-formulario">
+
+            <ion-item
+              lines="none"
+              class="custom-item">
+
+              <ion-input
+                label="DNI"
+                labelPlacement="floating"
+                type="text"
+                inputmode="numeric"
+                formControlName="dni">
+              </ion-input>
+
+            </ion-item>
+
+          </div>
+
+
+          <!-- CUIL -->
+          <div class="campo-formulario">
+
+            <ion-item
+              lines="none"
+              class="custom-item">
+
+              <ion-input
+                label="CUIL"
+                labelPlacement="floating"
+                type="text"
+                inputmode="numeric"
+                formControlName="cuil">
+              </ion-input>
+
+            </ion-item>
+
+          </div>
+
+
+          <!-- CORREO -->
+          <div class="campo-formulario">
+
+            <ion-item
+              lines="none"
+              class="custom-item">
+
+              <ion-input
+                label="Correo electrónico"
+                labelPlacement="floating"
+                type="email"
+                formControlName="correo">
+              </ion-input>
+
+            </ion-item>
+
+            @if (correo?.hasError('datoExiste')) {
+              <ion-note class="mensaje-error">
+                El correo electrónico ya se encuentra registrado
+              </ion-note>
+            }
+
+          </div>
+
+
+          <!-- CLAVE -->
+          <div class="campo-formulario">
+
+            <ion-item
+              lines="none"
+              class="custom-item">
+
+              <ion-input
+                label="Contraseña"
+                labelPlacement="floating"
+                type="password"
+                formControlName="clave">
+              </ion-input>
+
+            </ion-item>
+
+            @if (clave?.hasError('minlength')) {
+              <ion-note class="mensaje-error">
+                La contraseña no cumple con la longitud mínima
+              </ion-note>
+            }
+
+          </div>
+
+
+          <!-- REPETIR CLAVE -->
+          <div class="campo-formulario">
+
+            <ion-item
+              lines="none"
+              class="custom-item">
+
+              <ion-input
+                label="Repetir contraseña"
+                labelPlacement="floating"
+                type="password"
+                formControlName="repetirClave">
+              </ion-input>
+
+            </ion-item>
+
+          </div>
+
+          
+          <!-- ACCIONES -->
+          <div class="acciones-formulario">
+
+            <ion-button
+              expand="block"
+              type="submit"
+              class="btn-enviar"
+              [disabled]="miFormulario.invalid">
+
+              Crear cuenta
+
+            </ion-button>
+
+
+            <ion-button
+              expand="block"
+              type="button"
+              fill="outline"
+              class="btn-resetear"
+              (click)="resetearForm()">
+
+              Limpiar formulario
+
+            </ion-button>
+
+
+            <!-- TEMPORAL -->
+            <ion-button
+              expand="block"
+              type="button"
+              fill="clear"
+              class="btn-prueba-plato"
+              routerLink="/alta-plato">
+
+              Ir a alta plato
+
+            </ion-button>
+
+            <ion-button
+              expand="block"
+              type="button"
+              fill="clear"
+              class="btn-prueba-mesa"
+              routerLink="/alta-mesa">
+
+              Ir a alta mesa
+
+            </ion-button>
+
+          </div>
+
+        </form>
+
+      </ion-card-content>
+
+    </ion-card>
+
+  </div>
+
+</ion-content>

@@ -57,7 +57,10 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 | :--- | :---: | :---: | :---: | :---: |
 | Configuración inicial del repositorio | 28/08/2026 | 28/08/2026 | `main` / `develop` | Finalizado |
 | Estilos generales | 05/09/2026 | 05/09/2026 | `feature/estilos-globales` | Finalizado|
-|Punto 2 — Alta de plato | 10/09 | 12/09 |feature/alta-plato |En proceso |
+|Punto 2 — Alta de plato | 10/09 | 17/09 |feature/alta-plato |En proceso |
+|Diseño registro | 17/09 | 17/09 |feature/alta-plato |Finalizado |
+|Service Vibracion | 17/09 | 17/09 |feature/alta-plato |Finalizado |
+|Carta/menu | 17/09 | 18/09 |feature/Carta|Finalizado |
 
 
 ---
@@ -66,10 +69,12 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 
 * **Planificación de Tareas:**
 
-| Tarea / Módulo | Fecha Inicio | Fecha Fin | Branch | Estado |
+| Tarea / Módulo | Fecha Inicio | Fecha Fin (Estimada/Real) | Branch | Estado |
 | :--- | :---: | :---: | :---: | :---: |
 | Sevicio reutilizable de QR | 04/09/2026 | 04/09/2026 | `feature/qr-service` | Finalizado |
-| Punto 1 — Alta de empleado | 05/09/2026 | - | `feature/alta-empleado` | En proceso |
+| Punto 1 — Alta de empleado | 05/09/2026 | 13/09/2025 | `feature/alta-empleado` | Finalizado |
+| Punto 4 — Alta de mesas | 13/09/2026 | 19/09/2025 | `feature/alta-mesas` | En proceso |
+| Punto 6 — Listado clientes pendientes de aprobación | 16/09/2026 | 19/09/2025 | `feature/listado-clientes` | En proceso |
 
 ---
 ### 👤 Ignacio Arriaga

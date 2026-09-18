@@ -1,0 +1,210 @@
+<ion-header class="header-transparente">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button
+        defaultHref="/"
+        text="Volver">
+      </ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content
+  [fullscreen]="true"
+  class="carta-content">
+  <div class="carta-container">
+
+    <!-- =========================
+         ENCABEZADO
+         ========================= -->
+    <section class="carta-header">
+      <h1 class="font-logo">
+        Basílico
+      </h1>
+
+      <h2>
+        Nuestra carta
+      </h2>
+
+      <p>
+        Descubrí nuestros platos
+      </p>
+
+      <div class="decoracion-header"></div>
+    </section>
+
+    <!-- =========================
+         CARTA VACÍA
+         ========================= -->
+    @if (platos.length === 0) {
+      <div class="sin-productos">
+        <strong>
+          No hay platos disponibles
+        </strong>
+        <p>
+          Todavía no se registraron
+          platos en la carta.
+        </p>
+      </div>
+    }
+
+    <!-- =========================
+         PLATOS
+         ========================= -->
+    @if (platos.length > 0) {
+      <section class="seccion-productos">
+        <div class="titulo-seccion">
+          <h3>
+            Platos
+          </h3>
+          <span>
+            {{ platos.length }}
+            disponibles
+          </span>
+        </div>
+
+        <div class="grid-platos">
+          @for (
+            plato of platos;
+            track plato.id
+          ) {
+            <article class="plato-card">
+
+              <!-- =====================
+                   IMÁGENES
+                   ===================== -->
+              <div class="imagen-plato">
+                @if (
+                  plato.fotos &&
+                  plato.fotos.length > 0
+                ) {
+                  <img
+                    [src]="
+                      plato.fotos[
+                        indiceFoto[plato.id] ?? 0
+                      ]
+                    "
+                    [alt]="
+                      'Fotografía de ' +
+                      plato.nombre
+                    ">
+
+                  <!-- Flechas -->
+                  @if (
+                    plato.fotos.length > 1
+                  ) {
+                    <button
+                      type="button"
+                      class="flecha-foto flecha-izquierda"
+                      (click)="anteriorFoto(plato)"
+                      [attr.aria-label]="
+                        'Fotografía anterior de ' +
+                        plato.nombre
+                      ">
+                      ‹
+                    </button>
+
+                    <button
+                      type="button"
+                      class="flecha-foto flecha-derecha"
+                      (click)="siguienteFoto(plato)"
+                      [attr.aria-label]="
+                        'Fotografía siguiente de ' +
+                        plato.nombre
+                      ">
+                      ›
+                    </button>
+                  }
+                  <!-- Indicadores -->
+                  <div class="indicadores-fotos">
+                    @for (
+                      foto of plato.fotos;
+                      track $index
+                    ) {
+                      <button
+                        type="button"
+                        class="indicador-foto"
+                        [class.activo]="
+                          (indiceFoto[plato.id] ?? 0)
+                          === $index
+                        "
+                        (click)="
+                          irAFoto(
+                            plato,
+                            $index
+                          )
+                        "
+                        [attr.aria-label]="
+                          'Ver fotografía ' +
+                          ($index + 1)
+                        ">
+                      </button>
+                    }
+                  </div>
+                }
+                @else {
+                  <div class="sin-foto">
+                    <span>
+                      Sin fotografía
+                    </span>
+                  </div>
+                }
+              </div>
+
+              <!-- =====================
+                   INFORMACIÓN
+                   ===================== -->
+              <div class="detalle-plato">
+                <div class="encabezado-plato">
+                  <h3>
+                    {{ plato.nombre }}
+                  </h3>
+                  <span class="precio-plato">
+                    $
+                    {{
+                      formatearPrecio(
+                        plato.precio
+                      )
+                    }}
+                  </span>
+                </div>
+
+                <div
+                  class="descripcion-plato"
+                  [class.expandida]="descripcionExpandida[plato.id]">
+                  {{ plato.descripcion }}
+                </div>
+                
+                @if (plato.descripcion.length > 100) {
+
+                  <button
+                    type="button"
+                    class="boton-descripcion"
+                    (click)="alternarDescripcion(plato)">
+                    {{
+                      descripcionExpandida[plato.id]
+                        ? 'Ver menos'
+                        : 'Ver más'
+                    }}
+                  </button>
+                }
+
+                <div class="informacion-plato">
+                  <div class="dato-plato">
+                    <span class="dato-label">
+                      Tiempo estimado
+                    </span>
+                    <strong>
+                      {{plato.tiempo_elaboracion}}
+                      min
+                    </strong>
+                  </div>
+                </div>
+              </div>
+            </article>
+          }
+        </div>
+      </section>
+    }
+  </div>
+</ion-content>

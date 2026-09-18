@@ -1,0 +1,46 @@
+.pantalla-carga {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(20, 30, 15, 0.78);
+}
+
+.contenido-carga {
+  width: min(85%, 320px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 20px;
+  box-sizing: border-box;
+  background: var(--basilico-beige);
+  border-radius: 20px;
+  color: var(--basilico-olive);
+  font-family: var(--font-body);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.25);
+
+  img {
+    width: 105px;
+    height: auto;
+    margin-bottom: 18px;
+  }
+
+  ion-spinner {
+    width: 46px;
+    height: 46px;
+    margin-bottom: 12px;
+    color: var(--basilico-terracotta);
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-align: center;
+  }
+}

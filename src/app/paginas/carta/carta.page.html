@@ -29,6 +29,8 @@
       <p>
         Descubrí nuestros platos
       </p>
+
+      <div class="decoracion-header"></div>
     </section>
 
     <!-- =========================
@@ -167,9 +169,25 @@
                   </span>
                 </div>
 
-                <p class="descripcion-plato">
+                <div
+                  class="descripcion-plato"
+                  [class.expandida]="descripcionExpandida[plato.id]">
                   {{ plato.descripcion }}
-                </p>
+                </div>
+                
+                @if (plato.descripcion.length > 100) {
+
+                  <button
+                    type="button"
+                    class="boton-descripcion"
+                    (click)="alternarDescripcion(plato)">
+                    {{
+                      descripcionExpandida[plato.id]
+                        ? 'Ver menos'
+                        : 'Ver más'
+                    }}
+                  </button>
+                }
 
                 <div class="informacion-plato">
                   <div class="dato-plato">
@@ -177,19 +195,8 @@
                       Tiempo estimado
                     </span>
                     <strong>
-                      {{
-                        plato.tiempo_elaboracion
-                      }}
+                      {{plato.tiempo_elaboracion}}
                       min
-                    </strong>
-                  </div>
-
-                  <div class="dato-plato dato-fotos">
-                    <span class="dato-label">
-                      Fotografías
-                    </span>
-                    <strong>
-                      {{ plato.fotos.length }}
                     </strong>
                   </div>
                 </div>

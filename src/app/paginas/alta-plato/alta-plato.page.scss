@@ -350,6 +350,25 @@
   }
 }
 
+.btn-ver-carta {
+  --color: var(--basilico-beige);
+  --border-color: var(--basilico-beige);
+  --border-width: 2px;
+  --border-style: solid;
+  --border-radius: 14px;
+
+  width: 100%;
+  height: 54px;
+
+  margin-top: 12px;
+
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+
+  text-transform: none;
+}
+
 /* =========================================================
    RESPONSIVE
    ========================================================= */

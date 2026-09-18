@@ -128,6 +128,15 @@ export class AltaEmpleadoPage implements OnInit {
     try {
       this.cargando.set(true);
 
+      const { error: errorAuth } = await this.servicioSupabase.registrar(
+        this.formularioEmpleado.get("correo")?.value,
+        this.formularioEmpleado.get("clave")?.value
+      );
+
+      if (errorAuth) {
+        throw new Error(errorAuth.message);
+      }
+
       const nombreArchivo = `empleados/${Date.now()}.jpg`;
       const resultado = await this.servicioSupabase.subirFotoEmpleado(this.fotoEmpleado(), nombreArchivo);
       const urlFoto = this.servicioSupabase.obtenerUrlFotoEmpleado(resultado.path);

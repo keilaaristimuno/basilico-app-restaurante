@@ -92,26 +92,6 @@
           </div>
 
 
-          <!-- CUIL -->
-          <div class="campo-formulario">
-
-            <ion-item
-              lines="none"
-              class="custom-item">
-
-              <ion-input
-                label="CUIL"
-                labelPlacement="floating"
-                type="text"
-                inputmode="numeric"
-                formControlName="cuil">
-              </ion-input>
-
-            </ion-item>
-
-          </div>
-
-
           <!-- CORREO -->
           <div class="campo-formulario">
 
@@ -180,6 +160,27 @@
 
           </div>
 
+          <div class="campo-formulario foto-cliente ion-text-center">
+            @if (fotoCliente()) {
+              <div class="contenedor-foto">
+                <img [src]="fotoCliente()" alt="Foto del cliente" class="preview-foto" />
+              </div>
+              <ion-button type="button" class="boton-foto" (click)="tomarFoto()">
+                Cambiar foto
+              </ion-button>
+            } @else {
+              <ion-button type="button" expand="block" class="boton-foto" (click)="tomarFoto()">
+                Tomar foto
+              </ion-button>
+            }
+
+            @if (errorFoto()) {
+              <ion-note class="mensaje-error">
+                La foto es obligatoria.
+              </ion-note>
+            }
+          </div>
+
           
           <!-- ACCIONES -->
           <div class="acciones-formulario">
@@ -188,9 +189,13 @@
               expand="block"
               type="submit"
               class="btn-enviar"
-              [disabled]="miFormulario.invalid">
+              [disabled]="miFormulario.invalid || cargando()">
 
-              Crear cuenta
+              @if (cargando()) {
+                <ion-spinner name="crescent"></ion-spinner>
+              } @else {
+                Crear cuenta
+              }
 
             </ion-button>
 

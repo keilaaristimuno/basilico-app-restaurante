@@ -30,6 +30,11 @@ export class Supabase {
       password: contraseña
     });
   }
+
+  cerrarSesion(){
+    return this.clienteSupabase.auth.signOut();
+  }
+
   //registrar (Se guardan en la BD)
   //Para guardar un usuario cuando se registra
   async guardarDatosEmpleados(apellidos: string, nombres: string, dni:number, cuil:number, correo:string, clave:string, perfil:string, foto_url:string){

@@ -6,6 +6,7 @@ import { IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonInput, IonButt
 import { Supabase } from '../../services/supabase';
 import { VibracionService } from '../../services/vibracion';
 import { Carga } from '../../services/carga';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-alta-plato',
@@ -15,7 +16,8 @@ import { Carga } from '../../services/carga';
     IonHeader,
     IonToolbar,
     IonButtons,
-    IonBackButton
+    IonBackButton,
+    RouterLink
    ]
 })
 export class AltaPlatoPage implements OnInit {

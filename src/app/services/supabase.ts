@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { Plato } from '../interfaces/plato';
 
 @Injectable({
   providedIn: 'root',
@@ -120,6 +121,29 @@ export class Supabase {
     }
     return data;
   }
+
+  /* ====================================
+          OBTIENE PLATOS desde supabase
+  =======================================*/
+  async obtenerPlatos(): Promise<Plato[]> {
+
+    const { data, error } = await this.clienteSupabase
+      .from('productos')
+      .select('*')
+      .eq('tipo', 'plato')
+      .order('nombre', {
+        ascending: true
+      });
+
+    if (error) {
+      throw Error(
+        `Error al obtener los platos: ${error.message}`
+      );
+    }
+
+    return (data ?? []) as Plato[];
+  }
+
 
   // Para subir la foto del empleado a Supabase Storage (bucket 'empleados')
   async subirFotoEmpleado(rutaFoto: string, nombreArchivo: string) {

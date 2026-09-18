@@ -1,0 +1,472 @@
+/* =========================================================
+   CARTA 
+   ========================================================= */
+.carta-content {
+  --background:
+    var(--basilico-olive);
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+.header-transparente {
+  ion-toolbar {
+    --background:
+      var(--basilico-olive);
+    --border-width: 0;
+    --color:
+      var(--basilico-beige);
+    font-family:
+      var(--font-body);
+  }
+
+  ion-back-button {
+    --color:
+      var(--basilico-beige);
+    font-family:
+      var(--font-body);
+    font-weight: 600;
+    text-transform: none;
+  }
+}
+
+/* =========================================================
+   CONTENEDOR GENERAL
+   ========================================================= */
+.carta-container {
+  width: 100%;
+  max-width: 1150px;
+  min-height: 100%;
+  margin: 0 auto;
+  padding:
+    1rem
+    1rem
+    3rem;
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   ENCABEZADO
+   ========================================================= */
+.carta-header {
+  text-align: center;
+  margin-bottom: 2rem;
+
+  .font-logo {
+    font-family:
+      var(--font-title);
+    font-size:
+      clamp(
+        3.2rem,
+        11vw,
+        5rem
+      );
+
+    font-weight: normal;
+    line-height: 1;
+    color:
+      var(--basilico-beige);
+    margin:
+      0
+      0
+      0.25rem;
+  }
+
+  h2 {
+    font-family:
+      var(--font-body);
+    font-size:
+      clamp(
+        1.4rem,
+        5vw,
+        1.9rem
+      );
+    font-weight: 700;
+    color:
+      var(--basilico-beige);
+    margin: 0;
+  }
+  p {
+    margin:
+      0.45rem
+      0
+      0;
+    font-family:
+      var(--font-body);
+    font-size: 0.9rem;
+    color:
+      var(--basilico-beige);
+    opacity: 0.8;
+  }
+}
+
+/* =========================================================
+   TÍTULO SECCIÓN
+   ========================================================= */
+.titulo-seccion {
+  display: flex;
+  align-items: center;
+  justify-content:
+    space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+
+  h3 {
+    margin: 0;
+    font-family:
+      var(--font-body);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color:
+      var(--basilico-beige);
+  }
+
+  span {
+    font-family:
+      var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color:
+      var(--basilico-beige);
+    opacity: 0.75;
+  }
+}
+
+/* =========================================================
+   GRID
+   ========================================================= */
+.grid-platos {
+  display: grid;
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(280px, 1fr)
+    );
+  gap: 20px;
+}
+
+/* =========================================================
+   CARD DEL PLATO
+   ========================================================= */
+.plato-card {
+  min-width: 0;
+  overflow: hidden;
+  background:
+    var(--basilico-beige);
+  border-radius: 18px;
+  box-shadow:
+    0
+    6px
+    18px
+    rgba(0, 0, 0, 0.18);
+}
+
+
+/* =========================================================
+   IMAGEN
+   ========================================================= */
+.imagen-plato {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #d8d0bd;
+
+  img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+}
+
+/* =========================================================
+   FLECHAS DEL CARRUSEL
+   ========================================================= */
+.flecha-foto {
+  position: absolute;
+  top: 50%;
+  transform:
+    translateY(-50%);
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+
+  background:
+    rgba(
+      40,
+      55,
+      32,
+      0.85
+    );
+
+  color:
+    var(--basilico-beige);
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.flecha-izquierda {
+  left: 10px;
+}
+
+
+.flecha-derecha {
+  right: 10px;
+}
+
+/* =========================================================
+   INDICADORES
+   ========================================================= */
+.indicadores-fotos {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform:
+    translateX(-50%);
+  display: flex;
+  gap: 7px;
+  padding:
+    6px
+    9px;
+  border-radius: 20px;
+  background:
+    rgba(
+      40,
+      55,
+      32,
+      0.65
+    );
+}
+
+
+.indicador-foto {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background:
+    rgba(
+      237,
+      229,
+      210,
+      0.45
+    );
+  cursor: pointer;
+}
+
+.indicador-foto.activo {
+  background:
+    var(--basilico-beige);
+  transform:
+    scale(1.2);
+}
+
+/* =========================================================
+   SIN FOTO
+   ========================================================= */
+.sin-foto {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family:
+    var(--font-body);
+  color:
+    var(--basilico-olive);
+  opacity: 0.6;
+}
+
+
+/* =========================================================
+   INFORMACIÓN DEL PLATO
+   ========================================================= */
+.detalle-plato {
+  padding:
+    18px
+    18px
+    16px;
+}
+
+
+.encabezado-plato {
+  display: flex;
+  align-items:
+    flex-start;
+  justify-content:
+    space-between;
+  gap: 14px;
+
+  h3 {
+    flex: 1;
+    margin: 0;
+    font-family:
+      var(--font-body);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color:
+      var(--basilico-olive);
+  }
+}
+
+/* =========================================================
+   PRECIO
+   ========================================================= */
+.precio-plato {
+  flex-shrink: 0;
+  padding:
+    7px
+    10px;
+  border-radius: 10px;
+  background:
+    var(--basilico-terracotta);
+  color: #ffffff;
+  font-family:
+    var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+/* =========================================================
+   DESCRIPCIÓN
+   ========================================================= */
+
+.descripcion-plato {
+  margin:
+    12px
+    0
+    16px;
+  font-family:
+    var(--font-body);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color:
+    #485043;
+}
+
+
+/* =========================================================
+   INFORMACIÓN INFERIOR
+   ========================================================= */
+.informacion-plato {
+  display: flex;
+  align-items: center;
+  justify-content:
+    space-between;
+
+  gap: 14px;
+  padding-top: 12px;
+  border-top:
+    1px solid
+    rgba(
+      40,
+      55,
+      32,
+      0.15
+    );
+}
+
+
+.dato-plato {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-family:
+    var(--font-body);
+
+  strong {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color:
+      var(--basilico-olive);
+  }
+}
+
+.dato-label {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color:
+    #6b7565;
+}
+
+/* =========================================================
+   CARTA VACÍA
+   ======================================================== */
+.sin-productos {
+  width: 100%;
+  max-width: 500px;
+  margin: 3rem auto;
+  padding: 24px;
+  box-sizing:
+    border-box;
+  text-align: center;
+  border:
+    1px solid
+    rgba(
+      237,
+      229,
+      210,
+      0.4
+    );
+  border-radius: 16px;
+  background:
+    rgba(
+      237,
+      229,
+      210,
+      0.08
+    );
+  font-family:
+    var(--font-body);
+  color:
+    var(--basilico-beige);
+
+  strong {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 1rem;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.85rem;
+    opacity: 0.8;
+  }
+}
+
+/* =========================================================
+   CELULARES
+   ========================================================= */
+@media (max-width: 600px) {
+  .carta-container {
+    padding-left: 0.85rem;
+    padding-right: 0.85rem;
+  }
+
+
+  .grid-platos {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+
+  .flecha-foto {
+    width: 38px;
+    height: 38px;
+    font-size: 1.8rem;
+  }
+
+
+  .detalle-plato {
+    padding: 16px;
+  }
+}

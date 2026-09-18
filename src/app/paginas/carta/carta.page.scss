@@ -51,53 +51,39 @@
 .carta-header {
   text-align: center;
   margin-bottom: 2rem;
+  padding-top: 1rem;
 
   .font-logo {
-    font-family:
-      var(--font-title);
-    font-size:
-      clamp(
-        3.2rem,
-        11vw,
-        5rem
-      );
-
+    font-family: var(--font-title);
+    font-size: clamp(3.2rem, 11vw, 5rem);
     font-weight: normal;
     line-height: 1;
-    color:
-      var(--basilico-beige);
-    margin:
-      0
-      0
-      0.25rem;
+    color: var(--basilico-beige);
+    margin: 0 0 0.5rem;
   }
 
   h2 {
-    font-family:
-      var(--font-body);
-    font-size:
-      clamp(
-        1.4rem,
-        5vw,
-        1.9rem
-      );
+    font-family: var(--font-body);
+    font-size: clamp(1.5rem, 5vw, 2rem);
     font-weight: 700;
-    color:
-      var(--basilico-beige);
+    color: var(--basilico-beige);
     margin: 0;
   }
   p {
-    margin:
-      0.45rem
-      0
-      0;
-    font-family:
-      var(--font-body);
+    margin: 0.6rem 0 0;
+    font-family: var(--font-body);
     font-size: 0.9rem;
-    color:
-      var(--basilico-beige);
-    opacity: 0.8;
+    color: var(--basilico-beige);
+    opacity: 0.75;
   }
+}
+/* linea decorativa  */
+.decoracion-header {
+  width: 60px;
+  height: 2px;
+  margin: 1rem auto 0;
+  background: var(--basilico-terracotta);
+  border-radius: 2px;
 }
 
 /* =========================================================
@@ -137,11 +123,11 @@
    ========================================================= */
 .grid-platos {
   display: grid;
-  grid-template-columns:
-    repeat(
-      auto-fit,
-      minmax(280px, 1fr)
-    );
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(280px, 400px)
+  );
+  justify-content: center;
   gap: 20px;
 }
 
@@ -151,14 +137,24 @@
 .plato-card {
   min-width: 0;
   overflow: hidden;
-  background:
-    var(--basilico-beige);
+  display: flex;
+  flex-direction: column;
+  background: var(--basilico-beige);
   border-radius: 18px;
   box-shadow:
-    0
-    6px
-    18px
+    0 6px 18px
     rgba(0, 0, 0, 0.18);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+@media (hover: hover) {
+  .plato-card:hover {
+    transform: translateY(-4px);
+    box-shadow:0 10px 24px rgba(0, 0, 0, 0.24);
+  }
+
 }
 
 
@@ -186,8 +182,7 @@
 .flecha-foto {
   position: absolute;
   top: 50%;
-  transform:
-    translateY(-50%);
+  transform: translateY(-50%);
   width: 42px;
   height: 42px;
   display: flex;
@@ -196,21 +191,21 @@
   padding: 0;
   border: none;
   border-radius: 50%;
-
-  background:
-    rgba(
-      40,
-      55,
-      32,
-      0.85
-    );
-
-  color:
-    var(--basilico-beige);
+  background: rgba(40, 55, 32, 0.72);
+  color: var(--basilico-beige);
   font-size: 2rem;
   line-height: 1;
   cursor: pointer;
   z-index: 2;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+@media (hover: hover) {
+  .flecha-foto:hover {
+    background: var(--basilico-olive);
+  }
 }
 
 .flecha-izquierda {
@@ -291,10 +286,10 @@
    INFORMACIÓN DEL PLATO
    ========================================================= */
 .detalle-plato {
-  padding:
-    18px
-    18px
-    16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 18px 18px 16px;
 }
 
 
@@ -341,16 +336,39 @@
    ========================================================= */
 
 .descripcion-plato {
-  margin:
-    12px
-    0
-    16px;
-  font-family:
-    var(--font-body);
+  height: 4.05rem;
+  margin: 12px 0 16px;
+  font-family: var(--font-body);
   font-size: 0.9rem;
   line-height: 1.5;
-  color:
-    #485043;
+  color: #485043;
+   display: -webkit-box;
+  -webkit-box-orient: vertical;
+  //Limita visualmente la descripción a 3 líneas
+  -webkit-line-clamp: 3;
+  overflow: hidden; 
+  cursor: pointer;
+}
+
+.descripcion-plato.expandida {
+  display: block;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-line-clamp: unset;
+  padding-right: 6px;
+}
+
+.boton-descripcion {
+  align-self: flex-start;
+  margin: -8px 0 12px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--basilico-terracotta);
+  cursor: pointer;
 }
 
 
@@ -358,21 +376,15 @@
    INFORMACIÓN INFERIOR
    ========================================================= */
 .informacion-plato {
+  margin-top: auto;
   display: flex;
   align-items: center;
-  justify-content:
-    space-between;
-
+  justify-content: space-between;
   gap: 14px;
   padding-top: 12px;
   border-top:
-    1px solid
-    rgba(
-      40,
-      55,
-      32,
-      0.15
-    );
+    1px solid rgba(40,55,32,0.15);
+  
 }
 
 

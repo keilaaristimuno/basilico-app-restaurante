@@ -72,6 +72,13 @@ export class CartaPage {
   }
 
   indiceFoto: Record<string, number> = {};
+
+  descripcionExpandida: Record<string, boolean> = {};
+
+  alternarDescripcion(plato: Plato): void {
+    this.descripcionExpandida[plato.id] = !this.descripcionExpandida[plato.id];
+  }
+  
   /* ======================
           CARROSUEL
   ========================= */

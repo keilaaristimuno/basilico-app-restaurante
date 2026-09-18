@@ -60,6 +60,7 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 |Punto 2 — Alta de plato | 10/09 | 17/09 |feature/alta-plato |En proceso |
 |Diseño registro | 17/09 | 17/09 |feature/alta-plato |Finalizado |
 |Service Vibracion | 17/09 | 17/09 |feature/alta-plato |Finalizado |
+|Carta/menu | 17/09 | 18/09 |feature/Carta|Finalizado |
 
 
 ---

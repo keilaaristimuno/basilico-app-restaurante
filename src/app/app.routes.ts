@@ -31,6 +31,10 @@ export const routes: Routes = [
     loadComponent: () => import("./paginas/alta-empleado/alta-empleado.page").then((m) => m.AltaEmpleadoPage),
   },
   {
+    path: "alta-mesa",
+    loadComponent: () => import("./paginas/alta-mesa/alta-mesa.page").then((m) => m.AltaMesaPage),
+  },
+  {
     path: 'metreInicio',
     loadComponent: () => import('./metre/metre-inicio/metre-inicio.component').then(m => m.MetreInicioComponent)
   },

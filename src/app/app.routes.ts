@@ -34,6 +34,10 @@ export const routes: Routes = [
     path: 'qrIngreso',
     loadComponent: () => import('./paginas/qr-ingreso/qr-ingreso.component').then( m => m.QrIngresoComponent)
   },
+   {
+    path: 'clienteInicio',
+    loadComponent: () => import('./cliente-inicio/cliente-inicio.component').then( m => m.ClienteInicioComponent)
+  },
 
 
 ];

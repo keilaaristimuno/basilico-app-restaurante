@@ -47,7 +47,7 @@ export const routes: Routes = [
     loadComponent: () => import('./cliente-inicio/cliente-inicio.component').then( m => m.ClienteInicioComponent)
   },
 
-
+  {
     path: 'admin-email',
     loadComponent: () => import('./paginas/admin-email/admin-email.page').then(m => m.AdminEmailPage)
   },

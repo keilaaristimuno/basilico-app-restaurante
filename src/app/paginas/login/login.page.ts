@@ -72,10 +72,4 @@ export class LoginPage {
 
   }
 
-  accederRapido(){
-    this.mail = 'admin@gmail.com';
-    this.clave = 'admin1';
-
-  }
-
 }

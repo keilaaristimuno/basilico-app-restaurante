@@ -12,10 +12,10 @@ import { RouterLink } from '@angular/router';
   styleUrls: ['./navbar.component.scss'],
   imports: [IonContent, IonGrid, IonRow, IonCol, IonButton, RouterLink, IonTabBar, IonTabButton,IonLabel, IonIcon],
 })
-export class NavbarComponent  implements OnInit {
-
+export class NavbarComponent  {
+  nombre: string | null = null;
   constructor() { }
-
-  ngOnInit() {}
-
+  async ngOnInit(){
+    this.nombre = localStorage.getItem('nombre')?.toUpperCase() || null;
+  }
 }

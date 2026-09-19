@@ -15,6 +15,7 @@ import { PushNotificationsService } from '../../services/push-notifications.serv
   styleUrls: ['./inicio.component.scss'],
   imports: [ IonContent, IonGrid, IonRow, IonCol, IonButton, RouterLink ],
 })
+
 export class InicioComponent  implements OnInit {
 
   constructor(

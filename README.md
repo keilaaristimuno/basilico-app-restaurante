@@ -61,6 +61,8 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 |Diseño registro | 17/09 | 17/09 |feature/alta-plato |Finalizado |
 |Service Vibracion | 17/09 | 17/09 |feature/alta-plato |Finalizado |
 |Carta/menu | 17/09 | 18/09 |feature/Carta|Finalizado |
+|Inicio Cocinero | 18/09 | 19/09 |feature/cocinero-inicio|Finalizado |
+|Navbar y logout | 19/09 | 19/09 |feature/cocinero-inicio|Finalizado |
 
 
 ---

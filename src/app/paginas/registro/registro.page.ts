@@ -4,6 +4,7 @@ import { Router, RouterModule, RouterLink } from '@angular/router';
 import { Camera } from '@capacitor/camera';
 import { Supabase } from '../../services/supabase';
 import { EmailService } from '../../services/email';
+import { PushNotificationsService } from '../../services/push-notifications.service';
 
 //import { confirmarClaveValidator, datoExisteAsyncValidator } from '../../validaciones/usuario.validator';
 
@@ -62,7 +63,8 @@ export class RegistroPage implements OnInit {
     private fb: FormBuilder,
     private supabase: Supabase,
     private emailService: EmailService,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private pushNotifications: PushNotificationsService
   ) { }
 
   ngOnInit(): void {
@@ -154,6 +156,9 @@ export class RegistroPage implements OnInit {
       const { error } = await this.supabase.registrar(correo, clave);
       if (error) throw new Error(error.message);
 
+      await this.pushNotifications.inicializar();
+      await this.pushNotifications.asociarTokenDelUsuarioActual();
+
       const nombreArchivo = `clientes/${Date.now()}.jpg`;
       const resultado = await this.supabase.subirFotoCliente(this.fotoCliente(), nombreArchivo);
       const fotoUrl = this.supabase.obtenerUrlFotoCliente(resultado.path);
@@ -166,6 +171,17 @@ export class RegistroPage implements OnInit {
         clave,
         fotoUrl
       );
+
+      try {
+        await this.pushNotifications.enviarNotificacion(
+          'Nuevo cliente pendiente',
+          `${nombres} ${apellidos} solicitó registrarse y espera aprobación.`,
+          { profiles: ['duenio', 'dueno', 'dueño', 'supervisor'] },
+          { tipo: 'cliente_pendiente' }
+        );
+      } catch (error) {
+        console.error('El cliente se guardó, pero no se pudo enviar la push:', error);
+      }
 
       this.emailService.sendEmail({
         to: correo,

@@ -6,6 +6,7 @@ import { ToastController } from "@ionic/angular";
 import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonItem, IonInput, IonButton, IonNote, IonSelect, IonSelectOption, IonCard, IonCardHeader, IonCardTitle, IonCardContent } from "@ionic/angular";
 import { QrService } from "../../services/qr.service";
 import { Supabase } from "../../services/supabase";
+import { PushNotificationsService } from "../../services/push-notifications.service";
 
 @Component({
   selector: "app-alta-empleado",
@@ -18,6 +19,7 @@ export class AltaEmpleadoPage implements OnInit {
   private constructorFormulario = inject(FormBuilder);
   private servicioQr = inject(QrService);
   private servicioSupabase = inject(Supabase);
+  private servicioPush = inject(PushNotificationsService);
   private toastCtrl = inject(ToastController);
 
   formularioEmpleado!: FormGroup;
@@ -136,6 +138,9 @@ export class AltaEmpleadoPage implements OnInit {
       if (errorAuth) {
         throw new Error(errorAuth.message);
       }
+
+      await this.servicioPush.inicializar();
+      await this.servicioPush.asociarTokenDelUsuarioActual();
 
       const nombreArchivo = `empleados/${Date.now()}.jpg`;
       const resultado = await this.servicioSupabase.subirFotoEmpleado(this.fotoEmpleado(), nombreArchivo);

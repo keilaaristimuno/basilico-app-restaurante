@@ -16,6 +16,35 @@
     <ion-card-content>
       <form [formGroup]="formularioEmpleado" (ngSubmit)="guardarEmpleado()">
 
+        <!-- Sección de Foto con Cámara Obligatoria -->
+        <div class="seccion-foto ion-text-center">
+          @if (fotoEmpleado()) {
+            <div class="contenedor-foto">
+              <img [src]="fotoEmpleado()" alt="Foto de perfil del empleado" class="preview-foto" />
+            </div>
+            <ion-button type="button" fill="outline" color="medium" size="small" (click)="tomarFoto()">
+              Volver a tomar foto
+            </ion-button>
+          } @else {
+            <ion-button type="button" expand="block" (click)="tomarFoto()">
+              Tomar Foto con Cámara
+            </ion-button>
+          }
+
+          @if (errorFoto()) {
+            <ion-note color="danger" class="ion-padding-start ion-text-center d-block ion-margin-top">
+              La foto del empleado es obligatoria.
+            </ion-note>
+          }
+        </div>
+
+        <!-- Botón para Escanear QR del DNI -->
+        <div class="ion-margin-bottom">
+          <ion-button expand="block" class="boton-escanear-dni" type="button" (click)="escanearDni()">
+            Escanear QR de DNI
+          </ion-button>
+        </div>
+
         <!-- Apellidos -->
         <ion-item>
           <ion-input
@@ -218,35 +247,6 @@
       }
 
     </div>
-
-        <!-- Sección de Foto con Cámara Obligatoria -->
-        <div class="seccion-foto ion-text-center">
-          @if (fotoEmpleado()) {
-            <div class="contenedor-foto">
-              <img [src]="fotoEmpleado()" alt="Foto de perfil del empleado" class="preview-foto" />
-            </div>
-            <ion-button type="button" class="boton-foto-empleado" (click)="tomarFoto()">
-              Volver a tomar foto
-            </ion-button>
-          } @else {
-            <ion-button type="button" expand="block" class="boton-foto-empleado" (click)="tomarFoto()">
-              Tomar Foto con Cámara
-            </ion-button>
-          }
-
-          @if (errorFoto()) {
-            <ion-note color="danger" class="ion-padding-start ion-text-center d-block ion-margin-top">
-              La foto del empleado es obligatoria.
-            </ion-note>
-          }
-        </div>
-
-        <!-- Botón para Escanear QR del DNI -->
-        <div class="bloque-escanear-dni">
-          <ion-button expand="block" class="boton-escanear-dni" type="button" (click)="escanearDni()">
-            Escanear QR de DNI
-          </ion-button>
-        </div>
 
         <!-- Botones de Acción -->
         <div class="ion-margin-top">

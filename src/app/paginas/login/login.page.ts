@@ -10,6 +10,7 @@ import {
   IonText 
 } from '@ionic/angular';
 import { Supabase } from '../../services/supabase';
+import { PushNotificationsService } from '../../services/push-notifications.service';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +30,11 @@ export class LoginPage {
   clave = '';
   ingresoIncorrecto: WritableSignal<boolean> = signal(false);
   perfil: WritableSignal<string> = signal("");
-  constructor(private supabase: Supabase, private router: Router) { }
+  constructor(
+    private supabase: Supabase,
+    private router: Router,
+    private pushNotifications: PushNotificationsService
+  ) { }
 
   async ingresar(){
     this.ingresoIncorrecto.set(false); // Reiniciar el estado de error antes de intentar iniciar sesión
@@ -38,6 +43,8 @@ export class LoginPage {
       console.error('Error: ',error?.message);
       this.ingresoIncorrecto.set(true);
     }else{
+      await this.pushNotifications.inicializar();
+      await this.pushNotifications.asociarTokenDelUsuarioActual();
       const dataUsuarioLogueado =  await this.supabase.obtenerPerfilUsuarioLogueado();
       console.log('nombre del usuario:', dataUsuarioLogueado?.nombres);
       if(dataUsuarioLogueado){

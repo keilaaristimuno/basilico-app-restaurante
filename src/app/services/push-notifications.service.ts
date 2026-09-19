@@ -74,13 +74,7 @@ export class PushNotificationsService {
     await PushNotifications.addListener('registration', async (token: Token) => {
       console.log('[Push] Token FCM recibido:', token.value);
       this.tokenActual = token.value;
-      await this.guardarToken(token.value);
-    });
-
-    this.supabase.clienteSupabase.auth.onAuthStateChange((_event, session) => {
-      if (session?.user && this.tokenActual) {
-        void this.asociarTokenConUsuario(this.tokenActual, session.user.id);
-      }
+      await this.guardarTokenSegunSesion(token.value);
     });
 
     await PushNotifications.addListener('registrationError', (error) => {
@@ -103,70 +97,69 @@ export class PushNotificationsService {
     );
   }
 
-  private async guardarToken(token: string): Promise<void> {
-    const { data } = await this.supabase.clienteSupabase.auth.getUser();
-    const plataforma = Capacitor.getPlatform();
-
-    console.log('[Push] Guardando token en device_tokens. Usuario:', data.user?.id ?? 'anónimo');
-
-    const { error } = await this.supabase.clienteSupabase
-      .from('device_tokens')
-      .upsert(
-        {
-          user_id: data.user?.id ?? null,
-          token,
-          plataforma,
-          activo: true,
-          updated_at: new Date().toISOString()
-        },
-        { onConflict: 'token' }
-      );
-
-    if (error) {
-      console.error('[Push] Error al guardar token en Supabase:', error.message, error.details, error.hint);
-      await this.mostrarEstado(`Push: Supabase rechazó el token. ${error.message}`, 'danger');
+  async desasociarToken(): Promise<void> {
+    if (!this.tokenActual) {
+      console.warn('[Push] No hay token en memoria para desasociar.');
       return;
     }
 
-    console.log('[Push] Token guardado correctamente.');
-    await this.mostrarEstado('Push: token guardado correctamente en Supabase.', 'success');
-  }
-
-  async desasociarToken(): Promise<void> {
-    if (!this.tokenActual) return;
-
-    const { data } = await this.supabase.clienteSupabase.auth.getUser();
-    if (!data.user) return;
-
-    const { error } = await this.supabase.clienteSupabase
-      .from('device_tokens')
-      .update({
-        user_id: null,
-        activo: false,
-        updated_at: new Date().toISOString()
-      })
-      .eq('token', this.tokenActual)
-      .eq('user_id', data.user.id);
+    const { error } = await this.supabase.clienteSupabase.rpc(
+      'desasociar_device_token',
+      { p_token: this.tokenActual }
+    );
 
     if (error) {
       console.error('Error al desasociar el token de notificaciones:', error.message);
+      await this.mostrarEstado(`Push: no se pudo liberar el token. ${error.message}`, 'danger');
       return;
     }
+
+    console.log('[Push] Token desasociado del usuario.');
   }
 
-  private async asociarTokenConUsuario(token: string, userId: string): Promise<void> {
-    const { error } = await this.supabase.clienteSupabase
-      .from('device_tokens')
-      .update({
-        user_id: userId,
-        activo: true,
-        updated_at: new Date().toISOString()
-      })
-      .eq('token', token)
-      .is('user_id', null);
+  private async guardarTokenSegunSesion(token: string): Promise<void> {
+    const { error } = await this.supabase.clienteSupabase.rpc(
+      'registrar_device_token',
+      {
+        p_token: token,
+        p_plataforma: Capacitor.getPlatform()
+      }
+    );
 
     if (error) {
-      console.error('Error al asociar el token al usuario:', error.message);
+      console.error('[Push] Error al registrar token mediante RPC:', error.message);
+      await this.mostrarEstado(`Push: no se pudo guardar el token. ${error.message}`, 'danger');
+      return;
     }
+
+    await this.mostrarEstado('Push: token guardado correctamente.', 'success');
   }
+
+  async asociarTokenDelUsuarioActual(): Promise<void> {
+    if (!this.tokenActual) return;
+    await this.guardarTokenSegunSesion(this.tokenActual);
+  }
+
+  async enviarNotificacion(
+    title: string,
+    body: string,
+    destinatarios: { userIds?: string[]; profiles?: string[] },
+    data: Record<string, string> = {}
+  ) {
+    const { data: respuesta, error } = await this.supabase.clienteSupabase.functions.invoke(
+      'enviar-push',
+      {
+        body: {
+          title,
+          body,
+          data,
+          ...destinatarios
+        }
+      }
+    );
+
+    if (error) throw new Error(error.message);
+    return respuesta;
+  }
+
 }

@@ -1,24 +1,11 @@
 .seccion-foto {
   margin-top: 10px;
-  margin: 12px 0 16px;
-}
-
-.boton-foto-empleado {
-  --background: var(--basilico-terracotta);
-  --color: #ffffff;
-  --border-radius: 10px;
-  font-family: var(--font-body);
-  font-weight: 600;
-  text-transform: none;
-}
-
-.bloque-escanear-dni {
-  margin: 4px 0 18px;
+  margin-bottom: 20px;
 }
 
 .boton-escanear-dni {
-  --background: var(--basilico-beige);
-  --color: var(--basilico-olive);
+  --background: var(--basilico-terracotta);
+  --color: #ffffff;
   --border-radius: 10px;
   font-family: var(--font-body);
   font-weight: 700;

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonApp, IonRouterOutlet } from '@ionic/angular';
 import { PantallaCargaComponent } from './components/pantalla-carga/pantalla-carga.component';
-import { PushNotificationsService } from './services/push-notifications.service';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +8,5 @@ import { PushNotificationsService } from './services/push-notifications.service'
   imports: [IonApp, IonRouterOutlet, PantallaCargaComponent],
 })
 export class AppComponent {
-  constructor(pushNotifications: PushNotificationsService) {
-    void pushNotifications.inicializar();
-  }
+  constructor() {}
 }

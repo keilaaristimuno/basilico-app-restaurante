@@ -46,7 +46,10 @@ export const routes: Routes = [
     path: 'clienteInicio',
     loadComponent: () => import('./cliente-inicio/cliente-inicio.component').then( m => m.ClienteInicioComponent)
   },
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
   {
     path: 'admin-email',
     loadComponent: () => import('./paginas/admin-email/admin-email.page').then(m => m.AdminEmailPage)

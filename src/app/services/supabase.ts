@@ -145,7 +145,7 @@ export class Supabase {
 
     const { data, error } = await this.clienteSupabase
       .from('perfiles_completos')
-      .select('nombres, perfil, tipo')
+      .select('nombres, perfil')
       .eq('mail', user.email)
       .single();
 

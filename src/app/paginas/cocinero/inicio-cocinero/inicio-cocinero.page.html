@@ -1,0 +1,98 @@
+<ion-header>
+  <app-navbar rutaInicio="/inicio-cocinero"> </app-navbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="fondo">
+  
+  <div class="contenedor">
+    <section class="encabezado">
+
+      <img
+        src="assets/Basilico/Logo_beige.png"
+        alt="Logotipo de Basílico"
+        class="logo">
+
+      <h1>Cocina</h1>
+
+      <p>
+        Seleccione la opción que desea realizar
+      </p>
+
+    </section>
+
+    <section class="acciones">
+      <!-- ALTA DE PLATO -->
+      <ion-card
+        class="tarjeta"
+        routerLink="/alta-plato"
+        button="true">
+
+        <ion-card-content>
+
+          <ion-icon
+            name="restaurant-outline"
+            class="icono">
+          </ion-icon>
+
+          <div class="informacion">
+
+            <h2>Agregar plato</h2>
+
+            <p>
+              Incorporar un nuevo plato a la carta.
+            </p>
+
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+
+      <!-- VER CARTA -->
+      <ion-card
+        class="tarjeta"
+        routerLink="/carta"
+        button="true">
+        <ion-card-content>
+
+          <ion-icon
+            name="book-outline"
+            class="icono">
+          </ion-icon>
+
+          <div class="informacion">
+
+            <h2>Ver carta</h2>
+
+            <p>
+              Consultar los productos disponibles.
+            </p>
+
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+
+      <!-- PEDIDOS -->
+      <ion-card
+        class="tarjeta tarjeta-deshabilitada"
+      >
+        <ion-card-content>
+          <ion-icon
+            name="receipt-outline"
+            class="icono">
+          </ion-icon>
+
+          <div class="informacion">
+
+            <h2>Pedidos pendientes</h2>
+
+            <p>
+              Visualizar los pedidos que debe preparar cocina.
+            </p>
+
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </section>
+  </div>
+</ion-content>

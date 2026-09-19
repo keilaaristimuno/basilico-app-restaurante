@@ -147,7 +147,7 @@ export class AltaEmpleadoPage implements OnInit {
       const urlFoto = this.servicioSupabase.obtenerUrlFotoEmpleado(resultado.path);
 
       const { apellidos, nombres, dni, cuil, correo, clave, perfil } = this.formularioEmpleado.value;
-      const { data, error } = await this.servicioSupabase.registrar(correo, clave);
+
       await this.servicioSupabase.guardarDatosEmpleados(
         apellidos,
         nombres,

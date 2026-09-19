@@ -156,9 +156,6 @@ export class RegistroPage implements OnInit {
       const { error } = await this.supabase.registrar(correo, clave);
       if (error) throw new Error(error.message);
 
-      await this.pushNotifications.inicializar();
-      await this.pushNotifications.asociarTokenDelUsuarioActual();
-
       const nombreArchivo = `clientes/${Date.now()}.jpg`;
       const resultado = await this.supabase.subirFotoCliente(this.fotoCliente(), nombreArchivo);
       const fotoUrl = this.supabase.obtenerUrlFotoCliente(resultado.path);

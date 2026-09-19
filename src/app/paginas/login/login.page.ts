@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, WritableSignal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { WritableSignal, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { 
   IonContent, IonGrid, IonRow, IonCol, 
@@ -47,16 +46,17 @@ export class LoginPage {
       await this.pushNotifications.asociarTokenDelUsuarioActual();
       const dataUsuarioLogueado =  await this.supabase.obtenerPerfilUsuarioLogueado();
       console.log('nombre del usuario:', dataUsuarioLogueado?.nombres);
+
       if(dataUsuarioLogueado){
         localStorage.setItem('nombre', dataUsuarioLogueado?.nombres);
         localStorage.setItem('perfil', dataUsuarioLogueado?.perfil);
         this.perfil.set(dataUsuarioLogueado?.perfil);
       }
       if(this.perfil() === 'cocinero'){
-        this.router.navigate(['/']);
+        this.router.navigate(['/inicio-cocinero']);
       }
-      if(this.perfil() === 'cocinero'){
-        this.router.navigate(['/']);
+      if(this.perfil() === 'metre'){
+        this.router.navigate(['/metreInicio']);
       }
        if(this.perfil() === 'cliente'){
         this.router.navigate(['/']);

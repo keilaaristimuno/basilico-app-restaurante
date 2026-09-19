@@ -36,7 +36,7 @@ export class AccesoRapidoComponent {
         this.perfil.set(dataUsuarioLogueado?.perfil);
       }
       if(this.perfil() === 'cocinero'){
-        this.router.navigate(['/cocinero-inicio']);
+        this.router.navigate(['/inicio-cocinero']);
       }
       if(this.perfil() === 'cantinero'){
         this.router.navigate(['/cantinero-inicio']);

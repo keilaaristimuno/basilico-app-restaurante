@@ -58,7 +58,6 @@ export class Supabase {
       throw new Error(error.message);
     }
 
-    console.log('Datos guardados:', data);
     return data;
   }
 

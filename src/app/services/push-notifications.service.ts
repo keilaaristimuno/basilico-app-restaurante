@@ -159,6 +159,7 @@ export class PushNotificationsService {
     );
 
     if (error) throw new Error(error.message);
+    console.log('[Push] Resultado del envío desde Supabase Edge Function:', respuesta);
     return respuesta;
   }
 

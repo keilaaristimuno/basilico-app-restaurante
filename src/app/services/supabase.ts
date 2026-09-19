@@ -30,6 +30,11 @@ export class Supabase {
       password: contraseña
     });
   }
+
+  cerrarSesion(){
+    return this.clienteSupabase.auth.signOut();
+  }
+
   //registrar (Se guardan en la BD)
   //Para guardar un usuario cuando se registra
   async guardarDatosEmpleados(apellidos: string, nombres: string, dni:number, cuil:number, correo:string, clave:string, perfil:string, foto_url:string){
@@ -54,6 +59,34 @@ export class Supabase {
     }
 
     console.log('Datos guardados:', data);
+    return data;
+  }
+
+  async guardarDatosClientes(
+    apellidos: string,
+    nombres: string,
+    dni: number,
+    correo: string,
+    clave: string,
+    foto_url: string
+  ) {
+    const { data, error } = await this.clienteSupabase
+      .from('clientes')
+      .insert([{
+        apellidos,
+        nombres,
+        dni,
+        correo,
+        clave,
+        estado: 'pendiente',
+        foto_url
+      }]);
+
+    if (error) {
+      console.error('Error al guardar cliente:', error.message);
+      throw new Error(error.message);
+    }
+
     return data;
   }
 
@@ -212,6 +245,28 @@ export class Supabase {
   obtenerUrlFotoEmpleado(ruta: string) {
     const { data } = this.clienteSupabase.storage
       .from("empleados")
+      .getPublicUrl(ruta);
+
+    return data.publicUrl;
+  }
+
+  async subirFotoCliente(rutaFoto: string, nombreArchivo: string) {
+    const respuesta = await fetch(rutaFoto);
+    const blob = await respuesta.blob();
+    const { data, error } = await this.clienteSupabase.storage
+      .from('clientes')
+      .upload(nombreArchivo, blob);
+
+    if (error) {
+      throw Error(`Error al subir la foto del cliente: ${error.message}`);
+    }
+
+    return data;
+  }
+
+  obtenerUrlFotoCliente(ruta: string) {
+    const { data } = this.clienteSupabase.storage
+      .from('clientes')
       .getPublicUrl(ruta);
 
     return data.publicUrl;

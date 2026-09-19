@@ -3,18 +3,33 @@
   margin-bottom: 20px;
 }
 
+.boton-escanear-dni {
+  --background: var(--basilico-terracotta);
+  --color: #ffffff;
+  --border-radius: 10px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  text-transform: none;
+}
+
 .contenedor-foto {
   display: flex;
   justify-content: center;
-  margin-bottom: 12px;
+  align-items: center;
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  margin: 6px 0 12px;
+  background: rgba(237, 229, 210, 0.18);
+  border: 1px solid rgba(40, 55, 32, 0.12);
 }
 
 .preview-foto {
-  width: 130px;
-  height: 130px;
-  object-fit: cover;
-  border-radius: 12px;
-  border: 2px solid var(--ion-color-primary, #b24d39);
+  display: block;
+  width: min(100%, 300px);
+  max-height: 230px;
+  object-fit: contain;
+  background: transparent;
 }
 
 .d-block {

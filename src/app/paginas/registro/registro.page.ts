@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule, RouterLink } from '@angular/router';
+import { Camera } from '@capacitor/camera';
 import { Supabase } from '../../services/supabase';
 import { EmailService } from '../../services/email';
+import { PushNotificationsService } from '../../services/push-notifications.service';
 
 //import { confirmarClaveValidator, datoExisteAsyncValidator } from '../../validaciones/usuario.validator';
 
@@ -19,7 +21,9 @@ import {
   IonLabel,
   IonSelect,
   IonSelectOption, 
-  IonContent
+  IonContent,
+  IonSpinner,
+  ToastController
 } from '@ionic/angular';
 
 @Component({
@@ -41,7 +45,8 @@ import {
     IonSelect,
     IonSelectOption,
     RouterLink,
-    IonContent
+    IonContent,
+    IonSpinner
   ],
   templateUrl: './registro.page.html',
   styleUrl: './registro.page.scss',
@@ -49,31 +54,34 @@ import {
 export class RegistroPage implements OnInit {
 
   miFormulario!: FormGroup;
+  fotoCliente = signal<string>('');
+  errorFoto = signal<boolean>(false);
+  cargando = signal<boolean>(false);
 
   constructor(
     private router: Router,
     private fb: FormBuilder,
     private supabase: Supabase,
-    private emailService: EmailService
+    private emailService: EmailService,
+    private toastCtrl: ToastController,
+    private pushNotifications: PushNotificationsService
   ) { }
 
   ngOnInit(): void {
     this.miFormulario = this.fb.group({
       apellidos: ['', {
-        validators: [Validators.required, Validators.pattern(/^[a-zA-Z0-9]+$/)],
+        validators: [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)],
         //asyncValidators: [datoExisteAsyncValidator(this.supabase, 'usuario')],
         updateOn: 'blur'
       }],
-      nombres: ['', [Validators.required, Validators.pattern(/^[a-zA-Z]+$/)]],
-      dni: ['', [Validators.required]],
-      cuil: ['', [Validators.required]],
+      nombres: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]],
+      dni: ['', [Validators.required, Validators.pattern(/^[0-9]{7,8}$/)]],
       correo: ['', {
         validators: [Validators.required, Validators.email],
         updateOn: 'blur'
       }],
       clave: ['', [Validators.required, Validators.minLength(6)]],
       repetirClave: [null, [Validators.required]],
-      fotoPerfil: [''],
     }) //{ validators: confirmarClaveValidator() });
   }
 
@@ -86,9 +94,6 @@ export class RegistroPage implements OnInit {
   get dni() {
     return this.miFormulario.get('dni');
   }
-  get cuil() {
-    return this.miFormulario.get('cuil');
-  }
   get correo() {
     return this.miFormulario.get('correo');
   }
@@ -98,72 +103,103 @@ export class RegistroPage implements OnInit {
 
   enviarFormulario() {
     this.miFormulario.markAllAsTouched();
+    this.errorFoto.set(!this.fotoCliente());
 
-    if (this.miFormulario.invalid) {
+    if (this.miFormulario.invalid || !this.fotoCliente() || !this.clavesCoinciden()) {
       console.log("Formulario inválido");
       return;
     }
 
-    this.registrarEmpleado();
+    void this.registrarCliente();
+  }
+
+  async tomarFoto() {
+    try {
+      const imagen = await Camera.takePhoto({ quality: 90 });
+      this.fotoCliente.set(imagen.webPath ?? imagen.uri ?? '');
+      this.errorFoto.set(false);
+    } catch (error) {
+      console.error('Error al tomar la foto del cliente:', error);
+    }
+  }
+
+  clavesCoinciden(): boolean {
+    return this.miFormulario.get('clave')?.value === this.miFormulario.get('repetirClave')?.value;
   }
 
   resetearForm() {
     this.miFormulario.reset();
+    this.fotoCliente.set('');
+    this.errorFoto.set(false);
   }
-  /*   onFileSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-  
-    if (input.files && input.files.length > 0) {
-      const file = input.files[0];
-      
-      // Guardas el archivo en el FormControl para validar y enviar a Supabase
-      this.miFormulario.patchValue({
-        foto: file
-      });
-      this.miFormulario.get('foto')?.updateValueAndValidity();
-    }
-  } */
-  async registrarEmpleado() {
+
+  private async mostrarToast(mensaje: string, color: 'success' | 'danger') {
+    const toast = await this.toastCtrl.create({
+      message: mensaje,
+      duration: 3000,
+      color,
+      position: 'bottom'
+    });
+    await toast.present();
+  }
+
+  async registrarCliente() {
+    this.cargando.set(true);
+
     const apellidos = this.miFormulario.get('apellidos')?.value;
     const nombres = this.miFormulario.get('nombres')?.value;
     const dni = this.miFormulario.get('dni')?.value;
-    const cuil = this.miFormulario.get('cuil')?.value;
     const correo = this.miFormulario.get('correo')?.value;
     const clave = this.miFormulario.get('clave')?.value;
-    const perfil = this.miFormulario.get('perfil')?.value;
-    const foto_url = "foto";
 
-    //Llamo al metodo de Supabase para registrar el usuario, le paso el email y la clave
-    const { data, error } = await this.supabase.registrar(correo, clave);
+    try {
+      const { error } = await this.supabase.registrar(correo, clave);
+      if (error) throw new Error(error.message);
 
+      await this.pushNotifications.inicializar();
+      await this.pushNotifications.asociarTokenDelUsuarioActual();
 
+      const nombreArchivo = `clientes/${Date.now()}.jpg`;
+      const resultado = await this.supabase.subirFotoCliente(this.fotoCliente(), nombreArchivo);
+      const fotoUrl = this.supabase.obtenerUrlFotoCliente(resultado.path);
 
-    if (error) {
-      console.error('Error: ', error.message);
-      return;
-    }
+      await this.supabase.guardarDatosClientes(
+        apellidos,
+        nombres,
+        Number(dni),
+        correo,
+        clave,
+        fotoUrl
+      );
 
-    //console.log('User registrado:', data.user);
-    await this.supabase.guardarDatosEmpleados(apellidos, nombres, dni, cuil, correo, clave, perfil, foto_url);
-
-    // 3. Envío asincrónico del correo de confirmación
-    this.emailService.sendEmail({
-      to: correo,
-      category: 'notificaciones',
-      subject: 'Solicitud de registro recibida - Resto Basílico',
-      title: 'Solicitud en Revisión',
-      messageHtml: `Hola <strong>${nombres} ${apellidos}</strong>,<br><br>Hemos recibido correctamente tu solicitud de registro para el perfil de <strong>${perfil}</strong>. La administración revisará tu solicitud a la brevedad.`
-    }).subscribe({
-      next: () => {
-        console.log('Notificación de registro enviada con éxito.');
-      },
-      error: (err) => {
-        console.error('Error al enviar el correo de registro:', err);
+      try {
+        await this.pushNotifications.enviarNotificacion(
+          'Nuevo cliente pendiente',
+          `${nombres} ${apellidos} solicitó registrarse y espera aprobación.`,
+          { profiles: ['duenio', 'dueno', 'dueño', 'supervisor'] },
+          { tipo: 'cliente_pendiente' }
+        );
+      } catch (error) {
+        console.error('El cliente se guardó, pero no se pudo enviar la push:', error);
       }
-    });
 
-    //localStorage.setItem('nickname', usuarioValido);
-    //this.router.navigate(['/bienvenido']);
+      this.emailService.sendEmail({
+        to: correo,
+        category: 'notificaciones',
+        subject: 'Solicitud de registro recibida - Resto Basílico',
+        title: 'Solicitud en revisión',
+        messageHtml: `Hola <strong>${nombres} ${apellidos}</strong>,<br><br>Tu solicitud fue recibida y quedó pendiente de aprobación.`
+      }).subscribe({
+        error: (error) => console.error('Error al enviar el correo:', error)
+      });
+
+      await this.mostrarToast('Registro enviado. Quedó pendiente de aprobación.', 'success');
+      this.resetearForm();
+    } catch (error: any) {
+      console.error('Error al registrar cliente:', error);
+      await this.mostrarToast(error?.message ?? 'No se pudo completar el registro.', 'danger');
+    } finally {
+      this.cargando.set(false);
+    }
   }
 }
-import { from } from 'rxjs';

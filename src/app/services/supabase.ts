@@ -308,4 +308,32 @@ export class Supabase {
     return data.length > 0; // Retorna true si el plato existe, false si no 
   }
 
+  async obtenerClientesPendientes() {
+    const { data, error } = await this.clienteSupabase
+      .from('clientes')
+      .select('*')
+      .eq('estado', 'pendiente')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      throw new Error(`Error al obtener clientes pendientes: ${error.message}`);
+    }
+
+    return data ?? [];
+  }
+
+  async cambiarEstadoCliente(id: string | number, estado: 'aprobado' | 'rechazado') {
+    const { data, error } = await this.clienteSupabase
+      .from('clientes')
+      .update({ estado })
+      .eq('id', id)
+      .select();
+
+    if (error) {
+      throw new Error(`Error al actualizar estado del cliente: ${error.message}`);
+    }
+
+    return data;
+  }
+
 }

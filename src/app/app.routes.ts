@@ -47,7 +47,7 @@ export const routes: Routes = [
     loadComponent: () => import('./cliente-inicio/cliente-inicio.component').then( m => m.ClienteInicioComponent)
   },
 
-
+  {
     path: 'admin-email',
     loadComponent: () => import('./paginas/admin-email/admin-email.page').then(m => m.AdminEmailPage)
   },
@@ -58,6 +58,10 @@ export const routes: Routes = [
   {
     path: 'carta',
     loadComponent: () => import('./paginas/carta/carta.page').then( m => m.CartaPage)
+  },
+  {
+    path: 'clientes-pendientes',
+    loadComponent: () => import('./paginas/clientes-pendientes/clientes-pendientes.page').then(m => m.ClientesPendientesPage)
   },
   {
     path: '**',

@@ -1,0 +1,92 @@
+.spinner-container, .empty-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 70vh;
+  text-align: center;
+  color: var(--ion-color-medium);
+
+  .empty-icon {
+    width: 80px;
+    height: 80px;
+    opacity: 0.6;
+    margin-bottom: 16px;
+  }
+}
+
+.clientes-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.cliente-card {
+  margin: 0;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+
+  .foto-wrapper {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    background-color: var(--ion-color-light);
+    min-height: 240px;
+    max-height: 350px;
+    background-color: #1e1e1e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .cliente-foto {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      max-height: 350px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .badge-estado {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-size: 0.85rem;
+      padding: 6px 12px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  .cliente-nombre {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--ion-color-dark);
+  }
+
+  .cliente-info {
+    margin-top: 6px;
+    font-size: 0.95rem;
+    color: var(--ion-color-medium);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .acciones-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 8px;
+
+    .btn-accion {
+      --border-radius: 10px;
+      font-weight: 600;
+      margin: 0;
+    }
+  }
+}
+

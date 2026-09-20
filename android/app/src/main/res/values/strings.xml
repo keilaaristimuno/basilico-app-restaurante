@@ -4,4 +4,6 @@
     <string name="title_activity_main">basilico</string>
     <string name="package_name">io.ionic.starter</string>
     <string name="custom_url_scheme">io.ionic.starter</string>
+    <string name="custom_notification_icon">ic_notification</string>
+    <string name="custom_notification_color">#283720</string>
 </resources>

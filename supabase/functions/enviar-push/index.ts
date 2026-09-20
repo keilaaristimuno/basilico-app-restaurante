@@ -196,6 +196,7 @@ Deno.serve(async (request) => {
               android: {
                 priority: "HIGH",
                 notification: {
+                  color: "#283720",
                   channel_id: "basilico_alta_prioridad",
                   default_sound: true,
                   default_vibrate_timings: true

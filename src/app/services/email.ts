@@ -10,6 +10,8 @@ export interface EmailOptions {
     category: SenderCategory;
     title: string;
     messageHtml: string;
+    nombreCliente?: string;
+    tipo?: string;
 }
 
 @Injectable({
@@ -26,7 +28,9 @@ export class EmailService {
                     category: options.category,
                     title: options.title,
                     subject: options.subject,
-                    messageHtml: options.messageHtml
+                    messageHtml: options.messageHtml,
+                    nombreCliente: options.nombreCliente,
+                    tipo: options.tipo || options.category
                 }
             }).then(({ data, error }) => {
                 // Si Supabase devuelve error de red o la Edge Function devuelve un objeto de error

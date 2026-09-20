@@ -5,6 +5,7 @@ import { Camera } from '@capacitor/camera';
 import { Supabase } from '../../services/supabase';
 import { EmailService } from '../../services/email';
 import { PushNotificationsService } from '../../services/push-notifications.service';
+import { generarHtmlConfirmacion } from '../../utils/plantillas-email';
 
 //import { confirmarClaveValidator, datoExisteAsyncValidator } from '../../validaciones/usuario.validator';
 
@@ -182,12 +183,14 @@ export class RegistroPage implements OnInit {
 
       this.emailService.sendEmail({
         to: correo,
-        category: 'notificaciones',
-        subject: 'Solicitud de registro recibida - Resto Basílico',
-        title: 'Solicitud en revisión',
-        messageHtml: `Hola <strong>${nombres} ${apellidos}</strong>,<br><br>Tu solicitud fue recibida y quedó pendiente de aprobación.`
+        category: "notificaciones",
+        subject: "Solicitud de registro recibida - Basílico",
+        title: "Solicitud en revisión",
+        messageHtml: generarHtmlConfirmacion({ nombres, apellidos, dni }),
+        nombreCliente: `${nombres} ${apellidos}`,
+        tipo: "pendiente"
       }).subscribe({
-        error: (error) => console.error('Error al enviar el correo:', error)
+        error: (error) => console.error("Error al enviar el correo:", error)
       });
 
       await this.mostrarToast('Registro enviado. Quedó pendiente de aprobación.', 'success');

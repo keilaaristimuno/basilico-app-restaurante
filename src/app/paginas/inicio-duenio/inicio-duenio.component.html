@@ -1,0 +1,61 @@
+<ion-content  [fullscreen]="true" class="fondo">
+  <app-navbar></app-navbar>
+  <div class="contenedor">
+    <section class="encabezado">
+      <img
+        src="assets/Basilico/Logo_beige.png"
+        alt="Logotipo de Basílico"
+        class="logo">
+
+      <h1>Dueño</h1>
+      <p>
+        Seleccione la opción que desea realizar
+      </p>
+    </section>
+
+    <section class="acciones">
+      <ion-card class="tarjeta" routerLink="/alta-plato" button="true">
+        <ion-card-content>
+
+          <div class="informacion">
+
+            <h2>Alta empleados</h2>
+            <p>
+              Seleccione para dar de alta un nuevo empleado
+            </p>
+
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="tarjeta" routerLink="/carta" button="true">
+        <ion-card-content>
+          <div class="informacion">
+            <h2>Alta mesa</h2>
+            <p>
+              Seleccione para dar de alta una nueva mesa
+            </p>
+
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="tarjeta" >
+        <ion-card-content>
+          <!-- <ion-icon
+            name="receipt-outline"
+            class="icono">
+          </ion-icon> -->
+
+          <div class="informacion">
+            <h2>Clientes pendientes</h2>
+            <p>
+              Visualizar los clientes pendientes a autorizar.
+            </p>
+
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </section>
+    </div>
+</ion-content>

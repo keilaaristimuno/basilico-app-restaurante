@@ -253,3 +253,105 @@ ion-alert.perfil-alert .alert-radio-group {
 ion-alert.perfil-alert .alert-radio-button {
   color: var(--basilico-olive);
 }
+
+
+//Paginas de inicio
+
+.fondo {
+  --background: #8fa382;
+}
+
+.contenedor {
+  min-height: 100%;
+  padding: 30px 20px;
+}
+
+/* ENCABEZADO */
+
+.encabezado {
+  text-align: center;
+  margin-bottom: 30px;
+
+  .logo {
+    width: 120px;
+    height: auto;
+    object-fit: contain;
+    margin-bottom: 10px;
+  }
+
+  h1 {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: #283720;
+    text-transform: uppercase;
+  }
+
+  p {
+    margin-top: 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1rem;
+    color: #283720;
+  }
+}
+
+
+/* CONTENEDOR DE OPCIONES */
+.acciones {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+
+/* TARJETAS */
+.tarjeta {
+  margin: 0;
+  --background: #ede5d2;
+  border-radius: 18px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.20);
+
+  ion-card-content {
+    min-height: 115px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+  }
+}
+
+
+/* ICONOS */
+.icono {
+  flex-shrink: 0;
+  font-size: 3rem;
+  color: #283720;
+}
+
+
+/* TEXTO */
+.informacion {
+
+  h2 {
+    margin: 0 0 7px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #283720;
+  }
+
+  p {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    color: #283720;
+    line-height: 1.4;
+  }
+}
+
+
+/* PEDIDOS TODAVÍA NO IMPLEMENTADO */
+.tarjeta-deshabilitada {
+  opacity: 0.65;
+}

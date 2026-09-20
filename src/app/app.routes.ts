@@ -63,6 +63,14 @@ export const routes: Routes = [
     loadComponent: () => import('./paginas/cocinero/inicio-cocinero/inicio-cocinero.page').then( m => m.InicioCocineroPage)
   },
   {
+    path: 'mozoInicio',
+    loadComponent: () => import('./mozo/mozo-inicio/mozo-inicio.component').then( m => m.MozoInicioComponent)
+  },
+  {
+    path: 'duenioInicio',
+    loadComponent: () => import('./paginas/inicio-duenio/inicio-duenio.component').then( m => m.InicioDuenioComponent)
+  },
+  {
     path: '**',
     redirectTo: 'inicio'
   },

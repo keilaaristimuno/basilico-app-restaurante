@@ -1,3 +1,78 @@
-<p>
-  mozo-inicio works!
-</p>
+<ion-content  [fullscreen]="true" class="fondo">
+  <app-navbar></app-navbar>
+  <div class="contenedor">
+    <section class="encabezado">
+      <img
+        src="assets/Basilico/Logo_beige.png"
+        alt="Logotipo de Basílico"
+        class="logo">
+
+      <h1>Mozo</h1>
+      <p>
+        Seleccione la opción que desea realizar
+      </p>
+    </section>
+
+    <section class="acciones">
+      <ion-card class="tarjeta" routerLink="/alta-plato" button="true">
+        <ion-card-content>
+
+          <div class="informacion">
+
+            <h2>Nuevos pedidos</h2>
+            <p>
+              Visualizar los pedidos para autorizar o rechazar.
+            </p>
+
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="tarjeta" routerLink="/carta" button="true">
+        <ion-card-content>
+          <div class="informacion">
+            <h2>Pedidos listos</h2>
+            <p>
+              Visualizar los pedidos listos para entregar al cliente.
+            </p>
+
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="tarjeta tarjeta-deshabilitada" >
+        <ion-card-content>
+          <!-- <ion-icon
+            name="receipt-outline"
+            class="icono">
+          </ion-icon> -->
+
+          <div class="informacion">
+            <h2>Cuentas y liberación</h2>
+            <p>
+              Visualizar los pedidos listos para facturar.
+            </p>
+
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="tarjeta tarjeta-deshabilitada" >
+        <ion-card-content>
+          <!-- <ion-icon
+            name="receipt-outline"
+            class="icono">
+          </ion-icon> -->
+
+          <div class="informacion">
+            <h2>Chat de consultas</h2>
+            <p>
+              Visualizar los nuevos chats.
+            </p>
+
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </section>
+    </div>
+</ion-content>

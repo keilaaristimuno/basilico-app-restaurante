@@ -22,7 +22,7 @@ export class ClienteInicioComponent {
   }
 
   async escanearIngreso() {
-    // 1. Abre directamente la cámara usando BarcodeScanner de Capacitor
+    //Abre directamente la cámara usando BarcodeScanner de Capacitor
     const codigoEscaneado = await this.qrService.leerQR();
 
     if (!codigoEscaneado) {
@@ -30,11 +30,12 @@ export class ClienteInicioComponent {
       return;
     }
 
-    // 2. Valida que sea el QR correcto del local
+    //Valida que sea el QR correcto del local
     if (codigoEscaneado === 'BASILICO_INGRESO_LISTA_ESPERA') {
       await this.agregarAListaDeEspera();
     } else {
-      alert('El código QR escaneado no corresponde al ingreso de la lista de espera.');
+      //Agregar module
+      //alert('El código QR escaneado no corresponde al ingreso de la lista de espera.');
     }
   }
 
@@ -50,7 +51,7 @@ export class ClienteInicioComponent {
       }
     }
 
-    // 3. Guarda la entrada en la tabla 'lista_espera' de Supabase
+    //Guarda la entrada en la tabla 'lista_espera' de Supabase
     const { error } = await this.supabase.clienteSupabase
       .from('lista_espera')
       .insert([
@@ -67,8 +68,8 @@ export class ClienteInicioComponent {
       alert('Error al anotarse en la lista de espera.');
       return;
     }
-
-    alert(`¡Te anotaste con éxito en la lista de espera como "${nombreCliente}"!`);
+    //Agregar module
+    //alert(`¡Te anotaste con éxito en la lista de espera como "${nombreCliente}"!`);
   }
 
 }

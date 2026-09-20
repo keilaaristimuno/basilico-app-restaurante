@@ -8,6 +8,10 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+  <ion-refresher slot="fixed" (ionRefresh)="refrescarManual($event)">
+    <ion-refresher-content pullingText="Deslizar para actualizar" refreshingSpinner="crescent"></ion-refresher-content>
+  </ion-refresher>
+
   @if (cargando()) {
     <div class="spinner-container">
       <ion-spinner name="crescent" color="primary"></ion-spinner>

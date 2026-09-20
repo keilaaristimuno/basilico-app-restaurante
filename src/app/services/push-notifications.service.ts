@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
+import { Router } from '@angular/router';
 import { Capacitor } from '@capacitor/core';
 import {
   ActionPerformed,
@@ -18,13 +19,15 @@ export class PushNotificationsService {
 
   constructor(
     private supabase: Supabase,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private router: Router,
+    private ngZone: NgZone
   ) {}
 
   private async mostrarEstado(mensaje: string, color: 'success' | 'danger' | 'warning') {
     const toast = await this.toastCtrl.create({
       message: mensaje,
-      duration: 5000,
+      duration: 4000,
       color,
       position: 'bottom'
     });
@@ -44,6 +47,25 @@ export class PushNotificationsService {
 
     try {
       console.log('[Push] Plataforma:', Capacitor.getPlatform());
+
+      if (Capacitor.getPlatform() === 'android') {
+        try {
+          await PushNotifications.createChannel({
+            id: 'basilico_alta_prioridad',
+            name: 'Notificaciones Importantes',
+            description: 'Alertas emergentes de nuevos clientes y pedidos',
+            importance: 5,
+            visibility: 1,
+            sound: 'default',
+            vibration: true,
+            lights: true,
+            lightColor: '#283720'
+          });
+        } catch (channelError) {
+          console.warn('[Push] Error al crear canal en PushNotifications:', channelError);
+        }
+      }
+
       await this.configurarListeners();
 
       const permisos = await PushNotifications.checkPermissions();
@@ -63,10 +85,10 @@ export class PushNotificationsService {
 
       console.log('[Push] Registrando dispositivo en Firebase...');
       await PushNotifications.register();
-    } catch (error) {
+    } catch (error: any) {
       this.inicializado = false;
       console.error('[Push] Error al inicializar notificaciones:', error);
-      await this.mostrarEstado('Push: falló el registro en Firebase. Revisá la configuración Android.', 'danger');
+      await this.mostrarEstado(`Push: falló el registro en Firebase (${error?.message ?? error})`, 'danger');
     }
   }
 
@@ -78,21 +100,43 @@ export class PushNotificationsService {
     });
 
     await PushNotifications.addListener('registrationError', (error) => {
-      console.error('[Push] Error al registrar el dispositivo:', error);
+      console.error('[Push] Error al registrar el dispositivo en Firebase:', error);
       void this.mostrarEstado('Push: Firebase no entregó el token del dispositivo.', 'danger');
     });
 
     await PushNotifications.addListener(
       'pushNotificationReceived',
-      (notification: PushNotificationSchema) => {
-        console.log('Notificación push recibida:', notification);
+      async (notification: PushNotificationSchema) => {
+        console.log('[Push Foreground] Notificación recibida:', notification);
       }
     );
 
     await PushNotifications.addListener(
       'pushNotificationActionPerformed',
-      (action: ActionPerformed) => {
-        console.log('Notificación push seleccionada:', action);
+      async (action: ActionPerformed) => {
+        console.log('[Push Action] Notificación seleccionada:', action);
+        const data = action.notification?.data;
+        const ruta = data?.ruta;
+
+        if (ruta) {
+          this.ngZone.run(() => {
+            const navegar = async () => {
+              try {
+                await this.router.navigateByUrl(ruta);
+              } catch (error) {
+                console.error('[Push Action] Error al navegar a ruta:', ruta, error);
+                await this.router.navigate([ruta]);
+              }
+            };
+
+            void navegar();
+            setTimeout(() => {
+              if (this.router.url !== ruta) {
+                void navegar();
+              }
+            }, 400);
+          });
+        }
       }
     );
   }
@@ -162,5 +206,4 @@ export class PushNotificationsService {
     console.log('[Push] Resultado del envío desde Supabase Edge Function:', respuesta);
     return respuesta;
   }
-
 }

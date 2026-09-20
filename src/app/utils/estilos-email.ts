@@ -1,170 +1,141 @@
+/**
+ * Estilos CSS para el correo de Aprobación de Cliente (Punto 8)
+ * Paleta Verde Oliva Basílico (#283720), elegante, sobrio y no chillón
+ */
 export const ESTILOS_EMAIL_APROBADO = `
-  .email-aprobado-card {
-    background-color: #f4f9f4;
-    padding: 24px;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    color: #1e3a1e;
+  .contenedor-verde {
+    background-color: #283720;
     border-radius: 12px;
-    max-width: 580px;
-    margin: 0 auto;
-    border: 2px solid #2e7d32;
-  }
-  .email-header {
+    padding: 24px 16px;
     text-align: center;
-    padding-bottom: 18px;
-    border-bottom: 2px dashed #81c784;
+    color: #ffffff;
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Arial, sans-serif;
+    margin: 0 auto;
+    box-shadow: 0 4px 14px rgba(40, 55, 32, 0.2);
   }
-  .logo-titulo {
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: 30px;
-    color: #1b5e20;
-    margin: 0;
-    letter-spacing: 2px;
+  .logo-email {
+    max-width: 85px;
+    width: 85px;
+    height: auto;
+    display: block;
+    margin: 0 auto 10px auto;
   }
-  .logo-bajada {
+  .titulo-verde {
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #ede5d2;
+    margin: 0 0 6px 0;
+  }
+  .badge-verde {
+    display: inline-block;
+    background-color: #83967d;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 14px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .tarjeta-blanca-verde {
+    background-color: #f9f7f2;
+    border-radius: 10px;
+    padding: 18px 14px;
+    color: #283720;
+    text-align: left;
+    margin: 10px 0;
+    border-left: 5px solid #283720;
+  }
+  .texto-parrafo {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #2d3b27;
+    margin: 0 0 10px 0;
+  }
+  .fila-dato-verde {
     font-size: 13px;
-    color: #388e3c;
-    margin: 4px 0 0 0;
-    font-style: italic;
-    letter-spacing: 1px;
+    color: #283720;
+    margin: 4px 0;
   }
-  .cuerpo-email {
-    padding: 22px 10px;
-    text-align: center;
-  }
-  .badge-exito {
-    display: inline-block;
-    background-color: #2e7d32;
-    color: #ffffff;
-    padding: 6px 16px;
-    border-radius: 20px;
+  .pie-verde {
     font-size: 12px;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 12px;
-  }
-  .saludo-cliente {
-    font-family: Georgia, serif;
-    font-size: 22px;
-    color: #1b5e20;
-    margin: 8px 0;
-  }
-  .texto-destacado {
-    font-size: 15px;
-    line-height: 1.6;
-    color: #2e4d2e;
-    margin: 14px 0;
-  }
-  .tarjeta-datos {
-    background-color: #ffffff;
-    border: 1px solid #c8e6c9;
-    border-radius: 10px;
-    padding: 16px;
-    margin: 18px auto;
-    text-align: left;
-    max-width: 440px;
-    box-shadow: 0 2px 8px rgba(46, 125, 50, 0.08);
-  }
-  .fila-dato {
-    margin: 6px 0;
-    font-size: 14px;
-  }
-  .estado-activo {
-    color: #2e7d32;
-    font-weight: bold;
-  }
-  .email-footer {
+    color: #ede5d2;
+    margin-top: 14px;
     text-align: center;
-    padding-top: 18px;
-    border-top: 1px solid #c8e6c9;
-    font-size: 12px;
-    color: #66bb6a;
+    opacity: 0.9;
   }
 `;
 
+/**
+ * Estilos CSS para el correo de Rechazo de Cliente (Punto 7)
+ * Paleta Terracota Basílico (#b24d39), cálido, sobrio y no chillón
+ */
 export const ESTILOS_EMAIL_RECHAZADO = `
-  .email-rechazado-card {
-    background-color: #fdf5f5;
-    padding: 24px;
-    font-family: "Trebuchet MS", "Lucida Sans Unicode", sans-serif;
-    color: #3d1b1b;
+  .contenedor-rojo {
+    background-color: #b24d39;
     border-radius: 12px;
-    max-width: 580px;
-    margin: 0 auto;
-    border: 2px solid #c62828;
-  }
-  .email-header-rechazo {
+    padding: 24px 16px;
     text-align: center;
-    padding-bottom: 18px;
-    border-bottom: 2px dashed #ef9a9a;
-  }
-  .logo-titulo-rechazo {
-    font-family: "Cinzel", "Times New Roman", serif;
-    font-size: 28px;
-    color: #b71c1c;
-    margin: 0;
-    letter-spacing: 2px;
-  }
-  .logo-bajada-rechazo {
-    font-size: 12px;
-    color: #c62828;
-    margin: 4px 0 0 0;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  .cuerpo-email-rechazo {
-    padding: 22px 10px;
-    text-align: center;
-  }
-  .badge-rechazo {
-    display: inline-block;
-    background-color: #c62828;
     color: #ffffff;
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 12px;
+    font-family: "Georgia", "Times New Roman", Times, serif;
+    margin: 0 auto;
+    box-shadow: 0 4px 14px rgba(178, 77, 57, 0.2);
   }
-  .saludo-rechazo {
-    font-family: "Cinzel", "Times New Roman", serif;
+  .logo-email-rechazo {
+    max-width: 85px;
+    width: 85px;
+    height: auto;
+    display: block;
+    margin: 0 auto 10px auto;
+  }
+  .titulo-rojo {
     font-size: 20px;
-    color: #880e4f;
-    margin: 8px 0;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #ffffff;
+    margin: 0 0 6px 0;
   }
-  .texto-rechazo {
-    font-size: 15px;
-    line-height: 1.6;
-    color: #4a2323;
-    margin: 14px 0;
+  .badge-rojo {
+    display: inline-block;
+    background-color: #7a2818;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 5px 14px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
   }
-  .tarjeta-datos-rechazo {
-    background-color: #ffffff;
-    border: 1px solid #ffcdd2;
+  .tarjeta-blanca-rojo {
+    background-color: #fdf9f7;
     border-radius: 10px;
-    padding: 16px;
-    margin: 18px auto;
+    padding: 18px 14px;
+    color: #3b1710;
     text-align: left;
-    max-width: 440px;
-    box-shadow: 0 2px 8px rgba(198, 40, 40, 0.08);
+    margin: 10px 0;
+    border-left: 5px solid #b24d39;
   }
-  .fila-dato-rechazo {
-    margin: 6px 0;
+  .texto-parrafo-rojo {
     font-size: 14px;
+    line-height: 1.6;
+    color: #4a2119;
+    margin: 0 0 10px 0;
   }
-  .estado-inactivo {
-    color: #c62828;
-    font-weight: bold;
+  .fila-dato-rojo {
+    font-size: 13px;
+    color: #8c3220;
+    margin: 4px 0;
   }
-  .email-footer-rechazo {
-    text-align: center;
-    padding-top: 18px;
-    border-top: 1px solid #ffcdd2;
+  .pie-rojo {
     font-size: 12px;
-    color: #e57373;
+    color: #fde8e3;
+    margin-top: 14px;
+    text-align: center;
+    opacity: 0.9;
   }
 `;
-

@@ -39,31 +39,32 @@ Deno.serve(async (req: Request) => {
 
     const from = fromMap[tipo] || "Basílico Notificaciones <notificaciones@restobasilico.com.ar>";
 
+    const colorTitulo = tipo === "rechazado" ? "#b24d39" : "#283720";
+
     // Plantilla visual con la identidad de marca de Basílico
     const html = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; border: 1px solid #e0e0e0; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
         
-        <!-- Banner Superior (Olive #283720) -->
-        <div style="background-color: #283720; padding: 28px 20px; text-align: center;">
-          <h1 style="color: #ede5d2; margin: 0; font-size: 30px; font-weight: bold; letter-spacing: 1px;">Basílico</h1>
-          <p style="color: #ede5d2; margin: 6px 0 0 0; font-size: 13px; opacity: 0.85;">Sabores de Italia cerca tuyo</p>
+        <!-- Banner Superior con Logo Completo (Olive #283720) -->
+        <div style="background-color: #283720; padding: 24px 20px; text-align: center;">
+          <img src="https://xmlcpvfjlnuakqehrvom.supabase.co/storage/v1/object/public/assets/Basiloco_beige.png" alt="Basílico" style="max-width: 170px; width: 170px; height: auto; display: block; margin: 0 auto;" />
+          <p style="color: #ede5d2; margin: 8px 0 0 0; font-size: 13px; opacity: 0.85; letter-spacing: 0.5px;">Sabores de Italia cerca tuyo</p>
         </div>
 
         <!-- Contenido Central -->
-        <div style="padding: 30px 25px; color: #333333;">
-          <h2 style="color: #b24d39; margin-top: 0; font-size: 20px;">${subject}</h2>
-          <p style="font-size: 15px; line-height: 1.6; color: #444444;">
+        <div style="padding: 26px 22px; color: #333333;">
+          <h2 style="color: ${colorTitulo}; margin-top: 0; font-size: 20px;">${subject}</h2>
+          <p style="font-size: 15px; line-height: 1.6; color: #444444; margin: 0 0 16px 0;">
             Hola <strong>${nombreCliente}</strong>,
           </p>
-          <div style="font-size: 15px; line-height: 1.6; color: #333333; margin: 20px 0;">
+          <div style="font-size: 15px; line-height: 1.6; color: #333333; margin: 16px 0;">
             ${cuerpoMensaje}
           </div>
         </div>
 
         <!-- Footer Institucional -->
-        <div style="background-color: #83967d; padding: 18px; text-align: center; color: #ffffff; font-size: 12px; line-height: 1.4;">
-          <p style="margin: 0 0 4px 0; font-weight: 600;">Trabajo Final Integrador - UTN Avellaneda 2026</p>
-          <p style="margin: 0; opacity: 0.9;">Este es un correo automático enviado desde una cuenta corporativa verificada.</p>
+        <div style="background-color: #83967d; padding: 14px 20px; text-align: center; color: #ffffff; font-size: 11px; line-height: 1.4;">
+          <p style="margin: 0; opacity: 0.95;">Este es un correo automático emitido por el sistema de gestión de Basílico.</p>
         </div>
       </div>
     `;

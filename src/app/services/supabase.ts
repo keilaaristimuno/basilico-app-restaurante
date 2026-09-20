@@ -339,15 +339,16 @@ export class Supabase {
     const { data, error } = await this.clienteSupabase
       .from("clientes")
       .select("*")
-      .eq("correo", correo.trim().toLowerCase())
-      .maybeSingle();
+      .ilike("correo", correo.trim())
+      .order("created_at", { ascending: false })
+      .limit(1);
 
     if (error) {
       console.error("Error al consultar cliente por correo:", error.message);
       return null;
     }
 
-    return data;
+    return data && data.length > 0 ? data[0] : null;
   }
 
 }

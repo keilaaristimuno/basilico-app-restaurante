@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import{IonContent, IonNote, IonTabButton, IonIcon, IonGrid, IonRow, IonCol, IonList, IonItem, IonInput, IonButton} from '@ionic/angular';
+import { IonContent, IonNote, IonTabButton, IonIcon, IonGrid, IonRow, IonCol, IonList, IonItem, IonInput, IonButton } from '@ionic/angular';
+import { addIcons } from 'ionicons';
+import { qrCodeOutline } from 'ionicons/icons';
 import { QrService } from '../services/qr.service';
 import { Supabase } from '../services/supabase';
+
 @Component({
   selector: 'app-cliente-inicio',
   standalone: true,
@@ -14,7 +17,9 @@ export class ClienteInicioComponent {
   constructor(
     private qrService: QrService,
     private supabase: Supabase
-  ) {}
+  ) {
+    addIcons({ qrCodeOutline });
+  }
 
   async escanearIngreso() {
     // 1. Abre directamente la cámara usando BarcodeScanner de Capacitor

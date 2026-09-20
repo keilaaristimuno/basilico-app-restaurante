@@ -41,6 +41,12 @@ export class LoginPage {
     private toastController: ToastController
   ) { }
 
+  ionViewDidEnter() {
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+  }
+
   async ingresar() {
     if (!this.validarCampos()) return;
 
@@ -122,6 +128,9 @@ export class LoginPage {
 
       await this.inicializarNotificaciones();
       await this.mostrarToast(`¡Bienvenido/a, ${cliente.nombres}!`, "success");
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
       await this.router.navigate(["/clienteInicio"]);
     }
   }
@@ -153,6 +162,9 @@ export class LoginPage {
         break;
       case "cocinero":
         await this.router.navigate(["/"]);
+        break;
+      case "cliente":
+        await this.router.navigate(["/clienteInicio"]);
         break;
       default:
         await this.router.navigate(["/inicio"]);

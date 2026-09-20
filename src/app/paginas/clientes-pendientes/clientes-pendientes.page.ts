@@ -122,7 +122,9 @@ export class ClientesPendientesPage implements OnInit {
       category: "notificaciones",
       subject: subject,
       title: title,
-      messageHtml: htmlContent
+      messageHtml: htmlContent,
+      nombreCliente: `${cliente.nombres} ${cliente.apellidos}`,
+      tipo: estado
     }).subscribe({
       next: (res) => console.log(`Correo de ${estado} enviado exitosamente:`, res),
       error: (err) => console.error(`Error al enviar correo de ${estado}:`, err)

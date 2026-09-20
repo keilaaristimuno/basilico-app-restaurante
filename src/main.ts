@@ -5,8 +5,11 @@ import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular';
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
+import { addIcons } from 'ionicons';
+import { qrCodeOutline } from 'ionicons/icons';
 
 defineCustomElements(window);
+addIcons({ qrCodeOutline });
 
 bootstrapApplication(AppComponent, {
   providers: [

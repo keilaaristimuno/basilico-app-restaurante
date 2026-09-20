@@ -98,11 +98,32 @@ async function getTargetTokens(
   if (payload.userIds?.length) {
     query = query.in("user_id", payload.userIds);
   } else if (payload.profiles?.length) {
-    const { data: employees, error } = await supabaseAdmin
-      .from("empleados")
-      .select("correo")
-      .in("perfil", payload.profiles);
-    if (error) throw error;
+    const employeeProfiles = payload.profiles.filter((p) => p !== "cliente");
+    const targetEmails: string[] = [];
+
+    if (employeeProfiles.length) {
+      const { data: employees, error } = await supabaseAdmin
+        .from("empleados")
+        .select("correo")
+        .in("perfil", employeeProfiles);
+      if (error) throw error;
+      (employees ?? []).forEach((emp) => {
+        if (emp.correo) targetEmails.push(emp.correo.toLowerCase());
+      });
+    }
+
+    if (payload.profiles.includes("cliente")) {
+      const { data: clients, error } = await supabaseAdmin
+        .from("clientes")
+        .select("correo")
+        .eq("estado", "aprobado");
+      if (error) throw error;
+      (clients ?? []).forEach((cli) => {
+        if (cli.correo) targetEmails.push(cli.correo.toLowerCase());
+      });
+    }
+
+    if (!targetEmails.length) return [];
 
     const { data: users, error: usersError } = await supabaseAdmin.auth.admin.listUsers({
       page: 1,
@@ -110,11 +131,9 @@ async function getTargetTokens(
     });
     if (usersError) throw usersError;
 
-    const employeeEmails = new Set(
-      (employees ?? []).map((employee) => employee.correo?.toLowerCase()).filter(Boolean)
-    );
+    const emailSet = new Set(targetEmails);
     const ids = (users.users ?? [])
-      .filter((user) => user.email && employeeEmails.has(user.email.toLowerCase()))
+      .filter((user) => user.email && emailSet.has(user.email.toLowerCase()))
       .map((user) => user.id);
     if (!ids.length) return [];
     query = query.in("user_id", ids);

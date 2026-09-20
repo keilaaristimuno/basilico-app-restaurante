@@ -309,10 +309,10 @@ export class Supabase {
 
   async obtenerClientesPendientes() {
     const { data, error } = await this.clienteSupabase
-      .from('clientes')
-      .select('*')
-      .eq('estado', 'pendiente')
-      .order('created_at', { ascending: false });
+      .from("clientes")
+      .select("*")
+      .eq("estado", "pendiente")
+      .order("created_at", { ascending: false });
 
     if (error) {
       throw new Error(`Error al obtener clientes pendientes: ${error.message}`);
@@ -321,15 +321,30 @@ export class Supabase {
     return data ?? [];
   }
 
-  async cambiarEstadoCliente(id: string | number, estado: 'aprobado' | 'rechazado') {
+  async cambiarEstadoCliente(id: string | number, estado: "aprobado" | "rechazado") {
     const { data, error } = await this.clienteSupabase
-      .from('clientes')
+      .from("clientes")
       .update({ estado })
-      .eq('id', id)
+      .eq("id", id)
       .select();
 
     if (error) {
       throw new Error(`Error al actualizar estado del cliente: ${error.message}`);
+    }
+
+    return data;
+  }
+
+  async obtenerClientePorCorreo(correo: string) {
+    const { data, error } = await this.clienteSupabase
+      .from("clientes")
+      .select("*")
+      .eq("correo", correo.trim().toLowerCase())
+      .maybeSingle();
+
+    if (error) {
+      console.error("Error al consultar cliente por correo:", error.message);
+      return null;
     }
 
     return data;

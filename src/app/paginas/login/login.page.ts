@@ -6,7 +6,7 @@ import { Router } from "@angular/router";
 import { 
   IonContent, IonGrid, IonRow, IonCol, 
   IonList, IonItem, IonInput, IonButton, 
-  IonText, AlertController, ToastController, IonSpinner 
+  IonText, ToastController, IonSpinner 
 } from "@ionic/angular";
 import { Supabase } from "../../services/supabase";
 import { PushNotificationsService } from "../../services/push-notifications.service";
@@ -37,7 +37,6 @@ export class LoginPage {
     private supabase: Supabase,
     private router: Router,
     private pushNotifications: PushNotificationsService,
-    private alertController: AlertController,
     private toastController: ToastController
   ) { }
 
@@ -101,22 +100,22 @@ export class LoginPage {
   private async procesarAccesoCliente(cliente: any) {
     if (cliente.estado === "rechazado") {
       await this.supabase.cerrarSesion();
-      await this.mostrarAlerta(
-        "Acceso Denegado",
-        "Tu solicitud de registro ha sido rechazada por la administración de Basílico."
+      await this.mostrarToast(
+        "Acceso Denegado: Su solicitud de registro ha sido rechazada. Revise su correo para más información.",
+        "danger"
       );
-      this.mensajeError.set("Tu solicitud de registro fue rechazada.");
+      this.mensajeError.set("Su solicitud de registro fue rechazada. Revise su correo para más información.");
       this.ingresoIncorrecto.set(true);
       return;
     }
 
     if (cliente.estado === "pendiente") {
       await this.supabase.cerrarSesion();
-      await this.mostrarAlerta(
-        "Cuenta en Revisión",
-        "Tu cuenta aún se encuentra pendiente de aprobación por el dueño o supervisor."
+      await this.mostrarToast(
+        "Cuenta en Revisión: Su solicitud se encuentra pendiente de aprobación. Revise su correo para más información.",
+        "warning"
       );
-      this.mensajeError.set("Tu cuenta está pendiente de aprobación.");
+      this.mensajeError.set("Su cuenta está pendiente de aprobación. Revise su correo para más información.");
       this.ingresoIncorrecto.set(true);
       return;
     }
@@ -181,19 +180,10 @@ export class LoginPage {
     }
   }
 
-  private async mostrarAlerta(titulo: string, mensaje: string) {
-    const alert = await this.alertController.create({
-      header: titulo,
-      message: mensaje,
-      buttons: ["Entendido"]
-    });
-    await alert.present();
-  }
-
-  private async mostrarToast(mensaje: string, color: "success" | "danger") {
+  private async mostrarToast(mensaje: string, color: "success" | "danger" | "warning") {
     const toast = await this.toastController.create({
       message: mensaje,
-      duration: 3000,
+      duration: 5000,
       color,
       position: "bottom"
     });

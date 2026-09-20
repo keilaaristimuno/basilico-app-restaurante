@@ -175,7 +175,7 @@ export class RegistroPage implements OnInit {
           'Nuevo cliente pendiente',
           `${nombres} ${apellidos} solicitó registrarse y espera aprobación.`,
           { profiles: ['duenio', 'dueno', 'dueño', 'supervisor'] },
-          { tipo: 'cliente_pendiente' }
+          { tipo: 'cliente_pendiente', ruta: '/clientes-pendientes' }
         );
       } catch (error) {
         console.error('El cliente se guardó, pero no se pudo enviar la push:', error);

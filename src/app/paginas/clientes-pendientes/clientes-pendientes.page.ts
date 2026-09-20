@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from "@angular/core";
+import { Component, OnInit, OnDestroy, signal } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterLink } from "@angular/router";
 import {
@@ -16,6 +16,8 @@ import {
   IonButton,
   IonSpinner,
   IonBadge,
+  IonRefresher,
+  IonRefresherContent,
   ToastController
 } from "@ionic/angular";
 import { Supabase } from "../../services/supabase";
@@ -54,13 +56,17 @@ interface ClientePendiente {
     IonCardContent,
     IonButton,
     IonSpinner,
-    IonBadge
+    IonBadge,
+    IonRefresher,
+    IonRefresherContent
   ]
 })
-export class ClientesPendientesPage implements OnInit {
+export class ClientesPendientesPage implements OnInit, OnDestroy {
   clientes = signal<ClientePendiente[]>([]);
   cargando = signal<boolean>(true);
   procesandoId = signal<string | number | null>(null);
+
+  private canalRealtime: any = null;
 
   constructor(
     private supabase: Supabase,
@@ -68,12 +74,75 @@ export class ClientesPendientesPage implements OnInit {
     private toastCtrl: ToastController
   ) {}
 
+  private timerAutoRefresco: any = null;
+
   ngOnInit() {
     void this.cargarClientes();
+    this.iniciarSuscripcionRealtime();
+    this.iniciarAutoRefresco();
   }
 
-  async cargarClientes() {
-    this.cargando.set(true);
+  ionViewWillEnter() {
+    void this.cargarClientes(false);
+    this.iniciarSuscripcionRealtime();
+    this.iniciarAutoRefresco();
+  }
+
+  ionViewWillLeave() {
+    this.detenerSuscripcionRealtime();
+    this.detenerAutoRefresco();
+  }
+
+  ngOnDestroy() {
+    this.detenerSuscripcionRealtime();
+    this.detenerAutoRefresco();
+  }
+
+  private iniciarAutoRefresco() {
+    this.detenerAutoRefresco();
+    this.timerAutoRefresco = setInterval(() => {
+      void this.cargarClientes(false);
+    }, 2500);
+  }
+
+  private detenerAutoRefresco() {
+    if (this.timerAutoRefresco) {
+      clearInterval(this.timerAutoRefresco);
+      this.timerAutoRefresco = null;
+    }
+  }
+
+  private iniciarSuscripcionRealtime() {
+    this.detenerSuscripcionRealtime();
+
+    this.canalRealtime = this.supabase.clienteSupabase
+      .channel('clientes-pendientes-realtime')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'clientes' },
+        () => {
+          void this.cargarClientes(false);
+        }
+      )
+      .subscribe();
+  }
+
+  private detenerSuscripcionRealtime() {
+    if (this.canalRealtime) {
+      void this.supabase.clienteSupabase.removeChannel(this.canalRealtime);
+      this.canalRealtime = null;
+    }
+  }
+
+  async refrescarManual(event: any) {
+    await this.cargarClientes(false);
+    event?.target?.complete();
+  }
+
+  async cargarClientes(mostrarSpinner = true) {
+    if (mostrarSpinner) {
+      this.cargando.set(true);
+    }
     try {
       const data = await this.supabase.obtenerClientesPendientes();
       this.clientes.set(data as ClientePendiente[]);
@@ -81,7 +150,9 @@ export class ClientesPendientesPage implements OnInit {
       console.error("Error al cargar clientes pendientes:", error);
       await this.mostrarToast(error?.message ?? "Error al obtener lista de clientes", "danger");
     } finally {
-      this.cargando.set(false);
+      if (mostrarSpinner) {
+        this.cargando.set(false);
+      }
     }
   }
 

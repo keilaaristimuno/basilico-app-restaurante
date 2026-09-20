@@ -151,7 +151,12 @@ Deno.serve(async (request) => {
 
     const supabaseAdmin = createClient(supabaseUrl, serviceRoleKey);
     const account = JSON.parse(accountJson) as FirebaseServiceAccount;
+
+    // Reactivar tokens para recuperar los que se hayan desactivado por error de formato previo
+    await supabaseAdmin.from("device_tokens").update({ activo: true }).eq("activo", false);
+
     const tokens = await getTargetTokens(supabaseAdmin, payload);
+    console.log("[enviar-push] Tokens destino encontrados:", tokens.length);
     if (!tokens.length) return jsonResponse({ sent: 0, message: "No hay tokens activos" });
 
     const accessToken = await createGoogleAccessToken(account);
@@ -168,23 +173,40 @@ Deno.serve(async (request) => {
             message: {
               token,
               notification: { title: payload.title, body: payload.body },
-              data: payload.data ?? {}
+              data: payload.data ?? {},
+              android: {
+                priority: "HIGH",
+                notification: {
+                  channel_id: "basilico_alta_prioridad",
+                  default_sound: true,
+                  default_vibrate_timings: true
+                }
+              }
             }
           })
         }
       );
-      return { token, ok: response.ok, result: await response.json() };
+      const resJson = await response.json();
+      console.log("[enviar-push] Respuesta FCM para token:", response.status, JSON.stringify(resJson));
+      return { token, ok: response.ok, result: resJson };
     }));
 
-    const failedTokens = results.filter((result) => !result.ok).map((result) => result.token);
-    if (failedTokens.length) {
+    const invalidos = results
+      .filter((r) => {
+        if (r.ok) return false;
+        const msg = JSON.stringify(r.result || "");
+        return msg.includes("UNREGISTERED") || msg.includes("NOT_FOUND");
+      })
+      .map((r) => r.token);
+
+    if (invalidos.length) {
       await supabaseAdmin
         .from("device_tokens")
         .update({ activo: false, updated_at: new Date().toISOString() })
-        .in("token", failedTokens);
+        .in("token", invalidos);
     }
 
-    return jsonResponse({ sent: results.filter((result) => result.ok).length, failed: failedTokens.length, results });
+    return jsonResponse({ sent: results.filter((result) => result.ok).length, failed: results.filter((result) => !result.ok).length, results });
   } catch (error) {
     console.error("Error en enviar-push:", error);
     return jsonResponse({ error: error instanceof Error ? error.message : "Error interno" }, 500);

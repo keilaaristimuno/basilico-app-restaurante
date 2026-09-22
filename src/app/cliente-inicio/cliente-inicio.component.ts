@@ -1,24 +1,42 @@
-import { Component, OnInit } from '@angular/core';
-import { IonContent, IonNote, IonTabButton, IonIcon, IonGrid, IonRow, IonCol, IonList, IonItem, IonInput, IonButton } from '@ionic/angular';
+import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import {
+  IonContent,
+  IonNote,
+  IonIcon,
+  IonButton,
+  ToastController
+} from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { qrCodeOutline } from 'ionicons/icons';
+import { qrCodeOutline, gameControllerOutline } from 'ionicons/icons';
 import { QrService } from '../services/qr.service';
 import { Supabase } from '../services/supabase';
+import { VibracionService } from '../services/vibracion';
+import { NavbarComponent } from '../components/navbar/navbar.component';
 
 @Component({
   selector: 'app-cliente-inicio',
   standalone: true,
   templateUrl: './cliente-inicio.component.html',
   styleUrls: ['./cliente-inicio.component.scss'],
-  imports: [IonTabButton, IonContent, IonNote, IonIcon, IonGrid, IonRow, IonCol, IonList, IonItem, IonInput, IonButton],
+  imports: [
+    RouterLink,
+    NavbarComponent,
+    IonContent,
+    IonNote,
+    IonIcon,
+    IonButton
+  ],
 })
 export class ClienteInicioComponent {
 
   constructor(
     private qrService: QrService,
-    private supabase: Supabase
+    private supabase: Supabase,
+    private toastCtrl: ToastController,
+    private vibracion: VibracionService
   ) {
-    addIcons({ qrCodeOutline });
+    addIcons({ qrCodeOutline, gameControllerOutline });
   }
 
   async escanearIngreso() {
@@ -26,7 +44,8 @@ export class ClienteInicioComponent {
     const codigoEscaneado = await this.qrService.leerQR();
 
     if (!codigoEscaneado) {
-      alert('Se canceló la lectura o no se pudo acceder a la cámara.');
+      await this.vibracion.errorFuerte();
+      await this.mostrarToast('Se canceló la lectura o no se pudo acceder a la cámara.', 'warning');
       return;
     }
 
@@ -34,8 +53,8 @@ export class ClienteInicioComponent {
     if (codigoEscaneado === 'BASILICO_INGRESO_LISTA_ESPERA') {
       await this.agregarAListaDeEspera();
     } else {
-      //Agregar module
-      //alert('El código QR escaneado no corresponde al ingreso de la lista de espera.');
+      await this.vibracion.errorFuerte();
+      await this.mostrarToast('El código QR no corresponde al ingreso del local.', 'danger');
     }
   }
 
@@ -65,11 +84,21 @@ export class ClienteInicioComponent {
 
     if (error) {
       console.error('Error al anotarse:', error.message);
-      alert('Error al anotarse en la lista de espera.');
+      await this.vibracion.errorFuerte();
+      await this.mostrarToast('Error al anotarse en la lista de espera.', 'danger');
       return;
     }
-    //Agregar module
-    //alert(`¡Te anotaste con éxito en la lista de espera como "${nombreCliente}"!`);
+
+    await this.mostrarToast(`¡Te anotaste con éxito en la lista de espera como "${nombreCliente}"!`, 'success');
   }
 
+  private async mostrarToast(mensaje: string, color: 'success' | 'warning' | 'danger') {
+    const toast = await this.toastCtrl.create({
+      message: mensaje,
+      duration: 3500,
+      color,
+      position: 'bottom'
+    });
+    await toast.present();
+  }
 }

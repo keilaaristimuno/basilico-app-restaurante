@@ -1,0 +1,331 @@
+.fondo-juegos {
+  --background: #283720; // Verde oliva oficial Basílico
+  color: #ede5d2; // Beige oficial
+  font-family: 'Montserrat', sans-serif;
+}
+
+.contenedor-principal {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-height: calc(100% - 60px);
+  box-sizing: border-box;
+}
+
+/* ====================================
+   ENCABEZADO
+==================================== */
+.encabezado-seccion {
+  text-align: center;
+  margin-top: 0.5rem;
+
+  .icono-cabecera {
+    font-size: 2.8rem;
+    color: #ede5d2;
+    margin-bottom: 0.25rem;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
+  }
+
+  h1 {
+    font-size: clamp(2rem, 5vw, 2.6rem);
+    color: #ede5d2;
+    margin: 0;
+    font-weight: 700;
+  }
+
+  .subtitulo-encabezado {
+    font-size: 0.92rem;
+    color: #ede5d2;
+    opacity: 0.9;
+    margin: 0.4rem auto 0;
+    max-width: 320px;
+    line-height: 1.35;
+  }
+}
+
+/* ====================================
+   BANNER DE ESTADO DEL DESCUENTO
+==================================== */
+.banner-descuento {
+  .tarjeta-premio {
+    background: linear-gradient(135deg, #1f4214, #2d5a1e);
+    border: 2px solid #a3c293;
+    border-radius: 16px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+
+    .premio-icono {
+      font-size: 2.6rem;
+      color: #ffd700;
+      flex-shrink: 0;
+    }
+
+    .premio-info {
+      .badge-premio {
+        background: #ffd700;
+        color: #283720;
+        font-weight: 800;
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        padding: 3px 8px;
+        border-radius: 8px;
+        letter-spacing: 0.5px;
+      }
+
+      h2 {
+        font-size: 1.3rem;
+        font-weight: 800;
+        margin: 0.25rem 0 0.15rem;
+        color: #ede5d2;
+      }
+
+      p {
+        font-size: 0.8rem;
+        margin: 0;
+        color: #d1dfcb;
+      }
+    }
+  }
+
+  .tarjeta-info-descuento {
+    background: rgba(237, 229, 210, 0.12);
+    border: 1px solid rgba(237, 229, 210, 0.25);
+    border-radius: 14px;
+    padding: 0.85rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+
+    .info-icono {
+      font-size: 2rem;
+      color: #b24d39;
+      flex-shrink: 0;
+    }
+
+    .info-texto {
+      .badge-info {
+        background: #b24d39;
+        color: #ede5d2;
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        padding: 2px 7px;
+        border-radius: 6px;
+      }
+
+      h3 {
+        font-size: 1.05rem;
+        font-weight: 700;
+        margin: 0.2rem 0 0.1rem;
+        color: #ede5d2;
+      }
+
+      p {
+        font-size: 0.8rem;
+        margin: 0;
+        color: #ede5d2;
+        opacity: 0.88;
+        line-height: 1.3;
+      }
+    }
+  }
+}
+
+/* ====================================
+   LISTA DE JUEGOS (Cards completas)
+==================================== */
+.seccion-juegos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+
+  .titulo-listado {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #ede5d2;
+    margin: 0 0 0.25rem;
+    letter-spacing: 0.5px;
+  }
+
+  .lista-juegos-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+
+  .tarjeta-juego {
+    background: #ede5d2; // Fondo Beige oficial para contraste nítido con texto oscuro
+    color: #283720;
+    border-radius: 18px;
+    padding: 1.15rem;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    .cabecera-tarjeta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .icono-juego {
+        width: 50px;
+        height: 50px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+
+        &.icono-verde {
+          background: #283720;
+          color: #ede5d2;
+        }
+
+        &.icono-terracota {
+          background: #b24d39;
+          color: #ede5d2;
+        }
+
+        &.icono-dorado {
+          background: #d48b1d;
+          color: #ede5d2;
+        }
+      }
+
+      .descuento-etiqueta {
+        background: #b24d39;
+        color: #ede5d2;
+        padding: 6px 12px;
+        border-radius: 12px;
+        display: flex;
+        align-items: baseline;
+        gap: 3px;
+        box-shadow: 0 2px 6px rgba(178, 77, 57, 0.35);
+
+        .porcentaje {
+          font-size: 1.35rem;
+          font-weight: 900;
+        }
+
+        .texto-off {
+          font-size: 0.75rem;
+          font-weight: 700;
+        }
+      }
+    }
+
+    .cuerpo-tarjeta {
+      h3 {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #283720;
+        margin: 0;
+      }
+
+      h4 {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #7b4b32;
+        margin: 0.15rem 0 0.4rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      p {
+        font-size: 0.9rem;
+        color: #3b4237;
+        margin: 0;
+        line-height: 1.4;
+      }
+    }
+
+    .pie-tarjeta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+
+      .estado-intento {
+        .badge-estado {
+          font-size: 0.78rem;
+          font-weight: 700;
+          padding: 6px 10px;
+          border-radius: 8px;
+          display: inline-flex;
+          align-items: center;
+          gap: 5px;
+        }
+      }
+
+      .boton-jugar {
+        --background: #283720;
+        --color: #ede5d2;
+        --border-radius: 12px;
+        font-weight: 700;
+        font-size: 1rem;
+        height: 48px;
+        margin: 0;
+      }
+
+      /* Panel de testing temporal */
+      .panel-test-simulacion {
+        background: rgba(40, 55, 32, 0.08);
+        border: 1px dashed rgba(40, 55, 32, 0.3);
+        border-radius: 10px;
+        padding: 6px 8px;
+
+        .label-test {
+          font-size: 0.72rem;
+          font-weight: 600;
+          color: #4a5445;
+          display: block;
+          margin-bottom: 4px;
+        }
+
+        .botones-test {
+          display: flex;
+          gap: 6px;
+
+          .btn-test {
+            flex: 1;
+            padding: 5px;
+            border-radius: 6px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+
+            &.ganar {
+              background: #283720;
+              color: #ede5d2;
+            }
+
+            &.perder {
+              background: #a84837;
+              color: #ede5d2;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/* ====================================
+   REINICIO DE TEST
+==================================== */
+.contenedor-reinicio {
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+
+  .boton-reiniciar {
+    --color: #ede5d2;
+    opacity: 0.75;
+    font-size: 0.8rem;
+    text-decoration: underline;
+  }
+}

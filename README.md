@@ -90,7 +90,7 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 
 | Tarea / Módulo | Fecha Inicio | Fecha Fin (Estimada/Real) | Branch | Estado |
 | :--- | :---: | :---: | :---: | :---: |
-| Desarrollo del Juego de Descuento (10%, 15%, 20%) | DD/MM/2026 | DD/MM/2026 | `feature/juegos` | Pendiente |
+| Desarrollo del Juego de Descuento (10%, 15%, 20%) | 21/09/2026 | DD/MM/2026 | `feature/juegos` | En proceso |
 | [Módulo W] | DD/MM/2026 | DD/MM/2026 | `feature/modulo-w` | Pendiente |
 
 ---

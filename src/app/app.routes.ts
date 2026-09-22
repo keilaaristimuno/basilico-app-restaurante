@@ -71,6 +71,10 @@ export const routes: Routes = [
     loadComponent: () => import('./paginas/inicio-duenio/inicio-duenio.component').then( m => m.InicioDuenioComponent)
   },
   {
+    path: 'juegos',
+    loadComponent: () => import('./paginas/juegos/juegos.page').then(m => m.JuegosPage)
+  },
+  {
     path: '**',
     redirectTo: 'inicio'
   },

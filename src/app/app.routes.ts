@@ -79,8 +79,12 @@ export const routes: Routes = [
     loadComponent: () => import('./paginas/registro-anonimo/registro-anonimo.component').then(m => m.RegistroAnonimoComponent)
   },
   {
+    path: 'alta-bebida',
+    loadComponent: () => import('./paginas/alta-bebida/alta-bebida.page').then( m => m.AltaBebidaPage)
+  },
+  {
     path: '**',
     redirectTo: 'inicio'
-  },
-
+  }
+  
 ];

@@ -1,22 +1,99 @@
-<ion-header>
+<ion-content [fullscreen]="true" class="fondo">
   <app-navbar rutaInicio="/metreInicio"></app-navbar>
-</ion-header>
 
-<ion-content class="contenido">
-  <div class="contenido">    
-    <!-- Header / Logo -->  
-     <ion-card class="cream-card fondoRegistro">
-      <ion-card-header>
-        <ion-card-title class="btn" routerLink="/registro">Registro de Cliente</ion-card-title>
-      </ion-card-header>
-   </ion-card>
-    <ion-card class="cream-card">
-      <ion-card-header>
-        <ion-card-title class="titulo">Lista de Espera</ion-card-title>
-      </ion-card-header>
-      <ion-card-content class="button-subtitle">
-        -> Persona ----- BTN(Asignar mesa) - BTON(Eliminar)
-      </ion-card-content>
-   </ion-card>   
+  <div class="contenedor">
+    <section class="encabezado">
+      <img
+        src="assets/Basilico/Logo_beige.png"
+        alt="Logotipo de Basílico"
+        class="logo">
+
+      <h1>Metre</h1>
+      <p>Seleccione la opción que desea realizar</p>
+    </section>
+
+    <section class="acciones">
+      <ion-card class="tarjeta" routerLink="/registro" button="true">
+        <ion-card-content>
+          <div class="informacion">
+            <h2>Registro de Cliente</h2>
+            <p>Registrar un nuevo cliente en el sistema.</p>
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="tarjeta tarjeta-contenedor">
+        <ion-card-content>
+          <div class="informacion">
+            <h2>Lista de Espera</h2>
+            <p>Clientes aguardando asignación de mesa.</p>
+            <ion-button size="small" color="success"(click)="abrirModuleMesas('5')">
+                        Asignar mesa
+                      </ion-button>
+            <div class="lista-clientes">
+              @for (lista of listaEspera(); track lista.id) {
+                <div class="cliente-item">
+                  <div class="cliente-info">
+                    <strong>{{ lista.nombre }}</strong>
+                    <span class="estado">{{ lista.estado }}</span>
+                  </div>
+
+                  @if (lista.estado === "pendiente") {
+                    <div class="acciones-cliente">
+                      <ion-button size="small" color="success"(click)="abrirModuleMesas(lista.id)">
+                        Asignar mesa
+                      </ion-button>
+
+                      <ion-button size="small" color="danger" (click)="rechazarCliente(lista.id)">
+                        Rechazar
+                      </ion-button>
+                    </div>
+                  }
+                </div>
+              } @empty {
+                <p class="sin-clientes">No hay clientes en la lista de espera.</p>
+              }
+            </div>
+
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+    </section>
   </div>
 </ion-content>
+
+<ion-modal [isOpen]="mostrarMesas()" class="encabezado">
+  <ng-template>
+      <ion-toolbar class="encabezado">
+        <ion-title>Asignar Mesa</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="cerrarModalMesas()">Cerrar</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    <ion-content class="ion-padding fondo ">
+      <ion-list class="listaMesa">
+        @for (mesa of listaMesas(); track mesa.id) {
+          @if (mesa.disponibilidad === 'vacia'){
+            <ion-item lines="full">
+              <ion-label>
+                <h2 class="tituloMesa"><strong>Mesa {{ mesa.numero }}</strong></h2>
+                <p>{{ mesa.cantidad_comensales }} comensales • {{ mesa.tipo }}</p>
+              </ion-label>
+              <ion-button class="btonTerracota" (click)="asignarMesaCliente(idSeleccionadoCliente(), mesa.numero)">
+                ASIGNAR
+              </ion-button>
+            </ion-item>
+          }
+          
+        } @empty {
+          <ion-item lines="none">
+            <ion-label class="ion-text-center">
+              <p>No hay mesas disponibles</p>
+            </ion-label>
+          </ion-item>
+        }
+      </ion-list>
+    </ion-content>
+  </ng-template>
+</ion-modal>

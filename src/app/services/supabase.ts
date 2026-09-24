@@ -351,4 +351,60 @@ export class Supabase {
     return data && data.length > 0 ? data[0] : null;
   }
 
+  // Para agregar un cliente a la lista de espera en Supabase
+  async agregarAListaDeEspera(nombreCliente: string) {
+    const { data: { user } } = await this.clienteSupabase.auth.getUser();
+
+    const { error } = await this.clienteSupabase
+      .from('lista_espera')
+      .insert([
+        {
+          user_id: user ? user.id : null,
+          nombre: nombreCliente,
+          estado: 'pendiente',
+          created_at: new Date()
+        }
+      ]);
+  }
+
+  //Para obtener la lista de espera desde Supabase
+  async obtenerListaDeEspera() {
+    const { data, error } = await this.clienteSupabase
+      .from("lista_espera")
+      .select("*")
+      .order("created_at", { ascending: true });
+  
+    if (error) {
+      console.error("Error al obtener la lista de espera:", error.message);
+      return [];
+    }
+
+    return data;
+  }
+
+  // Para eliminar un cliente de la lista de espera en Supabase
+  async eliminarDeListaDeEspera(id: string) {
+    const { error } = await this.clienteSupabase
+      .from('lista_espera')
+      .delete()
+      .eq('id', id);
+  }
+
+  //para asignar una mesa a un cliente en la lista de espera
+  async asignarMesaACliente(clienteId: string, numeroMesa: string) {
+    
+    const { error: errorMesa } = await this.clienteSupabase
+      .from('mesas')
+      .update({
+        disponibilidad: 'asignada',
+        cliente_id: clienteId
+      })
+      .eq('numero', numeroMesa);
+
+    if (errorMesa) throw errorMesa;
+
+    // eliminar cliente de lista de espera 
+    this.eliminarDeListaDeEspera(clienteId);
+  }
+
 }

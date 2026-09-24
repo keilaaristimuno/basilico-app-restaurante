@@ -75,6 +75,10 @@ export const routes: Routes = [
     loadComponent: () => import('./paginas/juegos/juegos.page').then(m => m.JuegosPage)
   },
   {
+    path: 'registroAnonimo',
+    loadComponent: () => import('./paginas/registro-anonimo/registro-anonimo.component').then(m => m.RegistroAnonimoComponent)
+  },
+  {
     path: '**',
     redirectTo: 'inicio'
   },

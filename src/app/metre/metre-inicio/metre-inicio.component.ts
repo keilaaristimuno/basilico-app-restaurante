@@ -27,7 +27,7 @@ export class MetreInicioComponent  {
   mostrarMesas = signal<boolean>(false);
   idSeleccionadoCliente = signal<string>('');
 
-  constructor( private supabase: Supabase, private pushNotificationsService : PushNotificationsService) { }
+  constructor( private supabase: Supabase, private pushNotificationsService: PushNotificationsService) { }
 
   ngOnInit() {
     this.obtenerListaEspera();

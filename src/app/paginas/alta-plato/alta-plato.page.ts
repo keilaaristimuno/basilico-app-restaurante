@@ -137,12 +137,10 @@ export class AltaPlatoPage implements OnInit {
     if (this.errorPlatoExistente) {
       this.errorPlatoExistente = false;
     }
-
   }
 
   // Función para seleccionar una foto usando la cámara o la galería
   seleccionarFoto(indice: number) {
-    console.log('Entré a seleccionarFoto');
     Camera.getPhoto({
       quality: 90,
       allowEditing: false,
@@ -151,11 +149,8 @@ export class AltaPlatoPage implements OnInit {
     })
     .then((image) => {
       // Procesar la imagen seleccionada
-      console.log('FOTO_DEBUG_INDICE:', indice);
       this.fotos[indice] = image.webPath ?? '';  
       this.cdr.detectChanges(); // Forzar la detección de cambios para actualizar la vista
-      console.log('FOTO_DEBUG_RUTA:', this.fotos[indice]);
-      console.log('FOTO_DEBUG_ARRAY:', this.fotos);
     })
     .catch((error) => {
       console.error('Error al seleccionar la foto:', error);
@@ -176,7 +171,6 @@ export class AltaPlatoPage implements OnInit {
     const url = this.supabase.obtenerUrlFotoProducto(resultado.path);
     this.urlsFotos.push(url);
   }
-  console.log('URLs DE LAS FOTOS:', this.urlsFotos);
   return this.urlsFotos;
 }
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { Plato } from '../interfaces/plato';
+import { Producto } from '../interfaces/producto';
 
 @Injectable({
   providedIn: 'root',
@@ -204,27 +204,86 @@ export class Supabase {
   }
 
   /* ====================================
-          OBTIENE PLATOS desde supabase
+          OBTIENE PRODUCTOS (plato y bebida) desde supabase
   =======================================*/
-  async obtenerPlatos(): Promise<Plato[]> {
+  async obtenerProductos(): Promise<Producto[]> {
 
     const { data, error } = await this.clienteSupabase
       .from('productos')
       .select('*')
-      .eq('tipo', 'plato')
       .order('nombre', {
         ascending: true
       });
 
     if (error) {
       throw Error(
-        `Error al obtener los platos: ${error.message}`
+        `Error al obtener los productos: ${error.message}`
       );
     }
 
-    return (data ?? []) as Plato[];
+    return (data ?? []) as Producto[];
   }
 
+  //verificar si un plato ya existe en la base de datos por su nombre
+  async platoExiste(nombre: string) {
+    const { data, error } = await this.clienteSupabase
+      .from('productos')
+      .select('id')
+      .eq('tipo', 'plato')
+      .like('nombre', nombre.trim())
+      .limit(1);
+
+    if (error) {
+      throw Error(`Error al verificar existencia del plato: ${error.message}`);
+    }
+    return data.length > 0; // Retorna true si el plato existe, false si no 
+  }
+
+  /* =============================
+        GUARDAR BEBIDA
+    ============================= */
+  async guardarBebida(
+    nombre: string,
+    descripcion: string,
+    tiempoElaboracion: number,
+    precio: number,
+    fotos: string[]
+  ) {
+    const { data, error } = await this.clienteSupabase
+      .from('productos')
+      .insert([{
+        tipo: 'bebida',
+        nombre: nombre.trim(),
+        descripcion: descripcion.trim(),
+        tiempo_elaboracion: tiempoElaboracion,
+        precio,
+        fotos
+      }]);
+
+    if (error) {
+      throw new Error(`Error al guardar la bebida: ${error.message}`);
+    }
+    return data;
+  }
+
+  async bebidaExiste(nombre: string): Promise<boolean> {
+    const { data, error } = await this.clienteSupabase
+      .from('productos')
+      .select('id')
+      .eq('tipo', 'bebida')
+      .eq('nombre', nombre.trim())
+      .limit(1);
+
+    if (error) {
+      throw new Error(`Error al verificar la bebida: ${error.message}`);
+    }
+
+    return (data?.length ?? 0) > 0;
+  }
+
+  /* =========================
+        FOTO EMPLEADO
+    ========================== */
 
   // Para subir la foto del empleado a Supabase Storage (bucket 'empleados')
   async subirFotoEmpleado(rutaFoto: string, nombreArchivo: string) {
@@ -291,20 +350,6 @@ export class Supabase {
       .getPublicUrl(ruta);
 
     return data.publicUrl;
-  }
-  //verificar si un plato ya existe en la base de datos por su nombre
-  async platoExiste(nombre: string) {
-    const { data, error } = await this.clienteSupabase
-      .from('productos')
-      .select('id')
-      .eq('tipo', 'plato')
-      .like('nombre', nombre.trim())
-      .limit(1);
-
-    if (error) {
-      throw Error(`Error al verificar existencia del plato: ${error.message}`);
-    }
-    return data.length > 0; // Retorna true si el plato existe, false si no 
   }
 
   async obtenerClientesPendientes() {

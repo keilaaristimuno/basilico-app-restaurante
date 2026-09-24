@@ -12,7 +12,7 @@ import {
 import { Supabase } from '../../services/supabase';
 import { Carga } from '../../services/carga';
 import { VibracionService } from '../../services/vibracion';
-import { Plato } from '../../interfaces/plato';
+import { Producto } from '../../interfaces/producto';
 
 @Component({
   selector: 'app-carta',
@@ -29,7 +29,15 @@ import { Plato } from '../../interfaces/plato';
 })
 export class CartaPage {
 
-  platos: Plato[] = [];
+  productos: Producto[] = [];
+
+  get platos(): Producto[] {
+    return this.productos.filter(producto => producto.tipo === 'plato');
+  }
+
+  get bebidas(): Producto[] {
+    return this.productos.filter(producto => producto.tipo === 'bebida');
+  }
 
   constructor(
     private supabase: Supabase,
@@ -40,24 +48,24 @@ export class CartaPage {
 
   async ionViewWillEnter() {
     console.log('Entrando a Carta');
-    await this.cargarPlatos();
+    await this.cargarProductos();
   }
 
-  async cargarPlatos() {
+  async cargarProductos() {
     try {
-      this.platos = await this.carga.ejecutar(
+      this.productos = await this.carga.ejecutar(
         'Cargando carta...',
-        () => this.supabase.obtenerPlatos()
+        () => this.supabase.obtenerProductos()
       );
 
       console.log(
-        'Platos obtenidos:',
-        this.platos
+        'Productos obtenidos:',
+        this.productos
       );
 
       console.log(
-        'Cantidad de platos:',
-        this.platos.length
+        'Cantidad de productos:',
+        this.productos.length
       );
       // Fuerza a Angular a refrescar el HTML
       this.cdr.detectChanges();
@@ -75,55 +83,55 @@ export class CartaPage {
 
   descripcionExpandida: Record<string, boolean> = {};
 
-  alternarDescripcion(plato: Plato): void {
-    this.descripcionExpandida[plato.id] = !this.descripcionExpandida[plato.id];
+  alternarDescripcion(producto: Producto): void {
+    this.descripcionExpandida[producto.id] = !this.descripcionExpandida[producto.id];
   }
   
   /* ======================
           CARROSUEL
   ========================= */
-  anteriorFoto(plato: Plato): void {
+  anteriorFoto(producto: Producto): void {
 
     const indiceActual =
-      this.indiceFoto[plato.id] ?? 0;
+      this.indiceFoto[producto.id] ?? 0;
 
     if (indiceActual === 0) {
 
-      this.indiceFoto[plato.id] =
-        plato.fotos.length - 1;
+      this.indiceFoto[producto.id] =
+        producto.fotos.length - 1;
 
     } else {
 
-      this.indiceFoto[plato.id] =
+      this.indiceFoto[producto.id] =
         indiceActual - 1;
 
     }
   }
 
-  siguienteFoto(plato: Plato): void {
+  siguienteFoto(producto: Producto): void {
 
     const indiceActual =
-      this.indiceFoto[plato.id] ?? 0;
+      this.indiceFoto[producto.id] ?? 0;
 
     if (
       indiceActual ===
-      plato.fotos.length - 1
+      producto.fotos.length - 1
     ) {
 
-      this.indiceFoto[plato.id] = 0;
+      this.indiceFoto[producto.id] = 0;
 
     } else {
 
-      this.indiceFoto[plato.id] =
+      this.indiceFoto[producto.id] =
         indiceActual + 1;
     }
   }
 
   irAFoto(
-    plato: Plato,
+    producto: Producto,
     indice: number
   ): void {
-    this.indiceFoto[plato.id] = indice;
+    this.indiceFoto[producto.id] = indice;
   }
 
   formatearPrecio(

@@ -76,11 +76,8 @@ export class RegistroAnonimoComponent  implements OnInit {
   }
 
   enviarFormulario() {
-    //Guardar solo en local storage
-    this.miFormulario.markAllAsTouched();
     this.errorFoto.set(!this.fotoCliente());
-
-    void this.registrarCliente();
+    this.guardarCliente();
   }
 
   async tomarFoto() {
@@ -109,8 +106,11 @@ export class RegistroAnonimoComponent  implements OnInit {
     await toast.present();
   }
 
-  async registrarCliente() {
-    //Agregar a localstorage unicamnete
+  async guardarCliente() {
+    const nombres = this.miFormulario.get('nombres')?.value;
+    localStorage.setItem('nombre', nombres);
+    localStorage.setItem('foto', this.fotoCliente())
+    this.router.navigate(['/clienteInicio']);
   }
 }
 

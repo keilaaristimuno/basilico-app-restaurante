@@ -31,8 +31,7 @@ export class NavbarComponent implements OnInit {
       console.error('Error al cerrar sesión:', error.message);
       return;
     }
-    localStorage.removeItem('nombre');
-    localStorage.removeItem('perfil');
+    localStorage.clear();
 
     await this.router.navigate(['/login'], {
       replaceUrl: true

@@ -99,6 +99,7 @@ export class RegistroAnonimoComponent  implements OnInit {
     }
   }
 
+
   resetearForm() {
     this.miFormulario.reset();
     this.fotoCliente.set('');
@@ -116,6 +117,11 @@ export class RegistroAnonimoComponent  implements OnInit {
   }
 
   async guardarCliente() {
+    if (this.miFormulario.invalid || !this.fotoCliente()) {
+      console.log("Formulario inválido");
+      return;
+    }
+    localStorage.clear();
     const nombres = this.miFormulario.get('nombres')?.value;
     localStorage.setItem('nombre', nombres);
     localStorage.setItem('foto', this.fotoCliente())

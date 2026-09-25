@@ -75,10 +75,9 @@ export class ClienteInicioComponent {
       .from('lista_espera')
       .insert([
         { 
-          user_id: user ? user.id : null, 
+          cliente_id: user ? user.id : null, 
           nombre: nombreCliente,
-          estado: 'pendiente',
-          created_at: new Date()
+          estado: 'esperando',
         }
       ]);
 

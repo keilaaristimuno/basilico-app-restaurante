@@ -50,7 +50,7 @@ export class MetreInicioComponent  {
         '¡Solicitud rechazada!',
         `El metre te ha rechazado su solicitud de mesa.`,
         { userIds: [idCliente] }, // Destinatario específico
-        { ruta: '/inicio' }  // Redirige al inicio
+        { ruta: '/clienteInicio' }  // Redirige al inicio
       );
     } catch(error){
       console.log('error ', error)

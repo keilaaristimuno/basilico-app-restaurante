@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as QRCode from 'qrcode';
 import { BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
+import { Capacitor } from '@capacitor/core';
 
 @Injectable({ providedIn: 'root' })
 export class QrService {
@@ -15,6 +16,16 @@ export class QrService {
     if (camera !== "granted") {
       const permiso = await BarcodeScanner.requestPermissions();
       if (permiso.camera !== "granted") return null;
+    }
+        /* LA INSTALACION SE INCIA ACA */
+    if (Capacitor.getPlatform() === 'android') {
+      const { available } =
+        await BarcodeScanner.isGoogleBarcodeScannerModuleAvailable();
+
+      if (!available) {
+        await BarcodeScanner.installGoogleBarcodeScannerModule();
+        throw new Error('Se inició la instalación del lector QR. Esperá un momento y volvé a intentar.');
+      }
     }
 
     const { barcodes } = await BarcodeScanner.scan();

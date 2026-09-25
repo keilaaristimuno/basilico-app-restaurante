@@ -53,6 +53,30 @@
   }
 }
 
+.tipo-producto {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  margin: 0.5rem 0 0.45rem;
+  padding: 6px 12px;
+
+  border: 1px solid rgba(237, 229, 210, 0.45);
+  border-radius: 20px;
+
+  color: var(--basilico-beige);
+
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08rem;
+
+  ion-icon {
+    font-size: 1.1rem;
+  }
+}
+
 /* =========================================================
    FORMULARIO
    ========================================================= */

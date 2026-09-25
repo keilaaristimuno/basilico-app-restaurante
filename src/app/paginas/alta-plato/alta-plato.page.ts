@@ -2,11 +2,13 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonInput, IonButton, IonItem, IonNote, IonSpinner, IonButtons, IonBackButton} from '@ionic/angular';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonList, IonInput, IonButton, IonItem, IonNote, IonSpinner, IonButtons, IonBackButton, IonIcon} from '@ionic/angular';
 import { Supabase } from '../../services/supabase';
 import { VibracionService } from '../../services/vibracion';
 import { Carga } from '../../services/carga';
 import { RouterLink } from '@angular/router';
+import { wineOutline, restaurantOutline} from 'ionicons/icons';
+import { addIcons } from 'ionicons';
 
 @Component({
   selector: 'app-alta-plato',
@@ -17,7 +19,8 @@ import { RouterLink } from '@angular/router';
     IonToolbar,
     IonButtons,
     IonBackButton,
-    RouterLink
+    RouterLink,
+    IonIcon
    ]
 })
 export class AltaPlatoPage implements OnInit {
@@ -40,7 +43,9 @@ export class AltaPlatoPage implements OnInit {
     private supabase: Supabase,
     private vibracion: VibracionService,
     public carga: Carga
-  ) {}
+  ) {
+    addIcons({ wineOutline, restaurantOutline});
+  }
 
   ngOnInit() {
   }

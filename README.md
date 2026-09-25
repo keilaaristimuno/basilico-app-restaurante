@@ -64,6 +64,7 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 |Inicio Cocinero | 18/09 | 19/09 |feature/cocinero-inicio|Finalizado |
 |Navbar y logout | 19/09 | 19/09 |feature/cocinero-inicio|Finalizado |
 |Alta bebida | 24/09 | 24/09 |feature/alta-bebida|Finalizado |
+|capturas doc | 25/09 | 25/09 |doc/capturas|en proceso |
 
 
 ---
@@ -110,39 +111,142 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 ---
 
 ## 📲 Códigos QR del Proyecto
+
 *Requisito excluyente: Todos los códigos QR deben estar disponibles para las pruebas.*
 
-* **QR de Ingreso al Local:**  
-  ![QR Ingreso](path/a/tu/imagen/qr-ingreso.png)
-* **QRs de Mesas (Mesas 1 a 5):**  
-  - Mesa 1: ![Mesa 1](path/a/tu/imagen/qr-mesa1.png)  
-  - Mesa 2: ![Mesa 2](path/a/tu/imagen/qr-mesa2.png)
-* **QRs de Propinas (Nivel de Satisfacción):**  
-  - Excelente (20%): ![Propina Excelente](path/a/tu/imagen/qr-propina-20.png)  
-  - Muy Bueno (15%): ![Propina Muy Bueno](path/a/tu/imagen/qr-propina-15.png)  
-  - Bueno (10%): ![Propina Bueno](path/a/tu/imagen/qr-propina-10.png)  
-  - Regular (5%): ![Propina Regular](path/a/tu/imagen/qr-propina-5.png)  
-  - Malo (0%): ![Propina Malo](path/a/tu/imagen/qr-propina-0.png)
+> Los códigos QR se incorporarán en esta sección a medida que sean generados y validados.
+
+### 🚪 QR de Ingreso al Local
+
+<!-- Pendiente de agregar -->
+
+### 🍽️ QRs de Mesas
+
+<!-- Pendientes de agregar -->
+
+### 💰 QRs de Propinas
+
+<!-- Pendientes de agregar -->
+
+- Excelente (20%)
+- Muy Bueno (15%)
+- Bueno (10%)
+- Regular (5%)
+- Malo (0%)
 
 ---
 
-## 🖼️ Índice de Imágenes del Proyecto
-*Requisito obligatorio: Índice para visualizar todas las imágenes asociadas al proyecto (íconos, pantallas de presentación, formularios, listados, etc.).*
+# 🖼️ Índice de Imágenes del Proyecto
 
-### 🎨 Diseño de Identidad
-- **Ícono de la Aplicación:** ![Logo](path/a/tu/imagen/app-icon.png)
-- **Splash Screen (Presentación):** ![Splash](path/a/tu/imagen/splash-screen.png)
+*Índice de las imágenes, pantallas, formularios y elementos visuales implementados en la aplicación.*
 
-### 📱 Formularios y Pantallas
-1. **Alta de Empleados:** ![Alta Empleados](path/a/tu/imagen/pantalla-empleado.png)
-2. **Alta de Platos / Bebidas:** ![Alta Platos](path/a/tu/imagen/pantalla-platos.png)
-3. **Listado de Clientes Pendientes:** ![Clientes Pendientes](path/a/tu/imagen/pantalla-clientes-pendientes.png)
-4. **Menú de Productos:** ![Menú](path/a/tu/imagen/pantalla-menu.png)
-5. **Sala de Conversación (Chat Mozo-Cliente):** ![Chat](path/a/tu/imagen/pantalla-chat.png)
-6. **Gráficos Estadísticos (Encuestas):** ![Gráficos](path/a/tu/imagen/pantalla-graficos.png)
-7. **Juegos de Descuento:** ![Juegos](path/a/tu/imagen/pantalla-juegos.png)
+## 🌐 Pantallas Generales
 
-*(Agregaremos aquí capturas de todas las pantallas y elementos visuales a medida que los vayan desarrollando).*
+### 1. Pantalla de Inicio
+
+Pantalla principal de la aplicación. Desde aquí el usuario puede iniciar sesión, registrarse o ingresar como cliente anónimo.
+
+<p align="center">
+  <img src="docs/capturas/generales/01-pantalla-inicio.png" width="300">
+</p>
+
+---
+
+### 2. Inicio de Sesión
+
+Pantalla para el ingreso de usuarios registrados mediante correo electrónico y contraseña.
+
+<p align="center">
+  <img src="docs/capturas/generales/02-inicio-sesion.png" width="300">
+</p>
+
+---
+
+### 3. Registro de Cliente
+
+Formulario para el registro de un nuevo cliente. Permite ingresar nombre, apellido, DNI, correo electrónico, contraseña y fotografía tomada desde el dispositivo.
+
+<p align="center">
+  <img src="docs/capturas/generales/03-registrarse-cliente-completo.png" width="300">
+  <img src="docs/capturas/generales/03-registrarse-cliente.png" width="300">
+</p>
+
+---
+
+### 4. Registro de Cliente Anónimo
+
+Pantalla de ingreso sin registro previo. El cliente anónimo ingresa su nombre y toma una fotografía desde el dispositivo.
+
+<p align="center">
+  <img src="docs/capturas/generales/04-registro-anonimo.png" width="300">
+</p>
+
+---
+
+### 5. Ícono de la Aplicación
+
+Ícono identificatorio de la aplicación Basílico.
+
+<p align="center">
+  <img src="docs/capturas/generales/05-logo-icono-inicio.png" width="300">
+</p>
+
+---
+
+### 6. Ingreso Rápido por Perfil
+
+Pantalla de ingreso rápido utilizada para acceder a la aplicación con los distintos perfiles disponibles.
+
+<p align="center">
+  <img src="docs/capturas/generales/06-ingreso-rapido-completo.png" width="300">
+  <img src="docs/capturas/generales/06-ingreso-rapido.png" width="300">
+</p>
+
+Los perfiles disponibles son:
+
+- Cliente
+- Dueño
+- Supervisor
+- Metre
+- Mozo
+- Cocinero
+- Cantinero
+
+---
+
+## 👤 Dueño / Supervisor
+
+*Las capturas correspondientes a este perfil se incorporarán a medida que las funcionalidades sean desarrolladas.*
+
+---
+
+## 🍳 Cocinero / Cantinero
+
+*Las capturas correspondientes a estos perfiles se incorporarán a medida que las funcionalidades sean desarrolladas.*
+
+---
+
+## 👤 Cliente
+
+*Las capturas correspondientes al flujo del cliente se incorporarán a medida que las funcionalidades sean desarrolladas.*
+
+---
+
+## 🧑‍🍳 Mozo / Metre
+
+*Las capturas correspondientes a estos perfiles se incorporarán a medida que las funcionalidades sean desarrolladas.*
+
+---
+
+## 🎮 Juegos
+
+*Las capturas correspondientes a los juegos de descuento se incorporarán a medida que sean desarrollados.*
+
+---
+
+## 📊 Encuestas y Gráficos
+
+*Las capturas correspondientes a las encuestas y gráficos estadísticos se incorporarán a medida que sean desarrollados.*
 
 ---
 

@@ -24,7 +24,11 @@ import {
   IonSelectOption, 
   IonContent,
   IonSpinner,
-  ToastController
+  ToastController,
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonBackButton
 } from '@ionic/angular';
 
   @Component({
@@ -48,7 +52,12 @@ import {
     IonSelectOption,
     RouterLink,
     IonContent,
-    IonSpinner],
+    IonSpinner,
+    IonHeader,
+    IonToolbar,
+    IonButtons,
+    IonBackButton
+  ],
 })
 export class RegistroAnonimoComponent  implements OnInit {
 

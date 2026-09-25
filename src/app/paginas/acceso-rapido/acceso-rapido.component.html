@@ -1,10 +1,22 @@
+<ion-header class="header-transparente">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button
+        defaultHref="/login"
+        text="Volver"
+        icon="chevron-back-outline">
+      </ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content class="login-content">
   <div class="login-container">  
     <div class="header-section">
       <img class="logo" src="assets/Basilico/Basiloco_beige.png" alt="Logotipo" routerLink="/login"/>
     </div>
     <div>
-        <ion-button expand="block" fill="outline" class="btonBeige" routerLink="/login">
+        <ion-button expand="block" fill="outline" class="btonBeige" (click)="ingresar('nachoarriaga.21@gmail.com','123456')">
           Cliente
         </ion-button>
         <ion-button expand="block" fill="outline" class="btonBeige" (click)="ingresar('agustina','123456')">
@@ -19,7 +31,7 @@
         <ion-button expand="block" fill="outline" class="btonBeige" (click)="ingresar('agustina','123456')">
           Mozo
         </ion-button>
-        <ion-button expand="block" fill="outline" class="btonBeige" (click)="ingresar('agustina','123456')">
+        <ion-button expand="block" fill="outline" class="btonBeige" (click)="ingresar('roberto@gmail.com','rober123')">
           Cocinero
         </ion-button>
         <ion-button expand="block" fill="outline" class="btonBeige" (click)="ingresar('agustina','123456')">

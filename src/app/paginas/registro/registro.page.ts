@@ -7,8 +7,6 @@ import { EmailService } from '../../services/email';
 import { PushNotificationsService } from '../../services/push-notifications.service';
 import { generarHtmlConfirmacion } from '../../utils/plantillas-email';
 
-//import { confirmarClaveValidator, datoExisteAsyncValidator } from '../../validaciones/usuario.validator';
-
 // Componentes UI de Ionic Standalone
 import {
   IonCard,
@@ -24,7 +22,11 @@ import {
   IonSelectOption, 
   IonContent,
   IonSpinner,
-  ToastController
+  ToastController,
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonBackButton
 } from '@ionic/angular';
 
 @Component({
@@ -47,7 +49,11 @@ import {
     IonSelectOption,
     RouterLink,
     IonContent,
-    IonSpinner
+    IonSpinner,
+    IonHeader,
+    IonToolbar,
+    IonButtons,
+    IonBackButton
   ],
   templateUrl: './registro.page.html',
   styleUrl: './registro.page.scss',

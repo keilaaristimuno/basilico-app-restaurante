@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { 
   IonContent, IonGrid, IonRow, IonCol, 
   IonList, IonItem, IonInput, IonButton, 
-  IonText
+  IonText, IonHeader, IonToolbar, IonButtons, IonBackButton
 } from '@ionic/angular';
 import { RouterLink } from '@angular/router';
 import { Supabase } from '../../services/supabase';
@@ -14,7 +14,9 @@ import { WritableSignal, signal } from '@angular/core';
   templateUrl: './acceso-rapido.component.html',
   standalone: true,
   styleUrls: ['./acceso-rapido.component.scss'],
-  imports: [ IonContent, IonGrid, IonRow, IonCol, IonButton, RouterLink ],
+  imports: [ IonContent, IonGrid, IonRow, IonCol, IonButton, RouterLink,
+    IonHeader, IonToolbar, IonButtons, IonBackButton
+   ],
 })
 export class AccesoRapidoComponent {
     ingresoIncorrecto: WritableSignal<boolean> = signal(false);
@@ -28,6 +30,24 @@ export class AccesoRapidoComponent {
       console.error('Error: ',error?.message);
 
     }else{
+
+      const cliente = await this.supabase.obtenerClientePorCorreo(mail);
+
+      if (cliente) {
+        if (cliente.estado !== 'aprobado') {
+          await this.supabase.cerrarSesion();
+          console.warn('El cliente no puede ingresar. Estado:', cliente.estado);
+          return;
+        }
+
+        localStorage.setItem('nombre', `${cliente.nombres} ${cliente.apellidos}`);
+        localStorage.setItem('perfil', 'cliente');
+
+        await this.router.navigate(['/clienteInicio']);
+        return;
+      }
+
+      /* OBTIENE EL PERFIL */
       const dataUsuarioLogueado =  await this.supabase.obtenerPerfilUsuarioLogueado();
       console.log('nombre del usuario:', dataUsuarioLogueado?.nombres);
       if(dataUsuarioLogueado){
@@ -45,7 +65,8 @@ export class AccesoRapidoComponent {
         this.router.navigate(['/mozoInicio']);
       }
       if(this.perfil() === 'cliente'){
-        this.router.navigate(['/clienteInicio']);
+        const navego = await this.router.navigate(['/clienteInicio']);
+        console.log('¿Navegó a clienteInicio?', navego);
       }
       if(this.perfil() === 'metre'){
         this.router.navigate(['/metreInicio']);

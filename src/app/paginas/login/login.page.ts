@@ -6,7 +6,10 @@ import { Router } from "@angular/router";
 import { 
   IonContent, IonGrid, IonRow, IonCol, 
   IonList, IonItem, IonInput, IonButton, 
-  IonText, ToastController, IonSpinner 
+  IonText, ToastController, IonSpinner, IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonBackButton 
 } from "@ionic/angular";
 import { Supabase } from "../../services/supabase";
 import { PushNotificationsService } from "../../services/push-notifications.service";
@@ -22,7 +25,8 @@ import { PushNotificationsService } from "../../services/push-notifications.serv
     RouterLink,
     IonContent, IonGrid, IonRow, IonCol, 
     IonList, IonItem, IonInput, IonButton, 
-    IonText, IonSpinner
+    IonText, IonSpinner, IonHeader, IonToolbar,IonButtons,
+    IonBackButton
   ]
 })
 export class LoginPage {
@@ -160,7 +164,7 @@ export class LoginPage {
         await this.router.navigate(["/metreInicio"]);
         break;
       case "cocinero":
-        await this.router.navigate(["/"]);
+        await this.router.navigate(["/inicio-cocinero"]);
         break;
       case "cliente":
         await this.router.navigate(["/clienteInicio"]);

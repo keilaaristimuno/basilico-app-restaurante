@@ -47,7 +47,6 @@ export class CartaPage {
   ) {}
 
   async ionViewWillEnter() {
-    console.log('Entrando a Carta');
     await this.cargarProductos();
   }
 
@@ -58,15 +57,6 @@ export class CartaPage {
         () => this.supabase.obtenerProductos()
       );
 
-      console.log(
-        'Productos obtenidos:',
-        this.productos
-      );
-
-      console.log(
-        'Cantidad de productos:',
-        this.productos.length
-      );
       // Fuerza a Angular a refrescar el HTML
       this.cdr.detectChanges();
 

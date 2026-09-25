@@ -355,3 +355,24 @@ ion-alert.perfil-alert .alert-radio-button {
 .tarjeta-deshabilitada {
   opacity: 0.65;
 }
+
+/* =========================================================
+   HEADER / VOLVER
+   ========================================================= */
+
+.header-transparente {
+  ion-toolbar {
+    --background: var(--basilico-olive);
+    --border-width: 0;
+    --color: var(--basilico-beige);
+    font-family: var(--font-body);
+  }
+
+  ion-back-button {
+    --color: var(--basilico-beige);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-transform: none;
+  }
+}

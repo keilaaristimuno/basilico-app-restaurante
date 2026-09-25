@@ -216,19 +216,174 @@ Los perfiles disponibles son:
 
 ## 👤 Dueño / Supervisor
 
-*Las capturas correspondientes a este perfil se incorporarán a medida que las funcionalidades sean desarrolladas.*
+### 1. Pantalla Principal del Dueño
+
+Pantalla principal correspondiente al perfil dueño. Desde esta sección se centralizan las funcionalidades administrativas disponibles para la gestión del restaurante.
+
+Actualmente permite acceder a:
+
+- **Alta de empleados:** registro de nuevos empleados del restaurante.
+- **Alta de mesa:** registro y gestión de nuevas mesas.
+- **Clientes pendientes:** visualización y gestión de clientes registrados que se encuentran pendientes de aprobación.
+
+<p align="center">
+  <img src="docs/capturas/duenio-supervisor/01-pantalla-inicio-duenio.png" width="300">
+</p>
+
+---
+
+### 2. Alta de Empleados
+
+Permite al dueño o supervisor registrar un nuevo empleado, ingresando sus datos personales y laborales, junto con una fotografía tomada desde el dispositivo.
+
+La funcionalidad contempla la validación de los datos ingresados y la posibilidad de utilizar la lectura del código QR del DNI para completar la información correspondiente.
+
+> 🎨 **Diseño en actualización:** La funcionalidad se encuentra implementada. La captura de la pantalla será incorporada cuando finalice la actualización visual de la interfaz.
+
+<!-- Captura pendiente: 02-alta-empleado.png -->
+
+---
+
+### 3. Alta de Mesa
+
+Permite al dueño o supervisor registrar una nueva mesa indicando sus datos correspondientes, como número, cantidad de comensales, tipo y fotografía.
+
+Al registrar la mesa, se genera el código QR correspondiente y posteriormente puede gestionarse su disponibilidad.
+
+> 🎨 **Diseño en actualización:** La funcionalidad se encuentra implementada. La captura de la pantalla será incorporada cuando finalice la actualización visual de la interfaz.
+
+<!-- Captura pendiente: 03-alta-mesa.png -->
+
+---
+
+### 4. Clientes Pendientes
+
+Permite al dueño o supervisor visualizar los clientes registrados que se encuentran pendientes de aprobación.
+
+Desde esta sección se puede consultar la información del cliente y gestionar su solicitud, permitiendo aceptar o rechazar su registro.
+
+> 🎨 **Diseño en actualización:** La funcionalidad se encuentra implementada. La captura de la pantalla será incorporada cuando finalice la actualización visual de la interfaz.
+
+<!-- Captura pendiente: 04-clientes-pendientes.png -->
 
 ---
 
 ## 🍳 Cocinero / Cantinero
 
-*Las capturas correspondientes a estos perfiles se incorporarán a medida que las funcionalidades sean desarrolladas.*
+### 1. Pantalla Principal de Cocina
+
+Pantalla principal correspondiente al perfil cocinero. Desde esta sección se centralizan las funcionalidades relacionadas con la gestión de platos y los pedidos correspondientes al sector cocina.
+
+Actualmente permite acceder a:
+
+- **Agregar plato:** incorporación de nuevos platos a la carta.
+- **Ver carta:** consulta de los productos disponibles.
+- **Pedidos pendientes:** visualización de los pedidos que deben ser preparados por el sector cocina.
+
+<p align="center">
+  <img src="docs/capturas/cocina-bar/01-pantalla-inicio-cocinero.png" width="300">
+</p>
+
+---
+
+### 2. Alta de Plato
+
+Permite al cocinero incorporar un nuevo plato a la carta del restaurante.
+
+El formulario permite ingresar:
+
+- Nombre del plato.
+- Descripción.
+- Tiempo estimado de elaboración en minutos.
+- Precio.
+- Tres fotografías diferentes del producto.
+
+La pantalla dispone de tres contenedores individuales para cargar y visualizar las fotografías del plato antes de realizar el alta.
+
+<p align="center">
+  <img src="docs/capturas/cocina-bar/02-pantalla-agregar-plato.png" width="300">
+  <img src="docs/capturas/cocina-bar/02-agregar-plato.png" width="300">
+</p>
+
+<p align="center">
+  <img src="docs/capturas/cocina-bar/02-botones-agregar-plato.png" width="300">
+</p>
+
+Una vez completados los datos y cargadas las tres fotografías, el cocinero puede registrar el nuevo plato mediante la opción **"Dar de alta el plato"** o acceder directamente a la carta mediante **"Ver carta"**.
+
+---
+
+### 3. Carta de Productos
+
+Pantalla destinada a la visualización de los productos disponibles en la carta del restaurante.
+
+Cada producto presenta su información correspondiente, incluyendo nombre, descripción, precio y tiempo estimado de elaboración. Las fotografías pueden recorrerse mediante el carrusel de imágenes disponible en cada producto.
+
+<p align="center">
+  <img src="docs/capturas/cocina-bar/03-carta-platos.png" width="300">
+</p>
+
+---
+
+### 4. Pedidos Pendientes de Cocina
+
+Esta sección permitirá al cocinero visualizar los pedidos confirmados que contienen productos correspondientes al sector cocina.
+
+Los pedidos deberán mostrar la mesa correspondiente, fecha y hora, junto con los productos y cantidades que deben ser preparados, agrupados por número de mesa.
+
+> 🚧 **Pendiente de implementación/documentación:** La captura de esta funcionalidad será incorporada cuando se encuentre disponible.
+
+<!-- Captura pendiente: 04-pedidos-pendientes-cocina.png -->
+
+---
+
+### 5. Alta de Bebida — Cantinero
+
+Permite al cantinero incorporar una nueva bebida a la carta del restaurante.
+
+Al igual que en el alta de platos, se ingresan el nombre, descripción, tiempo estimado de elaboración, precio y tres fotografías del producto.
+
+> 📷 **Captura pendiente:** La funcionalidad se encuentra disponible, pero su captura será incorporada al índice junto con la documentación correspondiente al perfil cantinero.
+
+<p align="center">
+  <img src="docs/capturas/cocina-bar/05-alta-bebida.png" width="300">
+</p>
+
+---
+
+### 6. Pantalla Principal del Cantinero
+
+Pantalla principal correspondiente al perfil cantinero, desde la cual se accederá a las funcionalidades relacionadas con bebidas y pedidos destinados al sector bar.
+
+> 🎨 **Pendiente:** La pantalla principal del perfil cantinero será incorporada cuando se encuentre disponible su diseño definitivo.
+
+<!-- Captura pendiente: 06-pantalla-inicio-cantinero.png -->
 
 ---
 
 ## 👤 Cliente
 
-*Las capturas correspondientes al flujo del cliente se incorporarán a medida que las funcionalidades sean desarrolladas.*
+### 1. Pantalla Principal del Cliente
+
+Pantalla principal correspondiente al perfil cliente. Desde esta sección el usuario puede escanear el código QR de ingreso al local para acceder al flujo de atención del restaurante o ingresar a la sección de juegos y descuentos.
+
+<p align="center">
+  <img src="docs/capturas/cliente/01-inicio-cliente.png" width="300">
+</p>
+
+---
+
+### 2. Juegos y Descuentos
+
+Sección destinada a los juegos disponibles para clientes registrados. Los juegos permiten obtener descuentos sobre la cuenta final según las condiciones establecidas para cada uno.
+
+El beneficio se obtiene únicamente al ganar en el primer intento y el primer descuento conseguido será el aplicado a la cuenta.
+
+> 🚧 **En desarrollo:** La sección de juegos se encuentra actualmente en proceso de implementación. La captura corresponde al estado actual de la interfaz y será actualizada a medida que avance el desarrollo.
+
+<p align="center">
+  <img src="docs/capturas/cliente/02-inicio-juegos.png" width="300">
+</p>
 
 ---
 

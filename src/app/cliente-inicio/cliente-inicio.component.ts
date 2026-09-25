@@ -61,25 +61,28 @@ export class ClienteInicioComponent {
   async agregarAListaDeEspera() {
     const { data: { user } } = await this.supabase.clienteSupabase.auth.getUser();
 
-    let nombreCliente = 'Cliente Anónimo';
-
-    if (user) {
-      const perfil = await this.supabase.obtenerPerfilUsuarioLogueado();
-      if (perfil?.nombres) {
-        nombreCliente = perfil.nombres;
-      }
+    if (!user?.email) {
+      await this.mostrarToast('Iniciá sesión para anotarte.', 'warning');
+      return;
     }
 
-    //Guarda la entrada en la tabla 'lista_espera' de Supabase
+    const cliente = await this.supabase.obtenerClientePorCorreo(user.email);
+
+    if (!cliente || cliente.estado !== 'aprobado') {
+      await this.mostrarToast('No se encontró una cuenta de cliente aprobada.', 'warning');
+      return;
+    }
+
+    const nombreCliente = `${cliente.nombres} ${cliente.apellidos}`.trim();
+
     const { error } = await this.supabase.clienteSupabase
       .from('lista_espera')
-      .insert([
-        { 
-          cliente_id: user ? user.id : null, 
-          nombre: nombreCliente,
-          estado: 'esperando',
-        }
-      ]);
+
+      .insert({
+        cliente_id: cliente.id,
+        nombre: nombreCliente
+      });
+
 
     if (error) {
       console.error('Error al anotarse:', error.message);

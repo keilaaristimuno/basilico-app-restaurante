@@ -156,7 +156,8 @@ export class LoginPage {
   private async redirigirSegunRol(rol: string) {
     switch (rol) {
       case "duenio":
-      case "dueño":
+        await this.router.navigate(["/duenioInicio"]);
+        break;
       case "supervisor":
         await this.router.navigate(["/clientes-pendientes"]);
         break;

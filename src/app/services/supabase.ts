@@ -351,4 +351,37 @@ export class Supabase {
     return data && data.length > 0 ? data[0] : null;
   }
 
+  /* ====================================
+     RESULTADOS DE JUEGOS Y DESCUENTOS
+     ==================================== */
+  async guardarResultadoJuego(
+    juego: string,
+    ganoPrimerIntento: boolean,
+    descuentoAplicado: number | null
+  ) {
+    try {
+      const { data: { user } } = await this.clienteSupabase.auth.getUser();
+
+      const { data, error } = await this.clienteSupabase
+        .from('juegos_resultados')
+        .insert([
+          {
+            cliente_id: user ? user.id : null,
+            juego,
+            gano_primer_intento: ganoPrimerIntento,
+            descuento_aplicado: descuentoAplicado
+          }
+        ])
+        .select();
+
+      if (error) {
+        console.warn('Aviso al guardar en juegos_resultados:', error.message);
+      }
+      return data;
+    } catch (e) {
+      console.warn('Error al registrar resultado en Supabase:', e);
+      return null;
+    }
+  }
+
 }

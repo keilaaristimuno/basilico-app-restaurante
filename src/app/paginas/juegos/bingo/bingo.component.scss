@@ -1,0 +1,556 @@
+.fondo-bingo {
+  --background: #283720;
+  color: #ede5d2;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.contenedor-principal {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  max-width: 520px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   ENCABEZADO
+   ========================================================= */
+.encabezado-bingo {
+  text-align: center;
+  margin-top: 0.25rem;
+
+  .logo-juego {
+    margin-bottom: 0.25rem;
+
+    .logo-img {
+      width: 75px;
+      height: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
+    }
+  }
+
+  h1 {
+    font-size: clamp(2rem, 6vw, 2.7rem);
+    color: #ede5d2;
+    margin: 0;
+    font-weight: 700;
+  }
+
+  .subtitulo-juego {
+    font-size: 0.88rem;
+    color: #ede5d2;
+    opacity: 0.9;
+    margin: 0.3rem auto 0;
+    max-width: 320px;
+    line-height: 1.35;
+  }
+}
+
+/* =========================================================
+   BANNER DE PROMOCIÓN
+   ========================================================= */
+.banner-promo {
+  .tarjeta-promo {
+    border-radius: 14px;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+
+    .icono-promo {
+      font-size: 1.9rem;
+      flex-shrink: 0;
+    }
+
+    .texto-promo {
+      .etiqueta-promo {
+        display: inline-block;
+        font-size: 0.7rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 2px 7px;
+        border-radius: 6px;
+        margin-bottom: 0.2rem;
+      }
+
+      p {
+        margin: 0;
+        font-size: 0.82rem;
+        line-height: 1.3;
+      }
+    }
+
+    &.activa {
+      background: linear-gradient(135deg, #1c4515, #2c5921);
+      border: 1px solid #7eb36d;
+      color: #ede5d2;
+
+      .icono-promo {
+        color: #ffd700;
+      }
+
+      .etiqueta-promo {
+        background: #ffd700;
+        color: #283720;
+      }
+    }
+
+    &.participa {
+      background: rgba(178, 77, 57, 0.2);
+      border: 1px solid #b24d39;
+      color: #ede5d2;
+
+      .icono-promo {
+        color: #ff9d85;
+      }
+
+      .etiqueta-promo {
+        background: #b24d39;
+        color: #ede5d2;
+      }
+    }
+
+    &.libre {
+      background: rgba(237, 229, 210, 0.1);
+      border: 1px solid rgba(237, 229, 210, 0.25);
+      color: #ede5d2;
+
+      .icono-promo {
+        color: #d1dfcb;
+      }
+
+      .etiqueta-promo {
+        background: rgba(237, 229, 210, 0.2);
+        color: #ede5d2;
+      }
+    }
+  }
+}
+
+/* =========================================================
+   MARCADOR DE LA PARTIDA
+   ========================================================= */
+.marcador-partida {
+  background: rgba(237, 229, 210, 0.08);
+  border: 1px solid rgba(237, 229, 210, 0.2);
+  border-radius: 14px;
+  padding: 0.65rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  .stat-caja {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+
+    .stat-icono {
+      font-size: 1.25rem;
+    }
+
+    .stat-etiqueta {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #c5d4be;
+      font-weight: 600;
+    }
+
+    .stat-valor {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #ede5d2;
+
+      &.pocas-chances {
+        color: #ff6b4a;
+        animation: pulso-aviso 1s infinite alternate;
+      }
+    }
+  }
+
+  .divisor-stat {
+    width: 1px;
+    height: 34px;
+    background: rgba(237, 229, 210, 0.2);
+  }
+}
+
+/* =========================================================
+   BOLILLERO CENTRAL
+   ========================================================= */
+.seccion-bolillero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+  background: rgba(18, 30, 13, 0.45);
+  border: 1px solid rgba(237, 229, 210, 0.15);
+  border-radius: 20px;
+  padding: 1.25rem 1rem;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.35);
+
+  .esfera-bolilla {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #d46b55, #b24d39 45%, #6a2416 90%);
+    box-shadow:
+      0 10px 22px rgba(0, 0, 0, 0.5),
+      inset 0 -8px 14px rgba(0, 0, 0, 0.4),
+      inset 0 4px 8px rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border: 3px solid rgba(237, 229, 210, 0.4);
+    transition: transform 0.25s ease;
+
+    .numero-bolilla {
+      width: 75px;
+      height: 75px;
+      background: radial-gradient(circle at 30% 30%, #fffef8, #ede5d2 70%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow:
+        inset 0 2px 4px rgba(0, 0, 0, 0.25),
+        0 3px 6px rgba(0, 0, 0, 0.3);
+
+      .numero-activo {
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: #283720;
+        font-family: 'Montserrat', sans-serif;
+      }
+
+      .bolilla-vacia {
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: #988e7b;
+      }
+
+      .spinner-bolillero {
+        width: 38px;
+        height: 38px;
+        color: var(--basilico-terracotta, #b24d39);
+      }
+    }
+
+    &.animando {
+      animation: sacudir-esfera 0.35s ease-in-out;
+    }
+  }
+
+  .boton-girar {
+    width: 100%;
+    max-width: 320px;
+    margin: 0;
+    --border-radius: 14px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    height: 52px;
+
+    ion-icon.rotar {
+      animation: spin-dados 0.6s infinite linear;
+    }
+  }
+
+  .ultimas-bolillas-contenedor {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.15rem;
+
+    .titulo-ultimas {
+      font-size: 0.75rem;
+      color: #c5d4be;
+      font-weight: 600;
+    }
+
+    .fila-bolillas-historial {
+      display: flex;
+      gap: 0.35rem;
+
+      .mini-bolilla {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #ede5d2;
+        color: #283720;
+        font-weight: 800;
+        font-size: 0.88rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+        border: 1px solid #b24d39;
+
+        &.primera {
+          background: #b24d39;
+          color: #ede5d2;
+          border-color: #ffd700;
+          transform: scale(1.08);
+        }
+      }
+    }
+  }
+}
+
+/* =========================================================
+   CARTÓN DE BINGO BASÍLICO
+   ========================================================= */
+.seccion-carton {
+  .marco-carton {
+    background: #ede5d2;
+    border-radius: 18px;
+    padding: 1.1rem;
+    box-shadow:
+      0 8px 24px rgba(0, 0, 0, 0.35),
+      0 0 0 3px #1c2716;
+    border: 3px solid #b24d39;
+
+    .cabecera-carton {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 0.3rem;
+
+      .icono-ramita {
+        font-size: 1.1rem;
+      }
+
+      .texto-cabecera {
+        font-size: 1.05rem;
+        font-weight: 800;
+        letter-spacing: 2px;
+        color: #283720;
+        text-transform: uppercase;
+      }
+    }
+
+    .instruccion-carton {
+      margin: 0 0 0.85rem;
+      text-align: center;
+      font-size: 0.78rem;
+      color: #4a5643;
+      font-weight: 600;
+    }
+
+    .rejilla-numeros {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.5rem;
+
+      .casilla-numero {
+        aspect-ratio: 1 / 1;
+        border-radius: 12px;
+        border: 2px solid #283720;
+        background: #fffdf7;
+        color: #283720;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        position: relative;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+        transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease;
+        padding: 0;
+
+        .numero-texto {
+          font-size: clamp(1.2rem, 4vw, 1.6rem);
+          font-weight: 800;
+          font-family: 'Montserrat', sans-serif;
+        }
+
+        .icono-check {
+          position: absolute;
+          top: 3px;
+          right: 5px;
+          font-size: 0.85rem;
+          color: #ffd700;
+          font-weight: 900;
+        }
+
+        &:active {
+          transform: scale(0.94);
+        }
+
+        &.acertada {
+          background: linear-gradient(135deg, #283720, #1c2b16);
+          color: #ede5d2;
+          border-color: #ffd700;
+          box-shadow: 0 3px 10px rgba(40, 55, 32, 0.4);
+          transform: scale(1.02);
+        }
+
+        &.disponible-marcar {
+          border-color: #b24d39;
+          animation: pulso-marcar 0.9s infinite alternate;
+        }
+      }
+    }
+  }
+}
+
+/* =========================================================
+   PANEL DE RESULTADO (VICTORIA / DERROTA)
+   ========================================================= */
+.panel-resultado {
+  border-radius: 18px;
+  padding: 1.35rem 1rem;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  animation: slide-up 0.3s ease-out;
+
+  .icono-resultado {
+    font-size: 3.2rem;
+    margin-bottom: 0.25rem;
+
+    ion-icon {
+      color: #ffd700;
+      filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.3));
+    }
+
+    &.triste ion-icon {
+      color: #ff6b4a;
+    }
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: #ede5d2;
+  }
+
+  .subtitulo-resultado {
+    margin: 0.3rem 0 0.85rem;
+    font-size: 0.88rem;
+    color: #d1dfcb;
+  }
+
+  &.victoria {
+    background: linear-gradient(135deg, #1d4016, #28541e);
+    border: 2px solid #a3c293;
+  }
+
+  &.derrota {
+    background: linear-gradient(135deg, #441f17, #59251a);
+    border: 2px solid #b24d39;
+  }
+
+  .caja-premio-obtenido {
+    background: rgba(255, 215, 0, 0.15);
+    border: 1px solid #ffd700;
+    border-radius: 12px;
+    padding: 0.85rem;
+    margin-bottom: 1rem;
+
+    .badge-felicitaciones {
+      background: #ffd700;
+      color: #283720;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    h3 {
+      margin: 0.4rem 0 0.2rem;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #ffd700;
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.8rem;
+      color: #ede5d2;
+    }
+  }
+
+  .caja-aviso-promo {
+    background: rgba(237, 229, 210, 0.12);
+    border-radius: 10px;
+    padding: 0.65rem 0.85rem;
+    margin-bottom: 1rem;
+
+    p {
+      margin: 0;
+      font-size: 0.82rem;
+      color: #ede5d2;
+      line-height: 1.35;
+    }
+  }
+
+  .botones-accion-fin {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+
+    ion-button {
+      margin: 0 auto;
+      width: 100%;
+      max-width: 320px;
+    }
+  }
+}
+
+.btonBordeBeige {
+  font-family: 'Montserrat', sans-serif;
+  --color: #ede5d2;
+  --border-color: #ede5d2;
+  --border-style: solid;
+  --border-width: 1.5px;
+  --border-radius: 12px;
+  height: 52px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.boton-volver-texto {
+  --color: #c5d4be;
+  font-size: 0.85rem;
+  text-transform: none;
+}
+
+/* =========================================================
+   ANIMACIONES
+   ========================================================= */
+@keyframes spin-dados {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes sacudir-esfera {
+  0% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.08) rotate(-8deg); }
+  50% { transform: scale(1.05) rotate(8deg); }
+  75% { transform: scale(1.08) rotate(-4deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes pulso-marcar {
+  0% { box-shadow: 0 0 0 0 rgba(178, 77, 57, 0.7); }
+  100% { box-shadow: 0 0 0 7px rgba(178, 77, 57, 0); }
+}
+
+@keyframes pulso-aviso {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.1); opacity: 1; }
+}
+
+@keyframes slide-up {
+  0% { opacity: 0; transform: translateY(18px); }
+  100% { opacity: 1; transform: translateY(0); }
+}

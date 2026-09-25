@@ -25,11 +25,13 @@ import {
   ribbonOutline,
   playCircleOutline,
   alertCircleOutline,
-  checkmarkCircleOutline
+  checkmarkCircleOutline,
+  gridOutline
 } from 'ionicons/icons';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { JuegosService, DefinicionJuego } from '../../services/juegos.service';
 import { VibracionService } from '../../services/vibracion';
+import { Supabase } from '../../services/supabase';
 
 @Component({
   selector: 'app-juegos',
@@ -47,6 +49,7 @@ import { VibracionService } from '../../services/vibracion';
 })
 export class JuegosPage implements OnInit {
   public juegosService = inject(JuegosService);
+  private supabase = inject(Supabase);
   private vibracion = inject(VibracionService);
   private toastCtrl = inject(ToastController);
   private router = inject(Router);
@@ -59,13 +62,13 @@ export class JuegosPage implements OnInit {
 
   juegos: DefinicionJuego[] = [
     {
-      id: 'juego-1',
-      titulo: 'Trivia Basílico',
-      subtitulo: 'Desafío de Cultura Culinaria',
+      id: 'bingo',
+      titulo: 'Bingo Basílico',
+      subtitulo: 'Llená tu Cartón Culinario',
       descuento: 10,
-      icono: 'help-circle-outline',
+      icono: 'grid-outline',
       colorIcono: 'icono-verde',
-      descripcion: 'Respondé correctamente preguntas sobre cocina italiana y recetas de la casa.',
+      descripcion: 'Sacá las bolillas del bolillero y completá las 5 casillas de tu cartón antes de agotar las 15 chances.',
       disponibleParaDescuento: true
     },
     {
@@ -101,7 +104,8 @@ export class JuegosPage implements OnInit {
       ribbonOutline,
       playCircleOutline,
       alertCircleOutline,
-      checkmarkCircleOutline
+      checkmarkCircleOutline,
+      gridOutline
     });
   }
 
@@ -121,6 +125,10 @@ export class JuegosPage implements OnInit {
 
   async seleccionarJuego(juego: DefinicionJuego) {
     this.juegoSeleccionado = juego;
+    if (juego.id === 'bingo') {
+      await this.router.navigate(['/juegos/bingo']);
+      return;
+    }
     await this.mostrarToast(
       `Seleccionaste: ${juego.titulo}. ¡Próximamente disponible para jugar!`,
       'warning'
@@ -134,6 +142,17 @@ export class JuegosPage implements OnInit {
   async simularResultado(juego: DefinicionJuego, gano: boolean) {
     const resultado = this.juegosService.registrarResultado(juego.id, gano, juego.descuento);
     this.actualizarDisponibilidadJuegos();
+
+    // Impactar en la base de datos Supabase igual que al jugar
+    try {
+      await this.supabase.guardarResultadoJuego(
+        juego.id,
+        resultado.exito,
+        resultado.exito ? juego.descuento : null
+      );
+    } catch (e) {
+      console.warn('Error al guardar simulación en Supabase:', e);
+    }
 
     if (resultado.exito) {
       await this.mostrarToast(resultado.mensaje, 'success');

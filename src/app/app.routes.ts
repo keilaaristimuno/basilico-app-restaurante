@@ -75,6 +75,10 @@ export const routes: Routes = [
     loadComponent: () => import('./paginas/juegos/juegos.page').then(m => m.JuegosPage)
   },
   {
+    path: 'juegos/bingo',
+    loadComponent: () => import('./paginas/juegos/bingo/bingo.component').then(m => m.BingoComponent)
+  },
+  {
     path: '**',
     redirectTo: 'inicio'
   },

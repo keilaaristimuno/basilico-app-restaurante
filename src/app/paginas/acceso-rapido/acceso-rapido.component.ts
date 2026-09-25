@@ -71,8 +71,8 @@ export class AccesoRapidoComponent {
       if(this.perfil() === 'metre'){
         this.router.navigate(['/metreInicio']);
       }
-      if(this.perfil() === 'dueño'){
-        this.router.navigate(['/dueñoInicio']);
+      if(this.perfil() === 'duenio'){
+        this.router.navigate(['/duenioInicio']);
       }
       if(this.perfil() === 'supervisor'){
         this.router.navigate(['/supervisorInicio']);

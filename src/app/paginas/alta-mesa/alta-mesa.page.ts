@@ -19,7 +19,9 @@ import {
   IonCardTitle,
   IonCardContent,
   IonSpinner,
-  ToastController
+  ToastController,
+  IonButtons,
+  IonBackButton,
 } from '@ionic/angular';
 import { Supabase } from '../../services/supabase';
 import { QrService } from '../../services/qr.service';
@@ -46,7 +48,9 @@ import { QrService } from '../../services/qr.service';
     IonCardHeader,
     IonCardTitle,
     IonCardContent,
-    IonSpinner
+    IonSpinner,
+    IonButtons,
+    IonBackButton,
   ]
 })
 export class AltaMesaPage implements OnInit {

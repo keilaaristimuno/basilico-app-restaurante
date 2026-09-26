@@ -59,7 +59,7 @@ export class AccesoRapidoComponent {
         this.router.navigate(['/inicio-cocinero']);
       }
       if(this.perfil() === 'cantinero'){
-        this.router.navigate(['/cantinero-inicio']);
+        this.router.navigate(['/inicio-cantinero']);
       }
       if(this.perfil() === 'mozo'){
         this.router.navigate(['/mozoInicio']);
@@ -75,7 +75,7 @@ export class AccesoRapidoComponent {
         this.router.navigate(['/duenioInicio']);
       }
       if(this.perfil() === 'supervisor'){
-        this.router.navigate(['/supervisorInicio']);
+        this.router.navigate(['/duenioInicio']);
       }
     }
   }

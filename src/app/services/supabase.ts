@@ -92,7 +92,7 @@ export class Supabase {
     return data;
   }
 
-  async guardarMesa(numero: number, cantidadComensales: number, tipo: string, disponibilidad: string, fotoUrl: string) {
+  async guardarMesa(numero: number, cantidadComensales: number, tipo: string, disponibilidad: string, fotoUrl: string, qr:string) {
     const { data, error } = await this.clienteSupabase
       .from('mesas')
       .insert([
@@ -102,6 +102,7 @@ export class Supabase {
           tipo,
           disponibilidad,
           foto_url: fotoUrl,
+          qr,
           created_at: new Date().toISOString()
         }
       ])

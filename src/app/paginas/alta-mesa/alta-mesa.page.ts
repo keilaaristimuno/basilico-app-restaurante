@@ -171,16 +171,19 @@ export class AltaMesaPage implements OnInit {
       const resultado = await this.supabase.subirFotoMesa(this.fotoMesa(), nombreArchivo);
       const fotoUrl = this.supabase.obtenerUrlFotoMesa(resultado.path);
 
-      const mesaCreada = await this.supabase.guardarMesa(
+      const qrString = `mesa_numero:${this.numero}|tipo:${tipoGuardado}`;
+      const qrGenerado = await this.qrService.generarQR(qrString);
+      this.qrMesa.set(qrGenerado);
+
+      await this.supabase.guardarMesa(
         Number(this.numero),
         Number(this.cantidadComensales),
         tipoGuardado,
         'vacia',
-        fotoUrl
+        fotoUrl,
+        this.qrMesa()
       );
 
-      const mesaId = mesaCreada?.[0]?.id ?? `mesa-${Date.now()}`;
-      this.qrMesa.set(await this.qrService.generarQR(`mesa_id:${mesaId}|numero:${this.numero}`));
 
       await this.cargarMesas();
       await this.mostrarToast('Mesa cargada correctamente.', 'success');

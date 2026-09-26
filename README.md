@@ -422,7 +422,99 @@ Pagina de inicio de juegos
 
 ## 🧑‍🍳 Mozo / Metre
 
-*Las capturas correspondientes a estos perfiles se incorporarán a medida que las funcionalidades sean desarrolladas.*
+### 1. Pantalla Principal del Metre
+
+Pantalla principal correspondiente al perfil metre. Desde esta sección se centralizan las funcionalidades relacionadas con el ingreso de clientes al restaurante y la asignación de mesas.
+
+Actualmente permite acceder a:
+
+- **Registro de cliente:** permite registrar un nuevo cliente en el sistema.
+- **Lista de espera:** permite visualizar los clientes que se encuentran esperando una mesa y gestionar la asignación correspondiente.
+
+<p align="center">
+  <img src="docs/capturas/mozo-metre/01-inicio-metre.png" width="300">
+</p>
+
+---
+
+### 2. Lista de Espera y Asignación de Mesa
+
+Desde la lista de espera, el metre puede visualizar los clientes que solicitaron ingresar al restaurante y se encuentran esperando la asignación de una mesa.
+
+Una vez disponible una mesa, el metre puede asignarla al cliente correspondiente para continuar con el flujo de atención.
+
+> 🚧 **En desarrollo:** La implementación de la funcionalidad de asignar mesa. La captura de esta pantalla será incorporada cuando la funcionalidad se encuentre finalizada.
+
+<p align="center">
+  <img src="docs/capturas/mozo-metre/03-asignar-mesa.png" width="300">
+</p>
+
+---
+
+### 3. Pantalla Principal del Mozo
+
+Pantalla principal correspondiente al perfil mozo. Desde esta sección se centralizan las funcionalidades necesarias para gestionar los pedidos, la entrega de productos, las cuentas de las mesas y las consultas realizadas por los clientes.
+
+Actualmente dispone de los siguientes accesos:
+
+- **Nuevos pedidos:** pedidos enviados por los clientes que requieren confirmación o rechazo por parte del mozo.
+- **Pedidos listos:** pedidos cuya preparación fue finalizada y se encuentran disponibles para ser entregados.
+- **Cuentas y liberación:** gestión del proceso de cobro y posterior liberación de la mesa.
+- **Chat de consultas:** acceso a las consultas y conversaciones iniciadas por los clientes.
+
+<p align="center">
+  <img src="docs/capturas/mozo-metre/02-inicio-mozo.png" width="300">
+</p>
+
+---
+
+### 4. Nuevos Pedidos
+
+Sección destinada a visualizar los nuevos pedidos realizados por los clientes.
+
+El mozo podrá revisar el pedido recibido y decidir si lo **confirma** o lo **rechaza**. En caso de ser rechazado, el cliente podrá modificar los productos o cantidades y volver a enviar el pedido.
+
+Una vez confirmado por el mozo, el pedido será derivado a los sectores correspondientes para comenzar su preparación.
+
+> 🚧 **En desarrollo:** La implementación de la gestión de nuevos pedidos se encuentra actualmente en proceso. La captura de esta pantalla será incorporada cuando la funcionalidad se encuentre finalizada.
+
+<!-- Captura pendiente: 02-nuevos-pedidos-mozo.png -->
+
+---
+
+### 5. Pedidos Listos
+
+Sección destinada a visualizar los pedidos cuya preparación fue completada por los sectores correspondientes.
+
+El pedido deberá estar disponible para entrega una vez que todos los productos que lo componen se encuentren listos. Desde esta sección, el mozo podrá identificar los pedidos preparados y continuar con la entrega al cliente.
+
+> 🚧 **En desarrollo:** La implementación de la gestión de pedidos listos se encuentra actualmente en proceso. La captura de esta pantalla será incorporada cuando la funcionalidad se encuentre finalizada.
+
+<!-- Captura pendiente: 03-pedidos-listos-mozo.png -->
+
+---
+
+### 6. Cuentas y Liberación de Mesa
+
+Sección destinada a gestionar las cuentas solicitadas por los clientes y completar el proceso de pago.
+
+Luego de la confirmación correspondiente, se podrá finalizar la atención y liberar la mesa para que vuelva a estar disponible.
+
+> 📷 **Captura pendiente:** Se incorporará la captura correspondiente cuando la interfaz se encuentre disponible.
+
+<!-- Captura pendiente: 04-cuentas-liberacion-mozo.png -->
+
+---
+
+### 7. Chat de Consultas
+
+Sección destinada a recibir y responder las consultas realizadas por los clientes desde sus mesas.
+
+El sistema permitirá mantener una sala de conversación entre clientes y mozos, identificando las consultas correspondientes y permitiendo continuar la comunicación durante la atención.
+
+> 📷 **Captura pendiente:** Se incorporará la captura correspondiente cuando la interfaz se encuentre disponible.
+
+<!-- Captura pendiente: 05-chat-consultas-mozo.png -->
 
 ---
 
@@ -437,12 +529,4 @@ Pagina de inicio de juegos
 *Las capturas correspondientes a las encuestas y gráficos estadísticos se incorporarán a medida que sean desarrollados.*
 
 ---
-
-# PALETA DE COLORES
-  - ROJO ANARANJADO
-    RGB: #b24d39
-  - VERDE OLIVA
-    RGB: #283720
-  - BEIGE
-    RGB: #ede5d2
 

@@ -4,6 +4,7 @@ import { Router, RouterModule, RouterLink } from '@angular/router';
 import { Camera } from '@capacitor/camera';
 import { Supabase } from '../../services/supabase';
 import { EmailService } from '../../services/email';
+import { VibracionService } from '../../services/vibracion';
 import { PushNotificationsService } from '../../services/push-notifications.service';
 import { generarHtmlConfirmacion } from '../../utils/plantillas-email';
 
@@ -70,6 +71,7 @@ export class RegistroAnonimoComponent  implements OnInit {
   constructor(
     private router: Router,
     private fb: FormBuilder,
+    private vibracion: VibracionService,
     private toastCtrl: ToastController,
   ) { }
 
@@ -94,7 +96,9 @@ export class RegistroAnonimoComponent  implements OnInit {
       const imagen = await Camera.takePhoto({ quality: 90 });
       this.fotoCliente.set(imagen.webPath ?? imagen.uri ?? '');
       this.errorFoto.set(false);
+      await this.vibracion.errorFuerte();
     } catch (error) {
+      await this.vibracion.errorFuerte();
       console.error('Error al tomar la foto del cliente:', error);
     }
   }
@@ -109,7 +113,7 @@ export class RegistroAnonimoComponent  implements OnInit {
   private async mostrarToast(mensaje: string, color: 'success' | 'danger') {
     const toast = await this.toastCtrl.create({
       message: mensaje,
-      duration: 3000,
+      duration: 4000,
       color,
       position: 'bottom'
     });

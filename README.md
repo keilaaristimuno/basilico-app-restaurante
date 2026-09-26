@@ -136,14 +136,14 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 Qr al ingresar un cliente al local para figurar en listad e espera
 
 <p align="center">
-  <img src="docs/capturas/qr/qr-ingreso-local.png" width="300">
+  <img src="docs/qr/qr-ingreso-local.png" width="300">
 </p>
 
 ### 🍽️ QRs de Mesas
 Qr para escanear mesa
 
 <p align="center">
-  <img src="docs/capturas/qr/qr-mesa.png" width="300">
+  <img src="docs/qr/qr-mesa.png" width="300">
 </p>
 
 ### 💰 QRs de Propinas

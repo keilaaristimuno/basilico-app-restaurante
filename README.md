@@ -287,11 +287,6 @@ Desde esta sección se puede consultar la información del cliente y gestionar s
   <img src="docs/capturas/duenio-supervisor/05-clientes-pendientes.png" width="300">
 </p>
 
-<p align="center">
-  <img src="docs/capturas/duenio-supervisor/04-duenio-clientes-pendientes.jpeg" width="300">
-</p>
-
-
 ---
 
 ## 🍳 Cocinero / Cantinero

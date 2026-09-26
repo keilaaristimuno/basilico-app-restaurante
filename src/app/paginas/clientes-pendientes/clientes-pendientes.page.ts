@@ -1,26 +1,32 @@
-import { Component, OnInit, OnDestroy, signal } from "@angular/core";
+import { Component, OnInit, OnDestroy, signal, computed } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterLink } from "@angular/router";
 import {
   IonContent,
   IonHeader,
-  IonTitle,
   IonToolbar,
   IonButtons,
   IonBackButton,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardSubtitle,
-  IonCardContent,
   IonButton,
   IonSpinner,
-  IonBadge,
   IonRefresher,
   IonRefresherContent,
+  IonIcon,
   ToastController,
-  
 } from "@ionic/angular";
+import { addIcons } from "ionicons";
+import {
+  peopleOutline,
+  personOutline,
+  checkmarkCircleOutline,
+  closeCircleOutline,
+  mailOutline,
+  timeOutline,
+  chevronBackOutline,
+  chevronForwardOutline,
+  checkmarkDoneCircleOutline,
+  arrowBackOutline,
+} from "ionicons/icons";
 import { Supabase } from "../../services/supabase";
 import { EmailService } from "../../services/email";
 import { generarHtmlAprobacion, generarHtmlRechazo } from "../../utils/plantillas-email";
@@ -46,20 +52,14 @@ interface ClientePendiente {
     RouterLink,
     IonContent,
     IonHeader,
-    IonTitle,
     IonToolbar,
     IonButtons,
     IonBackButton,
-    IonCard,
-    IonCardHeader,
-    IonCardTitle,
-    IonCardSubtitle,
-    IonCardContent,
     IonButton,
     IonSpinner,
-    IonBadge,
     IonRefresher,
-    IonRefresherContent
+    IonRefresherContent,
+    IonIcon,
   ]
 })
 export class ClientesPendientesPage implements OnInit, OnDestroy {
@@ -67,15 +67,41 @@ export class ClientesPendientesPage implements OnInit, OnDestroy {
   cargando = signal<boolean>(true);
   procesandoId = signal<string | number | null>(null);
 
+  // Índice de la solicitud actual (navegación lateral)
+  indiceClienteActual = signal<number>(0);
+
+  // Cliente actualmente visible
+  clienteActual = computed(() => {
+    const list = this.clientes();
+    const idx = this.indiceClienteActual();
+    return list[idx] ?? null;
+  });
+
   private canalRealtime: any = null;
+  private timerAutoRefresco: any = null;
+
+  // Detección de swipe lateral en móviles
+  private touchStartX = 0;
+  private touchEndX = 0;
 
   constructor(
     private supabase: Supabase,
     private emailService: EmailService,
     private toastCtrl: ToastController
-  ) {}
-
-  private timerAutoRefresco: any = null;
+  ) {
+    addIcons({
+      peopleOutline,
+      personOutline,
+      checkmarkCircleOutline,
+      closeCircleOutline,
+      mailOutline,
+      timeOutline,
+      chevronBackOutline,
+      chevronForwardOutline,
+      checkmarkDoneCircleOutline,
+      arrowBackOutline,
+    });
+  }
 
   ngOnInit() {
     void this.cargarClientes();
@@ -146,13 +172,53 @@ export class ClientesPendientesPage implements OnInit, OnDestroy {
     }
     try {
       const data = await this.supabase.obtenerClientesPendientes();
-      this.clientes.set(data as ClientePendiente[]);
+      const list = (data as ClientePendiente[]) || [];
+      this.clientes.set(list);
+
+      // Si el índice actual quedó fuera de rango tras refrescar, ajustarlo
+      if (this.indiceClienteActual() >= list.length && list.length > 0) {
+        this.indiceClienteActual.set(list.length - 1);
+      }
     } catch (error: any) {
       console.error("Error al cargar clientes pendientes:", error);
       await this.mostrarToast(error?.message ?? "Error al obtener lista de clientes", "danger");
     } finally {
       if (mostrarSpinner) {
         this.cargando.set(false);
+      }
+    }
+  }
+
+  anteriorCliente() {
+    if (this.indiceClienteActual() > 0) {
+      this.indiceClienteActual.update(i => i - 1);
+    }
+  }
+
+  siguienteCliente() {
+    if (this.indiceClienteActual() < this.clientes().length - 1) {
+      this.indiceClienteActual.update(i => i + 1);
+    }
+  }
+
+  irACliente(indice: number) {
+    if (indice >= 0 && indice < this.clientes().length) {
+      this.indiceClienteActual.set(indice);
+    }
+  }
+
+  onTouchStart(event: TouchEvent) {
+    this.touchStartX = event.changedTouches[0].screenX;
+  }
+
+  onTouchEnd(event: TouchEvent) {
+    this.touchEndX = event.changedTouches[0].screenX;
+    const diff = this.touchEndX - this.touchStartX;
+    if (Math.abs(diff) > 45) {
+      if (diff < 0) {
+        this.siguienteCliente();
+      } else {
+        this.anteriorCliente();
       }
     }
   }
@@ -168,7 +234,15 @@ export class ClientesPendientesPage implements OnInit, OnDestroy {
 
       const accion = nuevoEstado === "aprobado" ? "aprobado" : "rechazado";
       await this.mostrarToast(`Cliente ${cliente.nombres} ${cliente.apellidos} ${accion} con éxito.`, "success");
-      this.clientes.update(lista => lista.filter(c => c.id !== cliente.id));
+
+      // Actualizar lista y ajustar puntero
+      this.clientes.update(lista => {
+        const nueva = lista.filter(c => c.id !== cliente.id);
+        if (this.indiceClienteActual() >= nueva.length && nueva.length > 0) {
+          this.indiceClienteActual.set(nueva.length - 1);
+        }
+        return nueva;
+      });
     } catch (error: any) {
       console.error("Error al actualizar estado:", error);
       await this.mostrarToast(error?.message ?? "No se pudo actualizar el estado", "danger");
@@ -211,5 +285,30 @@ export class ClientesPendientesPage implements OnInit, OnDestroy {
       position: "bottom"
     });
     await toast.present();
+  }
+
+  /**
+   * Formatea la fecha y la hora en formato dd/MM/yyyy - hh:mm hs
+   */
+  formatearFechaHora(fechaStr?: string): string {
+    if (!fechaStr) return '';
+    try {
+      const fecha = new Date(fechaStr);
+      if (isNaN(fecha.getTime())) return fechaStr;
+
+      const dia = String(fecha.getDate()).padStart(2, '0');
+      const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+      const anio = fecha.getFullYear();
+      const horas = String(fecha.getHours()).padStart(2, '0');
+      const minutos = String(fecha.getMinutes()).padStart(2, '0');
+
+      return `${dia}/${mes}/${anio} - ${horas}:${minutos} hs`;
+    } catch {
+      return fechaStr;
+    }
+  }
+
+  onFotoError(event: any) {
+    event.target.src = 'assets/icon/favicon.png';
   }
 }

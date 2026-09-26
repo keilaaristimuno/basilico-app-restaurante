@@ -10,73 +10,166 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content class="clientes-content">
   <ion-refresher slot="fixed" (ionRefresh)="refrescarManual($event)">
     <ion-refresher-content pullingText="Deslizar para actualizar" refreshingSpinner="crescent"></ion-refresher-content>
   </ion-refresher>
 
-  @if (cargando()) {
-    <div class="spinner-container">
-      <ion-spinner name="crescent" color="primary"></ion-spinner>
-      <p>Cargando lista de pendientes...</p>
-    </div>
-  } @else if (clientes().length === 0) {
-    <div class="empty-container">
-      <img src="assets/icon/favicon.png" alt="Logo" class="empty-icon" />
-      <h3>Sin solicitudes pendientes</h3>
-      <p>No hay clientes esperando aprobación en este momento.</p>
-      <ion-button routerLink="/inicio" fill="outline" color="primary" class="ion-margin-top">
-        Volver al Inicio
-      </ion-button>
-    </div>
-  } @else {
-    <div class="clientes-grid">
-      @for (cliente of clientes(); track cliente.id) {
-        <ion-card class="cliente-card">
-          <div class="foto-wrapper">
-            <img [src]="cliente.foto_url || 'assets/icon/favicon.png'" [alt]="cliente.nombres" class="cliente-foto" />
-            <ion-badge color="warning" class="badge-estado">Pendiente</ion-badge>
-          </div>
-
-          <ion-card-header>
-            <ion-card-title class="cliente-nombre">
-              {{ cliente.apellidos }}, {{ cliente.nombres }}
-            </ion-card-title>
-            <ion-card-subtitle class="cliente-info">
-              <div><strong>DNI:</strong> {{ cliente.dni }}</div>
-              <div><strong>Correo:</strong> {{ cliente.correo }}</div>
-            </ion-card-subtitle>
-          </ion-card-header>
-
-          <ion-card-content>
-            <div class="acciones-container">
-              <ion-button
-                color="success"
-                expand="block"
-                class="btn-accion"
-                [disabled]="procesandoId() === cliente.id"
-                (click)="responderSolicitud(cliente, 'aprobado')">
-                @if (procesandoId() === cliente.id) {
-                  <ion-spinner name="crescent"></ion-spinner>
-                } @else {
-                  Aceptar
-                }
-              </ion-button>
-
-              <ion-button
-                color="danger"
-                expand="block"
-                fill="outline"
-                class="btn-accion"
-                [disabled]="procesandoId() === cliente.id"
-                (click)="responderSolicitud(cliente, 'rechazado')">
-                Rechazar
-              </ion-button>
-            </div>
-          </ion-card-content>
-        </ion-card>
+  <div class="clientes-layout-container">
+    <!-- ENCABEZADO CON TEXTO BASÍLICO Y NÚMERO DE SOLICITUDES -->
+    <header class="pantalla-header">
+      <h1 class="font-logo brand-logo">Basílico</h1>
+      <h2 class="subtitulo-pantalla">Clientes pendientes</h2>
+      @if (clientes().length > 0) {
+        <div class="badge-solicitudes">
+          <ion-icon name="people-outline"></ion-icon>
+          <span>{{ clientes().length }} {{ clientes().length === 1 ? 'solicitud pendiente' : 'solicitudes pendientes' }}</span>
+        </div>
       }
-    </div>
-  }
-</ion-content>
+    </header>
 
+    <!-- ESTADO: CARGANDO -->
+    @if (cargando()) {
+      <div class="loading-state-wrapper">
+        <ion-spinner name="crescent" class="spinner-custom"></ion-spinner>
+        <p class="loading-texto">Cargando solicitudes pendientes...</p>
+      </div>
+    } @else if (clientes().length === 0) {
+      <!-- ESTADO: SIN SOLICITUDES -->
+      <div class="empty-state-wrapper">
+        <div class="empty-card">
+          <div class="empty-icono-wrapper">
+            <ion-icon name="checkmark-done-circle-outline" class="empty-icono"></ion-icon>
+          </div>
+          <h3 class="empty-titulo">Sin solicitudes pendientes</h3>
+          <p class="empty-subtitulo">
+            Todas las solicitudes de registro han sido gestionadas. No hay clientes esperando aprobación en este momento.
+          </p>
+          <ion-button routerLink="/duenioInicio" class="btn-volver-duenio">
+            <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+            Volver al panel
+          </ion-button>
+        </div>
+      </div>
+    } @else {
+      <!-- FLUJO CON SCROLL / NAVEGACIÓN LATERAL ENTRE CLIENTES -->
+      @if (clienteActual(); as cliente) {
+        <div
+          class="tarjeta-pantalla-wrapper"
+          (touchstart)="onTouchStart($event)"
+          (touchend)="onTouchEnd($event)">
+
+          @if (clientes().length > 1) {
+            <!-- BARRA DE NAVEGACIÓN LATERAL -->
+            <div class="carrusel-nav">
+              <button
+                type="button"
+                class="btn-nav-arrow"
+                [disabled]="indiceClienteActual() === 0"
+                (click)="anteriorCliente()"
+                aria-label="Solicitud anterior">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+              </button>
+
+              <div class="nav-centro">
+                <span class="nav-texto">
+                  Solicitud {{ indiceClienteActual() + 1 }} de {{ clientes().length }}
+                </span>
+                <div class="nav-dots">
+                  @for (c of clientes(); track c.id; let i = $index) {
+                    <span
+                      class="nav-dot"
+                      [class.activo]="i === indiceClienteActual()"
+                      (click)="irACliente(i)">
+                    </span>
+                  }
+                </div>
+              </div>
+
+              <button
+                type="button"
+                class="btn-nav-arrow"
+                [disabled]="indiceClienteActual() === clientes().length - 1"
+                (click)="siguienteCliente()"
+                aria-label="Siguiente solicitud">
+                <ion-icon name="chevron-forward-outline"></ion-icon>
+              </button>
+            </div>
+          }
+
+          <!-- CARD COMPLETA (APROVECHA EL ALTO DE LA PANTALLA) -->
+          <article class="cliente-card-full">
+            <!-- FOTOGRAFÍA PROPORCIONAL -->
+            <div class="foto-wrapper-full">
+              <img
+                [src]="cliente.foto_url || 'assets/icon/favicon.png'"
+                [alt]="'Foto de ' + cliente.nombres + ' ' + cliente.apellidos"
+                class="cliente-foto"
+                (error)="onFotoError($event)"
+              />
+              <div class="badge-estado">
+                <span class="punto-pulso"></span>
+                <span>Pendiente</span>
+              </div>
+            </div>
+
+            <!-- CUERPO DE DATOS -->
+            <div class="cliente-detalle-full">
+              <div class="encabezado-cliente">
+                <h3 class="cliente-nombre">
+                  {{ cliente.apellidos }}, {{ cliente.nombres }}
+                </h3>
+                <span class="badge-dni">
+                  DNI {{ cliente.dni }}
+                </span>
+              </div>
+
+              <div class="cliente-info-box">
+                <div class="dato-row">
+                  <ion-icon name="mail-outline" class="dato-icono"></ion-icon>
+                  <span class="dato-texto" [title]="cliente.correo">
+                    <strong>Email:</strong> {{ cliente.correo }}
+                  </span>
+                </div>
+
+                @if (cliente.created_at) {
+                  <div class="dato-row">
+                    <ion-icon name="time-outline" class="dato-icono"></ion-icon>
+                    <span class="dato-texto">
+                      <strong>Solicitud:</strong> {{ formatearFechaHora(cliente.created_at) }}
+                    </span>
+                  </div>
+                }
+              </div>
+
+              <!-- BOTONES APILADOS UNO ARRIBA DEL OTRO -->
+              <div class="acciones-container-full">
+                <ion-button
+                  expand="block"
+                  class="btn-aceptar"
+                  [disabled]="procesandoId() === cliente.id"
+                  (click)="responderSolicitud(cliente, 'aprobado')">
+                  @if (procesandoId() === cliente.id) {
+                    <ion-spinner name="crescent"></ion-spinner>
+                  } @else {
+                    <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
+                    Aceptar
+                  }
+                </ion-button>
+
+                <ion-button
+                  expand="block"
+                  class="btn-rechazar"
+                  [disabled]="procesandoId() === cliente.id"
+                  (click)="responderSolicitud(cliente, 'rechazado')">
+                  <ion-icon slot="start" name="close-circle-outline"></ion-icon>
+                  Rechazar
+                </ion-button>
+              </div>
+            </div>
+          </article>
+        </div>
+      }
+    }
+  </div>
+</ion-content>

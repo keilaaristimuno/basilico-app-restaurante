@@ -70,7 +70,10 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 |Inicio Cocinero | 18/09 | 19/09 |feature/cocinero-inicio|Finalizado |
 |Navbar y logout | 19/09 | 19/09 |feature/cocinero-inicio|Finalizado |
 |Alta bebida | 24/09 | 24/09 |feature/alta-bebida|Finalizado |
-|capturas doc | 25/09 | 25/09 |doc/capturas|en proceso |
+|capturas doc | 25/09 | 25/09 |doc/capturas|Finalizado |
+|Alta mesa diseño | 25/09 | 25/09 |develop|Finalizado |
+|Inicio cantinero | 25/09 | 25/09 |develop|Finalizado |
+
 
 
 ---

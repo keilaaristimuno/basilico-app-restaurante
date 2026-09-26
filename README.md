@@ -398,7 +398,7 @@ El beneficio se obtiene únicamente al ganar en el primer intento y el primer de
 > 🚧 **En desarrollo:** La sección de juegos se encuentra actualmente en proceso de implementación. La captura corresponde al estado actual de la interfaz y será actualizada a medida que avance el desarrollo.
 
 <p align="center">
-  <img src="docs/capturas/cliente/02-inicio-juegos.png" width="300">
+  <img src="docs/capturas/cliente/02-cliente-juegos.png" width="300">
 </p>
 
 ---

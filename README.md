@@ -137,11 +137,18 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 
 ### 🚪 QR de Ingreso al Local
 
-<!-- Pendiente de agregar -->
+Qr al ingresar un cliente al local para figurar en listad e espera
+
+<p align="center">
+  <img src="docs/capturas/qr/qr-ingreso-local.png" width="300">
+</p>
 
 ### 🍽️ QRs de Mesas
+Qr para escanear mesa
 
-<!-- Pendientes de agregar -->
+<p align="center">
+  <img src="docs/capturas/qr/qr-mesa.png" width="300">
+</p>
 
 ### 💰 QRs de Propinas
 
@@ -401,8 +408,14 @@ El beneficio se obtiene únicamente al ganar en el primer intento y el primer de
 
 > 🚧 **En desarrollo:** La sección de juegos se encuentra actualmente en proceso de implementación. La captura corresponde al estado actual de la interfaz y será actualizada a medida que avance el desarrollo.
 
+Pagina de inicio de juegos 
+
 <p align="center">
-  <img src="docs/capturas/cliente/02-cliente-juegos.jpeg" width="300">
+  <img src="docs/capturas/generales/inicio-juegos.jpg" width="300">
+</p>
+
+<p align="center">
+  <img src="docs/capturas/generales/juegos-2.jpg" width="300">
 </p>
 
 ---

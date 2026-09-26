@@ -105,14 +105,24 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 ### 👤 Seggiaro, Agustina Anabel
 * **Módulos / Objetivos a desarrollar:** 
  - Login principal
+ - Metre
+ - Mozo
+ - Nexo entre cliente / metre / mozo
 * **Planificación de Tareas:**
 
 | Tarea / Módulo | Fecha Inicio | Fecha Fin (Estimada/Real) | Branch | Estado |
 | :--- | :---: | :---: | :---: | :---: |
 | Login principal (Validaciones) | 08/09/2026 | 10/09/2026 | `feature/registro-login` | Finalizado |
 | Pantalla de incio (Redirigir) | 08/09/2026 | 10/09/2026 | `feature/registro-login` | Finalizado |
-| Acceso rápido (Redirigir) | 10/09/2026 | - | `feature/registro-login` | En procceso |
-| Pantalla inicio Metre | 10/09/2026 | - | `feature/registro-login` | En procceso |
+| Acceso rápido (Redirigir) | 10/09/2026 | - | `feature/registro-login` | Finalizado |
+| Pantalla inicio Metre | 10/09/2026 | 15/09/2026 | `feature/mozo-metre` | Finalizado |
+| Pantalla inicio Mozo | 10/09/2026 | 17/09/2023 | `feature/mozo-metre` | Finalizado |
+| Pantalla inicio cliente | 15/09/2026 |  17/09/2023 | `feature/develop` | Finalizado |
+| Código QR ingreso local | 15/09/2026 |  17/09/2023 | `feature/develop` | Finalizado |
+| Entrada de cliente a lista de espera | 15/09/2026 |  17/09/2023 | `feature/develop` | Finalizado |
+| Lista de espera mozo | 21/09/2026 | - | `feature/develop` | En proceso |
+| Registro  cliente anonimo | 23/09/2026 | 24/09/2026 |  `feature/develop`| Finalizado |
+
 
 ---
 

@@ -62,12 +62,14 @@ export class Supabase {
   }
 
   async guardarDatosClientes(
-    apellidos: string,
-    nombres: string,
-    dni: number,
-    correo: string,
-    clave: string,
-    foto_url: string
+    apellidos: string | null,
+    nombres: string | null,
+    dni: number | null,
+    correo: string | null,
+    clave: string | null,
+    foto_url: string | null,
+    perfil: string | null,
+    estado: string | null,
   ) {
     const { data, error } = await this.clienteSupabase
       .from('clientes')
@@ -77,8 +79,9 @@ export class Supabase {
         dni,
         correo,
         clave,
-        estado: 'pendiente',
-        foto_url
+        foto_url,
+        perfil,
+        estado,
       }]);
 
     if (error) {

@@ -22,13 +22,13 @@
     max-width: 50%;
     height: auto;
     display: block;
-    margin: 0 auto 1rem auto;
+    margin: 0 auto 0.3rem auto;
   }
 
   .titulo-login {
     font-family: 'Montserrat', sans-serif;
-    font-size: clamp(1.4rem, 5vw, 1.8rem);
-    font-weight: 800;
+    font-size: clamp(1rem, 5vw, 1.8rem);
+    font-weight: 200;
     color: #ede5d2;
     margin: 0;
   }
@@ -64,12 +64,12 @@
 }
 
 .inicio {
-  background: #98a791;
+  background: #283720;
   text-align: center;
-  margin: 1.5rem auto 0 auto;
-  padding: 14px;
+  margin: 0 auto 0 auto;
+  padding: 10px;
   border-radius: 12px;
-  width: 100%;
+  width: 95%;
   box-sizing: border-box;
 
   p {

@@ -3,7 +3,7 @@ import { CommonModule } from "@angular/common";
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from "@angular/forms";
 import { Camera } from "@capacitor/camera";
 import { ToastController } from "@ionic/angular";
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonItem, IonInput, IonButton, IonNote, IonSelect, IonSelectOption, IonCard, IonCardHeader, IonCardTitle, IonCardContent } from "@ionic/angular";
+import { IonContent, IonHeader, IonSpinner, IonTitle, IonToolbar, IonButtons, IonBackButton, IonItem, IonInput, IonButton, IonNote, IonSelect, IonSelectOption, IonCard, IonCardHeader, IonCardTitle, IonCardContent } from "@ionic/angular";
 import { QrService } from "../../services/qr.service";
 import { Supabase } from "../../services/supabase";
 import { PushNotificationsService } from "../../services/push-notifications.service";
@@ -12,7 +12,7 @@ import { PushNotificationsService } from "../../services/push-notifications.serv
   selector: "app-alta-empleado",
   templateUrl: "./alta-empleado.page.html",
   styleUrls: ["./alta-empleado.page.scss"],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonItem, IonInput, IonButton, IonNote, IonSelect, IonSelectOption, IonCard, IonCardHeader, IonCardTitle, IonCardContent]
+  imports: [CommonModule, IonSpinner, FormsModule, ReactiveFormsModule, IonContent, IonHeader, IonTitle, IonToolbar, IonButtons, IonBackButton, IonItem, IonInput, IonButton, IonNote, IonSelect, IonSelectOption, IonCard, IonCardHeader, IonCardTitle, IonCardContent]
 })
 export class AltaEmpleadoPage implements OnInit {
 

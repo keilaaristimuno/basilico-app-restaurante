@@ -30,6 +30,9 @@
             <ion-button size="small" color="success"(click)="abrirModuleMesas('5')">
                         Asignar mesa
                       </ion-button>
+                      <ion-button size="small" color="success" routerLink="/qrIngreso">
+                        Ver Qr ingreso
+                      </ion-button>
             <div class="lista-clientes">
               @for (lista of listaEspera(); track lista.id) {
                 <div class="cliente-item">

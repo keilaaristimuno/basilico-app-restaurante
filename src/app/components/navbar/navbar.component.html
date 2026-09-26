@@ -1,0 +1,17 @@
+<ion-tab-bar class="custom-tab-bar">
+  
+  <ion-tab-button [routerLink]="rutaInicio">
+    <img class="logoChico" src="assets/Basilico/Logo_beige.png" alt="Logotipo">
+  </ion-tab-button>
+
+    <ion-label>
+      @if(nombre !== null){
+        <div class="textoNombre">{{nombre}}</div>
+      }
+    </ion-label>
+
+  <ion-tab-button (click)= "cerrarSesion()">
+    <ion-label>Salir</ion-label>
+  </ion-tab-button>
+
+</ion-tab-bar>

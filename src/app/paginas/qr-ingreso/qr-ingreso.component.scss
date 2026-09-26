@@ -1,0 +1,25 @@
+
+.contenido{
+    background-color: #ede5d2;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1.5rem; // Padding amplio para bordes de pantalla
+    box-sizing: border-box;
+    align-items: center;
+}
+.titulo {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
+    color: #283720;
+    text-align: center;
+    padding: -0.5rem;
+}
+.logo{
+    width: 50%;
+    height: auto;
+}
+.qr{
+    background-color: #b24d39;
+    padding: 1rem;
+}

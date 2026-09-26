@@ -1,0 +1,279 @@
+<ion-header class="header-transparente">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button
+        defaultHref="/duenioInicio"
+        text="Volver"
+        icon="chevron-back-outline">
+      </ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="registro-content">
+  <div class="registro-container">
+    <ion-card class="registro-card">
+        <p class="titulo">Nuevo empleado</p>
+      <ion-card-content class="registro-container">
+        <form [formGroup]="formularioEmpleado" (ngSubmit)="guardarEmpleado()">
+
+          <!-- Sección de Foto con Cámara Obligatoria -->
+          <div class="seccion-foto ion-text-center">
+            @if (fotoEmpleado()) {
+              <div class="contenedor-foto">
+                <img [src]="fotoEmpleado()" alt="Foto de perfil del empleado" class="preview-foto" />
+              </div>
+              <ion-button type="button" class="botonVerde" expand="block" (click)="tomarFoto()">
+                Volver a tomar foto
+              </ion-button>
+            } @else {
+              <ion-button type="button" expand="block" (click)="tomarFoto()">
+                Tomar Foto con Cámara
+              </ion-button>
+            }
+
+            @if (errorFoto()) {
+              <ion-note color="danger" class="ion-padding-start ion-text-center d-block ion-margin-top">
+                La foto del empleado es obligatoria.
+              </ion-note>
+            }
+          </div>
+
+          <!-- Botón para Escanear QR del DNI -->
+          <div class="ion-margin-bottom">
+            <ion-button expand="block" class="boton-escanear-dni" type="button" (click)="escanearDni()">
+              Escanear QR de DNI
+            </ion-button>
+          </div>
+
+          <!-- APELLIDOS -->
+          <div class="campo-formulario">
+            <ion-item lines="none" class="custom-item">
+              <ion-input
+                label="Apellidos"
+                labelPlacement="floating"
+                type="text"
+                formControlName="apellidos">
+              </ion-input>
+            </ion-item>
+
+            @if (apellidos?.touched && apellidos?.hasError("required")) {
+              <ion-note class="mensaje-error">
+                El apellido es obligatorio.
+              </ion-note>
+            }
+            @if (apellidos?.touched && apellidos?.hasError("pattern")) {
+              <ion-note class="mensaje-error">
+                El apellido solo debe contener letras.
+              </ion-note>
+            }
+          </div>
+
+          <!-- NOMBRES -->
+          <div class="campo-formulario">
+            <ion-item lines="none" class="custom-item">
+              <ion-input
+                label="Nombres"
+                labelPlacement="floating"
+                type="text"
+                formControlName="nombres">
+              </ion-input>
+            </ion-item>
+
+            @if (nombres?.touched && nombres?.hasError("required")) {
+              <ion-note class="mensaje-error">
+                El nombre es obligatorio.
+              </ion-note>
+            }
+            @if (nombres?.touched && nombres?.hasError("pattern")) {
+              <ion-note class="mensaje-error">
+                El nombre solo debe contener letras.
+              </ion-note>
+            }
+          </div>
+
+          <!-- DNI -->
+          <div class="campo-formulario">
+            <ion-item lines="none" class="custom-item">
+              <ion-input
+                label="Número de DNI"
+                labelPlacement="floating"
+                type="text"
+                inputmode="numeric"
+                formControlName="dni">
+              </ion-input>
+            </ion-item>
+
+            @if (dni?.touched && dni?.hasError("required")) {
+              <ion-note class="mensaje-error">
+                El DNI es obligatorio.
+              </ion-note>
+            }
+            @if (dni?.touched && dni?.hasError("pattern")) {
+              <ion-note class="mensaje-error">
+                El DNI debe ser numérico y tener 7 u 8 dígitos.
+              </ion-note>
+            }
+          </div>
+
+          <!-- CUIL -->
+          <div class="campo-formulario">
+            <ion-item lines="none" class="custom-item">
+              <ion-input
+                label="Número de CUIL"
+                labelPlacement="floating"
+                type="text"
+                inputmode="numeric"
+                formControlName="cuil">
+              </ion-input>
+            </ion-item>
+
+            @if (cuil?.touched && cuil?.hasError("required")) {
+              <ion-note class="mensaje-error">
+                El CUIL es obligatorio.
+              </ion-note>
+            }
+            @if (cuil?.touched && cuil?.hasError("pattern")) {
+              <ion-note class="mensaje-error">
+                El CUIL debe ser numérico y tener exactamente 11 dígitos.
+              </ion-note>
+            }
+            @if (cuil?.touched && !dniEstaEnCuil()) {
+              <ion-note class="mensaje-error">
+                El CUIL debe contener literalmente el número de DNI ingresado.
+              </ion-note>
+            }
+          </div>
+
+          <!-- CORREO ELECTRÓNICO -->
+          <div class="campo-formulario">
+            <ion-item lines="none" class="custom-item">
+              <ion-input
+                label="Correo Electrónico"
+                labelPlacement="floating"
+                type="email"
+                formControlName="correo">
+              </ion-input>
+            </ion-item>
+
+            @if (correo?.touched && correo?.hasError("required")) {
+              <ion-note class="mensaje-error">
+                El correo electrónico es obligatorio.
+              </ion-note>
+            }
+            @if (correo?.touched && correo?.hasError("email")) {
+              <ion-note class="mensaje-error">
+                Ingrese un formato de correo electrónico válido.
+              </ion-note>
+            }
+          </div>
+
+          <!-- CONTRASEÑA -->
+          <div class="campo-formulario">
+            <ion-item lines="none" class="custom-item">
+              <ion-input
+                label="Contraseña"
+                labelPlacement="floating"
+                type="password"
+                formControlName="clave">
+              </ion-input>
+            </ion-item>
+
+            @if (clave?.touched && clave?.hasError("required")) {
+              <ion-note class="mensaje-error">
+                La contraseña es obligatoria.
+              </ion-note>
+            }
+            @if (clave?.touched && clave?.hasError("minlength")) {
+              <ion-note class="mensaje-error">
+                La contraseña debe tener al menos 6 caracteres.
+              </ion-note>
+            }
+          </div>
+
+          <!-- REPETIR CONTRASEÑA -->
+          <div class="campo-formulario">
+            <ion-item lines="none" class="custom-item">
+              <ion-input
+                label="Repetir Contraseña"
+                labelPlacement="floating"
+                type="password"
+                formControlName="repetirClave">
+              </ion-input>
+            </ion-item>
+
+            @if (repetirClave?.touched && repetirClave?.hasError("required")) {
+              <ion-note class="mensaje-error">
+                Debe repetir la contraseña.
+              </ion-note>
+            }
+            @if (repetirClave?.touched && !clavesCoinciden()) {
+              <ion-note class="mensaje-error">
+                Las contraseñas no coinciden.
+              </ion-note>
+            }
+          </div>
+
+          <!-- Perfil del Empleado -->
+          <div class="campo-formulario">
+            <ion-item
+              lines="none"
+              class="custom-item custom-select">
+              <ion-select
+                label="Perfil del empleado"
+                labelPlacement="floating"
+                formControlName="perfil"
+                placeholder="Seleccione un perfil"
+                interface="alert"
+                cancelText="Cancelar"
+                okText="Aceptar"
+                [interfaceOptions]="perfilSelectOptions">
+
+                <ion-select-option value="cocinero">
+                  Cocinero
+                </ion-select-option>
+
+                <ion-select-option value="cantinero">
+                  Cantinero
+                </ion-select-option>
+
+                <ion-select-option value="mozo">
+                  Mozo
+                </ion-select-option>
+
+                <ion-select-option value="metre">
+                  Metre
+                </ion-select-option>
+
+                <ion-select-option value="supervisor">
+                  Supervisor
+                </ion-select-option>
+
+                <ion-select-option value="duenio">
+                  Dueño
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+
+            @if (perfil?.touched && perfil?.hasError("required")) {
+              <ion-note class="mensaje-error">
+                Debe seleccionar un perfil.
+              </ion-note>
+            }
+          
+
+          <!-- Botones de Acción -->
+          <div class="ion-margin-top">
+            <ion-button expand="block" class="boton-escanear-dni" type="submit">
+              Guardar Empleado
+            </ion-button>
+            <ion-button expand="block" class="botonBeige" type="button" (click)="limpiarFormulario()">
+              Limpiar Campos
+            </ion-button>
+          </div>
+          </div>
+        </form>
+      </ion-card-content> 
+    </ion-card>
+  </div>
+</ion-content>

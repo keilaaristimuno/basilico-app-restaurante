@@ -1,0 +1,75 @@
+.contenido{
+    background-color: #ede5d2;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1.5rem; // Padding amplio para bordes de pantalla
+    box-sizing: border-box;
+}
+.titulo {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
+    font-weight: 800;
+    color: #283720;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+.fondoRegistro{
+    background: #b24d39;
+    border-radius: 18px;
+}
+.btn {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
+    font-weight: 800;
+    color: #ede5d2;
+    justify-content: center;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.encabezado {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
+    font-weight: 800;
+    color:  #ede5d2;
+    --background:#283720;
+    margin-bottom: 0.5rem;
+}
+
+.tituloMesa{
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
+    font-weight: 200;
+    color: #283720;
+    margin-bottom: 1rem;
+
+}
+.listaMesa{
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
+    font-weight: 200;
+    color: #283720;
+    margin-bottom: 2rem;
+    row-gap: 1rem;
+    border-radius: 18px;
+    padding: 1rem;
+}
+
+.btonTerracota {
+  font-family: 'Montserrat', sans-serif;
+  --background: #b24d39;             
+  --background-activated: #943e2d;   
+  --background-hover: #a14432;       
+  --color: #ede5d2;               
+  --border-radius: 12px;
+  --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); 
+  
+  font-size: 0.95rem;
+  font-weight: 600;               
+  text-transform: none;
+  width: 30%;
+  min-height: 40px;                 
+  margin: 10px auto 0 auto;
+  display: block;
+}

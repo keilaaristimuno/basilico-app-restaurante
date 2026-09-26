@@ -1,0 +1,44 @@
+<ion-content class="login-content ion-text-center">
+  <app-navbar rutaInicio="/clienteInicio"></app-navbar>
+
+  <div class="contenido-cliente">
+    <div class="contenedorLogo">
+      <img src="assets/Basilico/Logo_beige.png"
+          alt="Logotipo">
+    </div>
+
+    <div class="header-section">
+      <p class="titulo">¡Bienvenido!</p>
+      <ion-note class="texto">
+        Escaneá el QR para recepcionarte o divertite con nuestros juegos
+      </ion-note>
+    </div>
+
+    <div class="acciones-cliente">
+      <ion-button
+        expand="block"
+        class="btonBeige"
+        (click)="escanearIngreso()">
+
+        <ion-icon
+          name="qr-code-outline"
+          slot="start">
+        </ion-icon>
+        Escanear QR de Ingreso
+      </ion-button>
+
+      <ion-button
+        expand="block"
+        class="btonTerracota"
+        routerLink="/juegos">
+
+        <ion-icon
+          name="game-controller-outline"
+          slot="start">
+        </ion-icon>
+        Juegos y Descuentos
+      </ion-button>
+      
+    </div>
+  </div>
+</ion-content>

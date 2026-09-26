@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "869290999177",
+    "project_id": "basilico-2026",
+    "storage_bucket": "basilico-2026.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:869290999177:android:7fe2af052f1fafb4db7558",
+        "android_client_info": {
+          "package_name": "io.ionic.starter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhJqzadGH6VpDyq57xtyHzyNUr66vyZbU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

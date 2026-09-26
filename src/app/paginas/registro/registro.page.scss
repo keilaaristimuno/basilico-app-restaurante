@@ -1,0 +1,302 @@
+/* =========================================================
+   REGISTRO - BASÍLICO
+   ========================================================= */
+.registro-content {
+  --background: var(--basilico-olive);
+  /* Espacio adicional para que el último botón nunca
+     quede pegado a la barra inferior del teléfono */
+  --padding-bottom: calc(env(safe-area-inset-bottom) + 24px);
+}
+
+/* =========================================================
+   CONTENEDOR GENERAL
+   ========================================================= */
+.registro-container {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1rem 2rem 1rem;
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   ENCABEZADO
+   ========================================================= */
+.registro-header {
+  text-align: center;
+  margin-bottom: 1.2rem;
+
+  .font-logo {
+    font-family: var(--font-title);
+    font-size: clamp(3rem, 12vw, 5rem);
+    font-weight: normal;
+    color: var(--basilico-beige);
+    line-height: 1;
+    margin: 0 0 0.2rem 0;
+  }
+
+  h2 {
+    font-family: var(--font-body);
+    font-size: clamp(1.4rem, 5vw, 1.9rem);
+    font-weight: 700;
+    color: var(--basilico-beige);
+    margin: 0;
+  }
+  p {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: var(--basilico-beige);
+    opacity: 0.85;
+    margin: 0.5rem 0 0 0;
+  }
+}
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.registro-card {
+  width: 100%;
+  max-width: 580px;
+  margin: 0 auto;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  overflow: visible;
+  ion-card-content {
+    padding: 0;
+  }
+}
+
+/* =========================================================
+   CAMPOS
+   ========================================================= */
+
+.campo-formulario {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.foto-cliente {
+  margin-bottom: 0.6rem;
+
+  .contenedor-foto {
+    margin-bottom: 6px;
+  }
+}
+
+.boton-foto {
+  --background: var(--basilico-terracotta);
+  --background-hover: var(--ion-color-danger-tint);
+  --background-activated: var(--ion-color-danger-shade);
+  --color: #ffffff;
+  --border-radius: 10px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  text-transform: none;
+}
+
+.contenedor-foto {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  margin: 6px 0 12px;
+  background: rgba(237, 229, 210, 0.18);
+  border: 1px solid rgba(40, 55, 32, 0.12);
+}
+
+.preview-foto {
+  display: block;
+  width: min(100%, 300px);
+  max-height: 230px;
+  object-fit: contain;
+  background: transparent;
+}
+
+.custom-item {
+  --background: var(--basilico-beige);
+  --color: var(--basilico-olive);
+  --padding-start: 16px;
+  --padding-end: px;
+  --inner-padding-end: 8px;
+  --min-height: 58px;
+  font-family: var(--font-body);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow:
+    0 3px 8px rgba(0, 0, 0, 0.12);
+
+
+  ion-input {
+    --color: var(--basilico-olive);
+    --placeholder-color: #596254;
+    --placeholder-opacity: 0.8;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+
+  ion-select {
+    --color: var(--basilico-olive);
+    --placeholder-color: #596254;
+    --placeholder-opacity: 0.8;
+    width: 100%;
+    font-family: var(--font-body);
+    font-size: 1rem;
+  }
+}
+
+/* Select un poco más alto */
+.custom-select {
+  --min-height: 64px;
+}
+
+/* =========================================================
+   ERRORES
+   ========================================================= */
+.mensaje-error {
+  display: block;
+  margin-top: 6px;
+  padding: 0 10px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #ffd4cb;
+}
+
+
+/* =========================================================
+   BOTONES
+   ========================================================= */
+
+.acciones-formulario {
+  width: 100%;
+  margin-top: 1.8rem;
+  padding-bottom: 1rem;
+}
+
+
+.btn-enviar {
+  --background: var(--basilico-terracotta);
+  --background-hover: var(--ion-color-danger-tint);
+  --background-activated: var(--ion-color-danger-shade);
+  --color: #ffffff;
+  --border-radius: 12px;
+  height: 56px;
+  margin: 0 0 14px 0;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: none;
+}
+
+
+/* Estado deshabilitado */
+.btn-enviar::part(native):disabled {
+  opacity: 0.5;
+}
+
+.btn-resetear {
+  --background: transparent;
+  --color: var(--basilico-beige);
+  --border-color: var(--basilico-beige);
+  --border-width: 2px;
+  --border-style: solid;
+  --border-radius: 12px;
+
+  height: 54px;
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: none;
+}
+
+/* =========================================================
+   BOTONES TEMPORALES / PRUEBAS
+   ========================================================= */
+.boton-prueba {
+  margin-bottom: 1rem;
+
+  ion-button {
+    --color: var(--basilico-beige);
+    --border-color: var(--basilico-beige);
+    --border-radius: 10px;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    text-transform: none;
+  }
+}
+
+.btn-prueba-plato {
+  --color: var(--basilico-beige);
+  margin-top: 8px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  text-transform: none;
+  opacity: 0.75;
+}
+.btn-prueba-mesa{
+  --color: var(--basilico-beige);
+  margin-top: 8px;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  text-transform: none;
+  opacity: 0.75;
+}
+
+/* =========================================================
+   TABLETS / PANTALLAS GRANDES
+   ========================================================= */
+
+@media (min-width: 768px) {
+  .registro-container {
+    padding-top: 2.5rem;
+    padding-bottom: 3rem;
+  }
+
+  .registro-card {
+    max-width: 600px;
+  }
+
+  .registro-header {
+    margin-bottom: 1.8rem;
+  }
+
+}
+
+/* =========================================================
+   CELULARES MUY CHICOS
+   ========================================================= */
+
+@media (max-width: 360px) {
+
+  .registro-container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .registro-header {
+    .font-logo {
+      font-size: 3rem;
+    }
+
+    h2 {
+      font-size: 1.35rem;
+    }
+  }
+
+  .custom-item {
+    --min-height: 54px;
+  }
+  .btn-enviar,
+  .btn-resetear {
+    height: 52px;
+  }
+
+}

@@ -1,0 +1,930 @@
+.alta-mesa-content {
+  --background: var(--basilico-olive);
+
+  --padding-bottom: calc(
+    env(safe-area-inset-bottom) + 24px
+  );
+}
+
+
+/* =========================================================
+   CONTENEDOR
+   ========================================================= */
+
+.alta-mesa-container {
+  width: 100%;
+  min-height: 100%;
+  max-width: 900px;
+
+  margin: 0 auto;
+
+  padding: 1.5rem 1rem 2.5rem;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   ENCABEZADO
+   ========================================================= */
+
+.alta-mesa-header {
+  text-align: center;
+  margin-bottom: 1.8rem;
+
+  .font-logo {
+    font-family: var(--font-title);
+
+    font-size: clamp(3rem, 12vw, 5rem);
+    font-weight: normal;
+    line-height: 1;
+
+    color: var(--basilico-beige);
+
+    margin: 0 0 0.2rem;
+  }
+
+  h2 {
+    font-family: var(--font-body);
+
+    font-size: clamp(1.4rem, 5vw, 1.9rem);
+    font-weight: 700;
+
+    color: var(--basilico-beige);
+
+    margin: 0;
+  }
+
+  p {
+    font-family: var(--font-body);
+
+    font-size: 0.9rem;
+
+    color: var(--basilico-beige);
+    opacity: 0.85;
+
+    margin: 0.5rem 0 0;
+  }
+}
+
+
+.tipo-producto {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  margin: 0.5rem 0 0.45rem;
+
+  padding: 6px 12px;
+
+  border:
+    1px solid
+    rgba(237, 229, 210, 0.45);
+
+  border-radius: 20px;
+
+  color: var(--basilico-beige);
+
+  font-family: var(--font-body);
+
+  font-size: 0.75rem;
+  font-weight: 700;
+
+  letter-spacing: 0.08rem;
+}
+
+
+/* =========================================================
+   FORMULARIO
+   ========================================================= */
+
+.formulario-mesa {
+  width: 100%;
+  max-width: 620px;
+
+  margin: 0 auto;
+}
+
+
+.campo-formulario {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+
+.custom-item {
+  --background: var(--basilico-beige);
+
+  --color: var(--basilico-olive);
+
+  --padding-start: 16px;
+  --padding-end: 12px;
+
+  --inner-padding-end: 8px;
+
+  --min-height: 62px;
+
+  font-family: var(--font-body);
+
+  border-radius: 14px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 3px 8px rgba(0, 0, 0, 0.12);
+
+
+  ion-input {
+    --color: var(--basilico-olive);
+
+    --placeholder-color: #667060;
+    --placeholder-opacity: 0.8;
+
+    font-family: var(--font-body);
+
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+
+  ion-select {
+    --color: var(--basilico-olive);
+    --placeholder-color: #667060;
+    --placeholder-opacity: 0.8;
+
+    width: 100%;
+
+    font-family: var(--font-body);
+
+    font-size: 1rem;
+    font-weight: 500;
+  }
+}
+
+
+/* =========================================================
+   ERRORES
+   ========================================================= */
+
+.mensaje-error {
+  display: block;
+
+  padding: 0 10px;
+
+  margin-top: 6px;
+
+  font-family: var(--font-body);
+
+  font-size: 0.85rem;
+  font-weight: 600;
+
+  color: #ffd4cb;
+}
+
+
+/* =========================================================
+   FOTO
+   ========================================================= */
+
+.seccion-foto {
+  width: 100%;
+  max-width: 620px;
+  margin: 1.3rem auto 0;
+}
+
+
+.titulo-seccion {
+  text-align: center;
+
+  margin-bottom: 1.2rem;
+
+  h3 {
+    font-family: var(--font-body);
+
+    font-size: 1.2rem;
+    font-weight: 700;
+
+    color: var(--basilico-beige);
+
+    margin: 0;
+  }
+
+  p {
+    font-family: var(--font-body);
+
+    font-size: 0.85rem;
+
+    color: var(--basilico-beige);
+
+    opacity: 0.75;
+
+    margin: 0.35rem 0 0;
+  }
+}
+
+
+.foto-card {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+
+  padding: 10px;
+
+  background:
+    rgba(237, 229, 210, 0.08);
+
+  border:
+    1px solid
+    rgba(237, 229, 210, 0.35);
+
+  border-radius: 16px;
+
+  box-sizing: border-box;
+}
+
+
+.foto-preview {
+  width: 100%;
+  /* Mantiene el marco compacto */
+  aspect-ratio: 16 / 7;
+  overflow: hidden;
+  border-radius: 12px;
+  /* Fondo normal cuando todavía no hay foto */
+  background:rgba(237, 229, 210, 0.12);
+  /* Fondo negro para fotos verticales */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    display: block;
+
+    /*
+     * Muestra TODA la fotografía.
+     * Si es vertical, quedan bandas negras
+     * a izquierda y derecha.
+     */
+    object-fit: contain;
+  }
+  /* Fondo negro únicamente cuando hay foto */
+  &.con-foto {
+    background: #000000;
+    img {
+      background: #000000;
+    }
+  }
+}
+
+
+.foto-placeholder {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  font-family: var(--font-body);
+
+  font-size: 0.8rem;
+
+  text-align: center;
+
+  color: var(--basilico-beige);
+
+  opacity: 0.75;
+}
+
+
+.numero-foto {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border:
+    2px solid
+    var(--basilico-beige);
+
+  border-radius: 50%;
+
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+
+.btn-foto {
+  --background:
+    var(--basilico-beige);
+
+  --background-activated:
+    var(--ion-color-secondary-shade);
+
+  --color:
+    var(--basilico-olive);
+
+  --border-radius: 10px;
+
+  min-height: 46px;
+
+  margin: 0;
+
+  font-family: var(--font-body);
+
+  font-size: 0.8rem;
+  font-weight: 700;
+
+  text-transform: none;
+}
+
+
+.error-foto {
+  text-align: center;
+  margin-top: 12px;
+}
+
+
+/* =========================================================
+   BOTÓN DAR DE ALTA
+   ========================================================= */
+
+.accion-alta {
+  width: 100%;
+  max-width: 620px;
+
+  margin: 1.1rem auto 0;
+}
+
+
+.btn-alta-mesa {
+  --background:
+    var(--basilico-terracotta);
+
+  --background-hover:
+    var(--ion-color-danger-tint);
+
+  --background-activated:
+    var(--ion-color-danger-shade);
+
+  --color: #ffffff;
+
+  --border-radius: 14px;
+
+  width: 100%;
+  height: 58px;
+
+  margin: 0;
+
+  font-family: var(--font-body);
+
+  font-size: 1rem;
+  font-weight: 700;
+
+  text-transform: none;
+}
+
+
+/* =========================================================
+   QR
+   ========================================================= */
+
+.seccion-qr {
+  width: 100%;
+  max-width: 620px;
+
+  margin: 2.2rem auto 0;
+
+  padding: 18px;
+
+  box-sizing: border-box;
+
+  background:
+    rgba(237, 229, 210, 0.08);
+
+  border:
+    1px solid
+    rgba(237, 229, 210, 0.35);
+
+  border-radius: 16px;
+}
+
+
+.qr-container {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+
+.qr-imagen {
+  width: min(220px, 70vw);
+  height: auto;
+
+  aspect-ratio: 1;
+
+  object-fit: contain;
+
+  background: #ffffff;
+
+  border-radius: 12px;
+
+  padding: 8px;
+}
+
+/* =========================================================
+   MESAS CARGADAS
+   ========================================================= */
+
+.seccion-mesas {
+  width: 100%;
+  max-width: 620px;
+  margin: 2.2rem auto 0;
+}
+
+
+/* =========================================================
+   CARRUSEL DE MESAS
+   ========================================================= */
+
+.carrusel-mesas {
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+
+  gap: 14px;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  padding: 4px 2px 14px;
+
+  box-sizing: border-box;
+
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+
+  -webkit-overflow-scrolling: touch;
+
+  /* Ocultar scrollbar */
+  scrollbar-width: none;
+}
+
+.carrusel-mesas::-webkit-scrollbar {
+  display: none;
+}
+
+
+/* =========================================================
+   TARJETA DE CADA MESA
+   ========================================================= */
+
+.mesa-card {
+  /*
+   * MUY IMPORTANTE:
+   * evita que flex achique todas las tarjetas para
+   * meterlas juntas en la pantalla.
+   */
+  flex: 0 0 85%;
+
+  width: 85%;
+  max-width: 340px;
+
+  padding: 18px;
+
+  box-sizing: border-box;
+
+  background: var(--basilico-beige);
+  color: var(--basilico-olive);
+
+  border-radius: 16px;
+
+  box-shadow:
+    0 3px 8px rgba(0, 0, 0, 0.14);
+
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+
+/* =========================================================
+   ENCABEZADO DE LA MESA
+   ========================================================= */
+
+.numero-mesa {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+
+  border-bottom:
+    1px solid rgba(40, 55, 32, 0.18);
+
+  font-family: var(--font-body);
+
+  span {
+    font-size: 0.75rem;
+    font-weight: 700;
+
+    letter-spacing: 0.1rem;
+
+    opacity: 0.7;
+  }
+
+  strong {
+    font-size: 2rem;
+    font-weight: 800;
+
+    line-height: 1;
+
+    color: var(--basilico-olive);
+  }
+}
+
+
+/* =========================================================
+   DATOS
+   ========================================================= */
+
+.mesa-datos {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 12px;
+
+  margin-bottom: 16px;
+}
+
+
+.dato-mesa {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+
+  font-family: var(--font-body);
+
+  span {
+    font-size: 0.72rem;
+
+    color: var(--basilico-olive);
+
+    opacity: 0.65;
+  }
+
+  strong {
+    font-size: 0.9rem;
+    font-weight: 700;
+
+    color: var(--basilico-olive);
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+
+/* =========================================================
+   ESTADO
+   ========================================================= */
+
+.estado-container {
+  width: 100%;
+}
+
+
+.estado-mesa {
+  width: 100%;
+  max-width: none;
+
+  min-height: 54px;
+
+  padding: 4px 12px;
+
+  box-sizing: border-box;
+
+  background:
+    rgba(40, 55, 32, 0.08);
+
+  border-radius: 10px;
+
+  font-family: var(--font-body);
+
+  font-size: 0.85rem;
+
+  color: var(--basilico-olive);
+}
+
+
+/* =========================================================
+   INDICADOR
+   ========================================================= */
+
+.indicador-carrusel {
+  width: 100%;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  margin-top: 3px;
+
+  font-family: var(--font-body);
+
+  font-size: 0.75rem;
+
+  color: var(--basilico-beige);
+
+  opacity: 0.75;
+
+  span {
+    font-size: 1rem;
+  }
+}
+
+
+/* =========================================================
+   CUANDO NO HAY MESAS
+   ========================================================= */
+
+.sin-mesas {
+  width: 100%;
+
+  padding: 18px;
+
+  box-sizing: border-box;
+
+  background:
+    rgba(237, 229, 210, 0.08);
+
+  border:
+    1px solid rgba(237, 229, 210, 0.35);
+
+  border-radius: 14px;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--basilico-beige);
+  opacity: 0.85;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 650px) {
+
+  .mesa-row {
+    align-items: stretch;
+
+    flex-direction: column;
+  }
+
+
+  .estado-mesa {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+
+@media (max-width: 360px) {
+
+  .alta-mesa-container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+
+  .alta-mesa-header {
+
+    .font-logo {
+      font-size: 3rem;
+    }
+  }
+
+
+  .custom-item {
+    --min-height: 56px;
+  }
+
+
+  .mesa-row {
+    padding: 13px;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE POR ALTURA
+   Celulares con pantalla chica
+   ========================================================= */
+
+@media (max-height: 700px) {
+
+  .alta-mesa-container {
+    padding-top: 0.7rem;
+    padding-bottom: 1rem;
+  }
+
+  /* Encabezado más compacto */
+  .alta-mesa-header {
+    margin-bottom: 1rem;
+
+    .font-logo {
+      font-size: 2.7rem;
+      line-height: 0.95;
+      margin-bottom: 0.1rem;
+    }
+
+    h2 {
+      font-size: 1.25rem;
+    }
+
+    p {
+      font-size: 0.78rem;
+      margin-top: 0.25rem;
+      line-height: 1.15;
+    }
+  }
+
+  /* Campos un poco más bajos */
+  .campo-formulario {
+    margin-bottom: 0.7rem;
+  }
+
+  .custom-item {
+    --min-height: 52px;
+
+    ion-input,
+    ion-select {
+      font-size: 0.9rem;
+    }
+  }
+
+  /* Acercamos fotografía al formulario */
+  .seccion-foto {
+    margin-top: 1.1rem;
+  }
+
+  .titulo-seccion {
+    margin-bottom: 0.7rem;
+
+    h3 {
+      font-size: 1.05rem;
+    }
+
+    p {
+      font-size: 0.75rem;
+      margin-top: 0.2rem;
+    }
+  }
+
+  /* Foto más baja para que entre en pantalla */
+  .foto-preview {
+  width: 100%;
+  /* Más horizontal para ahorrar altura */
+  aspect-ratio: 16 / 7;
+  overflow: hidden;
+  border-radius: 12px;
+
+  background:
+    rgba(237, 229, 210, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+}
+
+  .numero-foto {
+    width: 36px;
+    height: 36px;
+    font-size: 0.95rem;
+  }
+
+  .btn-foto {
+    min-height: 40px;
+  }
+
+  .accion-alta {
+    margin-top: 1rem;
+  }
+
+  .btn-alta-mesa {
+    height: 50px;
+  }
+}
+
+@media (max-height: 750px) {
+
+  .alta-mesa-container {
+    padding-top: 0.6rem;
+  }
+
+  .alta-mesa-header {
+    margin-bottom: 0.8rem;
+
+    .font-logo {
+      font-size: 2.5rem;
+    }
+
+    h2 {
+      font-size: 1.2rem;
+    }
+
+    p {
+      font-size: 0.75rem;
+      margin-top: 0.2rem;
+    }
+  }
+
+  .campo-formulario {
+    margin-bottom: 0.6rem;
+  }
+
+  .custom-item {
+    --min-height: 50px;
+  }
+
+  .seccion-foto {
+    margin-top: 0.8rem;
+  }
+
+  .titulo-seccion {
+    margin-bottom: 0.55rem;
+
+    h3 {
+      font-size: 1rem;
+    }
+
+    p {
+      font-size: 0.72rem;
+      margin-top: 0.15rem;
+    }
+  }
+
+  .foto-preview {
+    aspect-ratio: 16 / 6;
+  }
+
+  .foto-card {
+    padding: 7px;
+    gap: 7px;
+  }
+
+  .numero-foto {
+    width: 32px;
+    height: 32px;
+
+    font-size: 0.85rem;
+  }
+
+  .btn-foto {
+    min-height: 38px;
+  }
+
+  .accion-alta {
+    margin-top: 0.8rem;
+  }
+
+  .btn-alta-mesa {
+    height: 48px;
+  }
+}

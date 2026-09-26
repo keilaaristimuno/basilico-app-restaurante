@@ -1,0 +1,261 @@
+<ion-header class="header-transparente">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button
+        defaultHref="/"
+        text="Volver"
+        icon="chevron-back-outline">
+      </ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content
+  [fullscreen]="true"
+  [scrollY]="true"
+  class="alta-plato-content">
+
+  <div class="alta-plato-container">
+    <!-- ENCABEZADO -->
+    <section class="alta-plato-header">
+      <h1 class="font-logo">Basílico</h1>
+      <div class="tipo-producto">
+        <ion-icon name="wine-outline"></ion-icon>
+        <span>BAR</span>
+      </div>
+      <h2>Dar de alta una bebida</h2>
+      <p>
+        Completá los datos y cargá tres imágenes de la bebida
+      </p>
+    </section>
+
+    <!-- FORMULARIO -->
+    <section class="formulario-plato">
+      <div class="campo-formulario">
+        <ion-item
+          lines="none"
+          class="custom-item">
+
+          <ion-input
+            type="text"
+            label="Nombre de la bebida"
+            labelPlacement="floating"
+            [(ngModel)]="nombre"
+            (ionInput)="limpiarErrorBebidaExistente()"
+            placeholder="Ej: Limonada con menta">
+          </ion-input>
+        </ion-item>
+
+        @if (errorNombre) {
+          <ion-note class="mensaje-error">
+            El nombre debe tener al menos 3 caracteres.
+          </ion-note>
+        }
+
+        @if (errorBebidaExistente) {
+          <div class="aviso-plato-existente">
+
+          <strong>Esta bebida ya está registrada.</strong>
+          <span>
+            Pruebe ingresando otro nombre o una bebida diferente.
+          </span>
+        </div>
+      }
+      </div>
+
+      <!-- DESCRIPCIÓN -->
+      <div class="campo-formulario">
+        <ion-item
+          lines="none"
+          class="custom-item">
+
+          <ion-input
+            type="text"
+            label="Descripción"
+            labelPlacement="floating"
+            [(ngModel)]="descripcion"
+            placeholder="Describí brevemente la bebida">
+          </ion-input>
+        </ion-item>
+
+        @if (errorDescripcion) {
+          <ion-note class="mensaje-error">
+            La descripción debe tener al menos 10 caracteres.
+          </ion-note>
+        }
+      </div>
+
+      <!-- TIEMPO DE ELABORACION -->
+      <div class="campo-formulario">
+        <ion-item
+          lines="none"
+          class="custom-item">
+
+          <ion-input
+            type="number"
+            label="Tiempo de elaboración"
+            labelPlacement="floating"
+            [(ngModel)]="tiempoElaboracion"
+            placeholder="Tiempo en minutos">
+          </ion-input>
+          <span class="unidad-input">
+            min
+          </span>
+        </ion-item>
+
+        @if (errorTiempoElaboracion) {
+          <ion-note class="mensaje-error">
+            El tiempo de elaboración debe ser mayor a 0.
+          </ion-note>
+        }
+      </div>
+
+      <!-- PRECIO -->
+      <div class="campo-formulario">
+        <ion-item
+          lines="none"
+          class="custom-item">
+          <span class="simbolo-precio">
+            $
+          </span>
+
+          <ion-input
+            type="number"
+            label="Precio"
+            labelPlacement="floating"
+            [(ngModel)]="precio"
+            placeholder="Ingrese el precio">
+          </ion-input>
+        </ion-item>
+
+        @if (errorPrecio) {
+          <ion-note class="mensaje-error">
+            El precio debe ser mayor a 0.
+          </ion-note>
+        }
+      </div>
+    </section>
+
+    <!-- FOTOGRAFÍAS -->
+    <section class="seccion-fotos">
+      <div class="titulo-seccion">
+        <h3>Fotografías de la bebida</h3>
+        <p> Cargá tres imágenes diferentes </p>
+      </div>
+
+      <div class="fotos-container">
+        <!-- FOTO 1 -->
+        <div class="foto-card">
+          <div class="foto-preview">
+
+            @if (fotos[0]) {
+              <img
+                [src]="fotos[0]"
+                alt="Foto 1 de la bebida">
+            } @else {
+              <div class="foto-placeholder">
+                <span class="numero-foto">1</span>
+                <span>Sin fotografía</span>
+              </div>
+            }
+          </div>
+
+          <ion-button
+            expand="block"
+            class="btn-foto"
+            (click)="seleccionarFoto(0)">
+            {{ fotos[0] ? 'Cambiar foto 1' : 'Agregar foto 1' }}
+          </ion-button>
+
+        </div>
+
+
+        <!-- FOTO 2 -->
+        <div class="foto-card">
+          <div class="foto-preview">
+            @if (fotos[1]) {
+              <img
+                [src]="fotos[1]"
+                alt="Foto 2 de la bebida ">
+            } @else {
+              <div class="foto-placeholder">
+                <span class="numero-foto">2</span>
+                <span>Sin fotografía</span>
+              </div>
+            }
+          </div>
+
+          <ion-button
+            expand="block"
+            class="btn-foto"
+            (click)="seleccionarFoto(1)">
+            {{ fotos[1] ? 'Cambiar foto 2' : 'Agregar foto 2' }}
+          </ion-button>
+
+        </div>
+
+        <!-- FOTO 3 -->
+        <div class="foto-card">
+          <div class="foto-preview">
+            @if (fotos[2]) {
+              <img
+                [src]="fotos[2]"
+                alt="Foto 3 de la bebida">
+            } @else {
+              <div class="foto-placeholder">
+                <span class="numero-foto">3</span>
+                <span>Sin fotografía</span>
+              </div>
+            }
+          </div>
+
+          <ion-button
+            expand="block"
+            class="btn-foto"
+            (click)="seleccionarFoto(2)">
+            {{ fotos[2] ? 'Cambiar foto 3' : 'Agregar foto 3' }}
+          </ion-button>
+        </div>
+
+      </div>
+
+      @if (errorFotos) {
+        <ion-note class="mensaje-error error-fotos">
+          Debe cargar las 3 fotografías de la bebida.
+        </ion-note>
+      }
+    </section>
+
+    <!-- MENSAJE ÉXITO -->
+    @if (mensajeExito) {
+      <div class="mensaje-exito">
+        <strong>¡Bebida registrada!</strong>
+        <span>
+          La Bebida fue dada de alta correctamente.
+        </span>
+      </div>
+    }
+
+    <!-- ACCIÓN PRINCIPAL -->
+    <div class="accion-alta">
+      <ion-button
+        expand="block"
+        class="btn-alta-plato"
+        (click)="altaBebida()">
+        Dar de alta la bebida
+      </ion-button>
+    </div>
+
+    <ion-button
+      expand="block"
+      fill="outline"
+      class="btn-ver-carta"
+      routerLink="/carta">
+
+      Ver carta
+
+    </ion-button>
+
+  </div>
+
+</ion-content>

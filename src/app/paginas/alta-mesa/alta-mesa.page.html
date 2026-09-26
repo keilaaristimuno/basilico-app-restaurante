@@ -1,0 +1,353 @@
+<ion-header class="header-transparente">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button
+        defaultHref="/duenioInicio"
+        text="Volver"
+        icon="chevron-back-outline">
+      </ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="alta-mesa-content">
+
+  <div class="alta-mesa-container">
+
+    <!-- =========================================
+         ENCABEZADO
+         ========================================= -->
+    <section class="alta-mesa-header">
+
+      <h1 class="font-logo"> Basílico</h1>
+
+      <h2>Alta de mesa</h2>
+
+      <p>
+        Complete los datos para registrar una nueva mesa
+      </p>
+
+    </section>
+
+
+    <!-- =========================================
+         FORMULARIO
+         ========================================= -->
+    <section class="formulario-mesa">
+
+      <!-- NÚMERO -->
+      <div class="campo-formulario">
+
+        <ion-item lines="none" class="custom-item">
+          <ion-input
+            label="Número de mesa"
+            labelPlacement="floating"
+            type="number"
+            [(ngModel)]="numero"
+            (ngModelChange)="marcarNumeroTocado()"
+            placeholder="Ingrese el número">
+          </ion-input>
+        </ion-item>
+
+        @if (numeroTocado && errorNumero) {
+          <span class="mensaje-error">
+            Debe ingresar un número válido.
+          </span>
+        }
+
+      </div>
+
+
+      <!-- CANTIDAD DE COMENSALES -->
+      <div class="campo-formulario">
+
+        <ion-item lines="none" class="custom-item">
+          <ion-input
+            label="Cantidad de comensales"
+            labelPlacement="floating"
+            type="number"
+            [(ngModel)]="cantidadComensales"
+            (ngModelChange)="marcarCantidadTocado()"
+            placeholder="Ingrese la cantidad">
+          </ion-input>
+        </ion-item>
+
+        @if (cantidadTocado && errorCantidad) {
+          <span class="mensaje-error">
+            Debe ingresar una cantidad válida.
+          </span>
+        }
+
+        @if (cantidadTocado && errorCantidadMax) {
+          <span class="mensaje-error">
+            La cantidad máxima es 25 comensales.
+          </span>
+        }
+
+      </div>
+
+
+      <!-- TIPO -->
+      <div class="campo-formulario">
+
+        <ion-item lines="none" class="custom-item">
+          <ion-select
+            label="Tipo de mesa"
+            labelPlacement="floating"
+            [(ngModel)]="tipo"
+            (ionChange)="marcarTipoTocado()"
+            placeholder="Seleccione un tipo">
+
+            <ion-select-option value="vip">
+              VIP
+            </ion-select-option>
+
+            <ion-select-option value="estandar">
+              Estándar
+            </ion-select-option>
+
+            <ion-select-option value="movilidad_reducida">
+              Movilidad reducida
+            </ion-select-option>
+
+          </ion-select>
+        </ion-item>
+
+        @if (tipoTocado && errorTipo) {
+          <span class="mensaje-error">
+            Debe seleccionar un tipo de mesa.
+          </span>
+        }
+
+      </div>
+    </section>
+
+
+    <!-- =========================================
+         FOTO DE LA MESA
+         ========================================= -->
+    <section class="seccion-foto">
+
+      <div class="titulo-seccion">
+        <h3>Fotografia de la mesa</h3>
+
+        <p>
+          Tome una fotografía para identificarla
+        </p>
+      </div>
+
+
+      <div class="foto-card">
+
+        <div class="foto-preview" [class.con-foto]="fotoMesa()">
+
+          @if (fotoMesa()) {
+
+            <img
+              [src]="fotoMesa()"
+              alt="Foto de la mesa">
+
+          } @else {
+
+            <div class="foto-placeholder">
+
+              <div class="numero-foto">
+                1
+              </div>
+
+              <span>
+                Sin fotografía
+              </span>
+
+            </div>
+
+          }
+
+        </div>
+
+
+        <ion-button
+          type="button"
+          expand="block"
+          class="btn-foto"
+          (click)="tomarFoto()">
+
+          @if (fotoMesa()) {
+            Cambiar foto
+          } @else {
+            Tomar foto
+          }
+
+        </ion-button>
+
+      </div>
+
+
+      @if (errorFoto()) {
+        <span class="mensaje-error error-foto">
+          La foto de la mesa es obligatoria.
+        </span>
+      }
+
+    </section>
+
+
+    <!-- =========================================
+         BOTÓN ALTA
+         ========================================= -->
+    <div class="accion-alta">
+
+      <ion-button
+        expand="block"
+        type="button"
+        class="btn-alta-mesa"
+        (click)="guardarMesa()"
+        [disabled]="cargando()">
+
+        @if (cargando()) {
+
+          <ion-spinner name="crescent"></ion-spinner>
+
+        } @else {
+
+          Dar de alta mesa
+
+        }
+
+      </ion-button>
+
+    </div>
+
+
+    <!-- =========================================
+         QR GENERADO
+         ========================================= -->
+    @if (qrMesa()) {
+
+      <section class="seccion-qr">
+
+        <div class="titulo-seccion">
+          <h3>QR de la mesa</h3>
+
+          <p>
+            Código generado correctamente
+          </p>
+        </div>
+
+        <div class="qr-container">
+
+          <img
+            [src]="qrMesa()"
+            alt="QR de la mesa"
+            class="qr-imagen">
+
+        </div>
+
+      </section>
+
+    }
+
+
+    <!-- =========================================
+         MESAS CARGADAS
+         ========================================= -->
+    <section class="seccion-mesas">
+
+      <div class="titulo-seccion">
+        <h3>Mesas cargadas</h3>
+        <p>
+          Deslizá hacia los costados para ver todas las mesas
+        </p>
+      </div>
+
+
+      @if (mesas().length === 0) {
+
+        <div class="sin-mesas">
+          Todavía no hay mesas cargadas.
+        </div>
+
+      } @else {
+            <!--CARRUSEL  -->
+        <div class="carrusel-mesas">
+
+          @for (mesa of mesas(); track mesa.id) {
+
+              <article class="mesa-card">
+
+                <!-- NÚMERO -->
+                <div class="numero-mesa">
+                  <span>MESA</span>
+                  <strong>{{ mesa.numero }}</strong>
+                </div>
+
+
+                <!-- DATOS -->
+                <div class="mesa-datos">
+
+                  <div class="dato-mesa">
+                    <span>Comensales</span>
+
+                    <strong>
+                      {{ mesa.cantidad_comensales }}
+                    </strong>
+                  </div>
+
+
+                  <div class="dato-mesa">
+                    <span>Tipo</span>
+
+                    <strong>
+                      {{ formatearTipo(mesa.tipo) }}
+                    </strong>
+                  </div>
+
+                </div>
+
+
+                <!-- ESTADO -->
+                <div class="estado-container">
+
+                  <ion-select
+                    class="estado-mesa"
+                    label="Estado"
+                    labelPlacement="stacked"
+                    interface="popover"
+                    [ngModel]="mesa.disponibilidad"
+                    (ionChange)="cambiarDisponibilidad(mesa, $event)">
+
+                    <ion-select-option value="vacia">
+                      Vacía
+                    </ion-select-option>
+
+                    <ion-select-option value="ocupada">
+                      Ocupada
+                    </ion-select-option>
+
+                  </ion-select>
+
+                </div>
+
+              </article>
+
+            }
+
+          </div>
+
+
+          <!-- INDICACIÓN VISUAL -->
+          @if (mesas().length > 1) {
+
+            <div class="indicador-carrusel">
+              <span>←</span>
+              Deslizá para ver más
+              <span>→</span>
+            </div>
+
+          }
+
+        }
+
+      </section>
+  </div>      
+</ion-content>

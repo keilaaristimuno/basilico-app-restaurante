@@ -12,7 +12,10 @@ import {
   IonButton,
   IonIcon,
   IonBadge,
-  ToastController
+  ToastController,
+  IonToolbar, 
+  IonButtons,
+  IonBackButton
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import {
@@ -42,7 +45,11 @@ import { VibracionService } from '../../services/vibracion';
     IonContent,
     IonButton,
     IonIcon,
-    IonBadge
+    IonBadge,
+    IonToolbar,
+    IonButtons,
+    IonBackButton,
+    IonHeader
   ]
 })
 export class JuegosPage implements OnInit {

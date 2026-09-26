@@ -153,7 +153,7 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 Pantalla principal de la aplicación. Desde aquí el usuario puede iniciar sesión, registrarse o ingresar como cliente anónimo.
 
 <p align="center">
-  <img src="docs/capturas/generales/01-pantalla-inicio.png" width="300">
+  <img src="docs/capturas/generales/01-pantalla-inicio.jpeg" width="300">
 </p>
 
 ---
@@ -163,7 +163,7 @@ Pantalla principal de la aplicación. Desde aquí el usuario puede iniciar sesi�
 Pantalla para el ingreso de usuarios registrados mediante correo electrónico y contraseña.
 
 <p align="center">
-  <img src="docs/capturas/generales/02-inicio-sesion.png" width="300">
+  <img src="docs/capturas/generales/02-inicio-sesion.jpeg" width="300">
 </p>
 
 ---
@@ -173,7 +173,6 @@ Pantalla para el ingreso de usuarios registrados mediante correo electrónico y 
 Formulario para el registro de un nuevo cliente. Permite ingresar nombre, apellido, DNI, correo electrónico, contraseña y fotografía tomada desde el dispositivo.
 
 <p align="center">
-  <img src="docs/capturas/generales/03-registrarse-cliente-completo.png" width="300">
   <img src="docs/capturas/generales/03-registrarse-cliente.png" width="300">
 </p>
 
@@ -204,7 +203,6 @@ Pantalla de ingreso sin registro previo. El cliente anónimo ingresa su nombre y
 Pantalla de ingreso rápido utilizada para acceder a la aplicación con los distintos perfiles disponibles.
 
 <p align="center">
-  <img src="docs/capturas/generales/06-ingreso-rapido-completo.png" width="300">
   <img src="docs/capturas/generales/06-ingreso-rapido.png" width="300">
 </p>
 
@@ -244,9 +242,9 @@ Permite al dueño o supervisor registrar un nuevo empleado, ingresando sus datos
 
 La funcionalidad contempla la validación de los datos ingresados y la posibilidad de utilizar la lectura del código QR del DNI para completar la información correspondiente.
 
-> 🎨 **Diseño en actualización:** La funcionalidad se encuentra implementada. La captura de la pantalla será incorporada cuando finalice la actualización visual de la interfaz.
-
-<!-- Captura pendiente: 02-alta-empleado.png -->
+<p align="center">
+  <img src="docs/capturas/duenio-supervisor/02-alta-empleado.png" width="300">
+</p>
 
 ---
 
@@ -256,9 +254,10 @@ Permite al dueño o supervisor registrar una nueva mesa indicando sus datos corr
 
 Al registrar la mesa, se genera el código QR correspondiente y posteriormente puede gestionarse su disponibilidad.
 
-> 🎨 **Diseño en actualización:** La funcionalidad se encuentra implementada. La captura de la pantalla será incorporada cuando finalice la actualización visual de la interfaz.
-
-<!-- Captura pendiente: 03-alta-mesa.png -->
+<p align="center">
+  <img src="docs/capturas/duenio-supervisor/03-alta-mesa.png" width="300">
+  <img src="docs/capturas/duenio-supervisor/03-alta-mesa-desliza.png" width="300">
+</p>
 
 ---
 
@@ -268,9 +267,9 @@ Permite al dueño o supervisor visualizar los clientes registrados que se encuen
 
 Desde esta sección se puede consultar la información del cliente y gestionar su solicitud, permitiendo aceptar o rechazar su registro.
 
-> 🎨 **Diseño en actualización:** La funcionalidad se encuentra implementada. La captura de la pantalla será incorporada cuando finalice la actualización visual de la interfaz.
-
-<!-- Captura pendiente: 04-clientes-pendientes.png -->
+<p align="center">
+  <img src="docs/capturas/duenio-supervisor/05-clientes-pendientes.png" width="300">
+</p>
 
 ---
 
@@ -342,28 +341,25 @@ Los pedidos deberán mostrar la mesa correspondiente, fecha y hora, junto con lo
 <!-- Captura pendiente: 04-pedidos-pendientes-cocina.png -->
 
 ---
+### 5. Pantalla Principal del Cantinero
 
-### 5. Alta de Bebida — Cantinero
+Pantalla principal correspondiente al perfil cantinero, desde la cual se accederá a las funcionalidades relacionadas con bebidas y pedidos destinados al sector bar.
+
+<p align="center">
+  <img src="docs/capturas/cocina-bar/04-inicio-cantinero.png" width="300">
+</p>
+
+---
+
+### 6. Alta de Bebida — Cantinero
 
 Permite al cantinero incorporar una nueva bebida a la carta del restaurante.
 
 Al igual que en el alta de platos, se ingresan el nombre, descripción, tiempo estimado de elaboración, precio y tres fotografías del producto.
 
-> 📷 **Captura pendiente:** La funcionalidad se encuentra disponible, pero su captura será incorporada al índice junto con la documentación correspondiente al perfil cantinero.
-
 <p align="center">
   <img src="docs/capturas/cocina-bar/05-alta-bebida.png" width="300">
 </p>
-
----
-
-### 6. Pantalla Principal del Cantinero
-
-Pantalla principal correspondiente al perfil cantinero, desde la cual se accederá a las funcionalidades relacionadas con bebidas y pedidos destinados al sector bar.
-
-> 🎨 **Pendiente:** La pantalla principal del perfil cantinero será incorporada cuando se encuentre disponible su diseño definitivo.
-
-<!-- Captura pendiente: 06-pantalla-inicio-cantinero.png -->
 
 ---
 

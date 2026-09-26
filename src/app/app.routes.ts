@@ -83,6 +83,10 @@ export const routes: Routes = [
     loadComponent: () => import('./paginas/alta-bebida/alta-bebida.page').then( m => m.AltaBebidaPage)
   },
   {
+    path: 'inicio-cantinero',
+    loadComponent: () => import('./paginas/inicio-cantinero/inicio-cantinero.page').then( m => m.InicioCantineroPage)
+  },
+  {
     path: '**',
     redirectTo: 'inicio'
   }

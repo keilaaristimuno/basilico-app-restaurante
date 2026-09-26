@@ -159,7 +159,7 @@ export class LoginPage {
         await this.router.navigate(["/duenioInicio"]);
         break;
       case "supervisor":
-        await this.router.navigate(["/clientes-pendientes"]);
+        await this.router.navigate(["/duenioInicio"]);
         break;
       case "metre":
         await this.router.navigate(["/metreInicio"]);
@@ -169,6 +169,9 @@ export class LoginPage {
         break;
       case "cliente":
         await this.router.navigate(["/clienteInicio"]);
+        break;
+      case "cantinero":
+        await this.router.navigate(["/inicio-cantinero"]);
         break;
       default:
         await this.router.navigate(["/inicio"]);

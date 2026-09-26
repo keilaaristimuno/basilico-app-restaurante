@@ -57,7 +57,6 @@ export class AltaMesaPage implements OnInit {
   numero: number | null = null;
   cantidadComensales: number | null = null;
   tipo: string = '';
-  disponibilidad: string = 'vacia';
   fotoMesa = signal<string>('');
   errorFoto = signal<boolean>(false);
   cargando = signal<boolean>(false);
@@ -134,13 +133,6 @@ export class AltaMesaPage implements OnInit {
     }
   }
 
-  normalizarDisponibilidad(disponibilidad: string): string {
-    const valor = (disponibilidad || '').trim().toLowerCase();
-    if (valor === 'ocupada') return 'ocupada';
-    if (valor === 'vacía' || valor === 'vacia') return 'vacia';
-    return 'vacia';
-  }
-
   private async mostrarToast(mensaje: string, color: 'success' | 'danger') {
     const toast = await this.toastCtrl.create({
       message: mensaje,
@@ -174,7 +166,6 @@ export class AltaMesaPage implements OnInit {
       this.cargando.set(true);
 
       const tipoGuardado = this.normalizarTipo(this.tipo);
-      const disponibilidadGuardada = this.normalizarDisponibilidad(this.disponibilidad);
 
       const nombreArchivo = `mesas/${Date.now()}.jpg`;
       const resultado = await this.supabase.subirFotoMesa(this.fotoMesa(), nombreArchivo);
@@ -184,7 +175,7 @@ export class AltaMesaPage implements OnInit {
         Number(this.numero),
         Number(this.cantidadComensales),
         tipoGuardado,
-        disponibilidadGuardada,
+        'vacia',
         fotoUrl
       );
 
@@ -212,6 +203,17 @@ export class AltaMesaPage implements OnInit {
       console.error('Error al cargar mesas:', error);
     }
   }
+
+  normalizarDisponibilidad(disponibilidad: string): string {
+  const valor = (disponibilidad || '').trim().toLowerCase();
+
+  if (valor === 'ocupada') return 'ocupada';
+
+  if (valor === 'vacía' || valor === 'vacia') {
+    return 'vacia';
+  }
+  return 'vacia';
+}
 
   async cambiarDisponibilidad(mesa: any, event?: any) {
     try {
@@ -264,7 +266,6 @@ export class AltaMesaPage implements OnInit {
     this.numero = null;
     this.cantidadComensales = null;
     this.tipo = '';
-    this.disponibilidad = 'vacia';
     this.fotoMesa.set('');
 
     this.errorNumero = false;

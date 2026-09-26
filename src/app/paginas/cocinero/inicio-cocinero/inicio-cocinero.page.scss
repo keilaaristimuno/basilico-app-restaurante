@@ -96,3 +96,124 @@
 .tarjeta-deshabilitada {
   opacity: 0.65;
 }
+
+/* =====================================================
+   RESPONSIVE PARA PANTALLAS DE ALTURA MEDIA
+   Ejemplo: 375 x 667
+   ===================================================== */
+
+@media (max-height: 700px) {
+
+  .contenedor {
+    padding: 14px 16px;
+  }
+
+  .encabezado {
+    margin-bottom: 14px;
+
+    .logo {
+      width: 75px;
+      margin-bottom: 4px;
+    }
+
+    h1 {
+      font-size: 1.4rem;
+    }
+
+    p {
+      margin-top: 4px;
+      font-size: 0.85rem;
+    }
+  }
+
+  .acciones {
+    gap: 11px;
+  }
+
+  .tarjeta {
+
+    ion-card-content {
+      min-height: 88px;
+      padding: 13px 16px;
+      gap: 16px;
+    }
+  }
+
+  .icono {
+    font-size: 2.3rem;
+  }
+
+  .informacion {
+
+    h2 {
+      margin-bottom: 3px;
+      font-size: 1rem;
+    }
+
+    p {
+      font-size: 0.76rem;
+      line-height: 1.25;
+    }
+  }
+}
+
+
+/* =====================================================
+   PANTALLAS MAS CHICAS
+   ===================================================== */
+
+@media (max-height: 600px) {
+
+  .contenedor {
+    padding: 8px 12px;
+  }
+
+  .encabezado {
+    margin-bottom: 8px;
+
+    .logo {
+      width: 58px;
+      margin-bottom: 2px;
+    }
+
+    h1 {
+      font-size: 1.15rem;
+    }
+
+    p {
+      margin-top: 2px;
+      font-size: 0.72rem;
+    }
+  }
+
+  .acciones {
+    gap: 7px;
+  }
+
+  .tarjeta {
+    border-radius: 14px;
+
+    ion-card-content {
+      min-height: 70px;
+      padding: 8px 13px;
+      gap: 12px;
+    }
+  }
+
+  .icono {
+    font-size: 1.9rem;
+  }
+
+  .informacion {
+
+    h2 {
+      margin-bottom: 2px;
+      font-size: 0.9rem;
+    }
+
+    p {
+      font-size: 0.66rem;
+      line-height: 1.15;
+    }
+  }
+}

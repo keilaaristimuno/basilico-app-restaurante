@@ -16,9 +16,8 @@
   </ion-refresher>
 
   <div class="clientes-layout-container">
-    <!-- ENCABEZADO CON TEXTO BASÍLICO Y NÚMERO DE SOLICITUDES -->
+    <!-- ENCABEZADO CON NÚMERO DE SOLICITUDES -->
     <header class="pantalla-header">
-      <h1 class="font-logo brand-logo">Basílico</h1>
       <h2 class="subtitulo-pantalla">Clientes pendientes</h2>
       @if (clientes().length > 0) {
         <div class="badge-solicitudes">
@@ -107,17 +106,14 @@
                 class="cliente-foto"
                 (error)="onFotoError($event)"
               />
-              <div class="badge-estado">
-                <span class="punto-pulso"></span>
-                <span>Pendiente</span>
-              </div>
             </div>
 
             <!-- CUERPO DE DATOS -->
             <div class="cliente-detalle-full">
               <div class="encabezado-cliente">
                 <h3 class="cliente-nombre">
-                  {{ cliente.apellidos }}, {{ cliente.nombres }}
+                  <span class="linea-apellido">{{ cliente.apellidos }},</span>
+                  <span class="linea-nombre">{{ cliente.nombres }}</span>
                 </h3>
                 <span class="badge-dni">
                   DNI {{ cliente.dni }}

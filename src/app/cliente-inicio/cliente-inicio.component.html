@@ -42,3 +42,73 @@
     </div>
   </div>
 </ion-content>
+
+<ion-modal 
+  [isOpen]="abrirInputComensales()" 
+  (didDismiss)="cerrarModuleComensales()"
+  class="modal-basilico">
+  <ng-template>
+    
+    <ion-header class="ion-no-border">
+      <ion-toolbar class="toolbar-modal">
+        <ion-title>Lista de Espera</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="cerrarModuleComensales()" class="btn-cerrar">
+            <ion-icon name="close-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="fondo-modal">
+      <div class="contenedor-modal">
+        
+        <div class="tarjeta-modal">
+          <div class="encabezado-modal">
+            <ion-icon name="people-outline" class="icono-modal"></ion-icon>
+            <h2>Cantidad de Comensales</h2>
+            <p>Ingresá cuántas personas van a ocupar la mesa</p>
+          </div>
+
+          <form (submit)="$event.preventDefault(); confirmarComensales()" class="formulario-modal">
+            
+            <div class="campo-formulario">
+              <ion-item lines="none" class="custom-item">
+                <ion-input
+                  label="Número de comensales"
+                  labelPlacement="floating"
+                  type="number"
+                  inputmode="numeric"
+                  min="1"
+                  [(ngModel)]="cantidadComensales"
+                  name="cantidadComensales"
+                  placeholder="Ej: 4">
+                </ion-input>
+              </ion-item>
+            </div>
+
+            <div class="acciones-modal">
+              <ion-button 
+                expand="block" 
+                class="btn-confirmar"
+                (click)="confirmarComensales()">
+                Confirmar e Ingresar
+              </ion-button>
+
+              <ion-button 
+                expand="block" 
+                fill="clear" 
+                class="btn-cancelar" 
+                (click)="cerrarModuleComensales()">
+                Cancelar
+              </ion-button>
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+    </ion-content>
+
+  </ng-template>
+</ion-modal>

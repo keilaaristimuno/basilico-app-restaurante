@@ -5,7 +5,14 @@ import {
   IonNote,
   IonIcon,
   IonButton,
-  ToastController
+  ToastController,
+  IonModal,
+  IonToolbar,
+  IonHeader,
+  IonItem,
+  IonButtons,
+  IonTitle,
+  IonInput
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { qrCodeOutline, gameControllerOutline } from 'ionicons/icons';
@@ -13,6 +20,8 @@ import { QrService } from '../services/qr.service';
 import { Supabase } from '../services/supabase';
 import { VibracionService } from '../services/vibracion';
 import { NavbarComponent } from '../components/navbar/navbar.component';
+import { signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-cliente-inicio',
@@ -25,11 +34,22 @@ import { NavbarComponent } from '../components/navbar/navbar.component';
     IonContent,
     IonNote,
     IonIcon,
-    IonButton
+    IonButton,
+    IonModal,
+    IonToolbar,
+    IonHeader,
+    IonButton,
+    IonItem,
+    IonButtons,
+    IonTitle,
+    FormsModule,
+    IonInput
+    
   ],
 })
 export class ClienteInicioComponent {
-
+  cantidadComensales = signal<string>("");
+  abrirInputComensales = signal<boolean>(false);
   constructor(
     private qrService: QrService,
     private supabase: Supabase,
@@ -41,7 +61,10 @@ export class ClienteInicioComponent {
 
   async escanearIngreso() {
     //Abre directamente la cámara usando BarcodeScanner de Capacitor
+    this.abrirInputComensales.set(true);
     const codigoEscaneado = await this.qrService.leerQR();
+
+    
 
     if (!codigoEscaneado) {
       await this.vibracion.errorFuerte();
@@ -51,13 +74,31 @@ export class ClienteInicioComponent {
 
     //Valida que sea el QR correcto del local
     if (codigoEscaneado === 'BASILICO_INGRESO_LISTA_ESPERA') {
-      await this.agregarAListaDeEspera();
+      this.abrirInputComensales.set(true);
+      this.confirmarComensales()
+      
     } else {
       await this.vibracion.errorFuerte();
       await this.mostrarToast('El código QR no corresponde al ingreso del local.', 'danger');
     }
+    
+  }
+  confirmarComensales() {
+    const comensalesNum = parseInt(this.cantidadComensales(), 10);
+    if (!isNaN(comensalesNum) && comensalesNum > 0) {
+      this.cerrarModuleComensales();
+      this.agregarAListaDeEspera();
+    }
+    else {
+    this.mostrarToast('Por favor, ingrese un número válido de comensales.', 'warning');
   }
 
+  }
+
+  cerrarModuleComensales(){
+    this.abrirInputComensales.set(false);
+  }
+  
   async agregarAListaDeEspera() {
     const { data: { user } } = await this.supabase.clienteSupabase.auth.getUser();
 
@@ -80,7 +121,8 @@ export class ClienteInicioComponent {
 
       .insert({
         cliente_id: cliente.id,
-        nombre: nombreCliente
+        nombre: nombreCliente,
+        comensales: this.cantidadComensales
       });
 
 

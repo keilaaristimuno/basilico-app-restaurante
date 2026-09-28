@@ -69,3 +69,222 @@
   gap: 0.9rem;
   margin-top: 0.5rem;
 }
+
+
+/* ESTILOS DEL MODAL BASÍLICO */
+ion-modal.modal-basilico {
+  --background: #8fa382;
+
+  .toolbar-modal {
+    --background: #8fa382;
+    --color: #283720;
+    font-family: 'Montserrat', sans-serif;
+
+    ion-title {
+      font-weight: 800;
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #283720;
+    }
+
+    .btn-cerrar {
+      --color: #283720;
+      font-size: 1.5rem;
+    }
+  }
+
+  .fondo-modal {
+    --background: #8fa382;
+  }
+
+  .contenedor-modal {
+    min-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  /* TARJETA CENTRAL */
+  .tarjeta-modal {
+    width: 100%;
+    background: #ede5d2;
+    border-radius: 18px;
+    padding: 24px 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.20);
+    box-sizing: border-box;
+
+    .encabezado-modal {
+      text-align: center;
+      margin-bottom: 20px;
+
+      .icono-modal {
+        font-size: 3rem;
+        color: #283720;
+        margin-bottom: 8px;
+      }
+
+      h2 {
+        margin: 0;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: #283720;
+        text-transform: uppercase;
+      }
+
+      p {
+        margin: 6px 0 0;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.9rem;
+        color: #283720;
+        opacity: 0.9;
+      }
+    }
+
+    .formulario-modal {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* INPUT ESTILIZADO */
+    .campo-formulario {
+      .custom-item {
+        --background: #ffffff;
+        --border-radius: 12px;
+        --padding-start: 14px;
+        --padding-end: 14px;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        font-family: 'Montserrat', sans-serif;
+
+        ion-input {
+          --color: #283720;
+          --placeholder-color: rgba(40, 55, 32, 0.5);
+          font-weight: 600;
+        }
+      }
+    }
+
+    /* BOTONES */
+    .acciones-modal {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 8px;
+
+      .btn-confirmar {
+        --background: #283720;
+        --color: #ede5d2;
+        --border-radius: 12px;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 800;
+        font-size: 0.95rem;
+        margin: 0;
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      .btn-cancelar {
+        --color: #283720;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 700;
+        font-size: 0.85rem;
+        margin: 0;
+      }
+    }
+  }
+}
+
+/* =====================================================
+   RESPONSIVE PARA PANTALLAS DE ALTURA MEDIA (< 700px)
+   ===================================================== */
+@media (max-height: 700px) {
+  ion-modal.modal-basilico {
+    .contenedor-modal {
+      padding: 14px 16px;
+    }
+
+    .tarjeta-modal {
+      padding: 18px 16px;
+      border-radius: 16px;
+
+      .encabezado-modal {
+        margin-bottom: 14px;
+
+        .icono-modal {
+          font-size: 2.3rem;
+          margin-bottom: 4px;
+        }
+
+        h2 {
+          font-size: 1.1rem;
+        }
+
+        p {
+          font-size: 0.8rem;
+          margin-top: 4px;
+        }
+      }
+
+      .acciones-modal {
+        gap: 8px;
+
+        .btn-confirmar {
+          font-size: 0.88rem;
+        }
+
+        .btn-cancelar {
+          font-size: 0.8rem;
+        }
+      }
+    }
+  }
+}
+
+/* =====================================================
+   PANTALLAS MÁS CHICAS (< 600px)
+   ===================================================== */
+@media (max-height: 600px) {
+  ion-modal.modal-basilico {
+    .contenedor-modal {
+      padding: 8px 12px;
+    }
+
+    .tarjeta-modal {
+      padding: 14px 12px;
+      border-radius: 14px;
+
+      .encabezado-modal {
+        margin-bottom: 10px;
+
+        .icono-modal {
+          font-size: 1.9rem;
+          margin-bottom: 2px;
+        }
+
+        h2 {
+          font-size: 0.95rem;
+        }
+
+        p {
+          font-size: 0.72rem;
+          margin-top: 2px;
+        }
+      }
+
+      .acciones-modal {
+        gap: 6px;
+
+        .btn-confirmar {
+          font-size: 0.8rem;
+        }
+
+        .btn-cancelar {
+          font-size: 0.75rem;
+        }
+      }
+    }
+  }
+}

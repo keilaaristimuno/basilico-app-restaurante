@@ -5,6 +5,7 @@ import { Camera } from '@capacitor/camera';
 import { Supabase } from '../../services/supabase';
 import { EmailService } from '../../services/email';
 import { PushNotificationsService } from '../../services/push-notifications.service';
+import { VibracionService } from '../../services/vibracion';
 import { generarHtmlConfirmacion } from '../../utils/plantillas-email';
 
 // Componentes UI de Ionic Standalone
@@ -71,6 +72,7 @@ export class RegistroPage implements OnInit {
     private supabase: Supabase,
     private emailService: EmailService,
     private toastCtrl: ToastController,
+    private vibracion: VibracionService,
     private pushNotifications: PushNotificationsService
   ) { }
 
@@ -127,6 +129,7 @@ export class RegistroPage implements OnInit {
       this.errorFoto.set(false);
     } catch (error) {
       console.error('Error al tomar la foto del cliente:', error);
+      await this.vibracion.errorFuerte();
     }
   }
 
@@ -204,6 +207,7 @@ export class RegistroPage implements OnInit {
     } catch (error: any) {
       console.error('Error al registrar cliente:', error);
       await this.mostrarToast(error?.message ?? 'No se pudo completar el registro.', 'danger');
+      await this.vibracion.errorFuerte();
     } finally {
       this.cargando.set(false);
     }

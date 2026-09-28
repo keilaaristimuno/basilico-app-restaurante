@@ -2,6 +2,7 @@ import { Component, WritableSignal, signal } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterLink } from "@angular/router";
 import { FormsModule } from "@angular/forms";
+import { VibracionService } from '../../services/vibracion';
 import { Router } from "@angular/router";
 import { 
   IonContent, IonGrid, IonRow, IonCol, 
@@ -41,6 +42,7 @@ export class LoginPage {
     private supabase: Supabase,
     private router: Router,
     private pushNotifications: PushNotificationsService,
+    private vibracion: VibracionService,
     private toastController: ToastController
   ) { }
 
@@ -73,6 +75,7 @@ export class LoginPage {
       console.error("Error durante el ingreso:", err);
       this.mensajeError.set(err?.message ?? "Ocurrió un error al ingresar.");
       this.ingresoIncorrecto.set(true);
+      await this.vibracion.errorFuerte();
     } finally {
       this.cargando.set(false);
     }
@@ -85,6 +88,7 @@ export class LoginPage {
     if (!this.mail.trim() || !this.clave.trim()) {
       this.mensajeError.set("Por favor, ingrese correo y contraseña.");
       this.ingresoIncorrecto.set(true);
+      this.vibracion.errorFuerte();
       return false;
     }
     return true;
@@ -96,6 +100,7 @@ export class LoginPage {
       console.error("Error al iniciar sesión:", error.message);
       this.mensajeError.set("Correo o contraseña incorrectos.");
       this.ingresoIncorrecto.set(true);
+      this.vibracion.errorFuerte();
       return false;
     }
     return true;

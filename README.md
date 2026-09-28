@@ -4,6 +4,12 @@
 ### **Tecnicatura Universitaria en Programación - UTN Avellaneda**
 
  `Link del proyecto Supabase:` https://xmlcpvfjlnuakqehrvom.supabase.co --> integrado al repo
+### **Grupo:** Basilico - 2026
+
+### **Tecnicatura Universitaria en Programación - UTN Avellaneda**
+
+ `Link del proyecto Supabase:` https://xmlcpvfjlnuakqehrvom.supabase.co --> integrado al repo
+
 ---
 
 ## 👥 Integrantes y Responsabilidades
@@ -48,7 +54,7 @@ Punto 19 — Entrega del pedido completo + cambio de estado
 Liderar el servicio central de Supabase y el sistema de notificaciones push (por ser quien más interactúacon todos los flujos)
 
 ---
-### 👤 Aristimuño, Keila del Integrante 1 - Líder del Grupo
+### 👤 Aristimuño, Keila - Líder del Grupo
 * **Módulos / Objetivos a desarrollar:** 
   -  Alta de plato (nombre, descripción, tiempo, precio, 3 fotos con carrusel
 * **Planificación de Tareas:**
@@ -64,7 +70,10 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 |Inicio Cocinero | 18/09 | 19/09 |feature/cocinero-inicio|Finalizado |
 |Navbar y logout | 19/09 | 19/09 |feature/cocinero-inicio|Finalizado |
 |Alta bebida | 24/09 | 24/09 |feature/alta-bebida|Finalizado |
-|capturas doc | 25/09 | 25/09 |doc/capturas|en proceso |
+|capturas doc | 25/09 | 25/09 |doc/capturas|Finalizado |
+|Alta mesa diseño | 25/09 | 25/09 |develop|Finalizado |
+|Inicio cantinero | 25/09 | 25/09 |develop|Finalizado |
+
 
 
 ---
@@ -99,14 +108,24 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 ### 👤 Seggiaro, Agustina Anabel
 * **Módulos / Objetivos a desarrollar:** 
  - Login principal
+ - Metre
+ - Mozo
+ - Nexo entre cliente / metre / mozo
 * **Planificación de Tareas:**
 
 | Tarea / Módulo | Fecha Inicio | Fecha Fin (Estimada/Real) | Branch | Estado |
 | :--- | :---: | :---: | :---: | :---: |
 | Login principal (Validaciones) | 08/09/2026 | 10/09/2026 | `feature/registro-login` | Finalizado |
 | Pantalla de incio (Redirigir) | 08/09/2026 | 10/09/2026 | `feature/registro-login` | Finalizado |
-| Acceso rápido (Redirigir) | 10/09/2026 | - | `feature/registro-login` | En procceso |
-| Pantalla inicio Metre | 10/09/2026 | - | `feature/registro-login` | En procceso |
+| Acceso rápido (Redirigir) | 10/09/2026 | - | `feature/registro-login` | Finalizado |
+| Pantalla inicio Metre | 10/09/2026 | 15/09/2026 | `feature/mozo-metre` | Finalizado |
+| Pantalla inicio Mozo | 10/09/2026 | 17/09/2023 | `feature/mozo-metre` | Finalizado |
+| Pantalla inicio cliente | 15/09/2026 |  17/09/2023 | `feature/develop` | Finalizado |
+| Código QR ingreso local | 15/09/2026 |  17/09/2023 | `feature/develop` | Finalizado |
+| Entrada de cliente a lista de espera | 15/09/2026 |  17/09/2023 | `feature/develop` | Finalizado |
+| Lista de espera mozo | 21/09/2026 | - | `feature/develop` | En proceso |
+| Registro  cliente anonimo | 23/09/2026 | 24/09/2026 |  `feature/develop`| Finalizado |
+
 
 ---
 
@@ -118,11 +137,18 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 
 ### 🚪 QR de Ingreso al Local
 
-<!-- Pendiente de agregar -->
+Qr al ingresar un cliente al local para figurar en listad e espera
+
+<p align="center">
+  <img src="docs/capturas/qr/qr-ingreso-local.png" width="300">
+</p>
 
 ### 🍽️ QRs de Mesas
+Qr para escanear mesa
 
-<!-- Pendientes de agregar -->
+<p align="center">
+  <img src="docs/capturas/qr/qr-mesa.png" width="300">
+</p>
 
 ### 💰 QRs de Propinas
 
@@ -147,7 +173,7 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 Pantalla principal de la aplicación. Desde aquí el usuario puede iniciar sesión, registrarse o ingresar como cliente anónimo.
 
 <p align="center">
-  <img src="docs/capturas/generales/01-pantalla-inicio.png" width="300">
+  <img src="docs/capturas/generales/01-pantalla-inicio.jpeg" width="300">
 </p>
 
 ---
@@ -157,7 +183,7 @@ Pantalla principal de la aplicación. Desde aquí el usuario puede iniciar sesi�
 Pantalla para el ingreso de usuarios registrados mediante correo electrónico y contraseña.
 
 <p align="center">
-  <img src="docs/capturas/generales/02-inicio-sesion.png" width="300">
+  <img src="docs/capturas/generales/02-inicio-sesion.jpeg" width="300">
 </p>
 
 ---
@@ -167,7 +193,6 @@ Pantalla para el ingreso de usuarios registrados mediante correo electrónico y 
 Formulario para el registro de un nuevo cliente. Permite ingresar nombre, apellido, DNI, correo electrónico, contraseña y fotografía tomada desde el dispositivo.
 
 <p align="center">
-  <img src="docs/capturas/generales/03-registrarse-cliente-completo.png" width="300">
   <img src="docs/capturas/generales/03-registrarse-cliente.png" width="300">
 </p>
 
@@ -198,7 +223,6 @@ Pantalla de ingreso sin registro previo. El cliente anónimo ingresa su nombre y
 Pantalla de ingreso rápido utilizada para acceder a la aplicación con los distintos perfiles disponibles.
 
 <p align="center">
-  <img src="docs/capturas/generales/06-ingreso-rapido-completo.png" width="300">
   <img src="docs/capturas/generales/06-ingreso-rapido.png" width="300">
 </p>
 
@@ -238,9 +262,9 @@ Permite al dueño o supervisor registrar un nuevo empleado, ingresando sus datos
 
 La funcionalidad contempla la validación de los datos ingresados y la posibilidad de utilizar la lectura del código QR del DNI para completar la información correspondiente.
 
-> 🎨 **Diseño en actualización:** La funcionalidad se encuentra implementada. La captura de la pantalla será incorporada cuando finalice la actualización visual de la interfaz.
-
-<!-- Captura pendiente: 02-alta-empleado.png -->
+<p align="center">
+  <img src="docs/capturas/duenio-supervisor/02-alta-empleado.png" width="300">
+</p>
 
 ---
 
@@ -250,9 +274,10 @@ Permite al dueño o supervisor registrar una nueva mesa indicando sus datos corr
 
 Al registrar la mesa, se genera el código QR correspondiente y posteriormente puede gestionarse su disponibilidad.
 
-> 🎨 **Diseño en actualización:** La funcionalidad se encuentra implementada. La captura de la pantalla será incorporada cuando finalice la actualización visual de la interfaz.
-
-<!-- Captura pendiente: 03-alta-mesa.png -->
+<p align="center">
+  <img src="docs/capturas/duenio-supervisor/03-alta-mesa.png" width="300">
+  <img src="docs/capturas/duenio-supervisor/03-alta-mesa-desliza.png" width="300">
+</p>
 
 ---
 
@@ -262,9 +287,14 @@ Permite al dueño o supervisor visualizar los clientes registrados que se encuen
 
 Desde esta sección se puede consultar la información del cliente y gestionar su solicitud, permitiendo aceptar o rechazar su registro.
 
-> 🎨 **Diseño en actualización:** La funcionalidad se encuentra implementada. La captura de la pantalla será incorporada cuando finalice la actualización visual de la interfaz.
+<p align="center">
+  <img src="docs/capturas/duenio-supervisor/05-clientes-pendientes.png" width="300">
+</p>
 
-<!-- Captura pendiente: 04-clientes-pendientes.png -->
+<p align="center">
+  <img src="docs/capturas/duenio-supervisor/04-duenio-clientes-pendientes.jpeg" width="300">
+</p>
+
 
 ---
 
@@ -336,28 +366,25 @@ Los pedidos deberán mostrar la mesa correspondiente, fecha y hora, junto con lo
 <!-- Captura pendiente: 04-pedidos-pendientes-cocina.png -->
 
 ---
+### 5. Pantalla Principal del Cantinero
 
-### 5. Alta de Bebida — Cantinero
+Pantalla principal correspondiente al perfil cantinero, desde la cual se accederá a las funcionalidades relacionadas con bebidas y pedidos destinados al sector bar.
+
+<p align="center">
+  <img src="docs/capturas/cocina-bar/04-inicio-cantinero.png" width="300">
+</p>
+
+---
+
+### 6. Alta de Bebida — Cantinero
 
 Permite al cantinero incorporar una nueva bebida a la carta del restaurante.
 
 Al igual que en el alta de platos, se ingresan el nombre, descripción, tiempo estimado de elaboración, precio y tres fotografías del producto.
 
-> 📷 **Captura pendiente:** La funcionalidad se encuentra disponible, pero su captura será incorporada al índice junto con la documentación correspondiente al perfil cantinero.
-
 <p align="center">
   <img src="docs/capturas/cocina-bar/05-alta-bebida.png" width="300">
 </p>
-
----
-
-### 6. Pantalla Principal del Cantinero
-
-Pantalla principal correspondiente al perfil cantinero, desde la cual se accederá a las funcionalidades relacionadas con bebidas y pedidos destinados al sector bar.
-
-> 🎨 **Pendiente:** La pantalla principal del perfil cantinero será incorporada cuando se encuentre disponible su diseño definitivo.
-
-<!-- Captura pendiente: 06-pantalla-inicio-cantinero.png -->
 
 ---
 
@@ -381,15 +408,113 @@ El beneficio se obtiene únicamente al ganar en el primer intento y el primer de
 
 > 🚧 **En desarrollo:** La sección de juegos se encuentra actualmente en proceso de implementación. La captura corresponde al estado actual de la interfaz y será actualizada a medida que avance el desarrollo.
 
+Pagina de inicio de juegos 
+
 <p align="center">
-  <img src="docs/capturas/cliente/02-inicio-juegos.png" width="300">
+  <img src="docs/capturas/generales/inicio-juegos.jpg" width="300">
+</p>
+
+<p align="center">
+  <img src="docs/capturas/generales/juegos-2.jpg" width="300">
 </p>
 
 ---
 
 ## 🧑‍🍳 Mozo / Metre
 
-*Las capturas correspondientes a estos perfiles se incorporarán a medida que las funcionalidades sean desarrolladas.*
+### 1. Pantalla Principal del Metre
+
+Pantalla principal correspondiente al perfil metre. Desde esta sección se centralizan las funcionalidades relacionadas con el ingreso de clientes al restaurante y la asignación de mesas.
+
+Actualmente permite acceder a:
+
+- **Registro de cliente:** permite registrar un nuevo cliente en el sistema.
+- **Lista de espera:** permite visualizar los clientes que se encuentran esperando una mesa y gestionar la asignación correspondiente.
+
+<p align="center">
+  <img src="docs/capturas/mozo-metre/01-inicio-metre.png" width="300">
+</p>
+
+---
+
+### 2. Lista de Espera y Asignación de Mesa
+
+Desde la lista de espera, el metre puede visualizar los clientes que solicitaron ingresar al restaurante y se encuentran esperando la asignación de una mesa.
+
+Una vez disponible una mesa, el metre puede asignarla al cliente correspondiente para continuar con el flujo de atención.
+
+> 🚧 **En desarrollo:** La implementación de la funcionalidad de asignar mesa. La captura de esta pantalla será incorporada cuando la funcionalidad se encuentre finalizada.
+
+<p align="center">
+  <img src="docs/capturas/mozo-metre/03-asignar-mesa.png" width="300">
+</p>
+
+---
+
+### 3. Pantalla Principal del Mozo
+
+Pantalla principal correspondiente al perfil mozo. Desde esta sección se centralizan las funcionalidades necesarias para gestionar los pedidos, la entrega de productos, las cuentas de las mesas y las consultas realizadas por los clientes.
+
+Actualmente dispone de los siguientes accesos:
+
+- **Nuevos pedidos:** pedidos enviados por los clientes que requieren confirmación o rechazo por parte del mozo.
+- **Pedidos listos:** pedidos cuya preparación fue finalizada y se encuentran disponibles para ser entregados.
+- **Cuentas y liberación:** gestión del proceso de cobro y posterior liberación de la mesa.
+- **Chat de consultas:** acceso a las consultas y conversaciones iniciadas por los clientes.
+
+<p align="center">
+  <img src="docs/capturas/mozo-metre/02-inicio-mozo.png" width="300">
+</p>
+
+---
+
+### 4. Nuevos Pedidos
+
+Sección destinada a visualizar los nuevos pedidos realizados por los clientes.
+
+El mozo podrá revisar el pedido recibido y decidir si lo **confirma** o lo **rechaza**. En caso de ser rechazado, el cliente podrá modificar los productos o cantidades y volver a enviar el pedido.
+
+Una vez confirmado por el mozo, el pedido será derivado a los sectores correspondientes para comenzar su preparación.
+
+> 🚧 **En desarrollo:** La implementación de la gestión de nuevos pedidos se encuentra actualmente en proceso. La captura de esta pantalla será incorporada cuando la funcionalidad se encuentre finalizada.
+
+<!-- Captura pendiente: 02-nuevos-pedidos-mozo.png -->
+
+---
+
+### 5. Pedidos Listos
+
+Sección destinada a visualizar los pedidos cuya preparación fue completada por los sectores correspondientes.
+
+El pedido deberá estar disponible para entrega una vez que todos los productos que lo componen se encuentren listos. Desde esta sección, el mozo podrá identificar los pedidos preparados y continuar con la entrega al cliente.
+
+> 🚧 **En desarrollo:** La implementación de la gestión de pedidos listos se encuentra actualmente en proceso. La captura de esta pantalla será incorporada cuando la funcionalidad se encuentre finalizada.
+
+<!-- Captura pendiente: 03-pedidos-listos-mozo.png -->
+
+---
+
+### 6. Cuentas y Liberación de Mesa
+
+Sección destinada a gestionar las cuentas solicitadas por los clientes y completar el proceso de pago.
+
+Luego de la confirmación correspondiente, se podrá finalizar la atención y liberar la mesa para que vuelva a estar disponible.
+
+> 📷 **Captura pendiente:** Se incorporará la captura correspondiente cuando la interfaz se encuentre disponible.
+
+<!-- Captura pendiente: 04-cuentas-liberacion-mozo.png -->
+
+---
+
+### 7. Chat de Consultas
+
+Sección destinada a recibir y responder las consultas realizadas por los clientes desde sus mesas.
+
+El sistema permitirá mantener una sala de conversación entre clientes y mozos, identificando las consultas correspondientes y permitiendo continuar la comunicación durante la atención.
+
+> 📷 **Captura pendiente:** Se incorporará la captura correspondiente cuando la interfaz se encuentre disponible.
+
+<!-- Captura pendiente: 05-chat-consultas-mozo.png -->
 
 ---
 
@@ -404,12 +529,4 @@ El beneficio se obtiene únicamente al ganar en el primer intento y el primer de
 *Las capturas correspondientes a las encuestas y gráficos estadísticos se incorporarán a medida que sean desarrollados.*
 
 ---
-
-# PALETA DE COLORES
-  - ROJO ANARANJADO
-    RGB: #b24d39
-  - VERDE OLIVA
-    RGB: #283720
-  - BEIGE
-    RGB: #ede5d2
 

@@ -169,6 +169,8 @@ export class RegistroPage implements OnInit {
       const nombreArchivo = `clientes/${Date.now()}.jpg`;
       const resultado = await this.supabase.subirFotoCliente(this.fotoCliente(), nombreArchivo);
       const fotoUrl = this.supabase.obtenerUrlFotoCliente(resultado.path);
+      const perfil = "cliente";
+      const estado = "pendiente";
 
       await this.supabase.guardarDatosClientes(
         apellidos,
@@ -176,7 +178,9 @@ export class RegistroPage implements OnInit {
         Number(dni),
         correo,
         clave,
-        fotoUrl
+        fotoUrl,
+        perfil,
+        estado
       );
 
       try {

@@ -73,6 +73,7 @@ export class RegistroAnonimoComponent  implements OnInit {
     private fb: FormBuilder,
     private vibracion: VibracionService,
     private toastCtrl: ToastController,
+    private supabase: Supabase,
   ) { }
 
   ngOnInit(): void {
@@ -125,10 +126,27 @@ export class RegistroAnonimoComponent  implements OnInit {
       console.log("Formulario inválido");
       return;
     }
-    localStorage.clear();
     const nombres = this.miFormulario.get('nombres')?.value;
+    const nombreArchivo = `clientes/${Date.now()}.jpg`;
+    const resultado = await this.supabase.subirFotoCliente(this.fotoCliente(), nombreArchivo);
+    const fotoUrl = this.supabase.obtenerUrlFotoCliente(resultado.path);
+    const perfil = "anonimo";
+    const estado = "aprobado";
+
+
+    await this.supabase.guardarDatosClientes(  
+      null,     
+      nombres,
+      null,
+      null,
+      null,
+      fotoUrl,
+      perfil,
+      estado
+    );
+    localStorage.clear();
     localStorage.setItem('nombre', nombres);
-    localStorage.setItem('foto', this.fotoCliente())
+    this.resetearForm();
     this.router.navigate(['/clienteInicio']);
   }
 }

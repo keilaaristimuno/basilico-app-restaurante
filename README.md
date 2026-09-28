@@ -6,10 +6,6 @@
  `Link del proyecto Supabase:` https://xmlcpvfjlnuakqehrvom.supabase.co --> integrado al repo
 ### **Grupo:** Basilico - 2026
 
-### **Tecnicatura Universitaria en Programación - UTN Avellaneda**
-
- `Link del proyecto Supabase:` https://xmlcpvfjlnuakqehrvom.supabase.co --> integrado al repo
-
 ---
 
 ## 👥 Integrantes y Responsabilidades
@@ -63,7 +59,7 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 | :--- | :---: | :---: | :---: | :---: |
 | Configuración inicial del repositorio | 28/08/2026 | 28/08/2026 | `main` / `develop` | Finalizado |
 | Estilos generales | 05/09/2026 | 05/09/2026 | `feature/estilos-globales` | Finalizado|
-|Punto 2 — Alta de plato | 10/09 | 17/09 |feature/alta-plato |En proceso |
+|Punto 2 — Alta de plato | 10/09 | 17/09 |feature/alta-plato |Finalizado |
 |Diseño registro | 17/09 | 17/09 |feature/alta-plato |Finalizado |
 |Service Vibracion | 17/09 | 17/09 |feature/alta-plato |Finalizado |
 |Carta/menu | 17/09 | 18/09 |feature/Carta|Finalizado |
@@ -140,14 +136,14 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 Qr al ingresar un cliente al local para figurar en listad e espera
 
 <p align="center">
-  <img src="docs/capturas/qr/qr-ingreso-local.png" width="300">
+  <img src="docs/qr/qr-ingreso-local.png" width="300">
 </p>
 
 ### 🍽️ QRs de Mesas
 Qr para escanear mesa
 
 <p align="center">
-  <img src="docs/capturas/qr/qr-mesa.png" width="300">
+  <img src="docs/qr/qr-mesa.png" width="300">
 </p>
 
 ### 💰 QRs de Propinas
@@ -290,11 +286,6 @@ Desde esta sección se puede consultar la información del cliente y gestionar s
 <p align="center">
   <img src="docs/capturas/duenio-supervisor/05-clientes-pendientes.png" width="300">
 </p>
-
-<p align="center">
-  <img src="docs/capturas/duenio-supervisor/04-duenio-clientes-pendientes.jpeg" width="300">
-</p>
-
 
 ---
 

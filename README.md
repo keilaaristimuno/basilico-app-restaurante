@@ -69,6 +69,7 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 |capturas doc | 25/09 | 25/09 |doc/capturas|Finalizado |
 |Alta mesa diseño | 25/09 | 25/09 |develop|Finalizado |
 |Inicio cantinero | 25/09 | 25/09 |develop|Finalizado |
+|Pantalla de pedidos pendientes en cocina, agrupados por mesa | 01/19 | 01/10 |develop|en proceso |
 
 
 

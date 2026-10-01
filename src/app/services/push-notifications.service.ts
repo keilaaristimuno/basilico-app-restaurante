@@ -96,6 +96,7 @@ export class PushNotificationsService {
     await PushNotifications.addListener('registration', async (token: Token) => {
       console.log('[Push] Token FCM recibido:', token.value);
       this.tokenActual = token.value;
+      localStorage.setItem('fcm_device_token', token.value);
       await this.guardarTokenSegunSesion(token.value);
     });
 
@@ -142,14 +143,15 @@ export class PushNotificationsService {
   }
 
   async desasociarToken(): Promise<void> {
-    if (!this.tokenActual) {
+    const token = this.tokenActual || localStorage.getItem('fcm_device_token');
+    if (!token) {
       console.warn('[Push] No hay token en memoria para desasociar.');
       return;
     }
 
     const { error } = await this.supabase.clienteSupabase.rpc(
       'desasociar_device_token',
-      { p_token: this.tokenActual }
+      { p_token: token }
     );
 
     if (error) {
@@ -180,8 +182,9 @@ export class PushNotificationsService {
   }
 
   async asociarTokenDelUsuarioActual(): Promise<void> {
-    if (!this.tokenActual) return;
-    await this.guardarTokenSegunSesion(this.tokenActual);
+    const token = this.tokenActual || localStorage.getItem('fcm_device_token');
+    if (!token) return;
+    await this.guardarTokenSegunSesion(token);
   }
 
   async enviarNotificacion(

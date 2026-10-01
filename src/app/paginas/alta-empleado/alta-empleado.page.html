@@ -12,9 +12,15 @@
 
 <ion-content [fullscreen]="true" class="registro-content">
   <div class="registro-container">
+
+    <!-- ENCABEZADO -->
+    <section class="registro-header">
+      <h2>Nuevo empleado</h2>
+      <p>Complete los datos para registrar un nuevo empleado</p>
+    </section>
+
     <ion-card class="registro-card">
-        <p class="titulo">Nuevo empleado</p>
-      <ion-card-content class="registro-container">
+      <ion-card-content>
         <form [formGroup]="formularioEmpleado" (ngSubmit)="guardarEmpleado()">
 
           <!-- Sección de Foto con Cámara Obligatoria -->
@@ -23,12 +29,12 @@
               <div class="contenedor-foto">
                 <img [src]="fotoEmpleado()" alt="Foto de perfil del empleado" class="preview-foto" />
               </div>
-              <ion-button type="button" class="botonVerde" expand="block" (click)="tomarFoto()">
+              <ion-button type="button" class="botonBeige" expand="block" (click)="tomarFoto()">
                 Volver a tomar foto
               </ion-button>
             } @else {
-              <ion-button type="button" expand="block" (click)="tomarFoto()">
-                Tomar Foto con Cámara
+              <ion-button type="button" class="botonBeige" expand="block" (click)="tomarFoto()">
+                Tomar foto con cámara
               </ion-button>
             }
 
@@ -263,7 +269,7 @@
           
 
           <!-- Botones de Acción -->
-          <div class="ion-margin-top">
+          <div class="ion-margin-top botones-accion">
             <ion-button expand="block" class="boton-escanear-dni" type="submit">
               Guardar Empleado
             </ion-button>

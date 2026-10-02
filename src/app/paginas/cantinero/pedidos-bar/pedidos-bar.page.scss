@@ -1,0 +1,311 @@
+/* =========================================================
+   PANTALLA DE PEDIDOS PENDIENTES - BAR (PUNTO 17)
+   ========================================================= */
+
+.contenedor {
+  min-height: 100%;
+  padding: 20px 16px 36px;
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   ENCABEZADO
+   ========================================================= */
+.encabezado {
+  text-align: center;
+  margin-bottom: 24px;
+
+  .logo {
+    width: 100px;
+    height: auto;
+    object-fit: contain;
+    margin-bottom: 8px;
+  }
+
+  h1 {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: clamp(1.4rem, 4.5vw, 1.9rem);
+    font-weight: 800;
+    color: var(--basilico-olive);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  p {
+    margin-top: 6px;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--basilico-olive);
+  }
+}
+
+/* =========================================================
+   ESTADO DE ERROR
+   ========================================================= */
+.tarjeta-error {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--basilico-terracotta);
+  color: #ffffff;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 22px;
+  box-shadow: 0 4px 10px rgba(var(--ion-color-danger-rgb), 0.3);
+
+  .icono-alerta {
+    font-size: 2.2rem;
+    flex-shrink: 0;
+  }
+
+  .contenido-error {
+    strong {
+      display: block;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.88rem;
+      line-height: 1.35;
+      opacity: 0.95;
+    }
+  }
+}
+
+/* =========================================================
+   ESTADO VACÍO
+   ========================================================= */
+.estado-vacio {
+  background: var(--basilico-beige);
+  border-radius: 18px;
+  padding: 38px 20px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
+  margin-top: 10px;
+
+  .icono-vacio-contenedor {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    background: rgba(var(--ion-color-primary-rgb), 0.08);
+    border-radius: 50%;
+    margin-bottom: 16px;
+  }
+
+  .icono-vacio {
+    font-size: 3.2rem;
+    color: var(--basilico-olive);
+  }
+
+  h2 {
+    margin: 0 0 8px;
+    font-family: var(--font-body);
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--basilico-olive);
+  }
+
+  p {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 0.92rem;
+    color: var(--basilico-olive);
+    line-height: 1.45;
+  }
+}
+
+/* =========================================================
+   LISTADO Y TARJETAS DE MESAS
+   ========================================================= */
+.listado-mesas {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.tarjeta-mesa {
+  background: var(--basilico-beige);
+  border-radius: 18px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  overflow: hidden;
+}
+
+/* Cabecera de la Mesa */
+.cabecera-mesa {
+  background: var(--basilico-olive);
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .identificador-mesa {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .icono-mesa {
+    font-size: 1.6rem;
+    color: var(--basilico-beige);
+  }
+
+  .titulo-mesa {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--basilico-beige);
+    letter-spacing: 0.3px;
+  }
+
+  .badge-cantidad-pedidos {
+    background: var(--basilico-terracotta);
+    color: #ffffff;
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+}
+
+/* Contenedor horizontal de pedidos dentro de la mesa (carrusel con swipe) */
+.cuerpo-mesa {
+  padding: 16px;
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  overflow-y: hidden;
+  gap: 14px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--ion-color-primary-rgb), 0.25) transparent;
+
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(var(--ion-color-primary-rgb), 0.25);
+    border-radius: 4px;
+  }
+}
+
+/* Tarjeta individual de un pedido dentro del carrusel */
+.tarjeta-pedido {
+  flex: 0 0 86%;
+  width: 86%;
+  scroll-snap-align: start;
+  background: var(--ion-color-secondary-tint);
+  border: 1.5px solid rgba(var(--ion-color-primary-rgb), 0.16);
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
+
+  /* Si hay un único pedido en la mesa, ocupa el 100% sin dejar huecos */
+  &:only-child {
+    flex: 0 0 100%;
+    width: 100%;
+  }
+}
+
+.pedido-encabezado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed rgba(var(--ion-color-primary-rgb), 0.2);
+  margin-bottom: 10px;
+
+  .pedido-orden {
+    font-family: var(--font-body);
+    font-weight: 800;
+    font-size: 0.95rem;
+    color: var(--basilico-olive);
+  }
+
+  .pedido-fecha {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.84rem;
+    color: var(--ion-color-primary-tint);
+
+    .icono-tiempo {
+      font-size: 1rem;
+    }
+  }
+}
+
+/* Bebidas a preparar */
+.bebidas-contenedor {
+  .subtitulo-bebidas {
+    margin: 0 0 8px;
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--basilico-olive);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  .lista-bebidas {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .item-bebida {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(var(--ion-color-primary-rgb), 0.06);
+    border-radius: 8px;
+    padding: 8px 10px;
+
+    .cantidad-bebida {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--basilico-olive);
+      color: var(--basilico-beige);
+      font-family: var(--font-body);
+      font-size: 1.1rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+      min-width: 36px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .nombre-bebida {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--basilico-olive);
+      line-height: 1.35;
+      word-break: break-word;
+    }
+  }
+}

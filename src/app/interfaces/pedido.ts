@@ -82,3 +82,26 @@ export interface MesaConPedidosCocinaUI {
   numeroMesa: number;
   pedidos: PedidoMesaCocinaUI[];
 }
+
+/**
+ * 4. Modelos limpios para la interfaz gráfica (UI) del perfil Cantinero / Bar (Punto 17).
+ * Diseñados para representar los datos procesados, filtrados por bebidas
+ * y agrupados por número de mesa.
+ */
+
+export interface ItemBebidaBarUI {
+  nombre: string;
+  cantidad: number;
+}
+
+export interface PedidoMesaBarUI {
+  pedidoId: string;
+  fechaHora: string;
+  bebidas: ItemBebidaBarUI[];
+}
+
+export interface MesaConPedidosBarUI {
+  numeroMesa: number;
+  pedidos: PedidoMesaBarUI[];
+}
+

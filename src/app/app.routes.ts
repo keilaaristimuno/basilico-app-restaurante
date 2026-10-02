@@ -91,6 +91,10 @@ export const routes: Routes = [
     loadComponent: () => import('./paginas/inicio-cantinero/inicio-cantinero.page').then( m => m.InicioCantineroPage)
   },
   {
+    path: 'pedidos-bar',
+    loadComponent: () => import('./paginas/cantinero/pedidos-bar/pedidos-bar.page').then(m => m.PedidosBarPage)
+  },
+  {
     path: '**',
     redirectTo: 'inicio'
   }

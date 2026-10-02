@@ -479,4 +479,42 @@ export class Supabase {
     return data ?? [];
   }
 
+  /* ============================================================
+     OBTENER PEDIDOS CONFIRMADOS PARA BAR (PUNTO 17)
+  ============================================================ */
+  async obtenerPedidosConfirmadosBar(): Promise<PedidoSupabaseRelacional[]> {
+    const { data, error } = await this.clienteSupabase
+      .from('pedidos')
+      .select(`
+        id,
+        estado,
+        created_at,
+        mesas (
+          id,
+          numero
+        ),
+        pedido_items (
+          id,
+          cantidad,
+          precio_unitario,
+          productos (
+            id,
+            nombre,
+            tipo
+          )
+        )
+      `)
+      .eq('estado', 'confirmado')
+      .order('created_at', { ascending: true })
+      .returns<PedidoSupabaseRelacional[]>();
+
+    if (error) {
+      console.error('Error al obtener los pedidos para bar:', error.message);
+      throw new Error(`Error al obtener los pedidos para bar: ${error.message}`);
+    }
+
+    return data ?? [];
+  }
+
 }
+

@@ -51,8 +51,7 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 
 ---
 ### 👤 Aristimuño, Keila - Líder del Grupo
-* **Módulos / Objetivos a desarrollar:** 
-  -  Alta de plato (nombre, descripción, tiempo, precio, 3 fotos con carrusel
+
 * **Planificación de Tareas:**
 
 | Tarea / Módulo | Fecha Inicio | Fecha Fin (Estimada/Real) | Branch | Estado |
@@ -69,8 +68,8 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 |capturas doc | 25/09 | 25/09 |doc/capturas|Finalizado |
 |Alta mesa diseño | 25/09 | 25/09 |develop|Finalizado |
 |Inicio cantinero | 25/09 | 25/09 |develop|Finalizado |
-|Pantalla de pedidos pendientes en cocina, agrupados por mesa | 01/19 | 01/10 |develop|en proceso |
-
+|Pantalla de pedidos pendientes en cocina, agrupados por mesa | 01/10 | 02/10 |develop|Finalizado |
+|Pantalla de pedidos pendientes en bar | 02/10 | 02/10 |develop|Finalizado |
 
 
 ---

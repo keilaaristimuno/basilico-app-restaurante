@@ -31,6 +31,30 @@
       </p>
 
       <div class="decoracion-header"></div>
+
+      <!-- =========================
+           ÍNDICE DE NAVEGACIÓN RÁPIDA
+           ========================= -->
+      @if (productos.length > 0) {
+        <nav class="indice-navegacion" aria-label="Navegación rápida por categorías">
+          @if (platos.length > 0) {
+            <button
+              type="button"
+              class="btn-categoria"
+              (click)="scrollASeccion('seccion-platos')">
+              Platos
+            </button>
+          }
+          @if (bebidas.length > 0) {
+            <button
+              type="button"
+              class="btn-categoria"
+              (click)="scrollASeccion('seccion-bebidas')">
+              Bebidas
+            </button>
+          }
+        </nav>
+      }
     </section>
 
     <!-- =========================
@@ -53,13 +77,13 @@
          ========================= -->
     @for (
       seccion of [
-        { titulo: 'Platos', productos: platos },
-        { titulo: 'Bebidas', productos: bebidas }
+        { titulo: 'Platos', id: 'seccion-platos', productos: platos },
+        { titulo: 'Bebidas', id: 'seccion-bebidas', productos: bebidas }
       ];
       track seccion.titulo
     ) {
       @if (seccion.productos.length > 0) {
-      <section class="seccion-productos">
+      <section [id]="seccion.id" class="seccion-productos">
         <div class="titulo-seccion">
           <h3>
             {{ seccion.titulo }}
@@ -94,6 +118,21 @@
                     [alt]="
                       'Fotografía de ' +
                       plato.nombre
+                    "
+                    [class.imagen-vertical]="
+                      fotosVerticales[
+                        plato.fotos[
+                          indiceFoto[plato.id] ?? 0
+                        ]
+                      ]
+                    "
+                    (load)="
+                      detectarOrientacion(
+                        $event,
+                        plato.fotos[
+                          indiceFoto[plato.id] ?? 0
+                        ]
+                      )
                     ">
 
                   <!-- Flechas -->

@@ -11,6 +11,10 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="fondo">
+  <ion-refresher slot="fixed" (ionRefresh)="refrescarPedidos($event)">
+    <ion-refresher-content pullingText="Deslizar para actualizar" refreshingSpinner="crescent"></ion-refresher-content>
+  </ion-refresher>
+
   <div class="contenedor">
 
     <!-- =========================================================

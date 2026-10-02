@@ -1,6 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastController } from '@ionic/angular';
+import { RealtimeChannel } from '@supabase/supabase-js';
 import { Supabase } from '../../../services/supabase';
 import { Carga } from '../../../services/carga';
 import { VibracionService } from '../../../services/vibracion';
@@ -17,17 +18,37 @@ import {
   IonBackButton,
   IonTitle,
   IonContent,
-  IonIcon
+  IonIcon,
+  IonRefresher,
+  IonRefresherContent
 } from '@ionic/angular';
+import { addIcons } from 'ionicons';
+import {
+  alertCircleOutline,
+  checkmarkDoneCircleOutline,
+  restaurantOutline,
+  timeOutline
+} from 'ionicons/icons';
 
 @Component({
   selector: 'app-pedidos-cocina',
   standalone: true,
-  imports: [CommonModule, IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonContent, IonIcon],
+  imports: [
+    CommonModule,
+    IonHeader,
+    IonToolbar,
+    IonButtons,
+    IonBackButton,
+    IonTitle,
+    IonContent,
+    IonIcon,
+    IonRefresher,
+    IonRefresherContent
+  ],
   templateUrl: './pedidos-cocina.page.html',
   styleUrls: ['./pedidos-cocina.page.scss']
 })
-export class PedidosCocinaPage {
+export class PedidosCocinaPage implements OnDestroy {
   /**
    * Estado reactivo que contiene los pedidos confirmados agrupados por número de mesa.
    */
@@ -38,15 +59,49 @@ export class PedidosCocinaPage {
    */
   mensajeError = signal<string | null>(null);
 
+  /**
+   * Canal activo de Supabase Realtime para escuchar eventos de la tabla 'pedidos'.
+   */
+  private canalRealtime: RealtimeChannel | null = null;
+
   constructor(
     private supabase: Supabase,
     public carga: Carga,
     private vibracion: VibracionService,
     private toastCtrl: ToastController
-  ) {}
+  ) {
+    addIcons({
+      alertCircleOutline,
+      checkmarkDoneCircleOutline,
+      restaurantOutline,
+      timeOutline
+    });
+  }
 
   async ionViewWillEnter(): Promise<void> {
+    this.iniciarSuscripcionRealtime();
     await this.cargarPedidos();
+  }
+
+  ionViewWillLeave(): void {
+    this.detenerSuscripcionRealtime();
+  }
+
+  ngOnDestroy(): void {
+    this.detenerSuscripcionRealtime();
+  }
+
+  /**
+   * Refresco manual de pedidos accionado mediante ion-refresher (swipe-down).
+   * Reutiliza cargarPedidos() y asegura la finalización visual del refresher (complete)
+   * tanto en caso de éxito como ante cualquier excepción.
+   */
+  async refrescarPedidos(event: any): Promise<void> {
+    try {
+      await this.cargarPedidos();
+    } finally {
+      event?.target?.complete();
+    }
   }
 
   /**
@@ -172,5 +227,43 @@ export class PedidosCocinaPage {
       position: 'bottom'
     });
     await toast.present();
+  }
+
+  /**
+   * Inicia la suscripción de Supabase Realtime sobre la tabla 'pedidos' para escuchar
+   * eventos INSERT y UPDATE. Reutiliza cargarPedidos() ante cualquier cambio.
+   * Cancela cualquier suscripción previa antes de crear una nueva para evitar duplicados.
+   */
+  private iniciarSuscripcionRealtime(): void {
+    this.detenerSuscripcionRealtime();
+
+    this.canalRealtime = this.supabase.clienteSupabase
+      .channel('pedidos-cocina-realtime')
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'pedidos' },
+        () => {
+          void this.cargarPedidos();
+        }
+      )
+      .on(
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'pedidos' },
+        () => {
+          void this.cargarPedidos();
+        }
+      )
+      .subscribe();
+  }
+
+  /**
+   * Remueve y cancela la suscripción del canal Realtime activo en Supabase
+   * para prevenir fugas de memoria o llamadas duplicadas al salir de la pantalla.
+   */
+  private detenerSuscripcionRealtime(): void {
+    if (this.canalRealtime) {
+      void this.supabase.clienteSupabase.removeChannel(this.canalRealtime);
+      this.canalRealtime = null;
+    }
   }
 }

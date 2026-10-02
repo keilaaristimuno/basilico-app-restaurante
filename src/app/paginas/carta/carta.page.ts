@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import {
@@ -28,6 +28,8 @@ import { Producto } from '../../interfaces/producto';
   ]
 })
 export class CartaPage {
+
+  @ViewChild(IonContent) ionContent?: IonContent;
 
   productos: Producto[] = [];
 
@@ -71,7 +73,55 @@ export class CartaPage {
 
   indiceFoto: Record<string, number> = {};
 
+  fotosVerticales: Record<string, boolean> = {};
+
   descripcionExpandida: Record<string, boolean> = {};
+
+  /**
+   * Detecta la orientación natural de la imagen al cargarse en el DOM.
+   * Si naturalHeight > naturalWidth se marca como vertical para aplicar object-fit: contain.
+   */
+  detectarOrientacion(event: Event, urlFoto?: string): void {
+    const img = event.target as HTMLImageElement;
+    if (img && img.naturalHeight && img.naturalWidth) {
+      const esVertical = img.naturalHeight > img.naturalWidth;
+      if (urlFoto) {
+        this.fotosVerticales[urlFoto] = esVertical;
+      }
+      if (esVertical) {
+        img.classList.add('imagen-vertical');
+      } else {
+        img.classList.remove('imagen-vertical');
+      }
+    }
+  }
+
+  /**
+   * Realiza un desplazamiento suave hacia la sección solicitada dentro del ion-content.
+   */
+  async scrollASeccion(idSeccion: string): Promise<void> {
+    const elemento = document.getElementById(idSeccion);
+    if (!elemento) {
+      return;
+    }
+
+    if (this.ionContent) {
+      try {
+        const scrollEl = await this.ionContent.getScrollElement();
+        const elementoRect = elemento.getBoundingClientRect();
+        const scrollRect = scrollEl.getBoundingClientRect();
+        const destinoY = elementoRect.top - scrollRect.top + scrollEl.scrollTop;
+        const posicionFinal = Math.max(0, destinoY - 12);
+
+        await this.ionContent.scrollToPoint(0, posicionFinal, 450);
+        return;
+      } catch {
+        // Fallback suave en caso de que scrollToPoint no responda
+      }
+    }
+
+    elemento.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 
   alternarDescripcion(producto: Producto): void {
     this.descripcionExpandida[producto.id] = !this.descripcionExpandida[producto.id];

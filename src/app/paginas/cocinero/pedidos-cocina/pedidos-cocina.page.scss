@@ -178,21 +178,50 @@
   }
 }
 
-/* Contenedor de pedidos dentro de la mesa */
+/* Contenedor horizontal de pedidos dentro de la mesa (carrusel con swipe) */
 .cuerpo-mesa {
   padding: 16px;
   display: flex;
-  flex-direction: column;
-  gap: 16px;
+  flex-direction: row;
+  overflow-x: auto;
+  overflow-y: hidden;
+  gap: 14px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--ion-color-primary-rgb), 0.25) transparent;
+
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(var(--ion-color-primary-rgb), 0.25);
+    border-radius: 4px;
+  }
 }
 
-/* Tarjeta individual de un pedido */
+/* Tarjeta individual de un pedido dentro del carrusel */
 .tarjeta-pedido {
+  flex: 0 0 86%;
+  width: 86%;
+  scroll-snap-align: start;
   background: var(--ion-color-secondary-tint);
   border: 1.5px solid rgba(var(--ion-color-primary-rgb), 0.16);
   border-radius: 12px;
   padding: 14px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
+
+  /* Si hay un único pedido en la mesa, ocupa el 100% sin dejar huecos */
+  &:only-child {
+    flex: 0 0 100%;
+    width: 100%;
+  }
 }
 
 .pedido-encabezado {

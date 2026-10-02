@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { Producto } from '../interfaces/producto';
+import { PedidoSupabaseRelacional } from '../interfaces/pedido';
 
 @Injectable({
   providedIn: 'root',
@@ -439,6 +440,43 @@ export class Supabase {
 
     // eliminar cliente de lista de espera 
     this.eliminarDeListaDeEspera(clienteId);
+  }
+
+  /* ============================================================
+     OBTENER PEDIDOS CONFIRMADOS PARA COCINA (PUNTO 16)
+  ============================================================ */
+  async obtenerPedidosConfirmadosCocina(): Promise<PedidoSupabaseRelacional[]> {
+    const { data, error } = await this.clienteSupabase
+      .from('pedidos')
+      .select(`
+        id,
+        estado,
+        created_at,
+        mesas (
+          id,
+          numero
+        ),
+        pedido_items (
+          id,
+          cantidad,
+          precio_unitario,
+          productos (
+            id,
+            nombre,
+            tipo
+          )
+        )
+      `)
+      .eq('estado', 'confirmado')
+      .order('created_at', { ascending: true })
+      .returns<PedidoSupabaseRelacional[]>();
+
+    if (error) {
+      console.error('Error al obtener los pedidos para cocina:', error.message);
+      throw new Error(`Error al obtener los pedidos para cocina: ${error.message}`);
+    }
+
+    return data ?? [];
   }
 
 }

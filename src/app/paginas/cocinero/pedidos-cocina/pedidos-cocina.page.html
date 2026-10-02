@@ -1,0 +1,111 @@
+<ion-header class="header-transparente">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button
+        defaultHref="/inicio-cocinero"
+        text="Volver">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>Cocina</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="fondo">
+  <div class="contenedor">
+
+    <!-- =========================================================
+         ENCABEZADO INSTITUCIONAL DE COCINA
+         ========================================================= -->
+    <section class="encabezado">
+      <img
+        src="assets/Basilico/Logo_beige.png"
+        alt="Logotipo de Basílico"
+        class="logo"
+      />
+      <h1>Pedidos pendientes</h1>
+      <p>Sector Cocina — Platos a elaborar</p>
+    </section>
+
+    <!-- =========================================================
+         ESTADO DE ERROR (Si ocurrió un fallo en la carga)
+         ========================================================= -->
+    @if (mensajeError()) {
+      <div class="tarjeta-error" role="alert">
+        <ion-icon name="alert-circle-outline" class="icono-alerta"></ion-icon>
+        <div class="contenido-error">
+          <strong>No se pudieron cargar los pedidos</strong>
+          <p>{{ mensajeError() }}</p>
+        </div>
+      </div>
+    }
+
+    <!-- =========================================================
+         ESTADO VACÍO (Sin pedidos pendientes de platos)
+         ========================================================= -->
+    @if (!mensajeError() && pedidosPorMesa().length === 0) {
+      <div class="estado-vacio">
+        <div class="icono-vacio-contenedor">
+          <ion-icon name="checkmark-done-circle-outline" class="icono-vacio"></ion-icon>
+        </div>
+        <h2>Sin pedidos pendientes</h2>
+        <p>No hay platos pendientes de elaboración en el sector Cocina en este momento.</p>
+      </div>
+    }
+
+    <!-- =========================================================
+         LISTADO DE PEDIDOS AGRUPADOS POR NÚMERO DE MESA
+         ========================================================= -->
+    @if (!mensajeError() && pedidosPorMesa().length > 0) {
+      <div class="listado-mesas">
+        @for (grupoMesa of pedidosPorMesa(); track grupoMesa.numeroMesa) {
+          <article class="tarjeta-mesa">
+
+            <!-- Cabecera de la Mesa: Número bien visible -->
+            <header class="cabecera-mesa">
+              <div class="identificador-mesa">
+                <ion-icon name="restaurant-outline" class="icono-mesa"></ion-icon>
+                <h2 class="titulo-mesa">Mesa {{ grupoMesa.numeroMesa }}</h2>
+              </div>
+              <span class="badge-cantidad-pedidos">
+                {{ grupoMesa.pedidos.length }} {{ grupoMesa.pedidos.length === 1 ? 'pedido' : 'pedidos' }}
+              </span>
+            </header>
+
+            <!-- Contenedor de pedidos pertenecientes a esta mesa -->
+            <div class="cuerpo-mesa">
+              @for (pedido of grupoMesa.pedidos; track pedido.pedidoId; let indicePedido = $index) {
+                <section class="tarjeta-pedido">
+
+                  <!-- Información del pedido: Número de orden y Fecha/Hora exacta -->
+                  <div class="pedido-encabezado">
+                    <span class="pedido-orden">Pedido N° {{ indicePedido + 1 }}</span>
+                    <time class="pedido-fecha">
+                      <ion-icon name="time-outline" class="icono-tiempo"></ion-icon>
+                      {{ pedido.fechaHora }}
+                    </time>
+                  </div>
+
+                  <!-- Lista de platos requeridos con cantidad destacada -->
+                  <div class="platos-contenedor">
+                    <h3 class="subtitulo-platos">Platos a preparar:</h3>
+                    <ul class="lista-platos">
+                      @for (plato of pedido.platos; track $index) {
+                        <li class="item-plato">
+                          <span class="cantidad-plato">{{ plato.cantidad }}x</span>
+                          <span class="nombre-plato">{{ plato.nombre }}</span>
+                        </li>
+                      }
+                    </ul>
+                  </div>
+
+                </section>
+              }
+            </div>
+
+          </article>
+        }
+      </div>
+    }
+
+  </div>
+</ion-content>

@@ -63,6 +63,10 @@ export const routes: Routes = [
     loadComponent: () => import('./paginas/cocinero/inicio-cocinero/inicio-cocinero.page').then( m => m.InicioCocineroPage)
   },
   {
+    path: 'pedidos-cocina',
+    loadComponent: () => import('./paginas/cocinero/pedidos-cocina/pedidos-cocina.page').then(m => m.PedidosCocinaPage)
+  },
+  {
     path: 'mozoInicio',
     loadComponent: () => import('./mozo/mozo-inicio/mozo-inicio.component').then( m => m.MozoInicioComponent)
   },

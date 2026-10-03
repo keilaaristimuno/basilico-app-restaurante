@@ -15,49 +15,20 @@
     <section class="acciones">
       <ion-card class="tarjeta" routerLink="/registro" button="true">
         <ion-card-content>
-          <div class="informacion">
+          <ion-icon name="person-add-outline" class="icono"></ion-icon>
+          <div class="informacion">  
             <h2>Registro de Cliente</h2>
             <p>Registrar un nuevo cliente en el sistema.</p>
           </div>
         </ion-card-content>
       </ion-card>
 
-      <ion-card class="tarjeta tarjeta-contenedor">
+      <ion-card class="tarjeta" routerLink="/listaEspera" button="true">
         <ion-card-content>
+          <ion-icon name="list-outline" class="icono"></ion-icon>
           <div class="informacion">
             <h2>Lista de Espera</h2>
             <p>Clientes aguardando asignación de mesa.</p>
-            <ion-button size="small" color="success"(click)="abrirModuleMesas('5')">
-                        Asignar mesa
-                      </ion-button>
-                      <ion-button size="small" color="success" routerLink="/qrIngreso">
-                        Ver Qr ingreso
-                      </ion-button>
-            <div class="lista-clientes">
-              @for (lista of listaEspera(); track lista.id) {
-                <div class="cliente-item">
-                  <div class="cliente-info">
-                    <strong>{{ lista.nombre }}</strong>
-                    <span class="estado">{{ lista.estado }}</span>
-                  </div>
-
-                  @if (lista.estado === "pendiente") {
-                    <div class="acciones-cliente">
-                      <ion-button size="small" color="success"(click)="abrirModuleMesas(lista.id)">
-                        Asignar mesa
-                      </ion-button>
-
-                      <ion-button size="small" color="danger" (click)="rechazarCliente(lista.id)">
-                        Rechazar
-                      </ion-button>
-                    </div>
-                  }
-                </div>
-              } @empty {
-                <p class="sin-clientes">No hay clientes en la lista de espera.</p>
-              }
-            </div>
-
           </div>
         </ion-card-content>
       </ion-card>

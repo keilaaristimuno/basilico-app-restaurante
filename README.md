@@ -355,9 +355,10 @@ Esta sección permitirá al cocinero visualizar los pedidos confirmados que cont
 
 Los pedidos deberán mostrar la mesa correspondiente, fecha y hora, junto con los productos y cantidades que deben ser preparados, agrupados por número de mesa.
 
-> 🚧 **Pendiente de implementación/documentación:** La captura de esta funcionalidad será incorporada cuando se encuentre disponible.
+<p align="center">
+  <img src="docs/capturas/cocina-bar/pedidos_cocina.jpg" width="300">
+</p>
 
-<!-- Captura pendiente: 04-pedidos-pendientes-cocina.png -->
 
 ---
 ### 5. Pantalla Principal del Cantinero
@@ -381,15 +382,43 @@ Al igual que en el alta de platos, se ingresan el nombre, descripción, tiempo e
 </p>
 
 ---
+### 7. Pedidos Pendientes Cantinero
+
+Esta sección permitirá al cantinero visualizar los pedidos confirmados que contienen productos correspondientes al sector BAR.
+
+Los pedidos deberán mostrar la mesa correspondiente, fecha y hora, junto con los productos y cantidades que deben ser preparados, agrupados por número de mesa.
+
+<p align="center">
+  <img src="docs/capturas/cocina-bar/pedidos_bar.jpg" width="300">
+</p>
 
 ## 👤 Cliente
 
-### 1. Pantalla Principal del Cliente
+### 1. Pantalla Principal del Cliente antes de repcionarse
 
-Pantalla principal correspondiente al perfil cliente. Desde esta sección el usuario puede escanear el código QR de ingreso al local para acceder al flujo de atención del restaurante o ingresar a la sección de juegos y descuentos.
+Pantalla principal correspondiente al perfil cliente. Desde esta sección el usuario puede escanear el código QR de ingreso al local para acceder al flujo de atención del restaurante.
 
 <p align="center">
   <img src="docs/capturas/cliente/01-inicio-cliente.png" width="300">
+</p>
+
+### 2. Cargar cantidad de comensales
+
+Esta pantalla se visualiza una vez que el usuario escaneo el QR para recepcionarse. En la misma debe elegir la cantidad de comensales para que llegue la información completa al METRE
+
+<p align="center">
+  <img src="docs/capturas/mozo-metre/cargar_comensales.jpg" width="300">
+</p>
+
+---
+
+### 3. Pantalla "Gracias por recepcionarte"
+Esta pantalla se visualiza una vez que el cliente eligio la cantidad de comensales y le llego al metre correctamente la solicitud. 
+Pantalla de espera hasta que el metre asigne mesa.
+Boton para una vez que se le asigne mesa (Push notification) pueda escanear el QR de la mesa
+
+<p align="center">
+  <img src="docs/capturas/mozo-metre/gracias_por_recepcionarte.jpg" width="300">
 </p>
 
 ---
@@ -426,21 +455,35 @@ Actualmente permite acceder a:
 - **Lista de espera:** permite visualizar los clientes que se encuentran esperando una mesa y gestionar la asignación correspondiente.
 
 <p align="center">
-  <img src="docs/capturas/mozo-metre/01-inicio-metre.png" width="300">
+  <img src="docs/capturas/cocina-bar/inicio_metre.jpg" width="300">
 </p>
 
 ---
 
-### 2. Lista de Espera y Asignación de Mesa
+
+
+### 2. Lista de espera
 
 Desde la lista de espera, el metre puede visualizar los clientes que solicitaron ingresar al restaurante y se encuentran esperando la asignación de una mesa.
 
 Una vez disponible una mesa, el metre puede asignarla al cliente correspondiente para continuar con el flujo de atención.
 
-> 🚧 **En desarrollo:** La implementación de la funcionalidad de asignar mesa. La captura de esta pantalla será incorporada cuando la funcionalidad se encuentre finalizada.
 
 <p align="center">
-  <img src="docs/capturas/mozo-metre/03-asignar-mesa.png" width="300">
+  <img src="docs/capturas/mozo-metre/clientes_pendientes.jpg" width="300">
+</p>
+
+---
+
+### 3. Asiganción de mesa
+
+Desde la lista de espera, el metre puede visualizar los clientes que solicitaron ingresar al restaurante y se encuentran esperando la asignación de una mesa.
+
+Una vez disponible una mesa, el metre puede asignarla al cliente correspondiente para continuar con el flujo de atención.
+
+
+<p align="center">
+  <img src="docs/capturas/mozo-metre/asignar_mesa.jpg" width="300">
 </p>
 
 ---

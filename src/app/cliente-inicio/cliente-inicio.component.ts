@@ -50,6 +50,9 @@ import { FormsModule } from '@angular/forms';
 export class ClienteInicioComponent {
   cantidadComensales = signal<string>("");
   abrirInputComensales = signal<boolean>(false);
+  codigoQrIngreso = signal<boolean>(false);
+  numeroMesa = signal<string>("");
+  clienteId = signal<string>("");
   constructor(
     private qrService: QrService,
     private supabase: Supabase,
@@ -63,7 +66,6 @@ export class ClienteInicioComponent {
     //Abre directamente la cámara usando BarcodeScanner de Capacitor
     this.abrirInputComensales.set(true);
     const codigoEscaneado = await this.qrService.leerQR();
-
     
 
     if (!codigoEscaneado) {
@@ -74,6 +76,7 @@ export class ClienteInicioComponent {
 
     //Valida que sea el QR correcto del local
     if (codigoEscaneado === 'BASILICO_INGRESO_LISTA_ESPERA') {
+      this.codigoQrIngreso.set(true);
       this.abrirInputComensales.set(true);
       this.confirmarComensales()
       
@@ -83,6 +86,7 @@ export class ClienteInicioComponent {
     }
     
   }
+
   confirmarComensales() {
     const comensalesNum = parseInt(this.cantidadComensales(), 10);
     if (!isNaN(comensalesNum) && comensalesNum > 0) {
@@ -115,6 +119,7 @@ export class ClienteInicioComponent {
     }
 
     const nombreCliente = `${cliente.nombres} ${cliente.apellidos}`.trim();
+    this.clienteId.set(cliente.id);
 
     const { error } = await this.supabase.clienteSupabase
       .from('lista_espera')
@@ -144,5 +149,33 @@ export class ClienteInicioComponent {
       position: 'bottom'
     });
     await toast.present();
+  }
+
+  async buscarMesaAsignada(){
+    const mesas = await this.supabase.obtenerMesas()
+    mesas.forEach((mesa) => {
+      if (mesa.cliente_id === this.clienteId()) {
+        this.numeroMesa.set(mesa.numero);
+      }
+    });
+    
+  }
+  async escanearQrMesa(){
+    const codigoEscaneado = await this.qrService.leerQR();
+    this.buscarMesaAsignada(); //Para ver si el id del cliente ya está con mesa asignada
+    if (!codigoEscaneado) {
+      await this.vibracion.errorFuerte();
+      await this.mostrarToast('Se canceló la lectura o no se pudo acceder a la cámara.', 'warning');
+      return;
+    }
+    //Valida que sea el QR correcto del local
+    if (codigoEscaneado === `mesa_numer:${this.numeroMesa()}`) { 
+      this.confirmarComensales()
+      
+    } else {
+      await this.vibracion.errorFuerte();
+      await this.mostrarToast('El código QR no corresponde a la mesa asignada', 'danger');
+    }
+    
   }
 }

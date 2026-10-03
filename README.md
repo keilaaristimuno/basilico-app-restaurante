@@ -119,8 +119,11 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 | Pantalla inicio cliente | 15/09/2026 |  17/09/2023 | `feature/develop` | Finalizado |
 | Código QR ingreso local | 15/09/2026 |  17/09/2023 | `feature/develop` | Finalizado |
 | Entrada de cliente a lista de espera | 15/09/2026 |  17/09/2023 | `feature/develop` | Finalizado |
-| Lista de espera mozo | 21/09/2026 | - | `feature/develop` | En proceso |
+| Lista de espera metre | 21/09/2026 | - | `feature/develop` | En proceso |
 | Registro  cliente anonimo | 23/09/2026 | 24/09/2026 |  `feature/develop`| Finalizado |
+| inicio cliente anonimo (9) | 28/09/2026 | 01/10/2026 |  `feature/develop`| Finalizado |
+| Validaciones de QR mesas (9) | 28/09/2026 | 01/10/2026 |  `feature/lista-espera-metre`| Finalizado |
+| Lista de espera Metre componente (10) | 28/09/2026 | 01/10/2026 |  `feature/lista-espera-metre`| En proceso |
 
 
 ---

@@ -13,6 +13,11 @@ import {
   IonRefresher,
   IonRefresherContent,
   IonIcon,
+  IonModal,
+  IonTitle,
+  IonList,
+  IonLabel,
+  IonItem,
 } from "@ionic/angular";
 import { addIcons } from "ionicons";
 import {
@@ -49,6 +54,11 @@ import { Supabase } from "../../services/supabase";
     IonIcon,
     RouterLink,
     CommonModule,
+    IonModal,
+    IonTitle,
+    IonList,
+     IonLabel,
+  IonItem,
   ],
 })
 export class ListaEsperaComponent implements OnInit {

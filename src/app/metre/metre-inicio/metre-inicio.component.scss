@@ -65,13 +65,19 @@
   --border-radius: 12px;
   --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); 
   
-  font-size: 0.95rem;
-  font-weight: 600;               
-  text-transform: none;
-  width: 30%;
-  min-height: 40px;                 
-  margin: 10px auto 0 auto;
-  display: block;
+  /* Ajuste de fuente y texto */
+  font-size: 0.8rem;               /* Tamaño de letra proporcional para estar al costado */
+  font-weight: 700;               
+  text-transform: uppercase;
+  
+  /* Arreglo del tamaño: en vez de %, usamos auto con min-width y padding */
+  width: auto;                     /* Deja de forzar el 30% */
+  min-width: 90px;                 /* Garantiza que la palabra "ASIGNAR" entre completa */
+  --padding-start: 10px;           /* Padding interno de Ionic */
+  --padding-end: 10px;
+  
+  min-height: 38px;
+  margin: 0;                       /* Saca el margen que lo empujaba hacia abajo */
 }
 
 .cliente-info {

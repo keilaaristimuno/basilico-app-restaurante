@@ -162,3 +162,39 @@
     }
   </div>
 </ion-content>
+
+
+<ion-modal [isOpen]="mostrarMesas()" class="contenedorModule">
+  <ng-template>
+      <ion-toolbar class="encabezado">
+        <ion-title>Asignar Mesa</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="cerrarModalMesas()">Cerrar</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    <ion-content class="ion-padding fondo ">
+      <ion-list class="listaMesa">
+        @for (mesa of listaMesas(); track mesa.id) {
+          @if (mesa.disponibilidad === 'vacia'){
+            <ion-item lines="full">
+              <ion-label>
+                <h2 class="tituloMesa"><strong>Mesa {{ mesa.numero }}</strong></h2>
+                <p>{{ mesa.cantidad_comensales }} comensales • {{ mesa.tipo }}</p>
+              </ion-label>
+              <ion-button class="btonTerracota" (click)="asignarMesaCliente(idSeleccionadoCliente(), mesa.numero)">
+                ASIGNAR
+              </ion-button>
+            </ion-item>
+          }
+          
+        } @empty {
+          <ion-item lines="none">
+            <ion-label class="ion-text-center">
+              <p>No hay mesas disponibles</p>
+            </ion-label>
+          </ion-item>
+        }
+      </ion-list>
+    </ion-content>
+  </ng-template>
+</ion-modal>

@@ -66,7 +66,7 @@ export class MetreInicioComponent  {
         '¡Mesa Asignada!',
         `El metre te ha asignado la Mesa N° ${numeroMesa}. Ya puedes escanear el código QR correspondiente.`,
         { userIds: [idCliente] }, // Destinatario específico
-        { ruta: '/escanear-qr' }  // Ruta a la que viajará cuando el cliente haga tap en la notificación
+        //{ ruta: '/escanear-qr' }  // Ruta a la que viajará cuando el cliente haga tap en la notificación
       );
 
       console.log('Notificación push enviada al cliente');

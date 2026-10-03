@@ -7,39 +7,63 @@
           alt="Logotipo">
     </div>
 
-    <div class="header-section">
-      <p class="titulo">¡Bienvenido!</p>
-      <ion-note class="texto">
-        Escaneá el QR para recepcionarte o divertite con nuestros juegos
-      </ion-note>
-    </div>
-
-    <div class="acciones-cliente">
-      <ion-button
-        expand="block"
-        class="btonBeige"
-        (click)="escanearIngreso()">
-
-        <ion-icon
-          name="qr-code-outline"
-          slot="start">
-        </ion-icon>
-        Escanear QR de Ingreso
-      </ion-button>
-
-      <ion-button
-        expand="block"
-        class="btonTerracota"
-        routerLink="/juegos">
-
-        <ion-icon
-          name="game-controller-outline"
-          slot="start">
-        </ion-icon>
-        Juegos y Descuentos
-      </ion-button>
+    @if(!codigoQrIngreso()){
+      <div class="header-section">
       
-    </div>
+        <p class="titulo">¡Bienvenido!</p>
+        <ion-note class="texto">
+          Escaneá el QR para recepcionarte
+        </ion-note>    
+      </div>
+
+      <div class="acciones-cliente">
+        <ion-button
+          expand="block"
+          class="btonBeige"
+          (click)="escanearIngreso()">
+
+          <ion-icon
+            name="qr-code-outline"
+            slot="start">
+          </ion-icon>
+          Escanear QR de Ingreso
+        </ion-button>
+      
+<!-- 
+        <ion-button
+          expand="block"
+          class="btonTerracota"
+          routerLink="/juegos">
+
+          <ion-icon
+            name="game-controller-outline"
+            slot="start">
+          </ion-icon>
+          Juegos y Descuentos
+        </ion-button> -->
+        
+      </div>
+    }
+     @if(codigoQrIngreso()){
+        <p class="titulo">¡Gracias por recepcionarte!</p>
+        <ion-note class="texto">
+          Una vez que el METRE te asigne mesa, escaneá el QR correspondiente
+        </ion-note>
+        <div class="acciones-cliente">
+        <ion-button
+          expand="block"
+          class="btonBeige"
+          (click)="escanearQrMesa()">
+
+          <ion-icon
+            name="qr-code-outline"
+            slot="start">
+          </ion-icon>
+          Escanear QR de la mesa
+        </ion-button>
+        </div>
+      }
+
   </div>
 </ion-content>
 

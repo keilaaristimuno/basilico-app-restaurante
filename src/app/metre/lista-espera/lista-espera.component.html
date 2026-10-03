@@ -1,0 +1,164 @@
+<ion-header class="header-transparente">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button
+        defaultHref="/duenioInicio"
+        text="Volver"
+        icon="chevron-back-outline">
+      </ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="clientes-content">
+  <div class="clientes-layout-container">
+    <!-- ENCABEZADO CON TEXTO BASÍLICO Y NÚMERO DE SOLICITUDES -->
+    <header class="pantalla-header">
+      <h1 class="font-logo brand-logo">Basílico</h1>
+      <h2 class="subtitulo-pantalla">Lista de espera</h2>
+      @if (listaEspera().length > 0) {
+        <div class="badge-solicitudes">
+          <ion-icon name="people-outline"></ion-icon>
+          <span>{{ listaEspera().length }} {{ listaEspera().length === 1 ? 'solicitud pendiente' : 'solicitudes pendientes' }}</span>
+        </div>
+      }
+    </header>
+
+    <!-- ESTADO: CARGANDO -->
+    @if (listaEspera().length === 0) {
+      <!-- ESTADO: SIN SOLICITUDES -->
+      <div class="empty-state-wrapper">
+        <div class="empty-card">
+          <div class="empty-icono-wrapper">
+            <ion-icon name="checkmark-done-circle-outline" class="empty-icono"></ion-icon>
+          </div>
+          <h3 class="empty-titulo">No hay clientes en lista de espera</h3>
+          <p class="empty-subtitulo">
+            Todas las solicitudes fueron asignadas
+          </p>
+          <ion-button routerLink="/duenioInicio" class="btn-volver-duenio">
+            <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+            Volver al panel
+          </ion-button>
+        </div>
+      </div>
+    } @else {
+      <!-- FLUJO CON SCROLL / NAVEGACIÓN LATERAL ENTRE CLIENTES -->
+     <!-- FLUJO DE CARRUSEL DE CLIENTES EN LISTA DE ESPERA -->
+@if (listaEspera()[indiceClienteActual()]; as cliente) {
+  <div
+    class="tarjeta-pantalla-wrapper"
+    (touchstart)="onTouchStart($event)"
+    (touchend)="onTouchEnd($event)">
+
+    @if (listaEspera().length > 1) {
+      <!-- BARRA DE NAVEGACIÓN LATERAL -->
+      <div class="carrusel-nav">
+        <button
+          type="button"
+          class="btn-nav-arrow"
+          [disabled]="indiceClienteActual() === 0"
+          (click)="anteriorCliente()"
+          aria-label="Cliente anterior">
+          <ion-icon name="chevron-back-outline"></ion-icon>
+        </button>
+
+        <div class="nav-centro">
+          <span class="nav-texto">
+            Cliente {{ indiceClienteActual() + 1 }} de {{ listaEspera().length }}
+          </span>
+          <div class="nav-dots">
+            @for (c of listaEspera(); track c.id; let i = $index) {
+              <span
+                class="nav-dot"
+                [class.activo]="i === indiceClienteActual()"
+                (click)="irACliente(i)">
+              </span>
+            }
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="btn-nav-arrow"
+          [disabled]="indiceClienteActual() === listaEspera().length - 1"
+          (click)="siguienteCliente()"
+          aria-label="Siguiente cliente">
+          <ion-icon name="chevron-forward-outline"></ion-icon>
+        </button>
+      </div>
+    }
+
+    <!-- CARD COMPLETA DE LISTA DE ESPERA -->
+    <article class="cliente-card-full">
+      <!-- FOTOGRAFÍA DE PERFIL -->
+      <div class="foto-wrapper-full">
+        <img
+          [src]="cliente.foto_url || cliente.foto || 'assets/icon/favicon.png'"
+          [alt]="'Foto de ' + cliente.nombre"
+          class="cliente-foto"
+          (error)="onFotoError($event)"
+        />
+        <div class="badge-estado">
+          <span class="punto-pulso"></span>
+          <span>En espera</span>
+        </div>
+      </div>
+
+      <!-- DATOS DEL CLIENTE -->
+      <div class="cliente-detalle-full">
+        <div class="encabezado-cliente">
+          <h3 class="cliente-nombre">
+            {{ cliente.nombre }}
+          </h3>
+        </div>
+
+        <div class="cliente-info-box">
+          <div class="dato-row comensales-row">
+            <ion-icon name="people-outline" class="dato-icono"></ion-icon>
+            <span class="dato-texto">
+              <strong>Comensales:</strong> {{ cliente.cantidad_comensales || cliente.comensales || 1 }}
+            </span>
+          </div>
+        </div>
+
+        <!-- BOTONES DE ACCIÓN -->
+        @if (cliente.estado === 'esperando' || !cliente.estado) {
+          <div class="acciones-container-full">
+            <ion-button
+              expand="block"
+              class="btn-aceptar"
+              [disabled]="procesandoId() === cliente.id"
+              (click)="abrirModuleMesas(cliente.id)">
+              @if (procesandoId() === cliente.id) {
+                <ion-spinner name="crescent"></ion-spinner>
+              } @else {
+                <ion-icon slot="start" name="restaurant-outline"></ion-icon>
+                Asignar mesa
+              }
+            </ion-button>
+
+            <ion-button
+              expand="block"
+              class="btn-rechazar"
+              [disabled]="procesandoId() === cliente.id"
+              (click)="rechazarCliente(cliente.id)">
+              <ion-icon slot="start" name="close-circle-outline"></ion-icon>
+              Rechazar
+            </ion-button>
+          </div>
+        }
+      </div>
+    </article>
+  </div>
+} @else {
+  <!-- ESTADO VACÍO CUANDO NO HAY CLIENTES EN LISTA -->
+  <div class="sin-clientes-card">
+    <ion-icon name="hourglass-outline" class="icono-vacio"></ion-icon>
+    <p class="sin-clientes">No hay clientes en la lista de espera.</p>
+  </div>
+}
+      
+    }
+  </div>
+</ion-content>

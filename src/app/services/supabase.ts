@@ -442,6 +442,7 @@ export class Supabase {
     this.eliminarDeListaDeEspera(clienteId);
   }
 
+  
   /* ============================================================
      OBTENER PEDIDOS CONFIRMADOS PARA COCINA (PUNTO 16)
   ============================================================ */

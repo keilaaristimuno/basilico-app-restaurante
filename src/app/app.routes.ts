@@ -87,6 +87,10 @@ export const routes: Routes = [
     loadComponent: () => import('./paginas/inicio-cantinero/inicio-cantinero.page').then( m => m.InicioCantineroPage)
   },
   {
+    path: 'listaEspera',
+    loadComponent: () => import('./metre/lista-espera/lista-espera.component').then( m => m.ListaEsperaComponent)
+  },
+  {
     path: '**',
     redirectTo: 'inicio'
   }

@@ -22,6 +22,8 @@ import {
   ToastController,
   IonButtons,
   IonBackButton,
+  IonModal,
+
 } from '@ionic/angular';
 import { Supabase } from '../../services/supabase';
 import { QrService } from '../../services/qr.service';
@@ -51,6 +53,7 @@ import { QrService } from '../../services/qr.service';
     IonSpinner,
     IonButtons,
     IonBackButton,
+    IonModal,
   ]
 })
 export class AltaMesaPage implements OnInit {
@@ -171,7 +174,7 @@ export class AltaMesaPage implements OnInit {
       const resultado = await this.supabase.subirFotoMesa(this.fotoMesa(), nombreArchivo);
       const fotoUrl = this.supabase.obtenerUrlFotoMesa(resultado.path);
 
-      const qrString = `mesa_numero:${this.numero}|tipo:${tipoGuardado}`;
+      const qrString = `mesa_numero:${this.numero}`;
       const qrGenerado = await this.qrService.generarQR(qrString);
       this.qrMesa.set(qrGenerado);
 

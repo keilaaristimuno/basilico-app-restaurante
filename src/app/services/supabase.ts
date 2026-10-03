@@ -441,4 +441,6 @@ export class Supabase {
     this.eliminarDeListaDeEspera(clienteId);
   }
 
+  
+
 }

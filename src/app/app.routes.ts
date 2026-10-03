@@ -94,6 +94,7 @@ export const routes: Routes = [
     path: 'listaEspera',
     loadComponent: () => import('./metre/lista-espera/lista-espera.component').then( m => m.ListaEsperaComponent)
   },
+  {
     path: 'pedidos-bar',
     loadComponent: () => import('./paginas/cantinero/pedidos-bar/pedidos-bar.page').then(m => m.PedidosBarPage)
   },

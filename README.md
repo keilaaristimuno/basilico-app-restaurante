@@ -329,10 +329,6 @@ La pantalla dispone de tres contenedores individuales para cargar y visualizar l
   <img src="docs/capturas/cocina-bar/02-agregar-plato.png" width="300">
 </p>
 
-<p align="center">
-  <img src="docs/capturas/cocina-bar/02-botones-agregar-plato.png" width="300">
-</p>
-
 Una vez completados los datos y cargadas las tres fotografías, el cocinero puede registrar el nuevo plato mediante la opción **"Dar de alta el plato"** o acceder directamente a la carta mediante **"Ver carta"**.
 
 ---

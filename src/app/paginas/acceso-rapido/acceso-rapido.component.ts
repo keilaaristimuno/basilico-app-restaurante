@@ -8,6 +8,7 @@ import { RouterLink } from '@angular/router';
 import { Supabase } from '../../services/supabase';
 import { Router } from '@angular/router';
 import { WritableSignal, signal } from '@angular/core';
+import { PushNotificationsService } from '../../services/push-notifications.service';
 
 @Component({
   selector: 'app-acceso-rapido',
@@ -16,13 +17,26 @@ import { WritableSignal, signal } from '@angular/core';
   styleUrls: ['./acceso-rapido.component.scss'],
   imports: [ IonContent, IonGrid, IonRow, IonCol, IonButton, RouterLink,
     IonHeader, IonToolbar, IonButtons, IonBackButton
-   ],
+  ],
 })
 export class AccesoRapidoComponent {
     ingresoIncorrecto: WritableSignal<boolean> = signal(false);
     perfil: WritableSignal<string> = signal("");
 
-  constructor(private supabase: Supabase, private router: Router) { }
+  constructor(
+    private supabase: Supabase,
+    private router: Router,
+    private pushNotifications: PushNotificationsService
+  ) { }
+
+  private async inicializarNotificaciones() {
+    try {
+      await this.pushNotifications.inicializar();
+      await this.pushNotifications.asociarTokenDelUsuarioActual();
+    } catch (error) {
+      console.warn('No se pudieron inicializar las notificaciones:', error);
+    }
+  }
 
   async ingresar(mail:string, clave:string){   
     const { data, error } = await this.supabase.iniciarSesion(mail,clave);
@@ -43,9 +57,13 @@ export class AccesoRapidoComponent {
         localStorage.setItem('nombre', `${cliente.nombres} ${cliente.apellidos}`);
         localStorage.setItem('perfil', 'cliente');
 
-        await this.router.navigate(['/clienteInicio']);
+        await this.inicializarNotificaciones();
+
+        await this.router.navigate(['/clienteInicio'], { replaceUrl: true });
         return;
       }
+
+      await this.inicializarNotificaciones();
 
       /* OBTIENE EL PERFIL */
       const dataUsuarioLogueado =  await this.supabase.obtenerPerfilUsuarioLogueado();
@@ -55,27 +73,28 @@ export class AccesoRapidoComponent {
         localStorage.setItem('perfil', dataUsuarioLogueado?.perfil);
         this.perfil.set(dataUsuarioLogueado?.perfil);
       }
+
+      const navOptions = { replaceUrl: true };
       if(this.perfil() === 'cocinero'){
-        this.router.navigate(['/inicio-cocinero']);
+        await this.router.navigate(['/inicio-cocinero'], navOptions);
       }
       if(this.perfil() === 'cantinero'){
-        this.router.navigate(['/inicio-cantinero']);
+        await this.router.navigate(['/inicio-cantinero'], navOptions);
       }
       if(this.perfil() === 'mozo'){
-        this.router.navigate(['/mozoInicio']);
+        await this.router.navigate(['/mozoInicio'], navOptions);
       }
       if(this.perfil() === 'cliente'){
-        const navego = await this.router.navigate(['/clienteInicio']);
-        console.log('¿Navegó a clienteInicio?', navego);
+        await this.router.navigate(['/clienteInicio'], navOptions);
       }
       if(this.perfil() === 'metre'){
-        this.router.navigate(['/metreInicio']);
+        await this.router.navigate(['/metreInicio'], navOptions);
       }
       if(this.perfil() === 'duenio'){
-        this.router.navigate(['/duenioInicio']);
+        await this.router.navigate(['/duenioInicio'], navOptions);
       }
       if(this.perfil() === 'supervisor'){
-        this.router.navigate(['/duenioInicio']);
+        await this.router.navigate(['/duenioInicio'], navOptions);
       }
     }
   }

@@ -139,7 +139,7 @@ export class LoginPage {
       if (document.activeElement instanceof HTMLElement) {
         document.activeElement.blur();
       }
-      await this.router.navigate(["/clienteInicio"]);
+      await this.router.navigate(["/clienteInicio"], { replaceUrl: true });
     }
   }
 
@@ -159,27 +159,28 @@ export class LoginPage {
   }
 
   private async redirigirSegunRol(rol: string) {
+    const navOpts = { replaceUrl: true };
     switch (rol) {
       case "duenio":
-        await this.router.navigate(["/duenioInicio"]);
+        await this.router.navigate(["/duenioInicio"], navOpts);
         break;
       case "supervisor":
-        await this.router.navigate(["/duenioInicio"]);
+        await this.router.navigate(["/duenioInicio"], navOpts);
         break;
       case "metre":
-        await this.router.navigate(["/metreInicio"]);
+        await this.router.navigate(["/metreInicio"], navOpts);
         break;
       case "cocinero":
-        await this.router.navigate(["/inicio-cocinero"]);
+        await this.router.navigate(["/inicio-cocinero"], navOpts);
         break;
       case "cliente":
-        await this.router.navigate(["/clienteInicio"]);
+        await this.router.navigate(["/clienteInicio"], navOpts);
         break;
       case "cantinero":
-        await this.router.navigate(["/inicio-cantinero"]);
+        await this.router.navigate(["/inicio-cantinero"], navOpts);
         break;
       default:
-        await this.router.navigate(["/inicio"]);
+        await this.router.navigate(["/inicio"], navOpts);
         break;
     }
   }

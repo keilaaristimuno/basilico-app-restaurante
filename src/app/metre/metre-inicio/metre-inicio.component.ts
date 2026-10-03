@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { 
   IonContent, IonGrid, IonRow, IonCol, 
   IonList, IonModal, IonItem, IonInput, IonButton, IonHeader,
-  IonText, IonCard, IonLabel, IonCardHeader, IonCardTitle, IonCardContent, IonToolbar, IonTitle, IonButtons, IonBackButton
+  IonText, IonCard, IonIcon, IonLabel, IonCardHeader, IonCardTitle, IonCardContent, IonToolbar, IonTitle, IonButtons, IonBackButton
 } from '@ionic/angular';
 import { RouterLink } from '@angular/router';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
@@ -10,6 +10,8 @@ import { Supabase } from '../../services/supabase';
 import { WritableSignal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PushNotificationsService } from '../../services/push-notifications.service';
+import { timeOutline } from 'ionicons/icons';
+import { addIcons } from 'ionicons';
 
 
 @Component({
@@ -17,7 +19,7 @@ import { PushNotificationsService } from '../../services/push-notifications.serv
   standalone: true,
   templateUrl: './metre-inicio.component.html',
   styleUrls: ['./metre-inicio.component.scss'],
-  imports: [IonContent, IonCard, IonHeader, IonCardHeader, IonCardTitle, IonCardContent, IonGrid, IonRow, IonCol, IonButton, RouterLink, NavbarComponent, IonList, IonItem, IonInput, IonText,
+  imports: [IonContent, IonCard, IonIcon, IonHeader, IonCardHeader, IonCardTitle, IonCardContent, IonGrid, IonRow, IonCol, IonButton, RouterLink, NavbarComponent, IonList, IonItem, IonInput, IonText,
     IonToolbar, IonTitle, IonButtons, IonBackButton, IonModal, IonLabel, CommonModule]
 })
 export class MetreInicioComponent  {
@@ -27,7 +29,9 @@ export class MetreInicioComponent  {
   mostrarMesas = signal<boolean>(false);
   idSeleccionadoCliente = signal<string>('');
 
-  constructor( private supabase: Supabase, private pushNotificationsService: PushNotificationsService) { }
+  constructor( private supabase: Supabase, private pushNotificationsService: PushNotificationsService) { 
+    addIcons({ timeOutline });
+  }
 
   ngOnInit() {
     this.obtenerListaEspera();

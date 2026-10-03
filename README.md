@@ -451,7 +451,7 @@ Actualmente permite acceder a:
 - **Lista de espera:** permite visualizar los clientes que se encuentran esperando una mesa y gestionar la asignación correspondiente.
 
 <p align="center">
-  <img src="docs/capturas/mozo-metre/01-inicio-metre.png" width="300">
+  <img src="docs/capturas/mozo-metre/inicio_metre.jpg" width="300">
 </p>
 
 ---

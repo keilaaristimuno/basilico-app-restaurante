@@ -78,7 +78,6 @@ export class ClienteInicioComponent {
     if (codigoEscaneado === 'BASILICO_INGRESO_LISTA_ESPERA') {
       this.codigoQrIngreso.set(true);
       this.abrirInputComensales.set(true);
-      this.confirmarComensales()
       
     } else {
       await this.vibracion.errorFuerte();
@@ -93,6 +92,7 @@ export class ClienteInicioComponent {
       this.comensalesValidados.set(comensalesNum);
       this.cerrarModuleComensales();
       this.agregarAListaDeEspera();
+      this.cantidadComensales.set(""); // Limpiar el campo de entrada después de confirmar
     }
     else {
     this.mostrarToast('Por favor, ingrese un número válido de comensales.', 'warning');
@@ -121,7 +121,6 @@ export class ClienteInicioComponent {
 
     const nombreCliente = `${cliente.nombres} ${cliente.apellidos}`.trim();
     this.clienteId.set(cliente.id);
-    
 
     const { error } = await this.supabase.clienteSupabase
       .from('lista_espera')

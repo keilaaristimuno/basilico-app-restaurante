@@ -231,7 +231,7 @@ ion-refresher-content {
         flex: 1;
         margin: 0;
         font-family: var(--font-body);
-        font-size: 1.3rem;
+        font-size: 1.5rem;
         font-weight: 700;
         color: var(--basilico-olive);
         line-height: 1.25;
@@ -276,13 +276,14 @@ ion-refresher-content {
         color: #1f2d19;
 
         .dato-icono {
-          font-size: 1.2rem;
+          font-size: 1.6rem;
           color: var(--basilico-olive);
           flex-shrink: 0;
         }
 
         .dato-texto {
           overflow: hidden;
+          font-size: 1.2rem;
           text-overflow: ellipsis;
           white-space: nowrap;
           font-weight: 500;
@@ -298,10 +299,28 @@ ion-refresher-content {
     /* Botones uno arriba del otro aprovechando el espacio vertical */
     .acciones-container-full {
       display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 4px;
+      flex-direction: row; /* Ubica los botones lado a lado */
+      gap: 8px;            /* Espacio horizontal entre botones */
+      margin-top: 12px;
       width: 100%;
+
+      .btn-aceptar,
+      .btn-rechazar {
+        flex: 1;           /* Ocupan 50% de ancho cada uno de forma equitativa */
+        height: 72px;      /* Más altos para destacar bien en la tarjeta */
+        margin: 0;
+        font-family: var(--font-body);
+        font-size: 1.08rem; /* Tamaño optimizado para entrar cómodo lado a lado */
+        font-weight: 900;
+        text-transform: none;
+        --padding-start: 4px;
+        --padding-end: 4px;
+
+        ion-icon {
+          font-size: 1.35rem;
+          margin-right: 4px;
+        }
+      }
 
       .btn-aceptar {
         --background: var(--basilico-olive);
@@ -309,18 +328,7 @@ ion-refresher-content {
         --background-activated: var(--ion-color-primary-shade);
         --color: #ffffff;
         --border-radius: 14px;
-        height: 48px;
-        margin: 0;
-        font-family: var(--font-body);
-        font-size: 1rem;
-        font-weight: 700;
-        text-transform: none;
         box-shadow: 0 4px 12px rgba(40, 55, 32, 0.28);
-
-        ion-icon {
-          font-size: 1.25rem;
-          margin-right: 6px;
-        }
 
         ion-spinner {
           --color: #ffffff;
@@ -333,18 +341,7 @@ ion-refresher-content {
         --background-activated: var(--ion-color-danger-shade);
         --color: #ffffff;
         --border-radius: 14px;
-        height: 48px;
-        margin: 0;
-        font-family: var(--font-body);
-        font-size: 1rem;
-        font-weight: 700;
-        text-transform: none;
         box-shadow: 0 4px 12px rgba(178, 77, 57, 0.28);
-
-        ion-icon {
-          font-size: 1.25rem;
-          margin-right: 6px;
-        }
       }
     }
   }

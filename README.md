@@ -68,7 +68,8 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 |capturas doc | 25/09 | 25/09 |doc/capturas|Finalizado |
 |Alta mesa diseño | 25/09 | 25/09 |develop|Finalizado |
 |Inicio cantinero | 25/09 | 25/09 |develop|Finalizado |
-
+|Pantalla de pedidos pendientes en cocina, agrupados por mesa | 01/10 | 02/10 |develop|Finalizado |
+|Pantalla de pedidos pendientes en bar | 02/10 | 02/10 |develop|Finalizado |
 
 
 ---
@@ -118,7 +119,7 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 | Pantalla inicio cliente | 15/09/2026 |  17/09/2023 | `feature/develop` | Finalizado |
 | Código QR ingreso local | 15/09/2026 |  17/09/2023 | `feature/develop` | Finalizado |
 | Entrada de cliente a lista de espera | 15/09/2026 |  17/09/2023 | `feature/develop` | Finalizado |
-| Lista de espera mozo | 21/09/2026 | - | `feature/develop` | En proceso |
+| Lista de espera metre | 21/09/2026 | - | `feature/develop` | En proceso |
 | Registro  cliente anonimo | 23/09/2026 | 24/09/2026 |  `feature/develop`| Finalizado |
 | inicio cliente anonimo (9) | 28/09/2026 | 01/10/2026 |  `feature/develop`| Finalizado |
 | Validaciones de QR mesas (9) | 28/09/2026 | 01/10/2026 |  `feature/lista-espera-metre`| Finalizado |
@@ -326,10 +327,6 @@ La pantalla dispone de tres contenedores individuales para cargar y visualizar l
 <p align="center">
   <img src="docs/capturas/cocina-bar/02-pantalla-agregar-plato.png" width="300">
   <img src="docs/capturas/cocina-bar/02-agregar-plato.png" width="300">
-</p>
-
-<p align="center">
-  <img src="docs/capturas/cocina-bar/02-botones-agregar-plato.png" width="300">
 </p>
 
 Una vez completados los datos y cargadas las tres fotografías, el cocinero puede registrar el nuevo plato mediante la opción **"Dar de alta el plato"** o acceder directamente a la carta mediante **"Ver carta"**.

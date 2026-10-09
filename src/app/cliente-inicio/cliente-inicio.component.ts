@@ -49,6 +49,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class ClienteInicioComponent {
   cantidadComensales = signal<string>("");
+  comensalesValidados = signal<number>(0);
   abrirInputComensales = signal<boolean>(false);
   codigoQrIngreso = signal<boolean>(false);
   numeroMesa = signal<string>("");
@@ -64,7 +65,6 @@ export class ClienteInicioComponent {
 
   async escanearIngreso() {
     //Abre directamente la cámara usando BarcodeScanner de Capacitor
-    this.abrirInputComensales.set(true);
     const codigoEscaneado = await this.qrService.leerQR();
     
 
@@ -78,7 +78,6 @@ export class ClienteInicioComponent {
     if (codigoEscaneado === 'BASILICO_INGRESO_LISTA_ESPERA') {
       this.codigoQrIngreso.set(true);
       this.abrirInputComensales.set(true);
-      this.confirmarComensales()
       
     } else {
       await this.vibracion.errorFuerte();
@@ -90,8 +89,10 @@ export class ClienteInicioComponent {
   confirmarComensales() {
     const comensalesNum = parseInt(this.cantidadComensales(), 10);
     if (!isNaN(comensalesNum) && comensalesNum > 0) {
+      this.comensalesValidados.set(comensalesNum);
       this.cerrarModuleComensales();
       this.agregarAListaDeEspera();
+      this.cantidadComensales.set(""); // Limpiar el campo de entrada después de confirmar
     }
     else {
     this.mostrarToast('Por favor, ingrese un número válido de comensales.', 'warning');
@@ -127,7 +128,7 @@ export class ClienteInicioComponent {
       .insert({
         cliente_id: cliente.id,
         nombre: nombreCliente,
-        comensales: this.cantidadComensales
+        comensales: this.comensalesValidados(),
       });
 
 

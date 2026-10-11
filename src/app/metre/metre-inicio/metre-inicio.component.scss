@@ -55,11 +55,55 @@
     border-radius: 18px;
     padding: 1rem;
 }
+/* TARJETAS */
+.tarjeta {
+  margin: 0;
+  --background: #ede5d2;
+  border-radius: 18px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.20);
 
+  ion-card-content {
+    min-height: 115px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+  }
+}
+
+
+/* ICONOS */
 .icono {
   flex-shrink: 0;
   font-size: 3rem;
   color: #283720;
+}
+
+
+/* TEXTO */
+.informacion {
+
+  h2 {
+    margin: 0 0 7px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #283720;
+  }
+
+  p {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    color: #283720;
+    line-height: 1.4;
+  }
+}
+
+
+/* PEDIDOS TODAVÍA NO IMPLEMENTADO */
+.tarjeta-deshabilitada {
+  opacity: 0.65;
 }
 
 
@@ -91,4 +135,10 @@
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.acciones {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }

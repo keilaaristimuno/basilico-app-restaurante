@@ -99,6 +99,10 @@ export const routes: Routes = [
     loadComponent: () => import('./paginas/cantinero/pedidos-bar/pedidos-bar.page').then(m => m.PedidosBarPage)
   },
   {
+    path: 'chat',
+    loadComponent: () => import('./components/chat/chat.component').then(m => m.ChatComponent)
+  },
+  {
     path: '**',
     redirectTo: 'inicio'
   }

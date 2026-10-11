@@ -517,5 +517,44 @@ export class Supabase {
     return data ?? [];
   }
 
+
+  
+//CHAT ----
+async obtenerHistorialChat() {
+  const { data, error } = await this.clienteSupabase
+    .from('consultas')
+    .select('*')
+    .order('created_at', { ascending: true }); // Los más viejos primero, los nuevos abajo
+
+  if (error) console.error('Error al traer mensajes:', error.message);
+  return data || [];
+}
+
+//Guardar un mensaje nuevo (insertamos el nombre del usuario y el texto)
+async enviarMensaje(identificador: string, textoMensaje: string) {
+  const { error } = await this.clienteSupabase
+    .from('consultas')
+    .insert([{ identificador: identificador, mensaje: textoMensaje }]); 
+    
+
+  if (error) console.error('Error al guardar mensaje:', error.message);
+}
+
+//Suscribirse al tiempo real para recibir mensajes de otros clientes
+//Callback como un mensajero que lleva elmsj del servicioo al componente
+escucharChat(callback: (nuevoMensaje: any) => void) {
+  return this.clienteSupabase
+    .channel('sala-chat') // Canal cualquiera
+    .on(
+      'postgres_changes',
+      //Le dice a Supabase que querés reaccionar 
+      //a los cambios que ocurran dentro de las tablas de la base de datos.
+      { event: 'INSERT', schema: 'public', table: 'consultas' }, // Escucha solo cuando se inserta algo
+      (payload) => { //el objeto que te manda Supabase con toda la información de lo que acaba de pasar.
+        callback(payload.new); // Ejecuta la función mandando el mensaje nuevo
+      }
+    )
+    .subscribe();
+  }
 }
 

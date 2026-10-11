@@ -64,10 +64,15 @@
    ========================= */
 .acciones-cliente {
   width: 100%;
+  height: 15.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
   margin-top: 0.5rem;
+
+  ion-button, button {
+    height: 100%;
+  }
 }
 
 

@@ -431,7 +431,7 @@ export class Supabase {
     const { error: errorMesa } = await this.clienteSupabase
       .from('mesas')
       .update({
-        disponibilidad: 'asignada',
+        disponibilidad: 'ocupada',
         cliente_id: clienteId
       })
       .eq('numero', numeroMesa);

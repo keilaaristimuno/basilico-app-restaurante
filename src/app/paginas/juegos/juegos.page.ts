@@ -26,6 +26,7 @@ import {
   playCircleOutline,
   alertCircleOutline,
   checkmarkCircleOutline,
+  swapVerticalOutline,
   gridOutline
 } from 'ionicons/icons';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
@@ -72,23 +73,23 @@ export class JuegosPage implements OnInit {
       disponibleParaDescuento: true
     },
     {
-      id: 'juego-2',
-      titulo: 'Memoria del Chef',
-      subtitulo: 'Parejas de Ingredientes',
+      id: 'mayor-menor',
+      titulo: 'Mayor o Menor',
+      subtitulo: 'Cartas de Cocina Italiana',
       descuento: 15,
-      icono: 'restaurant-outline',
+      icono: 'swap-vertical-outline',
       colorIcono: 'icono-terracota',
-      descripcion: 'Encontrá los pares de platos e ingredientes típicos antes de que se agote el tiempo.',
+      descripcion: 'Adiviná si la siguiente carta gastronómica es mayor o menor y acumulá aciertos sin perder tus vidas.',
       disponibleParaDescuento: true
     },
     {
-      id: 'juego-3',
-      titulo: 'Reflejos en la Cocina',
-      subtitulo: 'Atrapá el Ingrediente',
+      id: 'trivia',
+      titulo: 'Trivia Culinaria',
+      subtitulo: 'Sabores y Tradiciones',
       descuento: 20,
-      icono: 'sparkles-outline',
+      icono: 'help-circle-outline',
       colorIcono: 'icono-dorado',
-      descripcion: 'Poné a prueba tu velocidad atrapando los ingredientes frescos sin dejar caer ninguno.',
+      descripcion: 'Respondé preguntas sobre recetas clásicas, orígenes y secretos de la auténtica comida italiana.',
       disponibleParaDescuento: true
     }
   ];
@@ -105,6 +106,7 @@ export class JuegosPage implements OnInit {
       playCircleOutline,
       alertCircleOutline,
       checkmarkCircleOutline,
+      swapVerticalOutline,
       gridOutline
     });
   }
@@ -129,10 +131,14 @@ export class JuegosPage implements OnInit {
       await this.router.navigate(['/juegos/bingo']);
       return;
     }
-    await this.mostrarToast(
-      `Seleccionaste: ${juego.titulo}. ¡Próximamente disponible para jugar!`,
-      'warning'
-    );
+    if (juego.id === 'mayor-menor') {
+      await this.router.navigate(['/juegos/mayor-menor']);
+      return;
+    }
+    if (juego.id === 'trivia') {
+      await this.router.navigate(['/juegos/trivia']);
+      return;
+    }
   }
 
   /**

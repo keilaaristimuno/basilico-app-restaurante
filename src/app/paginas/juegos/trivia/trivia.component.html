@@ -1,0 +1,164 @@
+<ion-content [fullscreen]="true" class="fondo-trivia">
+  <app-navbar rutaInicio="/juegos"></app-navbar>
+
+  <div class="contenedor-principal">
+    <!-- Encabezado del Juego -->
+    <header class="encabezado-juego">
+      <div class="logo-juego">
+        <img src="assets/Basilico/Logo_beige.png" alt="Basílico" class="logo-img">
+      </div>
+      <h1 class="font-logo">Trivia Culinaria</h1>
+      <p class="subtitulo-juego">
+        Demostrá tus conocimientos sobre la cocina italiana y sus tradiciones
+      </p>
+    </header>
+
+    <!-- Banner de Estado de Promoción y Descuento -->
+    <section class="banner-promo">
+      @if (juegosService.descuentoAplicado() > 0) {
+        <div class="tarjeta-promo activa">
+          <ion-icon name="trophy-outline" class="icono-promo"></ion-icon>
+          <div class="texto-promo">
+            <span class="etiqueta-promo">Descuento Activo</span>
+            <p>Ya contás con un <strong>{{ juegosService.descuentoAplicado() }}% de descuento</strong> en tu mesa.</p>
+          </div>
+        </div>
+      } @else if (puedeGanarDescuento()) {
+        <div class="tarjeta-promo participa">
+          <ion-icon name="sparkles-outline" class="icono-promo"></ion-icon>
+          <div class="texto-promo">
+            <span class="etiqueta-promo">1er Intento Oficial</span>
+            <p>¡Acertá al menos 4 de 5 preguntas y ganá el premio mayor de <strong>{{ DESCUENTO_JUEGO }}% OFF</strong>!</p>
+          </div>
+        </div>
+      } @else {
+        <div class="tarjeta-promo libre">
+          <ion-icon name="play-circle-outline" class="icono-promo"></ion-icon>
+          <div class="texto-promo">
+            <span class="etiqueta-promo">Modo Recreativo</span>
+            <p>Jugando por diversión y aprendizaje culinario.</p>
+          </div>
+        </div>
+      }
+    </section>
+
+    <!-- Marcadores y Progreso de la Partida -->
+    <section class="marcador-progreso">
+      <div class="stats-fila">
+        <div class="stat-item">
+          <span class="stat-etiqueta">Pregunta</span>
+          <span class="stat-valor">{{ indicePreguntaActual() + 1 }}/{{ TOTAL_PREGUNTAS_RONDA }}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-etiqueta">Aciertos</span>
+          <span class="stat-valor">{{ aciertos() }}/{{ TOTAL_PREGUNTAS_RONDA }}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-etiqueta">Premio</span>
+          <span class="stat-valor premio-destacado">{{ DESCUENTO_JUEGO }}% OFF</span>
+        </div>
+      </div>
+
+      <ion-progress-bar [value]="progresoRonda" class="barra-progreso"></ion-progress-bar>
+    </section>
+
+    @if (estadoJuego() === 'jugando') {
+      <!-- Tarjeta de Pregunta Actual -->
+      <section class="seccion-pregunta">
+        <article class="tarjeta-pregunta">
+          <div class="etiqueta-categoria">
+            <ion-icon name="restaurant-outline"></ion-icon>
+            <span>{{ preguntaActual.categoria }}</span>
+          </div>
+
+          <h2 class="texto-pregunta">{{ preguntaActual.pregunta }}</h2>
+        </article>
+      </section>
+
+      <!-- Opciones de Respuesta Táctiles Gigantes -->
+      <section class="seccion-opciones">
+        <div class="lista-opciones">
+          @for (opcion of preguntaActual.opciones; track $index) {
+            <button
+              type="button"
+              class="boton-opcion"
+              [class.seleccionada]="opcionSeleccionada() === $index"
+              [class.correcta]="respondido() && $index === preguntaActual.indiceCorrecto"
+              [class.incorrecta]="respondido() && opcionSeleccionada() === $index && $index !== preguntaActual.indiceCorrecto"
+              [disabled]="respondido()"
+              (click)="responder($index)">
+              <span class="letra-opcion">{{ ['A', 'B', 'C', 'D'][$index] }}</span>
+              <span class="texto-opcion">{{ opcion }}</span>
+              @if (respondido() && $index === preguntaActual.indiceCorrecto) {
+                <ion-icon name="checkmark-circle-outline" class="icono-veredicto acierto"></ion-icon>
+              } @else if (respondido() && opcionSeleccionada() === $index && $index !== preguntaActual.indiceCorrecto) {
+                <ion-icon name="close-circle-outline" class="icono-veredicto error"></ion-icon>
+              }
+            </button>
+          }
+        </div>
+      </section>
+
+      <!-- Curiosidad Culinaria y Botón Siguiente -->
+      @if (respondido()) {
+        <section class="seccion-feedback">
+          <article class="tarjeta-curiosidad">
+            <div class="icono-curiosidad">
+              <ion-icon name="bulb-outline"></ion-icon>
+            </div>
+            <div class="texto-curiosidad">
+              <span class="titulo-curiosidad">¿Sabías que...?</span>
+              <p>{{ preguntaActual.curiosidad }}</p>
+            </div>
+          </article>
+
+          <ion-button
+            expand="block"
+            class="boton-siguiente btonTerracota"
+            (click)="avanzarSiguientePregunta()">
+            <span>{{ indicePreguntaActual() + 1 === TOTAL_PREGUNTAS_RONDA ? 'Ver Resultado Final' : 'Siguiente Pregunta' }}</span>
+            <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
+          </ion-button>
+        </section>
+      }
+    } @else {
+      <!-- Panel de Fin de Partida (Victoria / Derrota) -->
+      <section class="seccion-resultado">
+        <article class="panel-resultado" [class.victoria]="estadoJuego() === 'ganado'" [class.derrota]="estadoJuego() === 'perdido'">
+          @if (estadoJuego() === 'ganado') {
+            <div class="icono-resultado exito">🏆</div>
+            <h2>¡Maestro Culinario!</h2>
+            <span class="subtitulo-resultado">Lograste {{ aciertos() }} de {{ TOTAL_PREGUNTAS_RONDA }} respuestas correctas</span>
+            @if (resultadoPromo()?.exito) {
+              <p class="mensaje-resultado">
+                ¡Ganaste en tu 1er intento! Tenés un <strong>{{ DESCUENTO_JUEGO }}% de descuento</strong> directo en tu cuenta.
+              </p>
+            } @else {
+              <p class="mensaje-resultado">
+                ¡Gran conocimiento de la cocina italiana! Superaste el desafío con éxito.
+              </p>
+            }
+          } @else {
+            <div class="icono-resultado fallo">🍝</div>
+            <h2>¡Buen Intento!</h2>
+            <span class="subtitulo-resultado">Acertaste {{ aciertos() }} de {{ TOTAL_PREGUNTAS_RONDA }} (se requerían {{ ACIERTOS_MINIMOS_PARA_GANAR }})</span>
+            <p class="mensaje-resultado">
+              ¡Casi lo lográs! Podés volver a jugar las veces que quieras para conocer más secretos de nuestra cocina.
+            </p>
+          }
+
+          <div class="botones-resultado">
+            <ion-button expand="block" class="btonVerde" (click)="iniciarPartida()">
+              <ion-icon name="refresh-outline" slot="start"></ion-icon>
+              Jugar Nueva Ronda
+            </ion-button>
+
+            <ion-button expand="block" fill="outline" class="btonBeige" (click)="volverAJuegos()">
+              Volver a la Zona de Juegos
+            </ion-button>
+          </div>
+        </article>
+      </section>
+    }
+  </div>
+</ion-content>

@@ -79,8 +79,15 @@ export const routes: Routes = [
     loadComponent: () => import('./paginas/juegos/bingo/bingo.component').then(m => m.BingoComponent)
   },
   {
+    path: 'juegos/mayor-menor',
+    loadComponent: () => import('./paginas/juegos/mayor-menor/mayor-menor.component').then(m => m.MayorMenorComponent)
+  },
+  {
+    path: 'juegos/trivia',
+    loadComponent: () => import('./paginas/juegos/trivia/trivia.component').then(m => m.TriviaComponent)
+  },
+  {
     path: '**',
     redirectTo: 'inicio'
-  },
-
+  }
 ];

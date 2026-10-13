@@ -1,0 +1,405 @@
+.fondo-trivia {
+  --background: #283720;
+  background-color: #283720;
+  color: #ede5d2;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.contenedor-principal {
+  padding: 16px;
+  max-width: 520px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: calc(100vh - 56px);
+  box-sizing: border-box;
+}
+
+/* Encabezado */
+.encabezado-juego {
+  text-align: center;
+
+  .logo-juego {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 4px;
+
+    .logo-img {
+      height: 48px;
+      object-fit: contain;
+    }
+  }
+
+  .font-logo {
+    font-family: 'Alex Brush', cursive;
+    font-size: 2.8rem;
+    color: #ede5d2;
+    margin: 0;
+    line-height: 1.1;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  }
+
+  .subtitulo-juego {
+    font-size: 0.85rem;
+    color: rgba(237, 229, 210, 0.85);
+    margin: 4px 0 0;
+  }
+}
+
+/* Banner de Promoción */
+.banner-promo {
+  .tarjeta-promo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+
+    .icono-promo {
+      font-size: 1.6rem;
+      flex-shrink: 0;
+    }
+
+    .texto-promo {
+      .etiqueta-promo {
+        display: block;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 700;
+        margin-bottom: 2px;
+      }
+      p {
+        margin: 0;
+        line-height: 1.25;
+      }
+    }
+
+    &.activa {
+      background: rgba(46, 125, 50, 0.35);
+      border: 1px solid rgba(129, 199, 132, 0.5);
+      color: #e8f5e9;
+      .etiqueta-promo { color: #a5d6a7; }
+    }
+
+    &.participa {
+      background: rgba(184, 93, 56, 0.35);
+      border: 1px solid rgba(224, 122, 95, 0.6);
+      color: #ede5d2;
+      .etiqueta-promo { color: #ffb74d; }
+    }
+
+    &.libre {
+      background: rgba(237, 229, 210, 0.12);
+      border: 1px solid rgba(237, 229, 210, 0.25);
+      color: #ede5d2;
+      .etiqueta-promo { color: #ede5d2; }
+    }
+  }
+}
+
+/* Marcadores y Barra de Progreso */
+.marcador-progreso {
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(237, 229, 210, 0.2);
+  border-radius: 14px;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .stats-fila {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+
+      .stat-etiqueta {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: rgba(237, 229, 210, 0.7);
+      }
+
+      .stat-valor {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: #ede5d2;
+
+        &.premio-destacado {
+          color: #ffb74d;
+        }
+      }
+    }
+  }
+
+  .barra-progreso {
+    --progress-background: #b85d38;
+    --background: rgba(237, 229, 210, 0.2);
+    height: 8px;
+    border-radius: 4px;
+  }
+}
+
+/* Pregunta Actual */
+.seccion-pregunta {
+  .tarjeta-pregunta {
+    background: linear-gradient(135deg, rgba(237, 229, 210, 0.12) 0%, rgba(237, 229, 210, 0.05) 100%);
+    border: 2px solid rgba(237, 229, 210, 0.25);
+    border-radius: 18px;
+    padding: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+
+    .etiqueta-categoria {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #b85d38;
+      color: #ede5d2;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 4px 10px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .texto-pregunta {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #ede5d2;
+      line-height: 1.35;
+      margin: 0;
+    }
+  }
+}
+
+/* Opciones de Respuesta Gigantes */
+.seccion-opciones {
+  .lista-opciones {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .boton-opcion {
+      width: 100%;
+      min-height: 58px;
+      background: rgba(237, 229, 210, 0.15);
+      border: 2px solid rgba(237, 229, 210, 0.3);
+      border-radius: 14px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #ede5d2;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+      &:active:not(:disabled) {
+        transform: scale(0.98);
+        background: rgba(237, 229, 210, 0.25);
+      }
+
+      .letra-opcion {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        background: rgba(0, 0, 0, 0.35);
+        border: 1px solid rgba(237, 229, 210, 0.4);
+        border-radius: 8px;
+        font-weight: 800;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+        color: #ede5d2;
+      }
+
+      .texto-opcion {
+        flex: 1;
+        line-height: 1.25;
+      }
+
+      .icono-veredicto {
+        font-size: 1.6rem;
+        flex-shrink: 0;
+
+        &.acierto {
+          color: #a5d6a7;
+        }
+
+        &.error {
+          color: #ef9a9a;
+        }
+      }
+
+      &.correcta {
+        background: rgba(46, 125, 50, 0.65) !important;
+        border-color: #81c784 !important;
+        color: #ffffff !important;
+
+        .letra-opcion {
+          background: #2e7d32;
+          border-color: #a5d6a7;
+        }
+      }
+
+      &.incorrecta {
+        background: rgba(184, 93, 56, 0.75) !important;
+        border-color: #e57373 !important;
+        color: #ffffff !important;
+
+        .letra-opcion {
+          background: #b85d38;
+          border-color: #ef9a9a;
+        }
+      }
+    }
+  }
+}
+
+/* Feedback y Botón Siguiente */
+.seccion-feedback {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: fadeIn 0.25s ease-out;
+
+  .tarjeta-curiosidad {
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 183, 77, 0.45);
+    border-radius: 12px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+
+    .icono-curiosidad {
+      font-size: 1.5rem;
+      color: #ffb74d;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .texto-curiosidad {
+      .titulo-curiosidad {
+        display: block;
+        font-size: 0.75rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        color: #ffb74d;
+        margin-bottom: 2px;
+      }
+
+      p {
+        font-size: 0.85rem;
+        color: rgba(237, 229, 210, 0.95);
+        margin: 0;
+        line-height: 1.3;
+      }
+    }
+  }
+
+  .boton-siguiente {
+    height: 52px;
+    --border-radius: 14px;
+    font-weight: 700;
+    font-size: 1rem;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Panel de Fin de Partida */
+.seccion-resultado {
+  margin-top: auto;
+
+  .panel-resultado {
+    background: rgba(0, 0, 0, 0.45);
+    border-radius: 18px;
+    padding: 22px 16px;
+    text-align: center;
+    border: 2px solid rgba(237, 229, 210, 0.3);
+    animation: fadeIn 0.3s ease-out;
+
+    .icono-resultado {
+      font-size: 3.5rem;
+      margin-bottom: 6px;
+    }
+
+    h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin: 0;
+      color: #ede5d2;
+    }
+
+    .subtitulo-resultado {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #ffb74d;
+      margin-top: 4px;
+    }
+
+    .mensaje-resultado {
+      font-size: 0.95rem;
+      color: rgba(237, 229, 210, 0.9);
+      margin: 10px 0 18px;
+      line-height: 1.35;
+    }
+
+    &.victoria {
+      border-color: #81c784;
+      h2 { color: #a5d6a7; }
+    }
+
+    &.derrota {
+      border-color: #e57373;
+      h2 { color: #ef9a9a; }
+    }
+
+    .botones-resultado {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      ion-button {
+        height: 48px;
+        --border-radius: 12px;
+        font-weight: 700;
+      }
+    }
+  }
+}
+
+/* Botones con estilo corporativo */
+.btonVerde {
+  --background: #3b522b;
+  --color: #ede5d2;
+}
+
+.btonTerracota {
+  --background: #b85d38;
+  --color: #ede5d2;
+}
+
+.btonBeige {
+  --color: #ede5d2;
+  --border-color: #ede5d2;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

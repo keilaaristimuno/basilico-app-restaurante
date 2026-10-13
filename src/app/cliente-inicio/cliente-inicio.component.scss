@@ -288,3 +288,317 @@ ion-modal.modal-basilico {
     }
   }
 }
+
+/* =========================================================
+   ESTILOS DE MESA Y SEGUIMIENTO DE PEDIDO (PUNTOS 11 AL 14)
+   ========================================================= */
+
+.tarjeta-aviso {
+  background: rgba(237, 229, 210, 0.15);
+  border: 1px solid rgba(237, 229, 210, 0.3);
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin: 1.2rem auto;
+  color: #ede5d2;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  max-width: 440px;
+
+  ion-icon {
+    font-size: 2rem;
+    color: #bca085;
+    flex-shrink: 0;
+  }
+
+  p {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.88rem;
+    line-height: 1.35;
+  }
+
+  &.aviso-mesa-lista {
+    background: rgba(184, 93, 56, 0.25);
+    border: 1.5px solid var(--basilico-terracotta, #b85d38);
+
+    ion-icon {
+      color: #e28762;
+    }
+
+    strong {
+      display: block;
+      font-size: 1rem;
+      color: #ede5d2;
+      margin-bottom: 3px;
+    }
+  }
+}
+
+.seccion-mesa-activa {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 0.5rem;
+}
+
+.badge-mesa-vinculada {
+  background: var(--basilico-terracotta, #b85d38);
+  color: #ede5d2;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0 auto;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+
+  ion-icon {
+    font-size: 1.2rem;
+  }
+}
+
+/* Card bienvenida a hacer pedido */
+.card-bienvenida-pedido {
+  background: #ede5d2;
+  border-radius: 18px;
+  padding: 24px 20px;
+  color: #283720;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  text-align: center;
+
+  h3 {
+    margin: 0 0 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  p {
+    margin: 0 0 18px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.92rem;
+    opacity: 0.85;
+    line-height: 1.4;
+  }
+
+  .acciones-pedido-cliente {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .btn-hacer-pedido {
+      --background: #283720;
+      --color: #ede5d2;
+      font-weight: 800;
+      font-size: 1.05rem;
+      height: 52px;
+      margin: 0;
+      box-shadow: 0 4px 12px rgba(40, 55, 32, 0.35);
+    }
+  }
+}
+
+/* Tarjeta de seguimiento de pedido activo */
+.tarjeta-seguimiento-pedido {
+  background: #ede5d2;
+  border-radius: 18px;
+  padding: 20px 18px;
+  color: #283720;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+
+  .encabezado-estado-pedido {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .subtitulo-estado {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      color: #666;
+      text-transform: uppercase;
+    }
+
+    .badge-estado {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 0.92rem;
+
+      ion-icon {
+        font-size: 1.25rem;
+        flex-shrink: 0;
+      }
+
+      &.estado-pendiente {
+        background: #fdf3d8;
+        color: #8c6b12;
+        border: 1.5px solid #d9b64c;
+      }
+
+      &.estado-rechazado {
+        background: #fbeae8;
+        color: #b52b2b;
+        border: 1.5px solid #e05d52;
+      }
+
+      &.estado-confirmado {
+        background: #e6f4ea;
+        color: #1e6638;
+        border: 1.5px solid #34a853;
+      }
+    }
+
+    .explicacion-estado {
+      margin: 4px 0 0;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.84rem;
+      line-height: 1.35;
+      color: #444;
+    }
+
+    .btn-modificar {
+      --background: #b85d38;
+      --color: #ede5d2;
+      font-weight: 800;
+      margin-top: 6px;
+    }
+
+    .btn-juegos {
+      --background: #283720;
+      --color: #ede5d2;
+      font-weight: 800;
+      margin-top: 6px;
+    }
+  }
+
+  /* TOTALES VISIBLES (PUNTO 12) */
+  .totales-pedido-activo {
+    background: #e2d9bf;
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .bloque-total-destacado {
+      display: flex;
+      flex-direction: column;
+
+      .label-acumulado-ui {
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        color: #555;
+        text-transform: uppercase;
+      }
+
+      .monto-acumulado-ui {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.85rem;
+        font-weight: 900;
+        color: #283720;
+        line-height: 1.1;
+      }
+    }
+
+    .bloque-tiempo-destacado {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.9rem;
+      color: #444;
+
+      ion-icon {
+        font-size: 1.15rem;
+        color: #b85d38;
+      }
+
+      strong {
+        color: #283720;
+      }
+    }
+  }
+
+  /* Desglose de ítems */
+  .desglose-items-pedido {
+    h4 {
+      margin: 0 0 10px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: #283720;
+      text-transform: uppercase;
+    }
+
+    .lista-items-compacta {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .item-fila {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.88rem;
+      padding: 6px 0;
+      border-bottom: 1px dashed rgba(40, 55, 32, 0.2);
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .item-cantidad-badge {
+        font-weight: 800;
+        background: #283720;
+        color: #ede5d2;
+        padding: 2px 6px;
+        border-radius: 6px;
+        font-size: 0.78rem;
+      }
+
+      .item-nombre {
+        flex: 1;
+        font-weight: 600;
+        color: #283720;
+      }
+
+      .item-precio {
+        font-weight: 800;
+        color: #283720;
+      }
+    }
+  }
+
+  .acciones-inferiores-pedido {
+    margin-top: 4px;
+  }
+}
+
+.btonBeigeOutline {
+  --color: #283720;
+  --border-color: #283720;
+  --border-width: 2px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  margin: 0;
+}

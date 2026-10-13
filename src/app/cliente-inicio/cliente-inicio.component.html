@@ -74,6 +74,23 @@
         <div class="badge-mesa-vinculada">
           <ion-icon name="restaurant-outline"></ion-icon>
           <span>Mesa N° {{ numeroMesa() }} • Comensal: {{ nombreCliente() }}</span>
+          <ion-icon
+            name="qr-code-outline"
+            slot="start">
+          </ion-icon>
+          Escanear QR de la mesa
+        </ion-button>
+        <ion-button
+          expand="block"
+          class="btonBeige"
+          (click)="escanearQrMesa()">
+
+          <ion-icon
+            name="qr-code-outline"
+            slot="start">
+          </ion-icon>
+         Acceder a encuestas
+        </ion-button>
         </div>
 
         <!-- =====================================================

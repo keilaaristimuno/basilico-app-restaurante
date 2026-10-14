@@ -6,18 +6,21 @@
         text="Volver">
       </ion-back-button>
     </ion-buttons>
+
   </ion-toolbar>
 </ion-header>
 
 <ion-content
   [fullscreen]="true"
+  [scrollY]="false"
   class="carta-content">
-  <div class="carta-container">
 
-    <!-- =========================
-         ENCABEZADO
-         ========================= -->
-    <section class="carta-header">
+  <div class="carta-layout-completo">
+
+    <!-- ==============================================
+         ENCABEZADO INSTITUCIONAL ORIGINAL DE BASÍLICO
+         ============================================== -->
+    <header class="carta-header">
       <h1 class="font-logo">
         Basílico
       </h1>
@@ -32,208 +35,197 @@
 
       <div class="decoracion-header"></div>
 
-      <!-- =========================
-           ÍNDICE DE NAVEGACIÓN RÁPIDA
-           ========================= -->
+      <!-- Navegación por categorías original de Basílico -->
       @if (productos.length > 0) {
-        <nav class="indice-navegacion" aria-label="Navegación rápida por categorías">
-          @if (platos.length > 0) {
-            <button
-              type="button"
-              class="btn-categoria"
-              (click)="scrollASeccion('seccion-platos')">
-              Platos
-            </button>
-          }
-          @if (bebidas.length > 0) {
-            <button
-              type="button"
-              class="btn-categoria"
-              (click)="scrollASeccion('seccion-bebidas')">
-              Bebidas
-            </button>
-          }
+        <nav class="indice-navegacion" aria-label="Navegación por categorías">
+          <button
+            type="button"
+            class="btn-categoria"
+            [class.activo]="categoriaSeleccionada === 'todos'"
+            (click)="cambiarCategoria('todos')">
+            Todos
+          </button>
+          <button
+            type="button"
+            class="btn-categoria"
+            [class.activo]="categoriaSeleccionada === 'plato'"
+            (click)="cambiarCategoria('plato')">
+            Platos
+          </button>
+          <button
+            type="button"
+            class="btn-categoria"
+            [class.activo]="categoriaSeleccionada === 'bebida'"
+            (click)="cambiarCategoria('bebida')">
+            Bebidas
+          </button>
         </nav>
       }
-    </section>
+    </header>
 
-    <!-- =========================
-         CARTA VACÍA
-         ========================= -->
-    @if (productos.length === 0) {
+    <!-- ==============================================
+         ESTADO DE CARGA O SIN PRODUCTOS
+         ============================================== -->
+    @if (cargando) {
       <div class="sin-productos">
-        <strong>
-          No hay productos disponibles
-        </strong>
-        <p>
-          Todavía no se registraron
-          productos en la carta.
-        </p>
+        <strong>Cargando carta...</strong>
+        <p>Obteniendo los productos de Basílico.</p>
       </div>
-    }
+    } @else if (productosVisibles.length === 0) {
+      <div class="sin-productos">
+        <strong>No hay productos disponibles</strong>
+        <p>No se encontraron productos en esta categoría.</p>
+        @if (categoriaSeleccionada !== 'todos') {
+          <button
+            type="button"
+            class="btn-categoria activo"
+            style="margin-top: 12px;"
+            (click)="cambiarCategoria('todos')">
+            Ver toda la carta
+          </button>
+        }
+      </div>
+    } @else {
 
-    <!-- =========================
-         SECCION PLATOS y BEBIDAS
-         ========================= -->
-    @for (
-      seccion of [
-        { titulo: 'Platos', id: 'seccion-platos', productos: platos },
-        { titulo: 'Bebidas', id: 'seccion-bebidas', productos: bebidas }
-      ];
-      track seccion.titulo
-    ) {
-      @if (seccion.productos.length > 0) {
-      <section [id]="seccion.id" class="seccion-productos">
-        <div class="titulo-seccion">
-          <h3>
-            {{ seccion.titulo }}
-          </h3>
-          <span>
-            {{ seccion.productos.length }}
-            disponibles
-          </span>
-        </div>
+      <!-- ==============================================
+           VIEWPORT REELS VERTICAL (UN PRODUCTO A LA VEZ)
+           ============================================== -->
+      <main
+        class="card-reels-viewport"
+        tabindex="0"
+        (touchstart)="onTouchStart($event)"
+        (touchmove)="onTouchMove($event)"
+        (touchend)="onTouchEnd($event)"
+        (touchcancel)="onTouchEnd($event)"
+        (wheel)="onWheel($event)"
+        (keydown)="onKeyDown($event)">
 
-        <div class="grid-platos">
-          @for (
-            plato of seccion.productos;
-            track plato.id
-          ) {
-            <article class="plato-card">
+        <div
+          class="card-reels-track"
+          [style.transform]="obtenerTransformTrack()"
+          [class.sin-transicion]="esArrastrando && direccionGesto === 'vertical'">
 
-              <!-- =====================
-                   IMÁGENES
-                   ===================== -->
-              <div class="imagen-plato">
-                @if (
-                  plato.fotos &&
-                  plato.fotos.length > 0
-                ) {
-                  <img
-                    [src]="
-                      plato.fotos[
-                        indiceFoto[plato.id] ?? 0
-                      ]
-                    "
-                    [alt]="
-                      'Fotografía de ' +
-                      plato.nombre
-                    "
-                    [class.imagen-vertical]="
-                      fotosVerticales[
-                        plato.fotos[
-                          indiceFoto[plato.id] ?? 0
-                        ]
-                      ]
-                    "
-                    (load)="
-                      detectarOrientacion(
-                        $event,
-                        plato.fotos[
-                          indiceFoto[plato.id] ?? 0
-                        ]
-                      )
-                    ">
+          @for (producto of productosVisibles; track producto.id; let idx = $index) {
+            <div
+              class="card-reel-slide"
+              [class.slide-activo]="idx === indiceProductoActual"
+              [attr.aria-hidden]="idx !== indiceProductoActual">
 
-                  <!-- Flechas -->
-                  @if (plato.fotos.length > 1 ) {
-                    <button
-                      type="button"
-                      class="flecha-foto flecha-izquierda"
-                      (click)="anteriorFoto(plato)"
-                      [attr.aria-label]="
-                        'Fotografía anterior de ' +
-                        plato.nombre
-                      ">
-                      ‹
-                    </button>
+              <!-- ==============================================
+                   TARJETA ORIGINAL DE BASÍLICO
+                   ============================================== -->
+              <article class="plato-card">
 
-                    <button
-                      type="button"
-                      class="flecha-foto flecha-derecha"
-                      (click)="siguienteFoto(plato)"
-                      [attr.aria-label]="
-                        'Fotografía siguiente de ' +
-                        plato.nombre
-                      ">
-                      ›
-                    </button>
-                  }
-                  <!-- Indicadores -->
-                  <div class="indicadores-fotos">
-                    @for (
-                      foto of plato.fotos;
-                      track $index
-                    ) {
+                <!-- FOTOGRAFÍAS (CARRUSEL HORIZONTAL DENTRO DE LA TARJETA) -->
+                <div class="imagen-plato">
+                  @if (producto.fotos && producto.fotos.length > 0) {
+                    <div
+                      class="fotos-track"
+                      [style.transform]="obtenerTransformFotos(producto)"
+                      [class.sin-transicion]="esArrastrando && direccionGesto === 'horizontal' && idx === indiceProductoActual">
+
+                      @for (foto of producto.fotos; track $index; let fIdx = $index) {
+                        <div class="foto-slide-item">
+                          <img
+                            [src]="foto"
+                            [alt]="'Fotografía de ' + producto.nombre"
+                            loading="lazy"
+                            draggable="false">
+                        </div>
+                      }
+                    </div>
+
+                    <!-- Flechas originales del carrusel -->
+                    @if (producto.fotos.length > 1) {
                       <button
                         type="button"
-                        class="indicador-foto"
-                        [class.activo]="
-                          (indiceFoto[plato.id] ?? 0) === $index"
-                        (click)=" irAFoto(plato,$index)"
-                        [attr.aria-label]=" 'Ver fotografía ' + ($index + 1)">
+                        class="flecha-foto flecha-izquierda"
+                        (click)="anteriorFoto(producto)"
+                        [attr.aria-label]="'Fotografía anterior de ' + producto.nombre">
+                        ‹
+                      </button>
+
+                      <button
+                        type="button"
+                        class="flecha-foto flecha-derecha"
+                        (click)="siguienteFoto(producto)"
+                        [attr.aria-label]="'Fotografía siguiente de ' + producto.nombre">
+                        ›
                       </button>
                     }
+
+                    <!-- Indicadores originales de fotos -->
+                    <div class="indicadores-fotos">
+                      @for (foto of producto.fotos; track $index; let fIdx = $index) {
+                        <button
+                          type="button"
+                          class="indicador-foto"
+                          [class.activo]="obtenerIndiceFoto(producto.id) === fIdx"
+                          (click)="irAFoto(fIdx, producto)"
+                          [attr.aria-label]="'Ver fotografía ' + (fIdx + 1)">
+                        </button>
+                      }
+                    </div>
+                  } @else {
+                    <div class="sin-foto">
+                      <span>Sin fotografía</span>
+                    </div>
+                  }
+
+                  <!-- Badge sutil de categoría sobre la imagen -->
+                  <div class="badge-tipo-plato">
+                    {{ producto.tipo === 'plato' ? 'Plato' : 'Bebida' }}
                   </div>
-                } @else {
-                  <div class="sin-foto">
-                    <span>
-                      Sin fotografía
+                </div>
+
+                <!-- INFORMACIÓN ORIGINAL DEL PRODUCTO -->
+                <div class="detalle-plato">
+                  <div class="encabezado-plato">
+                    <h3>
+                      {{ producto.nombre }}
+                    </h3>
+                    <span class="precio-plato">
+                      ${{ formatearPrecio(producto.precio) }}
                     </span>
                   </div>
-                }
-              </div>
 
-              <!-- =====================
-                   INFORMACIÓN
-                   ===================== -->
-              <div class="detalle-plato">
-                <div class="encabezado-plato">
-                  <h3>
-                    {{ plato.nombre }}
-                  </h3>
-                  <span class="precio-plato">
-                    ${{formatearPrecio(plato.precio)}}
-                  </span>
-                </div>
+                  <div
+                    class="descripcion-plato"
+                    [class.expandida]="descripcionExpandida[producto.id]"
+                    (touchstart)="$event.stopPropagation()"
+                    (touchmove)="$event.stopPropagation()"
+                    (touchend)="$event.stopPropagation()">
+                    {{ producto.descripcion }}
+                  </div>
 
-                <div
-                  class="descripcion-plato"
-                  [class.expandida]="descripcionExpandida[plato.id]">
-                  {{ plato.descripcion }}
-                </div>
-                
-                @if (plato.descripcion.length > 100) {
+                  @if (producto.descripcion && producto.descripcion.length > 85) {
+                    <button
+                      type="button"
+                      class="boton-descripcion"
+                      (click)="alternarDescripcion(producto)">
+                      {{ descripcionExpandida[producto.id] ? 'Ver menos' : 'Ver más' }}
+                    </button>
+                  }
 
-                  <button
-                    type="button"
-                    class="boton-descripcion"
-                    (click)="alternarDescripcion(plato)">
-                    {{
-                      descripcionExpandida[plato.id]
-                        ? 'Ver menos'
-                        : 'Ver más'
-                    }}
-                  </button>
-                }
-
-                <div class="informacion-plato">
-                  <div class="dato-plato">
-                    <span class="dato-label">
-                      Tiempo estimado
-                    </span>
-                    <strong>
-                      {{plato.tiempo_elaboracion}}
-                      min
-                    </strong>
+                  <div class="informacion-plato">
+                    <div class="dato-plato">
+                      <span class="dato-label">
+                        Tiempo estimado
+                      </span>
+                      <strong>
+                        {{ producto.tiempo_elaboracion }} min
+                      </strong>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </article>
+
+              </article>
+            </div>
           }
+
         </div>
-      </section>
+      </main>
     }
-  }
+
   </div>
 </ion-content>

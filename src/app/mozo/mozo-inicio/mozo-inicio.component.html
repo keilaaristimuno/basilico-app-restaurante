@@ -14,9 +14,10 @@
     </section>
 
     <section class="acciones">
-      <ion-card class="tarjeta" routerLink="/alta-plato" button="true">
+      <ion-card class="tarjeta" routerLink="/pedidosMozo" button="true">
         <ion-card-content>
           <ion-icon name="list-outline" class="icono"></ion-icon>
+          <p>2</p>
           <div class="informacion">
             <h2>Pedidos</h2>
             <p>
@@ -26,15 +27,32 @@
           </div>
         </ion-card-content>
       </ion-card>
-
-
-      <ion-card class="tarjeta tarjeta-deshabilitada" >
+      <ion-card class="tarjeta" >
         <ion-card-content>
-          <!-- <ion-icon
+          <ion-icon
+            name="checkmark-done-outline"
+            class="icono">
+          </ion-icon>
+          <p>-</p>
+
+          <div class="informacion">
+            <h2>Pedidos listos</h2>
+            <p>
+              Visualizar pedidos listos para entregar.
+            </p>
+
+          </div>
+        </ion-card-content>
+      </ion-card>
+
+
+      <ion-card class="tarjeta" >
+        <ion-card-content>
+          <ion-icon
             name="receipt-outline"
             class="icono">
-          </ion-icon> -->
-
+          </ion-icon>
+          <p>-</p>
           <div class="informacion">
             <h2>Cuentas y liberación</h2>
             <p>
@@ -45,12 +63,13 @@
         </ion-card-content>
       </ion-card>
 
-      <ion-card class="tarjeta tarjeta-deshabilitada" >
+      <ion-card class="tarjeta" >
         <ion-card-content>
-          <!-- <ion-icon
-            name="receipt-outline"
+          <ion-icon
+            name="chatbubbles-outline"
             class="icono">
-          </ion-icon> -->
+          </ion-icon>
+        <p>1</p>
 
           <div class="informacion">
             <h2>Chat de consultas</h2>

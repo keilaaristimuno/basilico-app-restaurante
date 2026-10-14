@@ -7,7 +7,7 @@ import {
 import { RouterLink } from '@angular/router';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { addIcons } from 'ionicons';
-import { listOutline } from 'ionicons/icons';
+import { listOutline, receiptOutline, checkmarkDoneOutline, chatbubblesOutline } from 'ionicons/icons';
 @Component({
   selector: 'app-mozo-inicio',
   templateUrl: './mozo-inicio.component.html',
@@ -18,7 +18,7 @@ import { listOutline } from 'ionicons/icons';
 export class MozoInicioComponent  implements OnInit {
 
   constructor() { 
-    addIcons({ listOutline });
+    addIcons({ listOutline, receiptOutline, checkmarkDoneOutline, chatbubblesOutline });
   }
 
   ngOnInit() {}

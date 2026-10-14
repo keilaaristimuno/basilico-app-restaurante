@@ -1,0 +1,333 @@
+.header-transparente {
+  ion-toolbar {
+    --background: var(--basilico-olive, #283720);
+    --color: #ede5d2;
+    border-bottom: 1px solid rgba(237, 229, 210, 0.15);
+
+    ion-title {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: #ede5d2;
+    }
+
+    ion-back-button {
+      --color: #ede5d2;
+      font-weight: 700;
+    }
+  }
+}
+
+.fondo-mozo {
+  --background: var(--basilico-olive, #283720);
+}
+
+.contenedor-mozo {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 1.2rem 1rem 3rem;
+  box-sizing: border-box;
+}
+
+.encabezado-seccion {
+  text-align: center;
+  margin-bottom: 1.5rem;
+
+  .logo-mozo {
+    width: 65px;
+    height: auto;
+    margin-bottom: 8px;
+  }
+
+  h2 {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: #ede5d2;
+    text-transform: uppercase;
+  }
+
+  p {
+    margin: 6px auto 0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.88rem;
+    color: #ede5d2;
+    opacity: 0.85;
+    max-width: 420px;
+  }
+}
+
+/* Tarjeta de estado vacío */
+.tarjeta-vacia {
+  background: rgba(237, 229, 210, 0.12);
+  border: 1px solid rgba(237, 229, 210, 0.25);
+  border-radius: 16px;
+  padding: 30px 20px;
+  text-align: center;
+  color: #ede5d2;
+
+  ion-icon {
+    font-size: 3.5rem;
+    color: #bca085;
+    margin-bottom: 12px;
+  }
+
+  h3 {
+    margin: 0 0 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.88rem;
+    opacity: 0.8;
+    line-height: 1.4;
+  }
+}
+
+/* Tarjeta de pedido individual */
+.lista-pedidos-mozo {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.tarjeta-pedido-mozo {
+  background: #ede5d2;
+  border-radius: 18px;
+  padding: 18px 16px;
+  color: #283720;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  .cabecera-pedido {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px dashed rgba(40, 55, 32, 0.25);
+    padding-bottom: 10px;
+
+    .identificador-mesa {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--basilico-olive, #283720);
+      color: #ede5d2;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 0.95rem;
+      padding: 6px 12px;
+      border-radius: 20px;
+
+      ion-icon {
+        font-size: 1.1rem;
+      }
+    }
+
+    .fecha-hora-pedido {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #555;
+
+      ion-icon {
+        font-size: 0.95rem;
+        color: #b85d38;
+      }
+    }
+  }
+
+  .cliente-pedido {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.88rem;
+    color: #444;
+
+    strong {
+      color: #283720;
+    }
+  }
+
+  .desglose-productos {
+    h4 {
+      margin: 0 0 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #666;
+    }
+
+    .lista-items {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      background: rgba(40, 55, 32, 0.05);
+      border-radius: 10px;
+      padding: 8px 12px;
+    }
+
+    .fila-producto {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.88rem;
+      padding: 4px 0;
+
+      .detalle-nombre {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex: 1;
+
+        .badge-cantidad {
+          font-weight: 800;
+          background: #283720;
+          color: #ede5d2;
+          padding: 2px 6px;
+          border-radius: 6px;
+          font-size: 0.78rem;
+        }
+
+        .nombre-producto {
+          font-weight: 600;
+          color: #283720;
+        }
+      }
+
+      .detalle-precio {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .tipo-producto-tag {
+          font-size: 0.65rem;
+          font-weight: 800;
+          text-transform: uppercase;
+          background: #3c5430;
+          color: #ede5d2;
+          padding: 2px 6px;
+          border-radius: 4px;
+
+          &.es-bebida {
+            background: #b85d38;
+          }
+        }
+
+        .precio-item {
+          font-weight: 800;
+          color: #283720;
+          min-width: 60px;
+          text-align: right;
+        }
+      }
+    }
+  }
+
+  /* Métricas */
+  .metricas-pedido {
+    background: #dfd5ba;
+    border-radius: 12px;
+    padding: 12px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .bloque-metrica {
+      display: flex;
+      flex-direction: column;
+
+      .label-metrica {
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: #555;
+        text-transform: uppercase;
+      }
+
+      .valor-metrica {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.95rem;
+        color: #283720;
+
+        ion-icon {
+          color: #b85d38;
+        }
+      }
+
+      &.total-destacado {
+        align-items: flex-end;
+
+        .label-metrica {
+          color: #8c4224;
+          font-weight: 800;
+        }
+
+        .valor-total {
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1.55rem;
+          font-weight: 900;
+          color: #283720;
+        }
+      }
+    }
+  }
+
+  /* Acciones Mozo */
+  .acciones-pedido-mozo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 4px;
+
+    .btn-accion {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      border: none;
+      border-radius: 12px;
+      padding: 12px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: transform 0.15s ease;
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      &:not(:disabled):active {
+        transform: scale(0.98);
+      }
+
+      ion-icon {
+        font-size: 1.25rem;
+      }
+
+      &.btn-confirmar {
+        background: #283720;
+        color: #ede5d2;
+        box-shadow: 0 3px 8px rgba(40, 55, 32, 0.35);
+      }
+
+      &.btn-rechazar {
+        background: #b85d38;
+        color: #ede5d2;
+        box-shadow: 0 3px 8px rgba(184, 93, 56, 0.35);
+      }
+    }
+  }
+}

@@ -105,3 +105,54 @@ export interface MesaConPedidosBarUI {
   pedidos: PedidoMesaBarUI[];
 }
 
+/**
+ * 5. Modelos para el Carrito y la experiencia de realización de Pedido del Cliente (Puntos 11, 12, 13).
+ */
+export interface ItemCarritoPedido {
+  producto: Producto;
+  cantidad: number;
+}
+
+export interface ItemDetallePedidoUI {
+  id?: string;
+  producto: Producto;
+  cantidad: number;
+  precio_unitario: number;
+}
+
+export interface PedidoClienteUI {
+  id: string;
+  mesa_id: string;
+  numeroMesa: number;
+  cliente_id: string;
+  estado: string;
+  importe_total: number;
+  tiempo_estimado: number;
+  created_at: string;
+  items: ItemDetallePedidoUI[];
+}
+
+/**
+ * 6. Modelos para la gestión y autorización/rechazo de Pedidos por parte del Mozo (Puntos 13 y 14).
+ */
+export interface ItemPedidoMozoUI {
+  nombre: string;
+  tipo: Producto['tipo'];
+  cantidad: number;
+  precio_unitario: number;
+}
+
+export interface PedidoPendienteMozoUI {
+  id: string;
+  mesa_id: string;
+  numeroMesa: number;
+  cliente_id: string;
+  clienteNombre: string;
+  estado: string;
+  importe_total: number;
+  tiempo_estimado: number;
+  created_at: string;
+  fechaHora: string;
+  items: ItemPedidoMozoUI[];
+}
+

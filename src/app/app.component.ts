@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonApp, IonRouterOutlet, Platform } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { PantallaCargaComponent } from './components/pantalla-carga/pantalla-carga.component';
@@ -10,9 +10,10 @@ import { App } from '@capacitor/app';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
+  styleUrls: ['app.component.scss'],
   imports: [IonApp, IonRouterOutlet, PantallaCargaComponent],
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements OnInit {
   constructor(
     private pushNotifications: PushNotificationsService,
     private platform: Platform,
@@ -21,17 +22,18 @@ export class AppComponent implements OnInit, AfterViewInit {
   ) {}
 
   async ngOnInit() {
-    await this.pushNotifications.inicializar();
     this.configurarBotonAtrasAndroid();
+    void this.pushNotifications.inicializar();
   }
 
   async ngAfterViewInit() {
     try {
       await SplashScreen.hide({ fadeOutDuration: 250 });
     } catch {
-      // Ignored in browser
+      // Ignorado en el navegador
     }
     void this.sonido.inicio();
+
   }
 
   private configurarBotonAtrasAndroid() {

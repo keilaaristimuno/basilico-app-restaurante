@@ -95,10 +95,10 @@ export class PedidosMozoPage implements OnInit, OnDestroy {
 
   async cargarPedidos() {
     try {
-      const dataRaw = await this.carga.ejecutar(
+      const dataRaw = (await this.carga.ejecutar(
         'Cargando pedidos para autorizar...',
         () => this.supabase.obtenerPedidosPendientesMozo()
-      );
+      )) as any[];
 
       const formateados: PedidoPendienteMozoUI[] = dataRaw.map((p: any) => {
         const mesasObj: any = p.mesas;

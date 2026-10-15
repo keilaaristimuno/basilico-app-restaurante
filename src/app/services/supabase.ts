@@ -720,7 +720,7 @@ export class Supabase {
     }
 
     return data ?? [];
-
+  }
   
 //CHAT ----
 async obtenerHistorialChat() {

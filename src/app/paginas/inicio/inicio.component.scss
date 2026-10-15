@@ -1,7 +1,129 @@
 .titulo-login {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1rem;
-    font-weight: 200;
-    color: #ede5d2;
-    margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1rem;
+  font-weight: 200;
+  color: #ede5d2;
+  margin: 0;
+}
+
+/* Capa de presentación / Animación de entrada */
+.presentacion-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #283720;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  transition: opacity 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+  &.desvanecer {
+    opacity: 0;
+    pointer-events: none;
   }
+}
+
+/* Logo aislado en el centro absoluto físico */
+.logo-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
+
+.logo-presentacion {
+  width: 93px;
+  height: 93px;
+  object-fit: contain;
+  transform: scale(1) rotate(0deg);
+  transform-origin: 50% 60%;
+
+  /* Tambaleo amortiguado: oscila cada vez menos hasta quedar quieto */
+  &.animar {
+    animation: tambaleo-logo 3.4s cubic-bezier(0.37, 0, 0.63, 1) forwards;
+  }
+}
+
+@keyframes tambaleo-logo {
+  0%   { transform: scale(1)    rotate(0deg); }
+  12%  { transform: scale(1.22) rotate(-9deg); }
+  28%  { transform: scale(1.2)  rotate(7deg); }
+  44%  { transform: scale(1.18) rotate(-5deg); }
+  60%  { transform: scale(1.16) rotate(3deg); }
+  76%  { transform: scale(1.15) rotate(-1.5deg); }
+  90%  { transform: scale(1.15) rotate(0.5deg); }
+  100% { transform: scale(1.15) rotate(0deg); }
+}
+
+/* Créditos deslizándose desde la izquierda */
+.creditos-box {
+  position: absolute;
+  bottom: 8%;
+  left: -100%;
+  width: 100%;
+  text-align: center;
+  opacity: 0;
+  transition: left 1.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 1s ease;
+  z-index: 1;
+
+  &.entrar {
+    left: 0;
+    opacity: 1;
+  }
+}
+
+.grupo-titulo {
+  font-family: 'Montserrat', sans-serif;
+  color: #ede5d2;
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.integrantes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.integrante {
+  font-family: 'Montserrat', sans-serif;
+  color: #ede5d2;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.6px;
+  line-height: 1.35;
+  opacity: 0.92;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+/* Transición suave hacia los botones de inicio */
+.login-container {
+  transition: opacity 0.6s ease, transform 0.6s ease;
+
+  &.oculto {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(16px);
+  }
+
+  &.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+}

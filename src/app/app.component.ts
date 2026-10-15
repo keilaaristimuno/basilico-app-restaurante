@@ -37,9 +37,6 @@ export class AppComponent implements OnInit {
         '/inicio-cantinero'
       ];
 
-      // Pantallas públicas
-      const pantallasPublicas = ['/inicio', '/login'];
-
       // En el dashboard del rol autenticado, no permite volver a login ni a inicio.
       // Minimiza la aplicación (comportamiento estándar de Android).
       if (pantallasPrincipalesLogueado.includes(rutaActual)) {
@@ -47,9 +44,15 @@ export class AppComponent implements OnInit {
         return;
       }
 
-      // En login o inicio público, minimiza la aplicación
-      if (pantallasPublicas.includes(rutaActual)) {
+      // En la raíz pública (inicio), el botón atrás minimiza la aplicación
+      if (rutaActual === '/inicio') {
         void App.minimizeApp();
+        return;
+      }
+
+      // Si está en login o registro, volver atrás regresa a la pantalla de inicio
+      if (['/login', '/registro', '/registroAnonimo'].includes(rutaActual)) {
+        void this.router.navigate(['/inicio']);
         return;
       }
 

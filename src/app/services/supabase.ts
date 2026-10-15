@@ -517,7 +517,210 @@ export class Supabase {
     return data ?? [];
   }
 
+  /* ============================================================
+     GESTIÓN DE PEDIDOS - FLUJO 11 AL 14
+  ============================================================ */
 
+  async guardarNuevoPedido(
+    mesaId: string,
+    clienteId: string,
+    importeTotal: number,
+    tiempoEstimado: number
+  ) {
+    const { data, error } = await this.clienteSupabase
+      .from('pedidos')
+      .insert([
+        {
+          mesa_id: mesaId,
+          cliente_id: null,
+          estado: 'enviado',
+          importe_total: importeTotal,
+          tiempo_estimado: tiempoEstimado,
+          created_at: new Date().toISOString()
+        }
+      ])
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Error al guardar el nuevo pedido:', error.message);
+      throw new Error(`Error al guardar el pedido: ${error.message}`);
+    }
+
+    return data;
+  }
+
+  async guardarItemsPedido(
+    pedidoId: string,
+    items: { producto_id: string; cantidad: number; precio_unitario: number }[]
+  ) {
+    const filas = items.map((it) => ({
+      pedido_id: pedidoId,
+      producto_id: it.producto_id,
+      cantidad: it.cantidad,
+      precio_unitario: it.precio_unitario
+    }));
+
+    const { data, error } = await this.clienteSupabase
+      .from('pedido_items')
+      .insert(filas)
+      .select();
+
+    if (error) {
+      console.error('Error al guardar los items del pedido:', error.message);
+      throw new Error(`Error al guardar los productos del pedido: ${error.message}`);
+    }
+
+    return data;
+  }
+
+  async reemplazarItemsPedido(
+    pedidoId: string,
+    items: { producto_id: string; cantidad: number; precio_unitario: number }[]
+  ) {
+    const { error: errorBorrado } = await this.clienteSupabase
+      .from('pedido_items')
+      .delete()
+      .eq('pedido_id', pedidoId);
+
+    if (errorBorrado) {
+      console.error('Error al limpiar items anteriores del pedido:', errorBorrado.message);
+      throw new Error(`Error al actualizar los items: ${errorBorrado.message}`);
+    }
+
+    return this.guardarItemsPedido(pedidoId, items);
+  }
+
+  async modificarPedidoExistente(
+    pedidoId: string,
+    importeTotal: number,
+    tiempoEstimado: number
+  ) {
+    const { data, error } = await this.clienteSupabase
+      .from('pedidos')
+      .update({
+        estado: 'enviado',
+        importe_total: importeTotal,
+        tiempo_estimado: tiempoEstimado
+      })
+      .eq('id', pedidoId)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Error al modificar el pedido:', error.message);
+      throw new Error(`Error al actualizar el pedido: ${error.message}`);
+    }
+
+    return data;
+  }
+
+  async actualizarEstadoPedido(pedidoId: string, estado: string) {
+    const { data, error } = await this.clienteSupabase
+      .from('pedidos')
+      .update({ estado })
+      .eq('id', pedidoId)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Error al actualizar estado del pedido:', error.message);
+      throw new Error(`Error al actualizar estado del pedido: ${error.message}`);
+    }
+
+    return data;
+  }
+
+  async obtenerPedidoActivoPorCliente(clienteId?: string, mesaId?: string) {
+    let query = this.clienteSupabase
+      .from('pedidos')
+      .select(`
+        id,
+        mesa_id,
+        cliente_id,
+        estado,
+        importe_total,
+        tiempo_estimado,
+        created_at,
+        mesas (
+          id,
+          numero
+        ),
+        pedido_items (
+          id,
+          cantidad,
+          precio_unitario,
+          productos (
+            id,
+            nombre,
+            tipo,
+            tiempo_elaboracion,
+            precio,
+            fotos,
+            descripcion
+          )
+        )
+      `)
+      .not('estado', 'in', '("finalizado","pagado")')
+      .order('created_at', { ascending: false })
+      .limit(1);
+
+    if (mesaId) {
+      query = query.eq('mesa_id', mesaId);
+    } else if (clienteId) {
+      query = query.eq('cliente_id', clienteId);
+    }
+
+    const { data, error } = await query;
+
+    if (error) {
+      console.error('Error al consultar pedido activo del cliente:', error.message);
+      return null;
+    }
+
+    return data && data.length > 0 ? data[0] : null;
+  }
+
+  async obtenerPedidosPendientesMozo() {
+    const { data, error } = await this.clienteSupabase
+      .from('pedidos')
+      .select(`
+        id,
+        mesa_id,
+        cliente_id,
+        estado,
+        importe_total,
+        tiempo_estimado,
+        created_at,
+        mesas (
+          id,
+          numero,
+          cliente_id
+        ),
+        pedido_items (
+          id,
+          cantidad,
+          precio_unitario,
+          productos (
+            id,
+            nombre,
+            tipo,
+            tiempo_elaboracion,
+            precio,
+            fotos
+          )
+        )
+      `)
+      .eq('estado', 'enviado')
+      .order('created_at', { ascending: true });
+
+    if (error) {
+      console.error('Error al obtener pedidos pendientes para mozo:', error.message);
+      throw new Error(`Error al obtener los pedidos pendientes: ${error.message}`);
+    }
+
+    return data ?? [];
+  }
   
 //CHAT ----
 async obtenerHistorialChat() {

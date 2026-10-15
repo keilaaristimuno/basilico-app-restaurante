@@ -422,7 +422,7 @@ export class Supabase {
     const { error } = await this.clienteSupabase
       .from('lista_espera')
       .delete()
-      .eq('id', id);
+      .or(`id.eq.${id},cliente_id.eq.${id}`);
   }
 
   //para asignar una mesa a un cliente en la lista de espera

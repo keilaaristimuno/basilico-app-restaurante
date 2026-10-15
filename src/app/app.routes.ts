@@ -103,12 +103,8 @@ export const routes: Routes = [
     loadComponent: () => import('./mozo/pedidos-mozo/pedidos-mozo.page').then(m => m.PedidosMozoPage)
   },
   {
-  path: 'chat',
+    path: 'chat',
     loadComponent: () => import('./components/chat/chat.component').then(m => m.ChatComponent)
-  },
-  {
-    path: 'pedidosMozo',
-    loadComponent: () => import('./mozo/pedidos/pedidos.component').then(m => m.PedidosComponent)
   },
   {
     path: '**',

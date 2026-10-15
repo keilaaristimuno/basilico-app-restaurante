@@ -107,6 +107,7 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     await this.cargarDatosClienteYEstado();
     this.iniciarSuscripcionRealtime();
+    
   }
 
   async ionViewWillEnter() {
@@ -148,6 +149,7 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
 
       const idCliente = this.clienteId();
       if (!idCliente) return;
+
 
       // 1. Verificar si está en lista de espera
       const lista = await this.supabase.obtenerListaDeEspera();
@@ -240,14 +242,15 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
     const mesaEncontrada = mesas.find((m: any) => m.cliente_id === idCliente);
 
     if (mesaEncontrada) {
+      // Seteamos el número y la ID de la mesa, pero NO mesaEscaneada todavía
       this.numeroMesa.set(String(mesaEncontrada.numero));
       this.mesaId.set(mesaEncontrada.id);
       this.codigoQrIngreso.set(true);
 
-      // Si ya está ocupada o fue escaneada previamente
+      // Verificamos si el cliente YA HABÍA escaneado esta mesa antes (guardado en localStorage)
       const guardada = localStorage.getItem(`mesa_escaneada_${mesaEncontrada.numero}`);
       if (mesaEncontrada.disponibilidad === 'ocupada' || guardada === 'true') {
-        this.mesaEscaneada.set(true);
+        this.mesaEscaneada.set(true); // Solo si ya fue escaneada previamente
       }
 
       this.pedidoService.setMesa(mesaEncontrada.id, mesaEncontrada.numero);
@@ -343,6 +346,9 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
   private iniciarSuscripcionRealtime(): void {
     this.detenerSuscripcionRealtime();
 
+    const idCliente = this.clienteId();
+    if (!idCliente) return;
+
     this.canalRealtime = this.supabase.clienteSupabase
       .channel('cliente-inicio-realtime')
       .on(
@@ -355,8 +361,13 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'mesas' },
-        () => {
-          void this.cargarDatosClienteYEstado();
+        async (payload: any) => {
+          const mesaModificada = payload.new;
+          
+          // Si la mesa modificada nos involucra
+          if (mesaModificada && mesaModificada.cliente_id === idCliente) {
+            await this.buscarMesaAsignada();
+          }
         }
       )
       .subscribe();

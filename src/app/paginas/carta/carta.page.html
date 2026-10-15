@@ -2,22 +2,31 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button
-        defaultHref="/"
+        defaultHref="/clienteInicio"
         text="Volver">
       </ion-back-button>
     </ion-buttons>
+
+    @if (pedidoService.mesaActual(); as mesa) {
+      <div slot="end" class="badge-mesa-header">
+        <ion-icon name="restaurant-outline"></ion-icon>
+        <span>Mesa N° {{ mesa.numero }}</span>
+      </div>
+    }
   </ion-toolbar>
 </ion-header>
 
 <ion-content
   [fullscreen]="true"
+  [scrollY]="false"
   class="carta-content">
-  <div class="carta-container">
 
-    <!-- =========================
-         ENCABEZADO
-         ========================= -->
-    <section class="carta-header">
+  <div class="carta-layout-completo">
+
+    <!-- ==============================================
+         ENCABEZADO INSTITUCIONAL ORIGINAL DE BASÍLICO
+         ============================================== -->
+    <header class="carta-header">
       <h1 class="font-logo">
         Basílico
       </h1>
@@ -26,214 +35,420 @@
         Nuestra carta
       </h2>
 
-      <p>
-        Descubrí nuestros platos y bebidas
-      </p>
+      @if (pedidoService.modoEdicion()) {
+        <div class="banner-edicion-pedido">
+          <ion-icon name="alert-circle-outline"></ion-icon>
+          <div>
+            <strong>Modificación de Pedido</strong>
+            <p>Agregá, modificá o quitá productos según lo solicitado por el mozo y reenviálo.</p>
+          </div>
+        </div>
+      } @else {
+        <p>
+          Descubrí nuestros platos y bebidas seleccionados para tu mesa
+        </p>
+      }
 
       <div class="decoracion-header"></div>
 
-      <!-- =========================
-           ÍNDICE DE NAVEGACIÓN RÁPIDA
-           ========================= -->
+      <!-- Navegación por categorías original de Basílico -->
       @if (productos.length > 0) {
-        <nav class="indice-navegacion" aria-label="Navegación rápida por categorías">
-          @if (platos.length > 0) {
-            <button
-              type="button"
-              class="btn-categoria"
-              (click)="scrollASeccion('seccion-platos')">
-              Platos
-            </button>
-          }
-          @if (bebidas.length > 0) {
-            <button
-              type="button"
-              class="btn-categoria"
-              (click)="scrollASeccion('seccion-bebidas')">
-              Bebidas
-            </button>
-          }
+        <nav class="indice-navegacion" aria-label="Navegación por categorías">
+          <button
+            type="button"
+            class="btn-categoria"
+            [class.activo]="categoriaSeleccionada === 'todos'"
+            (click)="cambiarCategoria('todos')">
+            Todos
+          </button>
+          <button
+            type="button"
+            class="btn-categoria"
+            [class.activo]="categoriaSeleccionada === 'plato'"
+            (click)="cambiarCategoria('plato')">
+            Platos
+          </button>
+          <button
+            type="button"
+            class="btn-categoria"
+            [class.activo]="categoriaSeleccionada === 'bebida'"
+            (click)="cambiarCategoria('bebida')">
+            Bebidas
+          </button>
         </nav>
       }
-    </section>
+    </header>
 
-    <!-- =========================
-         CARTA VACÍA
-         ========================= -->
-    @if (productos.length === 0) {
+    <!-- ==============================================
+         ESTADO DE CARGA O SIN PRODUCTOS
+         ============================================== -->
+    @if (cargando) {
       <div class="sin-productos">
-        <strong>
-          No hay productos disponibles
-        </strong>
-        <p>
-          Todavía no se registraron
-          productos en la carta.
-        </p>
+        <strong>Cargando carta...</strong>
+        <p>Obteniendo los productos de Basílico.</p>
       </div>
-    }
+    } @else if (productosVisibles.length === 0) {
+      <div class="sin-productos">
+        <strong>No hay productos disponibles</strong>
+        <p>No se encontraron productos en esta categoría.</p>
+        @if (categoriaSeleccionada !== 'todos') {
+          <button
+            type="button"
+            class="btn-categoria activo"
+            style="margin-top: 12px;"
+            (click)="cambiarCategoria('todos')">
+            Ver toda la carta
+          </button>
+        }
+      </div>
+    } @else {
 
-    <!-- =========================
-         SECCION PLATOS y BEBIDAS
-         ========================= -->
-    @for (
-      seccion of [
-        { titulo: 'Platos', id: 'seccion-platos', productos: platos },
-        { titulo: 'Bebidas', id: 'seccion-bebidas', productos: bebidas }
-      ];
-      track seccion.titulo
-    ) {
-      @if (seccion.productos.length > 0) {
-      <section [id]="seccion.id" class="seccion-productos">
-        <div class="titulo-seccion">
-          <h3>
-            {{ seccion.titulo }}
-          </h3>
-          <span>
-            {{ seccion.productos.length }}
-            disponibles
-          </span>
-        </div>
+      <!-- ==============================================
+           VIEWPORT REELS VERTICAL (UN PRODUCTO A LA VEZ)
+           ============================================== -->
+      <main
+        class="card-reels-viewport"
+        tabindex="0"
+        (touchstart)="onTouchStart($event)"
+        (touchmove)="onTouchMove($event)"
+        (touchend)="onTouchEnd($event)"
+        (touchcancel)="onTouchEnd($event)"
+        (wheel)="onWheel($event)"
+        (keydown)="onKeyDown($event)">
 
-        <div class="grid-platos">
-          @for (
-            plato of seccion.productos;
-            track plato.id
-          ) {
-            <article class="plato-card">
+        <div
+          class="card-reels-track"
+          [style.transform]="obtenerTransformTrack()"
+          [class.sin-transicion]="esArrastrando && direccionGesto === 'vertical'">
 
-              <!-- =====================
-                   IMÁGENES
-                   ===================== -->
-              <div class="imagen-plato">
-                @if (
-                  plato.fotos &&
-                  plato.fotos.length > 0
-                ) {
-                  <img
-                    [src]="
-                      plato.fotos[
-                        indiceFoto[plato.id] ?? 0
-                      ]
-                    "
-                    [alt]="
-                      'Fotografía de ' +
-                      plato.nombre
-                    "
-                    [class.imagen-vertical]="
-                      fotosVerticales[
-                        plato.fotos[
-                          indiceFoto[plato.id] ?? 0
-                        ]
-                      ]
-                    "
-                    (load)="
-                      detectarOrientacion(
-                        $event,
-                        plato.fotos[
-                          indiceFoto[plato.id] ?? 0
-                        ]
-                      )
-                    ">
 
-                  <!-- Flechas -->
-                  @if (plato.fotos.length > 1 ) {
-                    <button
-                      type="button"
-                      class="flecha-foto flecha-izquierda"
-                      (click)="anteriorFoto(plato)"
-                      [attr.aria-label]="
-                        'Fotografía anterior de ' +
-                        plato.nombre
-                      ">
-                      ‹
-                    </button>
+          @for (producto of productosVisibles; track producto.id; let idx = $index) {
+            <div
+              class="card-reel-slide"
+              [class.slide-activo]="idx === indiceProductoActual"
+              [attr.aria-hidden]="idx !== indiceProductoActual">
 
-                    <button
-                      type="button"
-                      class="flecha-foto flecha-derecha"
-                      (click)="siguienteFoto(plato)"
-                      [attr.aria-label]="
-                        'Fotografía siguiente de ' +
-                        plato.nombre
-                      ">
-                      ›
-                    </button>
-                  }
-                  <!-- Indicadores -->
-                  <div class="indicadores-fotos">
-                    @for (
-                      foto of plato.fotos;
-                      track $index
-                    ) {
+              <!-- ==============================================
+                   TARJETA ORIGINAL DE BASÍLICO
+                   ============================================== -->
+              <article class="plato-card">
+
+                <!-- FOTOGRAFÍAS (CARRUSEL HORIZONTAL DENTRO DE LA TARJETA) -->
+                <div class="imagen-plato">
+                  @if (producto.fotos && producto.fotos.length > 0) {
+                    <div
+                      class="fotos-track"
+                      [style.transform]="obtenerTransformFotos(producto)"
+                      [class.sin-transicion]="esArrastrando && direccionGesto === 'horizontal' && idx === indiceProductoActual">
+
+                      @for (foto of producto.fotos; track $index; let fIdx = $index) {
+                        <div class="foto-slide-item">
+                          <img
+                            [src]="foto"
+                            [alt]="'Fotografía de ' + producto.nombre"
+                            loading="lazy"
+                            draggable="false">
+                        </div>
+                      }
+                    </div>
+
+                    <!-- Flechas originales del carrusel -->
+                    @if (producto.fotos.length > 1) {
                       <button
                         type="button"
-                        class="indicador-foto"
-                        [class.activo]="
-                          (indiceFoto[plato.id] ?? 0) === $index"
-                        (click)=" irAFoto(plato,$index)"
-                        [attr.aria-label]=" 'Ver fotografía ' + ($index + 1)">
+                        class="flecha-foto flecha-izquierda"
+                        (click)="anteriorFoto(producto)"
+                        [attr.aria-label]="'Fotografía anterior de ' + producto.nombre">
+                        ‹
+                      </button>
+
+                      <button
+                        type="button"
+                        class="flecha-foto flecha-derecha"
+                        (click)="siguienteFoto(producto)"
+                        [attr.aria-label]="'Fotografía siguiente de ' + producto.nombre">
+                        ›
                       </button>
                     }
+
+                    <!-- Indicadores originales de fotos -->
+                    <div class="indicadores-fotos">
+                      @for (foto of producto.fotos; track $index; let fIdx = $index) {
+                        <button
+                          type="button"
+                          class="indicador-foto"
+                          [class.activo]="obtenerIndiceFoto(producto.id) === fIdx"
+                          (click)="irAFoto(fIdx, producto)"
+                          [attr.aria-label]="'Ver fotografía ' + (fIdx + 1)">
+                        </button>
+                      }
+                    </div>
+                  } @else {
+                    <div class="sin-foto">
+                      <span>Sin fotografía</span>
+                    </div>
+                  }
+
+                  <!-- Badge sutil de categoría sobre la imagen -->
+                  <div class="badge-tipo-plato">
+                    {{ producto.tipo === 'plato' ? 'Plato' : 'Bebida' }}
                   </div>
-                } @else {
-                  <div class="sin-foto">
-                    <span>
-                      Sin fotografía
+                </div>
+
+                <!-- INFORMACIÓN ORIGINAL DEL PRODUCTO -->
+                <div class="detalle-plato">
+                  <div class="encabezado-plato">
+                    <h3>
+                      {{ producto.nombre }}
+                    </h3>
+                    <span class="precio-plato">
+                      ${{ formatearPrecio(producto.precio) }}
                     </span>
                   </div>
-                }
+
+                  <div
+                    class="descripcion-plato"
+                    [class.expandida]="descripcionExpandida[producto.id]"
+                    (touchstart)="$event.stopPropagation()"
+                    (touchmove)="$event.stopPropagation()"
+                    (touchend)="$event.stopPropagation()">
+                    {{ producto.descripcion }}
+                  </div>
+
+                  @if (producto.descripcion && producto.descripcion.length > 85) {
+                    <button
+                      type="button"
+                      class="boton-descripcion"
+                      (click)="alternarDescripcion(producto)">
+                      {{ descripcionExpandida[producto.id] ? 'Ver menos' : 'Ver más' }}
+                    </button>
+                  }
+
+                  <!-- TIEMPO ESTIMADO -->
+                  <div class="informacion-plato">
+                    <div class="dato-plato">
+                      <span class="dato-label">
+                        Tiempo estimado
+                      </span>
+                      <strong>
+                        {{ producto.tiempo_elaboracion }} min
+                      </strong>
+                    </div>
+                  </div>
+
+                  <!-- AGREGAR PRODUCTO AL PEDIDO -->
+                  <div class="accion-pedido-card">
+                    @if (pedidoService.obtenerCantidad(producto.id) === 0) {
+                      <button
+                        type="button"
+                        class="btn-agregar-producto"
+                        (click)="agregarProducto(producto)">
+                        <ion-icon name="add-outline"></ion-icon>
+                        <span>Agregar al pedido</span>
+                      </button>
+                    } @else {
+                      <div class="control-cantidad-card">
+                        <button
+                          type="button"
+                          class="btn-circulo btn-menos"
+                          (click)="decrementarProducto(producto.id)"
+                          aria-label="Restar una unidad">
+                          <ion-icon name="remove-outline"></ion-icon>
+                        </button>
+
+                        <span class="cantidad-actual-card">
+                          {{ pedidoService.obtenerCantidad(producto.id) }}
+                        </span>
+
+                        <button
+                          type="button"
+                          class="btn-circulo btn-mas"
+                          (click)="agregarProducto(producto)"
+                          aria-label="Sumar una unidad">
+                          <ion-icon name="add-outline"></ion-icon>
+                        </button>
+                      </div>
+                    }
+                  </div>
+
+                </div>
+              </article>
+            </div>
+          }
+
+        </div>
+      </main>
+    }
+
+  </div>
+
+  <!-- =========================================================
+       BARRA FIJA INFERIOR DEL PEDIDO (PUNTO 12)
+       Visible en todo momento con importe acumulado y tiempo
+       ========================================================= -->
+  @if (pedidoService.cantidadTotal() > 0) {
+    <div class="barra-resumen-pedido">
+      <div class="info-resumen-barra">
+        <div class="columna-precio">
+          <span class="texto-etiqueta">IMPORTE ACUMULADO</span>
+          <span class="monto-acumulado">${{ formatearPrecio(pedidoService.importeTotal()) }}</span>
+        </div>
+
+        <div class="columna-tiempo">
+          <span class="texto-etiqueta">TIEMPO ESTIMADO</span>
+          <span class="tiempo-acumulado">
+            <ion-icon name="time-outline"></ion-icon>
+            {{ pedidoService.tiempoEstimado() }} min
+          </span>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        class="btn-revisar-pedido"
+        (click)="abrirModalPedido()">
+        <ion-icon name="cart-outline"></ion-icon>
+        <span class="texto-btn-pedido">
+          {{ pedidoService.modoEdicion() ? 'Revisar Modificación' : 'Ver Pedido' }} ({{ pedidoService.cantidadTotal() }})
+        </span>
+      </button>
+    </div>
+  }
+</ion-content>
+
+<!-- =========================================================
+     MODAL DE REVISIÓN Y CONFIRMACIÓN DE PEDIDO (PUNTOS 12 Y 13)
+     ========================================================= -->
+<ion-modal
+  [isOpen]="mostrarModalPedido()"
+  (didDismiss)="cerrarModalPedido()"
+  class="modal-pedido-basilico">
+  <ng-template>
+    <ion-header class="ion-no-border">
+      <ion-toolbar class="toolbar-modal-pedido">
+        <ion-title>
+          {{ pedidoService.modoEdicion() ? 'Modificar Pedido' : 'Confirmar Pedido' }}
+          @if (pedidoService.mesaActual(); as mesa) {
+            - Mesa N° {{ mesa.numero }}
+          }
+        </ion-title>
+        <ion-buttons slot="end">
+          <button type="button" class="btn-cerrar-modal" (click)="cerrarModalPedido()">
+            <ion-icon name="close-outline"></ion-icon>
+          </button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="contenido-modal-pedido">
+      <div class="contenedor-resumen-modal">
+
+        <!-- Banner informativo -->
+        <div class="banner-aviso-pedido">
+          <ion-icon name="restaurant-outline"></ion-icon>
+          <p>
+            Verificá los productos para todos los comensales antes de enviarlo al mozo para su autorización.
+          </p>
+        </div>
+
+        <!-- Listado de ítems seleccionados -->
+        <div class="lista-items-pedido">
+          @for (item of pedidoService.carrito(); track item.producto.id) {
+            <div class="tarjeta-item-pedido">
+              <div class="info-item-pedido">
+                <span class="tipo-tag" [class.tipo-bebida]="item.producto.tipo === 'bebida'">
+                  {{ item.producto.tipo === 'bebida' ? 'Bebida' : 'Plato' }}
+                </span>
+                <h4>{{ item.producto.nombre }}</h4>
+                <div class="precio-unitario-detalle">
+                  ${{ formatearPrecio(item.producto.precio) }} c/u • ⏱ {{ item.producto.tiempo_elaboracion }} min
+                </div>
               </div>
 
-              <!-- =====================
-                   INFORMACIÓN
-                   ===================== -->
-              <div class="detalle-plato">
-                <div class="encabezado-plato">
-                  <h3>
-                    {{ plato.nombre }}
-                  </h3>
-                  <span class="precio-plato">
-                    ${{formatearPrecio(plato.precio)}}
-                  </span>
-                </div>
+              <div class="acciones-item-pedido">
+                <div class="controles-stepper">
+                  <button
+                    type="button"
+                    class="btn-stepper"
+                    (click)="decrementarProducto(item.producto.id)"
+                    aria-label="Restar cantidad">
+                    <ion-icon name="remove-outline"></ion-icon>
+                  </button>
 
-                <div
-                  class="descripcion-plato"
-                  [class.expandida]="descripcionExpandida[plato.id]">
-                  {{ plato.descripcion }}
-                </div>
-                
-                @if (plato.descripcion.length > 100) {
+                  <span class="cantidad-stepper">{{ item.cantidad }}</span>
 
                   <button
                     type="button"
-                    class="boton-descripcion"
-                    (click)="alternarDescripcion(plato)">
-                    {{
-                      descripcionExpandida[plato.id]
-                        ? 'Ver menos'
-                        : 'Ver más'
-                    }}
+                    class="btn-stepper"
+                    (click)="agregarProducto(item.producto)"
+                    aria-label="Sumar cantidad">
+                    <ion-icon name="add-outline"></ion-icon>
                   </button>
-                }
-
-                <div class="informacion-plato">
-                  <div class="dato-plato">
-                    <span class="dato-label">
-                      Tiempo estimado
-                    </span>
-                    <strong>
-                      {{plato.tiempo_elaboracion}}
-                      min
-                    </strong>
-                  </div>
                 </div>
+
+                <div class="subtotal-item">
+                  ${{ formatearPrecio(item.producto.precio * item.cantidad) }}
+                </div>
+
+                <button
+                  type="button"
+                  class="btn-eliminar-item"
+                  (click)="eliminarProducto(item.producto.id)"
+                  aria-label="Eliminar ítem">
+                  <ion-icon name="trash-outline"></ion-icon>
+                </button>
               </div>
-            </article>
+            </div>
           }
         </div>
-      </section>
-    }
-  }
-  </div>
-</ion-content>
+
+        <!-- TOTALES DESTACADOS (PUNTO 12) -->
+        <div class="tarjeta-totales-pedido">
+          <div class="fila-total">
+            <span class="label-totales">Tiempo estimado total:</span>
+            <strong class="valor-tiempo">
+              <ion-icon name="time-outline"></ion-icon>
+              {{ pedidoService.tiempoEstimado() }} minutos
+            </strong>
+          </div>
+
+          <div class="fila-total destacado-importe">
+            <span class="label-totales">IMPORTE TOTAL:</span>
+            <strong class="valor-importe">
+              ${{ formatearPrecio(pedidoService.importeTotal()) }}
+            </strong>
+          </div>
+
+          <div class="nota-mozo-espera">
+            <ion-icon name="time-outline"></ion-icon>
+            <span>
+              Al finalizar, el mozo recibirá una notificación automática para confirmar tu pedido antes de derivarlo a los sectores.
+            </span>
+          </div>
+        </div>
+
+        <!-- ACCIONES DEL MODAL -->
+        <div class="acciones-finales-modal">
+          <button
+            type="button"
+            class="btn-confirmar-envio"
+            [disabled]="enviandoPedido() || pedidoService.cantidadTotal() === 0"
+            (click)="confirmarYEnviarPedido()">
+            <ion-icon name="checkmark-circle-outline"></ion-icon>
+            <span>
+              {{ pedidoService.modoEdicion() ? 'Reenviar Pedido Modificado' : 'Terminar y Enviar Pedido' }}
+            </span>
+          </button>
+
+          <button
+            type="button"
+            class="btn-seguir-comprando"
+            (click)="cerrarModalPedido()">
+            Seguir agregando productos
+          </button>
+        </div>
+
+      </div>
+    </ion-content>
+  </ng-template>
+</ion-modal>

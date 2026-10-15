@@ -152,14 +152,14 @@ export class ListaEsperaComponent implements OnInit {
   }
 
   // ACCIONES
-  async rechazarCliente(idCliente: string) {
-    this.procesandoId.set(idCliente);
+  async rechazarCliente(cliente: any) {
+    this.procesandoId.set(cliente.id);
     try {
-      await this.supabase.eliminarDeListaDeEspera(idCliente);
+      await this.supabase.eliminarDeListaDeEspera(cliente.id);
       await this.pushNotificationsService.enviarNotificacion(
         '¡Solicitud rechazada!',
         'El metre te ha rechazado su solicitud de mesa.',
-        { userIds: [idCliente] },
+        { userIds: [cliente.user_id] },
         { ruta: '/clienteInicio' }
       );
       await this.obtenerListaEspera();

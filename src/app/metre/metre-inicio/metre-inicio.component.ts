@@ -10,8 +10,8 @@ import { Supabase } from '../../services/supabase';
 import { WritableSignal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PushNotificationsService } from '../../services/push-notifications.service';
-import { timeOutline } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
+import { listOutline, personAddOutline } from 'ionicons/icons';
 
 
 @Component({
@@ -30,7 +30,7 @@ export class MetreInicioComponent  {
   idSeleccionadoCliente = signal<string>('');
 
   constructor( private supabase: Supabase, private pushNotificationsService: PushNotificationsService) { 
-    addIcons({ timeOutline });
+    addIcons({ listOutline, personAddOutline });
   }
 
   ngOnInit() {

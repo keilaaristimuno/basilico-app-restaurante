@@ -1,123 +1,131 @@
+
 /* =========================================================
-   CARTA 
+   CARTA GASTRONÓMICA BASÍLICO (Diseño Responsive Equilibrado)
    ========================================================= */
+
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--basilico-olive);
+}
+
 .carta-content {
-  --background:
-    var(--basilico-olive);
+  --background: var(--basilico-olive);
+  height: 100%;
+  overflow: hidden;
 }
 
 /* =========================================================
-   HEADER
+   HEADER & TOOLBAR
    ========================================================= */
 .header-transparente {
   ion-toolbar {
-    --background:
-      var(--basilico-olive);
+    --background: var(--basilico-olive);
     --border-width: 0;
-    --color:
-      var(--basilico-beige);
-    font-family:
-      var(--font-body);
+    --color: var(--basilico-beige);
+    font-family: var(--font-body);
+    --min-height: 42px;
   }
 
   ion-back-button {
-    --color:
-      var(--basilico-beige);
-    font-family:
-      var(--font-body);
+    --color: var(--basilico-beige);
+    font-family: var(--font-body);
     font-weight: 600;
     text-transform: none;
+    font-size: 0.9rem;
   }
 }
 
 /* =========================================================
-   CONTENEDOR GENERAL
+   CONTENEDOR GENERAL DE LA CARTA
    ========================================================= */
-.carta-container {
+.carta-layout-completo {
+  display: flex;
+  flex-direction: column;
   width: 100%;
-  max-width: 1150px;
-  min-height: 100%;
+  max-width: 500px;
+  height: 100%;
   margin: 0 auto;
-  padding:
-    1rem
-    1rem
-    3rem;
+  padding: 0 clamp(0.65rem, 2.5vw, 1.15rem) calc(6px + env(safe-area-inset-bottom, 0px));
   box-sizing: border-box;
+  overflow: hidden;
 }
 
+
 /* =========================================================
-   ENCABEZADO
+   ENCABEZADO INSTITUCIONAL BASÍLICO
    ========================================================= */
 .carta-header {
+  flex: 0 0 auto;
   text-align: center;
-  margin-bottom: 2rem;
-  padding-top: 1rem;
+  padding: clamp(0.12rem, 0.7vh, 0.35rem) 0 clamp(0.2rem, 0.9vh, 0.45rem);
+  margin-bottom: clamp(0.15rem, 0.6vh, 0.35rem);
 
   .font-logo {
     font-family: var(--font-title);
-    font-size: clamp(3.2rem, 11vw, 5rem);
+    font-size: clamp(2.1rem, 5.2vh, 3.2rem);
     font-weight: normal;
     line-height: 1;
     color: var(--basilico-beige);
-    margin: 0 0 0.5rem;
+    margin: 0 0 0.1rem;
   }
 
   h2 {
     font-family: var(--font-body);
-    font-size: clamp(1.5rem, 5vw, 2rem);
+    font-size: clamp(1.05rem, 2.6vw, 1.35rem);
     font-weight: 700;
     color: var(--basilico-beige);
     margin: 0;
   }
+
   p {
-    margin: 0.6rem 0 0;
+    margin: 0.15rem 0 0;
     font-family: var(--font-body);
-    font-size: 0.9rem;
+    font-size: clamp(0.76rem, 1.8vw, 0.88rem);
     color: var(--basilico-beige);
-    opacity: 0.75;
+    opacity: 0.8;
   }
 }
-/* linea decorativa  */
+
 .decoracion-header {
-  width: 60px;
+  width: clamp(40px, 8vw, 55px);
   height: 2px;
-  margin: 1rem auto 0;
+  margin: clamp(0.25rem, 0.6vh, 0.45rem) auto 0;
   background: var(--basilico-terracotta);
   border-radius: 2px;
 }
 
-/* =========================================================
-   ÍNDICE DE NAVEGACIÓN RÁPIDA
-   ========================================================= */
 .indice-navegacion {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 0.75rem;
-  margin-top: 1.5rem;
-  padding: 0 0.5rem;
+  gap: clamp(0.35rem, 1vw, 0.6rem);
+  margin-top: clamp(0.35rem, 0.8vh, 0.6rem);
+  padding: 0;
   flex-wrap: wrap;
 
   .btn-categoria {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 38px;
-    padding: 0.45rem 1.4rem;
+    min-height: clamp(28px, 3.6vh, 35px);
+    padding: clamp(0.2rem, 0.5vh, 0.35rem) clamp(0.85rem, 2.5vw, 1.25rem);
     border-radius: 999px;
     border: 1.5px solid rgba(var(--ion-color-secondary-rgb), 0.45);
     background: rgba(var(--ion-color-secondary-rgb), 0.08);
     color: var(--basilico-beige);
     font-family: var(--font-body);
-    font-size: 0.9rem;
+    font-size: clamp(0.78rem, 1.8vw, 0.88rem);
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
 
-    &:hover,
-    &:active {
+    &:active,
+    &.activo {
       background: var(--basilico-beige);
       border-color: var(--basilico-beige);
       color: var(--basilico-olive);
@@ -127,373 +135,332 @@
 }
 
 /* =========================================================
-   SECCIÓN DE PRODUCTOS
+   VIEWPORT Y TRACK VERTICAL (1 PRODUCTO A LA VEZ)
    ========================================================= */
-.seccion-productos {
-  margin-bottom: 2.5rem;
-  scroll-margin-top: 1rem;
+.card-reels-viewport {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  touch-action: none;
+  outline: none;
 }
 
-/* =========================================================
-   TÍTULO SECCIÓN
-   ========================================================= */
-.titulo-seccion {
+.card-reels-track {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.38s cubic-bezier(0.2, 0.95, 0.3, 1);
+  will-change: transform;
+
+  &.sin-transicion {
+    transition: none !important;
+  }
+}
+
+.card-reel-slide {
+  width: 100%;
+  height: 100%;
+  flex: 0 0 100%;
   display: flex;
   align-items: center;
-  justify-content:
-    space-between;
-  gap: 1rem;
-  margin-bottom: 1rem;
-
-  h3 {
-    margin: 0;
-    font-family:
-      var(--font-body);
-    font-size: 1.25rem;
-    font-weight: 700;
-    color:
-      var(--basilico-beige);
-  }
-
-  span {
-    font-family:
-      var(--font-body);
-    font-size: 0.8rem;
-    font-weight: 600;
-    color:
-      var(--basilico-beige);
-    opacity: 0.75;
-  }
+  justify-content: flex-start;
+  box-sizing: border-box;
+  padding: 2px 0 clamp(4px, 1vh, 8px);
 }
 
 /* =========================================================
-   GRID
-   ========================================================= */
-.grid-platos {
-  display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(280px, 400px)
-  );
-  justify-content: center;
-  gap: 20px;
-}
-
-/* =========================================================
-   CARD DEL PLATO
+   TARJETA DEL PLATO (IDENTIDAD BASÍLICO)
    ========================================================= */
 .plato-card {
-  min-width: 0;
-  overflow: hidden;
+  width: 100%;
+  height: auto;
+  max-height: 100%;
   display: flex;
   flex-direction: column;
   background: var(--basilico-beige);
-  border-radius: 18px;
-  box-shadow:
-    0 6px 18px
-    rgba(0, 0, 0, 0.18);
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+  border-radius: clamp(14px, 2.5vw, 20px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
-@media (hover: hover) {
-  .plato-card:hover {
-    transform: translateY(-4px);
-    box-shadow:0 10px 24px rgba(0, 0, 0, 0.24);
-  }
-
-}
-
-
-/* =========================================================
-   IMAGEN
-   ========================================================= */
+/* Fotografía dentro de la tarjeta */
 .imagen-plato {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 3;
+  flex: 0 1 auto;
+  /* Evita que la imagen se estire verticalmente */
+  height: clamp(190px, 45vh, 360px);
+  min-height: 0;
+  max-height: 55%;
   overflow: hidden;
-  background: var(--basilico-beige);
+  background: #ded5bf;
+}
+
+.fotos-track {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
+
+  &.sin-transicion {
+    transition: none !important;
+  }
+}
+
+.foto-slide-item {
+  width: 100%;
+  height: 100%;
+  flex: 0 0 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: clamp(4px, 1vw, 8px);
 
   img {
     width: 100%;
     height: 100%;
+    max-width: 100%;
+    max-height: 100%;
     display: block;
-    object-fit: cover;
+    object-fit: contain;
     object-position: center;
-
-    &.imagen-vertical {
-      object-fit: contain;
-    }
+    border-radius: 8px;
+    pointer-events: none;
+    user-select: none;
   }
 }
 
-/* =========================================================
-   FLECHAS DEL CARRUSEL
-   ========================================================= */
+.badge-tipo-plato {
+  position: absolute;
+  top: clamp(6px, 1vh, 12px);
+  left: clamp(6px, 1.5vw, 12px);
+  z-index: 5;
+  padding: clamp(2px, 0.4vh, 4px) clamp(7px, 1.5vw, 11px);
+  border-radius: 999px;
+  background: rgba(40, 55, 32, 0.85);
+  color: var(--basilico-beige);
+  font-family: var(--font-body);
+  font-size: clamp(0.68rem, 1.6vw, 0.8rem);
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+/* Flechas originales del carrusel */
 .flecha-foto {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 42px;
-  height: 42px;
+  width: clamp(34px, 4.6vh, 40px);
+  height: clamp(34px, 4.6vh, 40px);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
   border: none;
   border-radius: 50%;
-  background: rgba(40, 55, 32, 0.72);
+  background: rgba(40, 55, 32, 0.75);
   color: var(--basilico-beige);
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 3vw, 1.9rem);
   line-height: 1;
   cursor: pointer;
-  z-index: 2;
-  transition:
-    background 0.2s ease,
-    transform 0.2s ease;
+  z-index: 6;
+  transition: background 0.2s ease, transform 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+
+  &:active {
+    background: var(--basilico-olive);
+    transform: translateY(-50%) scale(0.92);
+  }
+  &.flecha-izquierda { left: clamp(5px, 1.2vw, 10px); }
+  &.flecha-derecha { right: clamp(5px, 1.2vw, 10px); }
 }
 
-@media (hover: hover) {
-  .flecha-foto:hover {
-    background: var(--basilico-olive);
+/* Indicadores originales de fotos */
+.indicadores-fotos {
+  position: absolute;
+  bottom: clamp(5px, 0.8vh, 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: clamp(4px, 0.8vw, 7px);
+  padding: clamp(2px, 0.4vh, 4px) clamp(7px, 1.2vw, 10px);
+  border-radius: 20px;
+  background: rgba(40, 55, 32, 0.68);
+  z-index: 6;
+
+  .indicador-foto {
+    width: clamp(6px, 1vw, 8px);
+    height: clamp(6px, 1vw, 8px);
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: rgba(237, 229, 210, 0.45);
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+
+    &.activo {
+      background: var(--basilico-beige);
+      transform: scale(1.3);
+    }
   }
 }
 
-.flecha-izquierda {
-  left: 10px;
-}
-
-
-.flecha-derecha {
-  right: 10px;
-}
-
-/* =========================================================
-   INDICADORES
-   ========================================================= */
-.indicadores-fotos {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform:
-    translateX(-50%);
-  display: flex;
-  gap: 7px;
-  padding:
-    6px
-    9px;
-  border-radius: 20px;
-  background:
-    rgba(
-      40,
-      55,
-      32,
-      0.65
-    );
-}
-
-
-.indicador-foto {
-  width: 9px;
-  height: 9px;
-  padding: 0;
-  border: none;
-  border-radius: 50%;
-  background:
-    rgba(
-      237,
-      229,
-      210,
-      0.45
-    );
-  cursor: pointer;
-}
-
-.indicador-foto.activo {
-  background:
-    var(--basilico-beige);
-  transform:
-    scale(1.2);
-}
-
-/* =========================================================
-   SIN FOTO
-   ========================================================= */
 .sin-foto {
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family:
-    var(--font-body);
-  color:
-    var(--basilico-olive);
+  font-family: var(--font-body);
+  color: var(--basilico-olive);
   opacity: 0.6;
 }
 
-
 /* =========================================================
-   INFORMACIÓN DEL PLATO
+   INFORMACIÓN DEL PLATO (RESPONSIVE Y EQUILIBRADA)
    ========================================================= */
 .detalle-plato {
-  flex: 1;
+  /* Ocupa el espacio necesario para su contenido */
+  flex: 0 0 auto;
+  min-height: 0;
+  max-height: none;
   display: flex;
   flex-direction: column;
-  padding: 18px 18px 16px;
+  padding: 12px 14px 14px;
+  background: var(--basilico-beige);
+  box-sizing: border-box;
+  /* overflow-y: auto;
+  overscroll-behavior: contain; */
 }
-
 
 .encabezado-plato {
   display: flex;
-  align-items:
-    flex-start;
-  justify-content:
-    space-between;
-  gap: 14px;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: clamp(8px, 2vw, 14px);
+  margin-bottom: clamp(4px, 0.8vh, 8px);
 
   h3 {
     flex: 1;
     margin: 0;
-    font-family:
-      var(--font-body);
-    font-size: 1.15rem;
+    font-family: var(--font-body);
+    font-size: clamp(1.1rem, 3.4vw, 1.45rem);
     font-weight: 700;
-    color:
-      var(--basilico-olive);
+    color: var(--basilico-olive);
+    line-height: 1.2;
+    word-break: break-word;
+  }
+
+  .precio-plato {
+    flex-shrink: 0;
+    padding: clamp(4px, 0.7vh, 7px) clamp(8px, 2vw, 13px);
+    border-radius: clamp(8px, 1.5vw, 11px);
+    background: var(--basilico-terracotta);
+    color: #ffffff;
+    font-family: var(--font-body);
+    font-size: clamp(0.95rem, 2.8vw, 1.18rem);
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    box-shadow: 0 2px 7px rgba(178, 77, 57, 0.25);
   }
 }
 
-/* =========================================================
-   PRECIO
-   ========================================================= */
-.precio-plato {
-  flex-shrink: 0;
-  padding:
-    7px
-    10px;
-  border-radius: 10px;
-  background:
-    var(--basilico-terracotta);
-  color: #ffffff;
-  font-family:
-    var(--font-body);
-  font-size: 1rem;
-  font-weight: 700;
-}
-
-/* =========================================================
-   DESCRIPCIÓN
-   ========================================================= */
-
 .descripcion-plato {
-  height: 4.05rem;
-  margin: 12px 0 16px;
+  margin: 0 0 clamp(4px, 0.7vh, 7px);
   font-family: var(--font-body);
-  font-size: 0.9rem;
-  line-height: 1.5;
+  font-size: clamp(0.82rem, 2vw, 0.92rem);
+  line-height: 1.42;
   color: #485043;
-   display: -webkit-box;
+  display: -webkit-box;
   -webkit-box-orient: vertical;
-  //Limita visualmente la descripción a 3 líneas
-  -webkit-line-clamp: 3;
-  overflow: hidden; 
-  cursor: pointer;
-}
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 
-.descripcion-plato.expandida {
-  display: block;
-  overflow-y: auto;
-  overflow-x: hidden;
-  -webkit-line-clamp: unset;
-  padding-right: 6px;
+  &.expandida {
+    display: block;
+    max-height: clamp(60px, 12vh, 100px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-right: 6px;
+    -webkit-line-clamp: unset;
+  }
 }
 
 .boton-descripcion {
   align-self: flex-start;
-  margin: -8px 0 12px;
-  padding: 0;
+  margin: 0 0 clamp(4px, 0.8vh, 8px);
+  padding: 1px 0;
   border: none;
   background: transparent;
   font-family: var(--font-body);
-  font-size: 0.78rem;
+  font-size: clamp(0.78rem, 1.8vw, 0.88rem);
   font-weight: 700;
   color: var(--basilico-terracotta);
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+
+  &:active {
+    opacity: 0.75;
+  }
 }
 
-
-/* =========================================================
-   INFORMACIÓN INFERIOR
-   ========================================================= */
 .informacion-plato {
-  margin-top: auto;
+  flex-shrink: 0; // Garantiza que NUNCA se comprima ni se corte
+  /* Ya no empuja el tiempo hacia abajo */
+  margin-top: 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
-  padding-top: 12px;
-  border-top:
-    1px solid rgba(40,55,32,0.15);
-  
+  gap: 10px;
+  padding-top: clamp(6px, 1vh, 10px);
+  padding-bottom: 2px;
+  border-top: 1px solid rgba(40, 55, 32, 0.15);
 }
-
 
 .dato-plato {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  font-family:
-    var(--font-body);
+  gap: 1px;
+  font-family: var(--font-body);
+
+  .dato-label {
+    font-size: clamp(0.68rem, 1.6vw, 0.76rem);
+    font-weight: 600;
+    color: #6b7565;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    line-height: 1.2;
+  }
 
   strong {
-    font-size: 0.9rem;
+    font-size: clamp(0.88rem, 2.2vw, 1.05rem);
     font-weight: 700;
-    color:
-      var(--basilico-olive);
+    color: var(--basilico-olive);
+    line-height: 1.2;
   }
-}
-
-.dato-label {
-  font-size: 0.72rem;
-  font-weight: 500;
-  color:
-    #6b7565;
 }
 
 /* =========================================================
    CARTA VACÍA
-   ======================================================== */
+   ========================================================= */
 .sin-productos {
   width: 100%;
-  max-width: 500px;
-  margin: 3rem auto;
-  padding: 24px;
-  box-sizing:
-    border-box;
+  max-width: 440px;
+  margin: auto;
+  padding: 20px;
+  box-sizing: border-box;
   text-align: center;
-  border:
-    1px solid
-    rgba(
-      237,
-      229,
-      210,
-      0.4
-    );
+  border: 1px solid rgba(237, 229, 210, 0.4);
   border-radius: 16px;
-  background:
-    rgba(
-      237,
-      229,
-      210,
-      0.08
-    );
-  font-family:
-    var(--font-body);
-  color:
-    var(--basilico-beige);
+  background: rgba(237, 229, 210, 0.08);
+  font-family: var(--font-body);
+  color: var(--basilico-beige);
 
   strong {
     display: block;
@@ -509,29 +476,774 @@
 }
 
 /* =========================================================
-   CELULARES
+   ADAPTACIÓN RESPONSIVA PANTALLAS PEQUEÑAS (ANDROID)
    ========================================================= */
-@media (max-width: 600px) {
-  .carta-container {
-    padding-left: 0.85rem;
-    padding-right: 0.85rem;
+@media (max-height: 680px) {
+  .carta-header {
+    padding-top: 0.1rem;
+    padding-bottom: 0.2rem;
+    margin-bottom: 0.15rem;
+
+    .font-logo { font-size: clamp(1.8rem, 4.8vh, 2.3rem); }
+    h2 { font-size: 1rem; }
+    p { display: none; }
+    .decoracion-header { margin: 0.2rem auto 0; }
+    .indice-navegacion { margin-top: 0.25rem; }
+    .indice-navegacion .btn-categoria { min-height: 26px; padding: 0.18rem 0.75rem; font-size: 0.75rem; }
   }
 
-
-  .grid-platos {
-    grid-template-columns: 1fr;
-    gap: 18px;
+  .imagen-plato {
+    flex: 1 1 auto;
+    min-height: 110px;
+    max-height: none;
   }
-
-
-  .flecha-foto {
-    width: 38px;
-    height: 38px;
-    font-size: 1.8rem;
-  }
-
 
   .detalle-plato {
-    padding: 16px;
+    flex: 0 0 auto;
+    padding: 8px 12px 10px;
   }
+
+  .descripcion-plato {
+    -webkit-line-clamp: 2;
+  }
+
+  .descripcion-plato.expandida {
+    max-height: 55px;
+  }
+}
+
+@media (max-width: 360px) {
+  .carta-layout-completo {
+    padding-left: 0.45rem;
+    padding-right: 0.45rem;
+  }
+
+  .indice-navegacion .btn-categoria {
+    padding: 0.18rem 0.65rem;
+    font-size: 0.72rem;
+  }
+
+  .encabezado-plato {
+    gap: 6px;
+  }
+}
+
+
+/* TABLETS: adaptacion */
+@media (min-width: 768px) {
+
+  .carta-layout-completo {
+    max-width: 900px;
+  }
+
+  .carta-header {
+    padding-top: 12px;
+    padding-bottom: 14px;
+    margin-bottom: 12px;
+
+    .font-logo {
+      font-size: 3.5rem;
+    }
+
+    h2 {
+      font-size: 1.6rem;
+    }
+
+    p {
+      font-size: 1rem;
+    }
+  }
+
+  .indice-navegacion .btn-categoria {
+    font-size: 1rem;
+    padding: 0.6rem 1.3rem;
+  }
+
+  /* La tarjeta deja de estar centrada verticalmente */
+  .card-reel-slide {
+    justify-content: flex-start;
+    padding-top: 18px;
+  }
+
+  .plato-card {
+    width: min(100%, 750px);
+    height: auto;
+    max-height: 100%;
+  }
+
+  .imagen-plato {
+    flex: 0 0 auto;
+    height: clamp(340px, 38vh, 500px);
+    max-height: none;
+  }
+
+  .detalle-plato {
+    flex: 0 1 auto;
+    max-height: 40%;
+    padding: 20px 24px;
+    overflow-y: auto;
+  }
+
+  .encabezado-plato h3 {
+    font-size: 1.6rem;
+  }
+
+  .encabezado-plato .precio-plato {
+    font-size: 1.25rem;
+  }
+
+  .descripcion-plato {
+    font-size: 1.1rem;
+    line-height: 1.5;
+  }
+
+  .dato-plato .dato-label {
+    font-size: 0.9rem;
+  }
+
+  .dato-plato strong {
+    font-size: 1.1rem;
+  }
+}
+
+
+@media (min-width: 1024px) {
+  .carta-layout-completo {
+    max-width: 900px;
+  }
+}
+
+
+/* =========================================================
+   ELEMENTOS DE PEDIDO Y PERSONALIZACIÓN (PUNTOS 11, 12, 13)
+   ========================================================= */
+
+.badge-mesa-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--basilico-terracotta, #b85d38);
+  color: #ede5d2;
+  font-family: var(--font-body, 'Montserrat', sans-serif);
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  border-radius: 20px;
+  margin-right: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+
+  ion-icon {
+    font-size: 1.05rem;
+  }
+}
+
+.banner-edicion-pedido {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(184, 93, 56, 0.25);
+  border: 1.5px solid var(--basilico-terracotta, #b85d38);
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin: 1rem auto 0;
+  max-width: 520px;
+  text-align: left;
+  color: #ede5d2;
+
+  ion-icon {
+    font-size: 2rem;
+    color: #e28762;
+    flex-shrink: 0;
+  }
+
+  strong {
+    display: block;
+    font-size: 0.95rem;
+    color: #ede5d2;
+  }
+
+  p {
+    margin: 3px 0 0;
+    font-size: 0.82rem;
+    opacity: 0.9;
+  }
+}
+
+/* Acciones en la tarjeta de plato/bebida */
+.accion-pedido-card {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(237, 229, 210, 0.18);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-agregar-producto {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: var(--basilico-terracotta, #b85d38);
+  color: #ede5d2;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-family: var(--font-body, 'Montserrat', sans-serif);
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.2s ease;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+
+  &:active {
+    transform: scale(0.97);
+  }
+
+  ion-icon {
+    font-size: 1.2rem;
+  }
+}
+
+.control-cantidad-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: rgba(40, 55, 32, 0.5);
+  border: 1px solid rgba(237, 229, 210, 0.25);
+  border-radius: 10px;
+  padding: 4px 8px;
+
+  .btn-circulo {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--basilico-terracotta, #b85d38);
+    color: #ede5d2;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: transform 0.1s ease;
+
+    &:active {
+      transform: scale(0.9);
+    }
+  }
+
+  .cantidad-actual-card {
+    font-family: var(--font-body, 'Montserrat', sans-serif);
+    font-weight: 800;
+    font-size: 1.15rem;
+    color: #ede5d2;
+    min-width: 32px;
+    text-align: center;
+  }
+}
+
+/* =========================================================
+   BARRA FIJA INFERIOR DE RESUMEN (PUNTO 12)
+   ========================================================= */
+.barra-resumen-pedido {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background: #1b2616;
+  border-top: 2px solid var(--basilico-terracotta, #b85d38);
+  padding: 12px 18px env(safe-area-inset-bottom, 12px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  box-shadow: 0 -4px 18px rgba(0, 0, 0, 0.45);
+  animation: slideUp 0.3s ease-out;
+
+  .info-resumen-barra {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+
+    .columna-precio {
+      display: flex;
+      flex-direction: column;
+
+      .texto-etiqueta {
+        font-family: var(--font-body, 'Montserrat', sans-serif);
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        color: #bca085;
+        text-transform: uppercase;
+      }
+
+      .monto-acumulado {
+        font-family: var(--font-body, 'Montserrat', sans-serif);
+        font-size: 1.45rem;
+        font-weight: 800;
+        color: #f7eecf;
+        line-height: 1.1;
+      }
+    }
+
+    .columna-tiempo {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+
+      .texto-etiqueta {
+        font-size: 0.65rem;
+        font-weight: 600;
+        color: #8fa382;
+      }
+
+      .tiempo-acumulado {
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: #ede5d2;
+
+        ion-icon {
+          font-size: 0.95rem;
+          color: #e28762;
+        }
+      }
+    }
+  }
+
+  .btn-revisar-pedido {
+    background: var(--basilico-terracotta, #b85d38);
+    color: #ede5d2;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-body, 'Montserrat', sans-serif);
+    font-weight: 800;
+    font-size: 0.95rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(184, 93, 56, 0.4);
+    transition: transform 0.15s ease, background 0.2s ease;
+
+    &:active {
+      transform: scale(0.96);
+    }
+
+    ion-icon {
+      font-size: 1.35rem;
+    }
+
+    .texto-btn-pedido {
+      white-space: nowrap;
+    }
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* =========================================================
+   MODAL DE CONFIRMACIÓN DE PEDIDO
+   ========================================================= */
+ion-modal.modal-pedido-basilico {
+  --background: #283720;
+
+  .toolbar-modal-pedido {
+    --background: #283720;
+    --color: #ede5d2;
+    border-bottom: 1px solid rgba(237, 229, 210, 0.15);
+
+    ion-title {
+      font-family: var(--font-body, 'Montserrat', sans-serif);
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: #ede5d2;
+    }
+
+    .btn-cerrar-modal {
+      background: transparent;
+      border: none;
+      color: #ede5d2;
+      font-size: 1.6rem;
+      padding: 6px 12px;
+      cursor: pointer;
+    }
+  }
+
+  .contenido-modal-pedido {
+    --background: #283720;
+  }
+
+  .contenedor-resumen-modal {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 600px;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+
+  .banner-aviso-pedido {
+    background: rgba(188, 160, 133, 0.15);
+    border: 1px solid rgba(188, 160, 133, 0.35);
+    border-radius: 10px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #ede5d2;
+
+    ion-icon {
+      font-size: 1.6rem;
+      color: #bca085;
+      flex-shrink: 0;
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.82rem;
+      line-height: 1.3;
+    }
+  }
+
+  .lista-items-pedido {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .tarjeta-item-pedido {
+    background: #ede5d2;
+    border-radius: 12px;
+    padding: 12px 14px;
+    color: #283720;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+    .info-item-pedido {
+      flex: 1;
+      min-width: 0;
+
+      .tipo-tag {
+        display: inline-block;
+        font-size: 0.65rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        padding: 2px 6px;
+        border-radius: 4px;
+        background: #283720;
+        color: #ede5d2;
+        margin-bottom: 4px;
+
+        &.tipo-bebida {
+          background: #b85d38;
+        }
+      }
+
+      h4 {
+        margin: 0 0 3px;
+        font-family: var(--font-body, 'Montserrat', sans-serif);
+        font-size: 0.98rem;
+        font-weight: 700;
+        color: #283720;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .precio-unitario-detalle {
+        font-size: 0.78rem;
+        color: #555;
+      }
+    }
+
+    .acciones-item-pedido {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .controles-stepper {
+        display: flex;
+        align-items: center;
+        background: #e1d8bf;
+        border-radius: 8px;
+        padding: 2px 4px;
+
+        .btn-stepper {
+          background: transparent;
+          border: none;
+          color: #283720;
+          font-size: 1rem;
+          padding: 4px;
+          cursor: pointer;
+        }
+
+        .cantidad-stepper {
+          font-weight: 800;
+          font-size: 0.95rem;
+          min-width: 20px;
+          text-align: center;
+          color: #283720;
+        }
+      }
+
+      .subtotal-item {
+        font-weight: 800;
+        font-size: 1rem;
+        color: #283720;
+        min-width: 70px;
+        text-align: right;
+      }
+
+      .btn-eliminar-item {
+        background: transparent;
+        border: none;
+        color: #c93b2b;
+        font-size: 1.15rem;
+        padding: 4px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .tarjeta-totales-pedido {
+    background: rgba(237, 229, 210, 0.12);
+    border: 1px solid rgba(237, 229, 210, 0.25);
+    border-radius: 14px;
+    padding: 16px;
+    color: #ede5d2;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .fila-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .label-totales {
+        font-size: 0.85rem;
+        font-weight: 600;
+        opacity: 0.85;
+      }
+
+      .valor-tiempo {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.95rem;
+        color: #f7eecf;
+
+        ion-icon {
+          color: #e28762;
+        }
+      }
+
+      &.destacado-importe {
+        padding-top: 8px;
+        border-top: 1px dashed rgba(237, 229, 210, 0.3);
+
+        .label-totales {
+          font-size: 1.05rem;
+          font-weight: 800;
+          letter-spacing: 0.5px;
+          color: #bca085;
+        }
+
+        .valor-importe {
+          font-size: 1.7rem;
+          font-weight: 900;
+          color: #f7eecf;
+        }
+      }
+    }
+
+    .nota-mozo-espera {
+      margin-top: 6px;
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      font-size: 0.75rem;
+      opacity: 0.75;
+      line-height: 1.3;
+
+      ion-icon {
+        font-size: 0.95rem;
+        margin-top: 2px;
+        flex-shrink: 0;
+      }
+    }
+  }
+
+  .acciones-finales-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 4px;
+    padding-bottom: 20px;
+
+    .btn-confirmar-envio {
+      background: var(--basilico-terracotta, #b85d38);
+      color: #ede5d2;
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: var(--font-body, 'Montserrat', sans-serif);
+      font-weight: 800;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(184, 93, 56, 0.45);
+      transition: transform 0.15s ease;
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      &:not(:disabled):active {
+        transform: scale(0.98);
+      }
+
+      ion-icon {
+        font-size: 1.3rem;
+      }
+    }
+
+    .btn-seguir-comprando {
+      background: transparent;
+      border: 1px solid rgba(237, 229, 210, 0.4);
+      color: #ede5d2;
+      border-radius: 12px;
+      padding: 12px;
+      font-family: var(--font-body, 'Montserrat', sans-serif);
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      text-align: center;
+    }
+  }
+}
+
+
+
+/* AJUSTES DE INTEGRACIÓN: CARTA REELS + PEDIDOS */
+
+/* Los botones de cantidad deben conservar su espacio */
+.accion-pedido-card {
+  flex-shrink: 0;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(40, 55, 32, 0.2);
+}
+
+/* Contraste de los controles sobre el fondo beige */
+.control-cantidad-card {
+  background: rgba(40, 55, 32, 0.92);
+}
+
+/* La tarjeta necesita poder comprimir la zona fotográfica */
+.imagen-plato {
+  min-height: 0;
+}
+
+/* En celulares pequeños priorizamos los datos y el botón */
+@media (max-height: 680px) {
+  .detalle-plato {
+    padding: 8px 12px 10px;
+    overflow-y: auto;
+    flex-shrink: 1;
+  }
+
+  .imagen-plato {
+    min-height: 100px;
+  }
+}
+
+
+/* ================================================
+   CORRECCIÓN: BOTÓN DE PEDIDO VISIBLE EN CARTA
+   ================================================ */
+
+/* Reservamos espacio para la tarjeta completa */
+.plato-card {
+  min-height: 0;
+  max-height: 100%;
+}
+
+/* La imagen puede reducir su altura si hace falta */
+.imagen-plato {
+  flex: 0 1 auto;
+  min-height: 120px;
+  height: clamp(160px, 34vh, 320px);
+  max-height: none;
+}
+
+/* Permite acceder a los controles del pedido */
+.detalle-plato {
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* Evita que el botón se comprima o desaparezca */
+.accion-pedido-card {
+  flex-shrink: 0;
+  width: 100%;
+  margin-top: 10px;
+  padding-top: 10px;
+}
+
+/* Botón de agregar al carrito */
+.btn-agregar-producto {
+  min-height: 40px;
+}
+
+/* Celulares de menor altura */
+@media (max-height: 700px) {
+  .imagen-plato {
+    height: clamp(140px, 30vh, 230px);
+    min-height: 100px;
+  }
+
+  .detalle-plato {
+    padding: 8px 12px 10px;
+  }
+}
+
+/* ================================================
+   AJUSTE DE ESPACIO CON CARRITO VISIBLE
+   ================================================ */
+
+/* Reservar espacio inferior para el carrito */
+.carta-content:has(.barra-resumen-pedido) .carta-layout-completo {
+  height: calc(100% - 86px);
+}
+
+/* Ubicar la tarjeta más arriba */
+.carta-content:has(.barra-resumen-pedido) .card-reel-slide {
+  justify-content: flex-start;
+  padding-top: 0;
+  transform: translateY(-20px);
 }

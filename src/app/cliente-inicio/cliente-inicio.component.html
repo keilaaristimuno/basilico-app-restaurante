@@ -14,7 +14,7 @@
         <p class="titulo">¡Bienvenido!</p>
         <ion-note class="texto">
           Escaneá el código QR de entrada para anotarte en la lista de espera
-        </ion-note>    
+        </ion-note>
       </div>
 
       <div class="acciones-cliente">
@@ -69,28 +69,12 @@
          ========================================================= -->
     @if (mesaEscaneada()) {
       <div class="seccion-mesa-activa">
-        
         <!-- Header de la mesa -->
         <div class="badge-mesa-vinculada">
           <ion-icon name="restaurant-outline"></ion-icon>
           <span>Mesa N° {{ numeroMesa() }} • Comensal: {{ nombreCliente() }}</span>
-          <ion-icon
-            name="qr-code-outline"
-            slot="start">
-          </ion-icon>
-          Escanear QR de la mesa
-        <ion-button
-          expand="block"
-          class="btonBeige"
-          (click)="escanearQrMesa()">
-
-          <ion-icon
-            name="qr-code-outline"
-            slot="start">
-          </ion-icon>
-         Acceder a encuestas
-        </ion-button>
         </div>
+
 
         <!-- =====================================================
              CASO A: NO HAY PEDIDO ACTIVO -> PRIMERO EL BOTÓN PARA PEDIR
@@ -131,7 +115,7 @@
 
             <div class="encabezado-estado-pedido">
               <span class="subtitulo-estado">ESTADO DEL PEDIDO</span>
-              
+
               <!-- ESTADO PENDIENTE / ENVIADO (PUNTO 12) -->
               @if (pedido.estado === 'enviado' || pedido.estado === 'pendiente') {
                 <div class="badge-estado estado-pendiente">
@@ -234,8 +218,8 @@
 <!-- =========================================================
      MODAL DE COMENSALES (LISTA DE ESPERA)
      ========================================================= -->
-<ion-modal 
-  [isOpen]="abrirInputComensales()" 
+<ion-modal
+  [isOpen]="abrirInputComensales()"
   (didDismiss)="cerrarModuleComensales()"
   class="modal-basilico">
   <ng-template>
@@ -276,17 +260,17 @@
             </div>
 
             <div class="acciones-modal">
-              <ion-button 
-                expand="block" 
+              <ion-button
+                expand="block"
                 class="btn-confirmar"
                 (click)="confirmarComensales()">
                 Confirmar e Ingresar
               </ion-button>
 
-              <ion-button 
-                expand="block" 
-                fill="clear" 
-                class="btn-cancelar" 
+              <ion-button
+                expand="block"
+                fill="clear"
+                class="btn-cancelar"
                 (click)="cerrarModuleComensales()">
                 Cancelar
               </ion-button>

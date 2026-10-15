@@ -19,7 +19,11 @@ import {
   IonCardTitle,
   IonCardContent,
   IonSpinner,
-  ToastController
+  ToastController,
+  IonButtons,
+  IonBackButton,
+  IonModal,
+
 } from '@ionic/angular';
 import { Supabase } from '../../services/supabase';
 import { QrService } from '../../services/qr.service';
@@ -46,14 +50,16 @@ import { QrService } from '../../services/qr.service';
     IonCardHeader,
     IonCardTitle,
     IonCardContent,
-    IonSpinner
+    IonSpinner,
+    IonButtons,
+    IonBackButton,
+    IonModal,
   ]
 })
 export class AltaMesaPage implements OnInit {
   numero: number | null = null;
   cantidadComensales: number | null = null;
   tipo: string = '';
-  disponibilidad: string = 'vacia';
   fotoMesa = signal<string>('');
   errorFoto = signal<boolean>(false);
   cargando = signal<boolean>(false);
@@ -130,13 +136,6 @@ export class AltaMesaPage implements OnInit {
     }
   }
 
-  normalizarDisponibilidad(disponibilidad: string): string {
-    const valor = (disponibilidad || '').trim().toLowerCase();
-    if (valor === 'ocupada') return 'ocupada';
-    if (valor === 'vacía' || valor === 'vacia') return 'vacia';
-    return 'vacia';
-  }
-
   private async mostrarToast(mensaje: string, color: 'success' | 'danger') {
     const toast = await this.toastCtrl.create({
       message: mensaje,
@@ -170,22 +169,24 @@ export class AltaMesaPage implements OnInit {
       this.cargando.set(true);
 
       const tipoGuardado = this.normalizarTipo(this.tipo);
-      const disponibilidadGuardada = this.normalizarDisponibilidad(this.disponibilidad);
 
       const nombreArchivo = `mesas/${Date.now()}.jpg`;
       const resultado = await this.supabase.subirFotoMesa(this.fotoMesa(), nombreArchivo);
       const fotoUrl = this.supabase.obtenerUrlFotoMesa(resultado.path);
 
-      const mesaCreada = await this.supabase.guardarMesa(
+      const qrString = `mesa_numero:${this.numero}`;
+      const qrGenerado = await this.qrService.generarQR(qrString);
+      this.qrMesa.set(qrGenerado);
+
+      await this.supabase.guardarMesa(
         Number(this.numero),
         Number(this.cantidadComensales),
         tipoGuardado,
-        disponibilidadGuardada,
-        fotoUrl
+        'vacia',
+        fotoUrl,
+        this.qrMesa()
       );
 
-      const mesaId = mesaCreada?.[0]?.id ?? `mesa-${Date.now()}`;
-      this.qrMesa.set(await this.qrService.generarQR(`mesa_id:${mesaId}|numero:${this.numero}`));
 
       await this.cargarMesas();
       await this.mostrarToast('Mesa cargada correctamente.', 'success');
@@ -208,6 +209,17 @@ export class AltaMesaPage implements OnInit {
       console.error('Error al cargar mesas:', error);
     }
   }
+
+  normalizarDisponibilidad(disponibilidad: string): string {
+  const valor = (disponibilidad || '').trim().toLowerCase();
+
+  if (valor === 'ocupada') return 'ocupada';
+
+  if (valor === 'vacía' || valor === 'vacia') {
+    return 'vacia';
+  }
+  return 'vacia';
+}
 
   async cambiarDisponibilidad(mesa: any, event?: any) {
     try {
@@ -260,7 +272,6 @@ export class AltaMesaPage implements OnInit {
     this.numero = null;
     this.cantidadComensales = null;
     this.tipo = '';
-    this.disponibilidad = 'vacia';
     this.fotoMesa.set('');
 
     this.errorNumero = false;

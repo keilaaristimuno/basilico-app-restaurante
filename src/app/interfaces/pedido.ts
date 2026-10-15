@@ -1,0 +1,107 @@
+import { Producto } from './producto';
+
+/**
+ * 1. Entidades base tal como se almacenan en Supabase.
+ */
+export interface Pedido {
+  id: string;
+  mesa_id: string;
+  cliente_id: string;
+  estado: string;
+  importe_total: number;
+  tiempo_estimado: number;
+  created_at: string;
+}
+
+export interface PedidoItem {
+  id: string;
+  pedido_id: string;
+  producto_id: string;
+  cantidad: number;
+  precio_unitario: number;
+}
+
+/**
+ * 2. Interfaces que representan la respuesta exacta de la consulta relacional
+ * anidada en Supabase (independientes y sin acoplar campos no seleccionados).
+ */
+export interface MesaRelacion {
+  id: string;
+  numero: number;
+}
+
+export interface ProductoRelacionCocina {
+  id: string;
+  nombre: string;
+  tipo: Producto['tipo'];
+}
+
+export interface PedidoItemRelacionCocina {
+  id: string;
+  cantidad: number;
+  precio_unitario: number;
+  productos: ProductoRelacionCocina | null;
+}
+
+export interface PedidoSupabaseRelacional {
+  id: string;
+  estado: string;
+  created_at: string;
+  mesas: MesaRelacion | null;
+  pedido_items: PedidoItemRelacionCocina[];
+}
+
+/**
+ * 3. Modelos limpios para la interfaz gráfica (UI) del perfil Cocinero (Punto 16).
+ * Diseñados para representar los datos procesados, filtrados por platos
+ * y agrupados por número de mesa.
+ */
+
+/**
+ * Representa un plato de cocina a elaborar con su nombre y cantidad.
+ */
+export interface ItemPlatoCocinaUI {
+  nombre: string;
+  cantidad: number;
+}
+
+/**
+ * Representa un pedido particular de una mesa, con su identificador,
+ * su fecha y hora formateada (HH:mm) y los platos correspondientes a cocina.
+ */
+export interface PedidoMesaCocinaUI {
+  pedidoId: string;
+  fechaHora: string;
+  platos: ItemPlatoCocinaUI[];
+}
+
+/**
+ * Modelo final agrupado por mesa que consume la vista de Angular.
+ */
+export interface MesaConPedidosCocinaUI {
+  numeroMesa: number;
+  pedidos: PedidoMesaCocinaUI[];
+}
+
+/**
+ * 4. Modelos limpios para la interfaz gráfica (UI) del perfil Cantinero / Bar (Punto 17).
+ * Diseñados para representar los datos procesados, filtrados por bebidas
+ * y agrupados por número de mesa.
+ */
+
+export interface ItemBebidaBarUI {
+  nombre: string;
+  cantidad: number;
+}
+
+export interface PedidoMesaBarUI {
+  pedidoId: string;
+  fechaHora: string;
+  bebidas: ItemBebidaBarUI[];
+}
+
+export interface MesaConPedidosBarUI {
+  numeroMesa: number;
+  pedidos: PedidoMesaBarUI[];
+}
+

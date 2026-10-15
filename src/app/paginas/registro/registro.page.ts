@@ -5,9 +5,8 @@ import { Camera } from '@capacitor/camera';
 import { Supabase } from '../../services/supabase';
 import { EmailService } from '../../services/email';
 import { PushNotificationsService } from '../../services/push-notifications.service';
+import { VibracionService } from '../../services/vibracion';
 import { generarHtmlConfirmacion } from '../../utils/plantillas-email';
-
-//import { confirmarClaveValidator, datoExisteAsyncValidator } from '../../validaciones/usuario.validator';
 
 // Componentes UI de Ionic Standalone
 import {
@@ -24,7 +23,11 @@ import {
   IonSelectOption, 
   IonContent,
   IonSpinner,
-  ToastController
+  ToastController,
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonBackButton
 } from '@ionic/angular';
 
 @Component({
@@ -47,7 +50,11 @@ import {
     IonSelectOption,
     RouterLink,
     IonContent,
-    IonSpinner
+    IonSpinner,
+    IonHeader,
+    IonToolbar,
+    IonButtons,
+    IonBackButton
   ],
   templateUrl: './registro.page.html',
   styleUrl: './registro.page.scss',
@@ -65,6 +72,7 @@ export class RegistroPage implements OnInit {
     private supabase: Supabase,
     private emailService: EmailService,
     private toastCtrl: ToastController,
+    private vibracion: VibracionService,
     private pushNotifications: PushNotificationsService
   ) { }
 
@@ -121,6 +129,7 @@ export class RegistroPage implements OnInit {
       this.errorFoto.set(false);
     } catch (error) {
       console.error('Error al tomar la foto del cliente:', error);
+      await this.vibracion.errorFuerte();
     }
   }
 
@@ -160,6 +169,8 @@ export class RegistroPage implements OnInit {
       const nombreArchivo = `clientes/${Date.now()}.jpg`;
       const resultado = await this.supabase.subirFotoCliente(this.fotoCliente(), nombreArchivo);
       const fotoUrl = this.supabase.obtenerUrlFotoCliente(resultado.path);
+      const perfil = "cliente";
+      const estado = "pendiente";
 
       await this.supabase.guardarDatosClientes(
         apellidos,
@@ -167,7 +178,9 @@ export class RegistroPage implements OnInit {
         Number(dni),
         correo,
         clave,
-        fotoUrl
+        fotoUrl,
+        perfil,
+        estado
       );
 
       try {
@@ -198,6 +211,7 @@ export class RegistroPage implements OnInit {
     } catch (error: any) {
       console.error('Error al registrar cliente:', error);
       await this.mostrarToast(error?.message ?? 'No se pudo completar el registro.', 'danger');
+      await this.vibracion.errorFuerte();
     } finally {
       this.cargando.set(false);
     }

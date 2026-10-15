@@ -1,34 +1,26 @@
-<ion-content [fullscreen]="true" [scrollY]="true" class="registro-content">
+<ion-header class="header-transparente">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button
+        defaultHref="/inicio"
+        text="Volver"
+        icon="chevron-back-outline">
+      </ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 
+<ion-content class="registro-content">
   <div class="registro-container">
 
     <!-- Encabezado -->
     <section class="registro-header">
       <h1 class="font-logo">Basílico</h1>
-      <h2>Registrate</h2>
       <p>Completá tus datos para crear tu cuenta</p>
     </section>
 
     <!-- Formulario -->
     <ion-card class="registro-card">
-
-      <!-- BOTÓN TEMPORAL DE PRUEBA -->
-      <div class="boton-prueba">
-        <ion-button
-          expand="block"
-          fill="outline"
-          routerLink="/alta-empleado">
-          Ir a Alta de Empleado
-        </ion-button>
-        <ion-button
-          expand="block"
-          fill="outline"
-          color="warning"
-          routerLink="/clientes-pendientes">
-          Ir a Clientes Pendientes
-        </ion-button>
-      </div>
-
       <ion-card-content>
 
         <form
@@ -58,7 +50,6 @@
             }
 
           </div>
-
 
           <!-- APELLIDO -->
           <div class="campo-formulario">
@@ -218,29 +209,6 @@
 
             </ion-button>
 
-
-            <!-- TEMPORAL -->
-            <ion-button
-              expand="block"
-              type="button"
-              fill="clear"
-              class="btn-prueba-plato"
-              routerLink="/alta-plato">
-
-              Ir a alta plato
-
-            </ion-button>
-
-            <ion-button
-              expand="block"
-              type="button"
-              fill="clear"
-              class="btn-prueba-mesa"
-              routerLink="/alta-mesa">
-
-              Ir a alta mesa
-
-            </ion-button>
           </div>
         </form>
       </ion-card-content>

@@ -1,5 +1,5 @@
 <ion-content  [fullscreen]="true" class="fondo">
-  <app-navbar></app-navbar>
+  <app-navbar rutaInicio="/duenioInicio"></app-navbar>
   <div class="contenedor">
     <section class="encabezado">
       <img
@@ -14,7 +14,7 @@
     </section>
 
     <section class="acciones">
-      <ion-card class="tarjeta" routerLink="/alta-plato" button="true">
+      <ion-card class="tarjeta" routerLink="/alta-empleado" button="true">
         <ion-card-content>
 
           <div class="informacion">
@@ -28,7 +28,7 @@
         </ion-card-content>
       </ion-card>
 
-      <ion-card class="tarjeta" routerLink="/carta" button="true">
+      <ion-card class="tarjeta" routerLink="/alta-mesa" button="true">
         <ion-card-content>
           <div class="informacion">
             <h2>Alta mesa</h2>
@@ -40,7 +40,7 @@
         </ion-card-content>
       </ion-card>
 
-      <ion-card class="tarjeta" >
+      <ion-card class="tarjeta" routerLink="/clientes-pendientes" button="true" >
         <ion-card-content>
           <!-- <ion-icon
             name="receipt-outline"

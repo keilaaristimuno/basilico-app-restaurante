@@ -1,0 +1,110 @@
+<ion-header class="header-transparente">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button
+        defaultHref="/"
+        text="Volver"
+        icon="chevron-back-outline">
+      </ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" [scrollY]="true" class="registro-content">
+
+  <div class="registro-container">
+
+    <!-- Encabezado -->
+    <section class="registro-header">
+      <h1 class="font-logo">Basílico</h1>
+      <p>Ingresa sin registro previo</p>
+    </section>
+
+    <!-- Formulario -->
+    <ion-card class="registro-card">
+      <ion-card-content>
+
+        <form
+          [formGroup]="miFormulario"
+          (ngSubmit)="enviarFormulario()">
+
+          <!-- NOMBRE -->
+          <div class="campo-formulario">
+
+            <ion-item
+              lines="none"
+              class="custom-item">
+
+              <ion-input
+                label="Nombre"
+                labelPlacement="floating"
+                type="text"
+                formControlName="nombres">
+              </ion-input>
+
+            </ion-item>
+
+            @if (nombres?.hasError('pattern')) {
+              <ion-note class="mensaje-error">
+                Sólo debe contener letras
+              </ion-note>
+            }
+
+          </div>
+          <div class="campo-formulario foto-cliente ion-text-center">
+            @if (fotoCliente()) {
+              <div class="contenedor-foto">
+                <img [src]="fotoCliente()" alt="Foto del cliente" class="preview-foto" />
+              </div>
+              <ion-button type="button" class="boton-foto" (click)="tomarFoto()">
+                Cambiar foto
+              </ion-button>
+            } @else {
+              <ion-button type="button" expand="block" class="boton-foto" (click)="tomarFoto()">
+                Tomar foto
+              </ion-button>
+            }
+
+            @if (errorFoto()) {
+              <ion-note class="mensaje-error">
+                La foto es obligatoria.
+              </ion-note>
+            }
+          </div>
+
+          
+          <!-- ACCIONES -->
+          <div class="acciones-formulario">
+
+            <ion-button
+              expand="block"
+              type="submit"
+              class="btn-enviar"
+              [disabled]="miFormulario.invalid || cargando()">
+
+              @if (cargando()) {
+                <ion-spinner name="crescent"></ion-spinner>
+                
+              } @else {
+                Cargar
+              }
+
+            </ion-button>
+
+
+            <ion-button
+              expand="block"
+              type="button"
+              fill="outline"
+              class="btn-resetear"
+              (click)="resetearForm()">
+
+              Limpiar formulario
+
+            </ion-button>
+          </div>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

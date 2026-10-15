@@ -7,7 +7,6 @@ import {
   PushNotifications,
   Token
 } from '@capacitor/push-notifications';
-import { ToastController } from '@ionic/angular';
 import { Supabase } from './supabase';
 
 @Injectable({
@@ -19,27 +18,14 @@ export class PushNotificationsService {
 
   constructor(
     private supabase: Supabase,
-    private toastCtrl: ToastController,
     private router: Router,
     private ngZone: NgZone
   ) {}
-
-  private async mostrarEstado(mensaje: string, color: 'success' | 'danger' | 'warning') {
-    const toast = await this.toastCtrl.create({
-      message: mensaje,
-      duration: 4000,
-      color,
-      position: 'bottom'
-    });
-
-    await toast.present();
-  }
 
   async inicializar(): Promise<void> {
     if (this.inicializado) return;
 
     if (!Capacitor.isNativePlatform()) {
-      await this.mostrarEstado('Push: la app se está ejecutando en navegador, no en Android.', 'warning');
       return;
     }
 
@@ -79,7 +65,6 @@ export class PushNotificationsService {
 
       if (permisoNotificaciones.receive !== 'granted') {
         console.warn('[Push] Permiso de notificaciones no concedido.');
-        await this.mostrarEstado('Push: permiso de notificaciones rechazado.', 'warning');
         return;
       }
 
@@ -88,7 +73,6 @@ export class PushNotificationsService {
     } catch (error: any) {
       this.inicializado = false;
       console.error('[Push] Error al inicializar notificaciones:', error);
-      await this.mostrarEstado(`Push: falló el registro en Firebase (${error?.message ?? error})`, 'danger');
     }
   }
 
@@ -96,12 +80,12 @@ export class PushNotificationsService {
     await PushNotifications.addListener('registration', async (token: Token) => {
       console.log('[Push] Token FCM recibido:', token.value);
       this.tokenActual = token.value;
+      localStorage.setItem('fcm_device_token', token.value);
       await this.guardarTokenSegunSesion(token.value);
     });
 
     await PushNotifications.addListener('registrationError', (error) => {
       console.error('[Push] Error al registrar el dispositivo en Firebase:', error);
-      void this.mostrarEstado('Push: Firebase no entregó el token del dispositivo.', 'danger');
     });
 
     await PushNotifications.addListener(
@@ -142,19 +126,19 @@ export class PushNotificationsService {
   }
 
   async desasociarToken(): Promise<void> {
-    if (!this.tokenActual) {
+    const token = this.tokenActual || localStorage.getItem('fcm_device_token');
+    if (!token) {
       console.warn('[Push] No hay token en memoria para desasociar.');
       return;
     }
 
     const { error } = await this.supabase.clienteSupabase.rpc(
       'desasociar_device_token',
-      { p_token: this.tokenActual }
+      { p_token: token }
     );
 
     if (error) {
       console.error('Error al desasociar el token de notificaciones:', error.message);
-      await this.mostrarEstado(`Push: no se pudo liberar el token. ${error.message}`, 'danger');
       return;
     }
 
@@ -172,16 +156,14 @@ export class PushNotificationsService {
 
     if (error) {
       console.error('[Push] Error al registrar token mediante RPC:', error.message);
-      await this.mostrarEstado(`Push: no se pudo guardar el token. ${error.message}`, 'danger');
       return;
     }
-
-    await this.mostrarEstado('Push: token guardado correctamente.', 'success');
   }
 
   async asociarTokenDelUsuarioActual(): Promise<void> {
-    if (!this.tokenActual) return;
-    await this.guardarTokenSegunSesion(this.tokenActual);
+    const token = this.tokenActual || localStorage.getItem('fcm_device_token');
+    if (!token) return;
+    await this.guardarTokenSegunSesion(token);
   }
 
   async enviarNotificacion(

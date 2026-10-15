@@ -1,0 +1,103 @@
+<ion-header>
+  <app-navbar rutaInicio="/inicio-cantinero"></app-navbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="fondo">
+  <div class="contenedor">
+    <section class="encabezado">
+
+      <img
+        src="assets/Basilico/Logo_beige.png"
+        alt="Logotipo de Basílico"
+        class="logo">
+
+      <div class="tipo-producto">
+        <ion-icon name="wine-outline"></ion-icon>
+        <span>BAR</span>
+      </div>
+
+      <p>
+        Seleccione la opción que desea realizar
+      </p>
+
+    </section>
+
+
+    <section class="acciones">
+
+      <!-- ALTA DE BEBIDA -->
+      <ion-card
+        class="tarjeta"
+        routerLink="/alta-bebida"
+        button="true">
+
+        <ion-card-content>
+
+          <ion-icon
+            name="wine-outline"
+            class="icono">
+          </ion-icon>
+
+          <div class="informacion">
+            <h2>Agregar bebida</h2>
+
+            <p>
+              Incorporar una nueva bebida a la carta.
+            </p>
+          </div>
+
+        </ion-card-content>
+      </ion-card>
+
+
+      <!-- VER CARTA -->
+      <ion-card
+        class="tarjeta"
+        routerLink="/carta"
+        button="true">
+
+        <ion-card-content>
+
+          <ion-icon
+            name="book-outline"
+            class="icono">
+          </ion-icon>
+
+          <div class="informacion">
+            <h2>Ver carta</h2>
+
+            <p>
+              Consultar los productos disponibles.
+            </p>
+          </div>
+
+        </ion-card-content>
+      </ion-card>
+
+
+      <!-- PEDIDOS DEL BAR -->
+      <ion-card
+        class="tarjeta"
+        routerLink="/pedidos-bar"
+        button="true">
+
+        <ion-card-content>
+
+          <ion-icon
+            name="receipt-outline"
+            class="icono">
+          </ion-icon>
+
+          <div class="informacion">
+            <h2>Pedidos pendientes</h2>
+
+            <p>
+              Visualizar los pedidos que debe preparar el bar.
+            </p>
+          </div>
+
+        </ion-card-content>
+      </ion-card>
+    </section>
+  </div>
+</ion-content>

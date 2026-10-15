@@ -6,10 +6,10 @@ import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
 import { addIcons } from 'ionicons';
-import { qrCodeOutline } from 'ionicons/icons';
+import { qrCodeOutline, chevronBackOutline  } from 'ionicons/icons';
 
 defineCustomElements(window);
-addIcons({ qrCodeOutline });
+addIcons({ qrCodeOutline, chevronBackOutline  });
 
 bootstrapApplication(AppComponent, {
   providers: [

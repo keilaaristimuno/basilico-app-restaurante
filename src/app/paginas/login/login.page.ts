@@ -2,11 +2,15 @@ import { Component, WritableSignal, signal } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterLink } from "@angular/router";
 import { FormsModule } from "@angular/forms";
+import { VibracionService } from '../../services/vibracion';
 import { Router } from "@angular/router";
 import { 
   IonContent, IonGrid, IonRow, IonCol, 
   IonList, IonItem, IonInput, IonButton, 
-  IonText, ToastController, IonSpinner 
+  IonText, ToastController, IonSpinner, IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonBackButton 
 } from "@ionic/angular";
 import { Supabase } from "../../services/supabase";
 import { PushNotificationsService } from "../../services/push-notifications.service";
@@ -22,7 +26,8 @@ import { PushNotificationsService } from "../../services/push-notifications.serv
     RouterLink,
     IonContent, IonGrid, IonRow, IonCol, 
     IonList, IonItem, IonInput, IonButton, 
-    IonText, IonSpinner
+    IonText, IonSpinner, IonHeader, IonToolbar,IonButtons,
+    IonBackButton
   ]
 })
 export class LoginPage {
@@ -37,6 +42,7 @@ export class LoginPage {
     private supabase: Supabase,
     private router: Router,
     private pushNotifications: PushNotificationsService,
+    private vibracion: VibracionService,
     private toastController: ToastController
   ) { }
 
@@ -69,6 +75,7 @@ export class LoginPage {
       console.error("Error durante el ingreso:", err);
       this.mensajeError.set(err?.message ?? "Ocurrió un error al ingresar.");
       this.ingresoIncorrecto.set(true);
+      await this.vibracion.errorFuerte();
     } finally {
       this.cargando.set(false);
     }
@@ -81,6 +88,7 @@ export class LoginPage {
     if (!this.mail.trim() || !this.clave.trim()) {
       this.mensajeError.set("Por favor, ingrese correo y contraseña.");
       this.ingresoIncorrecto.set(true);
+      this.vibracion.errorFuerte();
       return false;
     }
     return true;
@@ -92,6 +100,7 @@ export class LoginPage {
       console.error("Error al iniciar sesión:", error.message);
       this.mensajeError.set("Correo o contraseña incorrectos.");
       this.ingresoIncorrecto.set(true);
+      this.vibracion.errorFuerte();
       return false;
     }
     return true;
@@ -130,7 +139,7 @@ export class LoginPage {
       if (document.activeElement instanceof HTMLElement) {
         document.activeElement.blur();
       }
-      await this.router.navigate(["/clienteInicio"]);
+      await this.router.navigate(["/clienteInicio"], { replaceUrl: true });
     }
   }
 
@@ -150,23 +159,28 @@ export class LoginPage {
   }
 
   private async redirigirSegunRol(rol: string) {
+    const navOpts = { replaceUrl: true };
     switch (rol) {
       case "duenio":
-      case "dueño":
+        await this.router.navigate(["/duenioInicio"], navOpts);
+        break;
       case "supervisor":
-        await this.router.navigate(["/clientes-pendientes"]);
+        await this.router.navigate(["/duenioInicio"], navOpts);
         break;
       case "metre":
-        await this.router.navigate(["/metreInicio"]);
+        await this.router.navigate(["/metreInicio"], navOpts);
         break;
       case "cocinero":
-        await this.router.navigate(["/"]);
+        await this.router.navigate(["/inicio-cocinero"], navOpts);
         break;
       case "cliente":
-        await this.router.navigate(["/clienteInicio"]);
+        await this.router.navigate(["/clienteInicio"], navOpts);
+        break;
+      case "cantinero":
+        await this.router.navigate(["/inicio-cantinero"], navOpts);
         break;
       default:
-        await this.router.navigate(["/inicio"]);
+        await this.router.navigate(["/inicio"], navOpts);
         break;
     }
   }

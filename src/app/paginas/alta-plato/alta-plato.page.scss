@@ -53,6 +53,30 @@
   }
 }
 
+.tipo-producto {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  margin: 0.5rem 0 0.45rem;
+  padding: 6px 12px;
+
+  border: 1px solid rgba(237, 229, 210, 0.45);
+  border-radius: 20px;
+
+  color: var(--basilico-beige);
+
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08rem;
+
+  ion-icon {
+    font-size: 1.1rem;
+  }
+}
+
 /* =========================================================
    FORMULARIO
    ========================================================= */
@@ -153,29 +177,61 @@
 }
 
 /* =========================================================
-   CONTENEDOR DE LAS 3 FOTOS
+   CONTENEDOR DE LAS 3 FOTOS (CARRUSEL HORIZONTAL)
    ========================================================= */
 .fotos-container {
-  display: grid;
-  grid-template-columns:
-    repeat(3, minmax(0, 1fr));
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  overflow-y: hidden;
   gap: 14px;
   width: 100%;
+  padding: 4px 4px 12px;
+  box-sizing: border-box;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(237, 229, 210, 0.35) transparent;
+
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(237, 229, 210, 0.35);
+    border-radius: 4px;
+  }
 }
 
 /* =========================================================
    TARJETA DE CADA FOTO
    ========================================================= */
 .foto-card {
+  flex: 0 0 86%;
+  width: 86%;
+  max-width: 400px;
   min-width: 0;
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
   display: flex;
   flex-direction: column;
   gap: 10px;
   padding: 10px;
   background: rgba(237, 229, 210, 0.08);
-  border: 1px solid rgba(237, 229, 210, 0.35);
+  border: 1.5px solid rgba(237, 229, 210, 0.35);
   border-radius: 16px;
   box-sizing: border-box;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+
+  &:only-child {
+    flex: 0 0 100%;
+    width: 100%;
+    max-width: 100%;
+  }
 }
 
 /* =========================================================
@@ -187,7 +243,7 @@
   aspect-ratio: 1 / 1;
   overflow: hidden;
   border-radius: 12px;
-  background: rgba(237, 229, 210, 0.12);
+  background: rgba(237, 229, 210, 0.08);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -196,7 +252,8 @@
     width: 100%;
     height: 100%;
     display: block;
-    object-fit: cover;
+    object-fit: contain;
+    object-position: center;
   }
 }
 
@@ -329,27 +386,6 @@
   }
 }
 
-/* =========================================================
-   HEADER / VOLVER
-   ========================================================= */
-
-.header-transparente {
-  ion-toolbar {
-    --background: var(--basilico-olive);
-    --border-width: 0;
-    --color: var(--basilico-beige);
-    font-family: var(--font-body);
-  }
-
-  ion-back-button {
-    --color: var(--basilico-beige);
-    font-family: var(--font-body);
-    font-size: 0.95rem;
-    font-weight: 600;
-    text-transform: none;
-  }
-}
-
 .btn-ver-carta {
   --color: var(--basilico-beige);
   --border-color: var(--basilico-beige);
@@ -374,16 +410,10 @@
    ========================================================= */
 
 @media (max-width: 650px) {
-  .fotos-container {
-    grid-template-columns: 1fr;
-  }
   .foto-card {
-    width: 100%;
-    max-width: 420px;
-    margin: 0 auto;
-  }
-  .foto-preview {
-    aspect-ratio: 16 / 10;
+    flex: 0 0 86%;
+    width: 86%;
+    max-width: none;
   }
 }
 

@@ -27,3 +27,118 @@
     margin-bottom: 1rem;
     text-align: center;
 }
+
+.encabezado {
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
+    font-weight: 800;
+    color:  #ede5d2;
+    --background:#283720;
+    margin-bottom: 0.5rem;
+}
+
+.tituloMesa{
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
+    font-weight: 200;
+    color: #283720;
+    margin-bottom: 1rem;
+
+}
+.listaMesa{
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
+    font-weight: 200;
+    color: #283720;
+    margin-bottom: 2rem;
+    row-gap: 1rem;
+    border-radius: 18px;
+    padding: 1rem;
+}
+/* TARJETAS */
+.tarjeta {
+  margin: 0;
+  --background: #ede5d2;
+  border-radius: 18px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.20);
+
+  ion-card-content {
+    min-height: 115px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+  }
+}
+
+
+/* ICONOS */
+.icono {
+  flex-shrink: 0;
+  font-size: 3rem;
+  color: #283720;
+}
+
+
+/* TEXTO */
+.informacion {
+
+  h2 {
+    margin: 0 0 7px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #283720;
+  }
+
+  p {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    color: #283720;
+    line-height: 1.4;
+  }
+}
+
+
+/* PEDIDOS TODAVÍA NO IMPLEMENTADO */
+.tarjeta-deshabilitada {
+  opacity: 0.65;
+}
+
+
+.btonTerracota {
+  font-family: 'Montserrat', sans-serif;
+  --background: #b24d39;             
+  --background-activated: #943e2d;   
+  --background-hover: #a14432;       
+  --color: #ede5d2;               
+  --border-radius: 12px;
+  --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); 
+  
+  /* Ajuste de fuente y texto */
+  font-size: 0.8rem;               /* Tamaño de letra proporcional para estar al costado */
+  font-weight: 700;               
+  text-transform: uppercase;
+  
+  /* Arreglo del tamaño: en vez de %, usamos auto con min-width y padding */
+  width: auto;                     /* Deja de forzar el 30% */
+  min-width: 90px;                 /* Garantiza que la palabra "ASIGNAR" entre completa */
+  --padding-start: 10px;           /* Padding interno de Ionic */
+  --padding-end: 10px;
+  
+  min-height: 38px;
+  margin: 0;                       /* Saca el margen que lo empujaba hacia abajo */
+}
+
+.cliente-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.acciones {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}

@@ -1,0 +1,53 @@
+<!-- Botón flotante para abrir el chat cuando está minimizado -->
+@if (!abierto()) {
+  <div class="chat-fab-container">
+    <ion-button class="btn-fab-chat" (click)="toggleChat()">
+      <ion-icon name="chatbubbles-outline"></ion-icon>
+    </ion-button>
+  </div>
+}
+
+<!-- Ventana del chat desplegada -->
+@if (abierto()) {
+  <div class="chat-ventana-flotante">
+    <!-- Cabecera del chat -->
+    <div class="chat-header">
+      <div class="chat-titulo">
+        <ion-icon name="chatbubbles-outline"></ion-icon>
+        <span>Chat Global - Basílico</span>
+      </div>
+      <ion-button fill="clear" class="btn-minimizar" (click)="toggleChat()">
+        <ion-icon name="remove-outline"></ion-icon>
+      </ion-button>
+    </div>
+
+    <!-- Mensajes -->
+    <div class="pantalla-mensajes">
+      @for (msg of mensajes(); track msg.id) {
+        <div class="burbuja-wrapper" [class.propio]="msg.usuario === identificador">
+          <div class="burbuja">
+            <span class="usuario">{{ msg.usuario }}</span>
+            <p class="texto">{{ msg.mensaje }}</p>
+            <span class="fecha-hora">
+              {{ msg.created_at | date:'dd/MM HH:mm' }}
+            </span>
+          </div>
+        </div>
+      } @empty {
+        <p class="chat-vacio">No hay mensajes. ¡Escribí el primero!</p>
+      }
+    </div>
+
+    <!-- Área de input -->
+    <div class="chat-input-area">
+      <ion-input 
+        [(ngModel)]="nuevoMensaje" 
+        (keyup.enter)="mandar()" 
+        placeholder="Escribe un mensaje...">
+      </ion-input>
+      <ion-button (click)="mandar()">
+        <ion-icon name="send"></ion-icon>
+      </ion-button>
+    </div>
+  </div>
+}

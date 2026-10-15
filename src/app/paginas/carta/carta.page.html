@@ -27,45 +27,76 @@
       </h2>
 
       <p>
-        Descubrí nuestros platos
+        Descubrí nuestros platos y bebidas
       </p>
 
       <div class="decoracion-header"></div>
+
+      <!-- =========================
+           ÍNDICE DE NAVEGACIÓN RÁPIDA
+           ========================= -->
+      @if (productos.length > 0) {
+        <nav class="indice-navegacion" aria-label="Navegación rápida por categorías">
+          @if (platos.length > 0) {
+            <button
+              type="button"
+              class="btn-categoria"
+              (click)="scrollASeccion('seccion-platos')">
+              Platos
+            </button>
+          }
+          @if (bebidas.length > 0) {
+            <button
+              type="button"
+              class="btn-categoria"
+              (click)="scrollASeccion('seccion-bebidas')">
+              Bebidas
+            </button>
+          }
+        </nav>
+      }
     </section>
 
     <!-- =========================
          CARTA VACÍA
          ========================= -->
-    @if (platos.length === 0) {
+    @if (productos.length === 0) {
       <div class="sin-productos">
         <strong>
-          No hay platos disponibles
+          No hay productos disponibles
         </strong>
         <p>
           Todavía no se registraron
-          platos en la carta.
+          productos en la carta.
         </p>
       </div>
     }
 
     <!-- =========================
-         PLATOS
+         SECCION PLATOS y BEBIDAS
          ========================= -->
-    @if (platos.length > 0) {
-      <section class="seccion-productos">
+    @for (
+      seccion of [
+        { titulo: 'Platos', id: 'seccion-platos', productos: platos },
+        { titulo: 'Bebidas', id: 'seccion-bebidas', productos: bebidas }
+      ];
+      track seccion.titulo
+    ) {
+      @if (seccion.productos.length > 0) {
+      <section [id]="seccion.id" class="seccion-productos">
         <div class="titulo-seccion">
           <h3>
-            Platos
+            {{ seccion.titulo }}
           </h3>
           <span>
-            {{ platos.length }}
+            {{ seccion.productos.length }}
             disponibles
           </span>
         </div>
 
         <div class="grid-platos">
           @for (
-            plato of platos;
+            plato of seccion.productos;
             track plato.id
           ) {
             <article class="plato-card">
@@ -87,12 +118,25 @@
                     [alt]="
                       'Fotografía de ' +
                       plato.nombre
+                    "
+                    [class.imagen-vertical]="
+                      fotosVerticales[
+                        plato.fotos[
+                          indiceFoto[plato.id] ?? 0
+                        ]
+                      ]
+                    "
+                    (load)="
+                      detectarOrientacion(
+                        $event,
+                        plato.fotos[
+                          indiceFoto[plato.id] ?? 0
+                        ]
+                      )
                     ">
 
                   <!-- Flechas -->
-                  @if (
-                    plato.fotos.length > 1
-                  ) {
+                  @if (plato.fotos.length > 1 ) {
                     <button
                       type="button"
                       class="flecha-foto flecha-izquierda"
@@ -125,24 +169,13 @@
                         type="button"
                         class="indicador-foto"
                         [class.activo]="
-                          (indiceFoto[plato.id] ?? 0)
-                          === $index
-                        "
-                        (click)="
-                          irAFoto(
-                            plato,
-                            $index
-                          )
-                        "
-                        [attr.aria-label]="
-                          'Ver fotografía ' +
-                          ($index + 1)
-                        ">
+                          (indiceFoto[plato.id] ?? 0) === $index"
+                        (click)=" irAFoto(plato,$index)"
+                        [attr.aria-label]=" 'Ver fotografía ' + ($index + 1)">
                       </button>
                     }
                   </div>
-                }
-                @else {
+                } @else {
                   <div class="sin-foto">
                     <span>
                       Sin fotografía
@@ -160,12 +193,7 @@
                     {{ plato.nombre }}
                   </h3>
                   <span class="precio-plato">
-                    $
-                    {{
-                      formatearPrecio(
-                        plato.precio
-                      )
-                    }}
+                    ${{formatearPrecio(plato.precio)}}
                   </span>
                 </div>
 
@@ -206,5 +234,6 @@
         </div>
       </section>
     }
+  }
   </div>
 </ion-content>

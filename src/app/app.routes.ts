@@ -42,7 +42,7 @@ export const routes: Routes = [
     path: 'qrIngreso',
     loadComponent: () => import('./paginas/qr-ingreso/qr-ingreso.component').then( m => m.QrIngresoComponent)
   },
-   {
+  {
     path: 'clienteInicio',
     loadComponent: () => import('./cliente-inicio/cliente-inicio.component').then( m => m.ClienteInicioComponent)
   },
@@ -61,6 +61,10 @@ export const routes: Routes = [
   {
     path: 'inicio-cocinero',
     loadComponent: () => import('./paginas/cocinero/inicio-cocinero/inicio-cocinero.page').then( m => m.InicioCocineroPage)
+  },
+  {
+    path: 'pedidos-cocina',
+    loadComponent: () => import('./paginas/cocinero/pedidos-cocina/pedidos-cocina.page').then(m => m.PedidosCocinaPage)
   },
   {
     path: 'mozoInicio',
@@ -85,6 +89,30 @@ export const routes: Routes = [
   {
     path: 'juegos/trivia',
     loadComponent: () => import('./paginas/juegos/trivia/trivia.component').then(m => m.TriviaComponent)
+  },
+  {
+    path: 'registroAnonimo',
+    loadComponent: () => import('./paginas/registro-anonimo/registro-anonimo.component').then(m => m.RegistroAnonimoComponent)
+  },
+  {
+    path: 'alta-bebida',
+    loadComponent: () => import('./paginas/alta-bebida/alta-bebida.page').then( m => m.AltaBebidaPage)
+  },
+  {
+    path: 'inicio-cantinero',
+    loadComponent: () => import('./paginas/inicio-cantinero/inicio-cantinero.page').then( m => m.InicioCantineroPage)
+  },
+  {
+    path: 'listaEspera',
+    loadComponent: () => import('./metre/lista-espera/lista-espera.component').then( m => m.ListaEsperaComponent)
+  },
+  {
+    path: 'pedidos-bar',
+    loadComponent: () => import('./paginas/cantinero/pedidos-bar/pedidos-bar.page').then(m => m.PedidosBarPage)
+  },
+  {
+    path: 'chat',
+    loadComponent: () => import('./components/chat/chat.component').then(m => m.ChatComponent)
   },
   {
     path: '**',

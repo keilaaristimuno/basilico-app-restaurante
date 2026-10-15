@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import {
@@ -12,7 +12,7 @@ import {
 import { Supabase } from '../../services/supabase';
 import { Carga } from '../../services/carga';
 import { VibracionService } from '../../services/vibracion';
-import { Plato } from '../../interfaces/plato';
+import { Producto } from '../../interfaces/producto';
 
 @Component({
   selector: 'app-carta',
@@ -29,7 +29,17 @@ import { Plato } from '../../interfaces/plato';
 })
 export class CartaPage {
 
-  platos: Plato[] = [];
+  @ViewChild(IonContent) ionContent?: IonContent;
+
+  productos: Producto[] = [];
+
+  get platos(): Producto[] {
+    return this.productos.filter(producto => producto.tipo === 'plato');
+  }
+
+  get bebidas(): Producto[] {
+    return this.productos.filter(producto => producto.tipo === 'bebida');
+  }
 
   constructor(
     private supabase: Supabase,
@@ -39,26 +49,16 @@ export class CartaPage {
   ) {}
 
   async ionViewWillEnter() {
-    console.log('Entrando a Carta');
-    await this.cargarPlatos();
+    await this.cargarProductos();
   }
 
-  async cargarPlatos() {
+  async cargarProductos() {
     try {
-      this.platos = await this.carga.ejecutar(
+      this.productos = await this.carga.ejecutar(
         'Cargando carta...',
-        () => this.supabase.obtenerPlatos()
+        () => this.supabase.obtenerProductos()
       );
 
-      console.log(
-        'Platos obtenidos:',
-        this.platos
-      );
-
-      console.log(
-        'Cantidad de platos:',
-        this.platos.length
-      );
       // Fuerza a Angular a refrescar el HTML
       this.cdr.detectChanges();
 
@@ -73,57 +73,105 @@ export class CartaPage {
 
   indiceFoto: Record<string, number> = {};
 
+  fotosVerticales: Record<string, boolean> = {};
+
   descripcionExpandida: Record<string, boolean> = {};
 
-  alternarDescripcion(plato: Plato): void {
-    this.descripcionExpandida[plato.id] = !this.descripcionExpandida[plato.id];
+  /**
+   * Detecta la orientación natural de la imagen al cargarse en el DOM.
+   * Si naturalHeight > naturalWidth se marca como vertical para aplicar object-fit: contain.
+   */
+  detectarOrientacion(event: Event, urlFoto?: string): void {
+    const img = event.target as HTMLImageElement;
+    if (img && img.naturalHeight && img.naturalWidth) {
+      const esVertical = img.naturalHeight > img.naturalWidth;
+      if (urlFoto) {
+        this.fotosVerticales[urlFoto] = esVertical;
+      }
+      if (esVertical) {
+        img.classList.add('imagen-vertical');
+      } else {
+        img.classList.remove('imagen-vertical');
+      }
+    }
+  }
+
+  /**
+   * Realiza un desplazamiento suave hacia la sección solicitada dentro del ion-content.
+   */
+  async scrollASeccion(idSeccion: string): Promise<void> {
+    const elemento = document.getElementById(idSeccion);
+    if (!elemento) {
+      return;
+    }
+
+    if (this.ionContent) {
+      try {
+        const scrollEl = await this.ionContent.getScrollElement();
+        const elementoRect = elemento.getBoundingClientRect();
+        const scrollRect = scrollEl.getBoundingClientRect();
+        const destinoY = elementoRect.top - scrollRect.top + scrollEl.scrollTop;
+        const posicionFinal = Math.max(0, destinoY - 12);
+
+        await this.ionContent.scrollToPoint(0, posicionFinal, 450);
+        return;
+      } catch {
+        // Fallback suave en caso de que scrollToPoint no responda
+      }
+    }
+
+    elemento.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  alternarDescripcion(producto: Producto): void {
+    this.descripcionExpandida[producto.id] = !this.descripcionExpandida[producto.id];
   }
   
   /* ======================
           CARROSUEL
   ========================= */
-  anteriorFoto(plato: Plato): void {
+  anteriorFoto(producto: Producto): void {
 
     const indiceActual =
-      this.indiceFoto[plato.id] ?? 0;
+      this.indiceFoto[producto.id] ?? 0;
 
     if (indiceActual === 0) {
 
-      this.indiceFoto[plato.id] =
-        plato.fotos.length - 1;
+      this.indiceFoto[producto.id] =
+        producto.fotos.length - 1;
 
     } else {
 
-      this.indiceFoto[plato.id] =
+      this.indiceFoto[producto.id] =
         indiceActual - 1;
 
     }
   }
 
-  siguienteFoto(plato: Plato): void {
+  siguienteFoto(producto: Producto): void {
 
     const indiceActual =
-      this.indiceFoto[plato.id] ?? 0;
+      this.indiceFoto[producto.id] ?? 0;
 
     if (
       indiceActual ===
-      plato.fotos.length - 1
+      producto.fotos.length - 1
     ) {
 
-      this.indiceFoto[plato.id] = 0;
+      this.indiceFoto[producto.id] = 0;
 
     } else {
 
-      this.indiceFoto[plato.id] =
+      this.indiceFoto[producto.id] =
         indiceActual + 1;
     }
   }
 
   irAFoto(
-    plato: Plato,
+    producto: Producto,
     indice: number
   ): void {
-    this.indiceFoto[plato.id] = indice;
+    this.indiceFoto[producto.id] = indice;
   }
 
   formatearPrecio(

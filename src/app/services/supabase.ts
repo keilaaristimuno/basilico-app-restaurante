@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { Plato } from '../interfaces/plato';
+import { Producto } from '../interfaces/producto';
+import { PedidoSupabaseRelacional } from '../interfaces/pedido';
 
 @Injectable({
   providedIn: 'root',
@@ -62,12 +63,14 @@ export class Supabase {
   }
 
   async guardarDatosClientes(
-    apellidos: string,
-    nombres: string,
-    dni: number,
-    correo: string,
-    clave: string,
-    foto_url: string
+    apellidos: string | null,
+    nombres: string | null,
+    dni: number | null,
+    correo: string | null,
+    clave: string | null,
+    foto_url: string | null,
+    perfil: string | null,
+    estado: string | null,
   ) {
     const { data, error } = await this.clienteSupabase
       .from('clientes')
@@ -77,8 +80,9 @@ export class Supabase {
         dni,
         correo,
         clave,
-        estado: 'pendiente',
-        foto_url
+        foto_url,
+        perfil,
+        estado,
       }]);
 
     if (error) {
@@ -89,7 +93,7 @@ export class Supabase {
     return data;
   }
 
-  async guardarMesa(numero: number, cantidadComensales: number, tipo: string, disponibilidad: string, fotoUrl: string) {
+  async guardarMesa(numero: number, cantidadComensales: number, tipo: string, disponibilidad: string, fotoUrl: string, qr:string) {
     const { data, error } = await this.clienteSupabase
       .from('mesas')
       .insert([
@@ -99,6 +103,7 @@ export class Supabase {
           tipo,
           disponibilidad,
           foto_url: fotoUrl,
+          qr,
           created_at: new Date().toISOString()
         }
       ])
@@ -204,27 +209,86 @@ export class Supabase {
   }
 
   /* ====================================
-          OBTIENE PLATOS desde supabase
+          OBTIENE PRODUCTOS (plato y bebida) desde supabase
   =======================================*/
-  async obtenerPlatos(): Promise<Plato[]> {
+  async obtenerProductos(): Promise<Producto[]> {
 
     const { data, error } = await this.clienteSupabase
       .from('productos')
       .select('*')
-      .eq('tipo', 'plato')
       .order('nombre', {
         ascending: true
       });
 
     if (error) {
       throw Error(
-        `Error al obtener los platos: ${error.message}`
+        `Error al obtener los productos: ${error.message}`
       );
     }
 
-    return (data ?? []) as Plato[];
+    return (data ?? []) as Producto[];
   }
 
+  //verificar si un plato ya existe en la base de datos por su nombre
+  async platoExiste(nombre: string) {
+    const { data, error } = await this.clienteSupabase
+      .from('productos')
+      .select('id')
+      .eq('tipo', 'plato')
+      .like('nombre', nombre.trim())
+      .limit(1);
+
+    if (error) {
+      throw Error(`Error al verificar existencia del plato: ${error.message}`);
+    }
+    return data.length > 0; // Retorna true si el plato existe, false si no 
+  }
+
+  /* =============================
+        GUARDAR BEBIDA
+    ============================= */
+  async guardarBebida(
+    nombre: string,
+    descripcion: string,
+    tiempoElaboracion: number,
+    precio: number,
+    fotos: string[]
+  ) {
+    const { data, error } = await this.clienteSupabase
+      .from('productos')
+      .insert([{
+        tipo: 'bebida',
+        nombre: nombre.trim(),
+        descripcion: descripcion.trim(),
+        tiempo_elaboracion: tiempoElaboracion,
+        precio,
+        fotos
+      }]);
+
+    if (error) {
+      throw new Error(`Error al guardar la bebida: ${error.message}`);
+    }
+    return data;
+  }
+
+  async bebidaExiste(nombre: string): Promise<boolean> {
+    const { data, error } = await this.clienteSupabase
+      .from('productos')
+      .select('id')
+      .eq('tipo', 'bebida')
+      .eq('nombre', nombre.trim())
+      .limit(1);
+
+    if (error) {
+      throw new Error(`Error al verificar la bebida: ${error.message}`);
+    }
+
+    return (data?.length ?? 0) > 0;
+  }
+
+  /* =========================
+        FOTO EMPLEADO
+    ========================== */
 
   // Para subir la foto del empleado a Supabase Storage (bucket 'empleados')
   async subirFotoEmpleado(rutaFoto: string, nombreArchivo: string) {
@@ -292,20 +356,6 @@ export class Supabase {
 
     return data.publicUrl;
   }
-  //verificar si un plato ya existe en la base de datos por su nombre
-  async platoExiste(nombre: string) {
-    const { data, error } = await this.clienteSupabase
-      .from('productos')
-      .select('id')
-      .eq('tipo', 'plato')
-      .like('nombre', nombre.trim())
-      .limit(1);
-
-    if (error) {
-      throw Error(`Error al verificar existencia del plato: ${error.message}`);
-    }
-    return data.length > 0; // Retorna true si el plato existe, false si no 
-  }
 
   async obtenerClientesPendientes() {
     const { data, error } = await this.clienteSupabase
@@ -351,37 +401,160 @@ export class Supabase {
     return data && data.length > 0 ? data[0] : null;
   }
 
-  /* ====================================
-     RESULTADOS DE JUEGOS Y DESCUENTOS
-     ==================================== */
-  async guardarResultadoJuego(
-    juego: string,
-    ganoPrimerIntento: boolean,
-    descuentoAplicado: number | null
-  ) {
-    try {
-      const { data: { user } } = await this.clienteSupabase.auth.getUser();
 
-      const { data, error } = await this.clienteSupabase
-        .from('juegos_resultados')
-        .insert([
-          {
-            cliente_id: user ? user.id : null,
-            juego,
-            gano_primer_intento: ganoPrimerIntento,
-            descuento_aplicado: descuentoAplicado
-          }
-        ])
-        .select();
-
-      if (error) {
-        console.warn('Aviso al guardar en juegos_resultados:', error.message);
-      }
-      return data;
-    } catch (e) {
-      console.warn('Error al registrar resultado en Supabase:', e);
-      return null;
+  //Para obtener la lista de espera desde Supabase
+  async obtenerListaDeEspera() {
+    const { data, error } = await this.clienteSupabase
+      .from("lista_espera")
+      .select("*")
+      .order("created_at", { ascending: true });
+  
+    if (error) {
+      console.error("Error al obtener la lista de espera:", error.message);
+      return [];
     }
+
+    return data;
   }
 
+  // Para eliminar un cliente de la lista de espera en Supabase
+  async eliminarDeListaDeEspera(id: string) {
+    const { error } = await this.clienteSupabase
+      .from('lista_espera')
+      .delete()
+      .eq('id', id);
+  }
+
+  //para asignar una mesa a un cliente en la lista de espera
+  async asignarMesaACliente(clienteId: string, numeroMesa: string) {
+    
+    const { error: errorMesa } = await this.clienteSupabase
+      .from('mesas')
+      .update({
+        disponibilidad: 'ocupada',
+        cliente_id: clienteId
+      })
+      .eq('numero', numeroMesa);
+
+    if (errorMesa) throw errorMesa;
+
+    // eliminar cliente de lista de espera 
+    this.eliminarDeListaDeEspera(clienteId);
+  }
+
+  
+  /* ============================================================
+     OBTENER PEDIDOS CONFIRMADOS PARA COCINA (PUNTO 16)
+  ============================================================ */
+  async obtenerPedidosConfirmadosCocina(): Promise<PedidoSupabaseRelacional[]> {
+    const { data, error } = await this.clienteSupabase
+      .from('pedidos')
+      .select(`
+        id,
+        estado,
+        created_at,
+        mesas (
+          id,
+          numero
+        ),
+        pedido_items (
+          id,
+          cantidad,
+          precio_unitario,
+          productos (
+            id,
+            nombre,
+            tipo
+          )
+        )
+      `)
+      .eq('estado', 'confirmado')
+      .order('created_at', { ascending: true })
+      .returns<PedidoSupabaseRelacional[]>();
+
+    if (error) {
+      console.error('Error al obtener los pedidos para cocina:', error.message);
+      throw new Error(`Error al obtener los pedidos para cocina: ${error.message}`);
+    }
+
+    return data ?? [];
+  }
+
+  /* ============================================================
+     OBTENER PEDIDOS CONFIRMADOS PARA BAR (PUNTO 17)
+  ============================================================ */
+  async obtenerPedidosConfirmadosBar(): Promise<PedidoSupabaseRelacional[]> {
+    const { data, error } = await this.clienteSupabase
+      .from('pedidos')
+      .select(`
+        id,
+        estado,
+        created_at,
+        mesas (
+          id,
+          numero
+        ),
+        pedido_items (
+          id,
+          cantidad,
+          precio_unitario,
+          productos (
+            id,
+            nombre,
+            tipo
+          )
+        )
+      `)
+      .eq('estado', 'confirmado')
+      .order('created_at', { ascending: true })
+      .returns<PedidoSupabaseRelacional[]>();
+
+    if (error) {
+      console.error('Error al obtener los pedidos para bar:', error.message);
+      throw new Error(`Error al obtener los pedidos para bar: ${error.message}`);
+    }
+
+    return data ?? [];
+  }
+
+
+  
+//CHAT ----
+async obtenerHistorialChat() {
+  const { data, error } = await this.clienteSupabase
+    .from('consultas')
+    .select('*')
+    .order('created_at', { ascending: true }); // Los más viejos primero, los nuevos abajo
+
+  if (error) console.error('Error al traer mensajes:', error.message);
+  return data || [];
 }
+
+//Guardar un mensaje nuevo (insertamos el nombre del usuario y el texto)
+async enviarMensaje(identificador: string, textoMensaje: string) {
+  const { error } = await this.clienteSupabase
+    .from('consultas')
+    .insert([{ identificador: identificador, mensaje: textoMensaje }]); 
+    
+
+  if (error) console.error('Error al guardar mensaje:', error.message);
+}
+
+//Suscribirse al tiempo real para recibir mensajes de otros clientes
+//Callback como un mensajero que lleva elmsj del servicioo al componente
+escucharChat(callback: (nuevoMensaje: any) => void) {
+  return this.clienteSupabase
+    .channel('sala-chat') // Canal cualquiera
+    .on(
+      'postgres_changes',
+      //Le dice a Supabase que querés reaccionar 
+      //a los cambios que ocurran dentro de las tablas de la base de datos.
+      { event: 'INSERT', schema: 'public', table: 'consultas' }, // Escucha solo cuando se inserta algo
+      (payload) => { //el objeto que te manda Supabase con toda la información de lo que acaba de pasar.
+        callback(payload.new); // Ejecuta la función mandando el mensaje nuevo
+      }
+    )
+    .subscribe();
+  }
+}
+

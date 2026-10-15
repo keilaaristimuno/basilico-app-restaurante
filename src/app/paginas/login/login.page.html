@@ -1,3 +1,15 @@
+<ion-header class="header-transparente">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button
+        defaultHref="/inicio"
+        text="Volver"
+        icon="chevron-back-outline">
+      </ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content class="login-content">
   <div class="login-container">
     
@@ -13,6 +25,7 @@
         
         <ion-item class="custom-item">
           <ion-input 
+            label="Correo"
             type="email" 
             labelPlacement="floating" 
             fill="outline" 
@@ -23,11 +36,12 @@
 
         <ion-item class="custom-item">
           <ion-input 
+            label="Contraseña"
             type="password"
             labelPlacement="floating" 
             fill="outline" 
             [(ngModel)]="clave" 
-            placeholder="Ingrese su clave">
+            placeholder="Ingrese su Contraseña">
           </ion-input>
         </ion-item>
 
@@ -35,7 +49,7 @@
 
       <!-- Botones -->
       <div class="">
-        <ion-button class="btonVerde" (click)="ingresar()" [disabled]="cargando()">
+        <ion-button class="btonVerdeBorde" (click)="ingresar()" [disabled]="cargando()">
           @if (cargando()) {
             <ion-spinner name="crescent"></ion-spinner>
           } @else {
@@ -44,7 +58,7 @@
         </ion-button>
         
         <ion-button expand="block" fill="outline" class="btonTerracota" routerLink="/registro">
-          Ingreso Rápido
+          Registrarse
         </ion-button>
       </div>
 

@@ -116,5 +116,89 @@
       }
     </div>
 
+    <!-- =========================================================
+         PEDIDOS EN PREPARACIÓN / LISTOS PARA ENTREGAR (PUNTO 15)
+         Cada parte del pedido muestra el estado de su sector
+         ========================================================= -->
+    <header class="encabezado-seccion encabezado-en-curso">
+      <h2>En preparación</h2>
+      <p>Estado de cada parte del pedido en cocina y bar. Se avisa cuando el pedido está completo.</p>
+    </header>
+
+    @if (pedidosEnCurso().length === 0) {
+      <div class="tarjeta-vacia">
+        <ion-icon name="hourglass-outline"></ion-icon>
+        <h3>No hay pedidos en preparación</h3>
+        <p>Los pedidos confirmados aparecerán aquí con el avance de cada sector.</p>
+      </div>
+    }
+
+    <div class="lista-pedidos-mozo">
+      @for (pedido of pedidosEnCurso(); track pedido.id) {
+        <article class="tarjeta-pedido-mozo" [class.pedido-completo]="pedido.estado === 'listo'">
+
+          <div class="cabecera-pedido">
+            <div class="identificador-mesa">
+              <ion-icon name="restaurant-outline"></ion-icon>
+              <span>Mesa N° {{ pedido.numeroMesa }}</span>
+            </div>
+
+            <div class="fecha-hora-pedido">
+              <ion-icon name="time-outline"></ion-icon>
+              <span>{{ pedido.fechaHora }}</span>
+            </div>
+          </div>
+
+          @if (pedido.estado === 'listo') {
+            <div class="aviso-pedido-completo">
+              <ion-icon name="checkmark-done-circle-outline"></ion-icon>
+              <span>Pedido completo — Listo para entregar</span>
+            </div>
+          }
+
+          <!-- Parte de Cocina -->
+          @if (tieneProductosDe(pedido, 'plato')) {
+            <div class="parte-sector">
+              <div class="cabecera-sector">
+                <span class="nombre-sector">
+                  <ion-icon name="restaurant-outline"></ion-icon>
+                  Cocina
+                </span>
+                <span class="estado-sector" [class.sector-listo]="pedido.cocina_listo">
+                  {{ pedido.cocina_listo ? 'Listo' : 'En preparación' }}
+                </span>
+              </div>
+              @for (item of pedido.items; track $index) {
+                @if (item.tipo === 'plato') {
+                  <div class="item-sector">{{ item.cantidad }}x {{ item.nombre }}</div>
+                }
+              }
+            </div>
+          }
+
+          <!-- Parte de Bar -->
+          @if (tieneProductosDe(pedido, 'bebida')) {
+            <div class="parte-sector">
+              <div class="cabecera-sector">
+                <span class="nombre-sector">
+                  <ion-icon name="wine-outline"></ion-icon>
+                  Bar
+                </span>
+                <span class="estado-sector" [class.sector-listo]="pedido.bar_listo">
+                  {{ pedido.bar_listo ? 'Listo' : 'En preparación' }}
+                </span>
+              </div>
+              @for (item of pedido.items; track $index) {
+                @if (item.tipo === 'bebida') {
+                  <div class="item-sector">{{ item.cantidad }}x {{ item.nombre }}</div>
+                }
+              }
+            </div>
+          }
+
+        </article>
+      }
+    </div>
+
   </div>
 </ion-content>

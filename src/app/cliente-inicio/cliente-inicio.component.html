@@ -156,7 +156,46 @@
                   ¡El mozo confirmó tu pedido! Ya fue derivado a cocina y bar para su elaboración.
                 </p>
 
+                <!-- AVANCE POR SECTOR (PUNTO 15) -->
+                <div class="avance-sectores">
+                  @if (tieneProductosDe(pedido, 'plato')) {
+                    <div class="fila-sector">
+                      <span><ion-icon name="restaurant-outline"></ion-icon> Cocina</span>
+                      <span class="estado-sector" [class.sector-listo]="pedido.cocina_listo">
+                        {{ pedido.cocina_listo ? 'Listo' : 'En preparación' }}
+                      </span>
+                    </div>
+                  }
+                  @if (tieneProductosDe(pedido, 'bebida')) {
+                    <div class="fila-sector">
+                      <span><ion-icon name="wine-outline"></ion-icon> Bar</span>
+                      <span class="estado-sector" [class.sector-listo]="pedido.bar_listo">
+                        {{ pedido.bar_listo ? 'Listo' : 'En preparación' }}
+                      </span>
+                    </div>
+                  }
+                </div>
+
                 <!-- ACCESO A JUEGOS Y DESCUENTOS (PUNTO 14) -->
+                <ion-button
+                  expand="block"
+                  class="btonTerracota btn-juegos"
+                  routerLink="/juegos">
+                  <ion-icon name="game-controller-outline" slot="start"></ion-icon>
+                  Juegos y Descuentos
+                </ion-button>
+              }
+
+              <!-- ESTADO LISTO: PEDIDO COMPLETO EN TODOS LOS SECTORES (PUNTO 15) -->
+              @if (pedido.estado === 'listo') {
+                <div class="badge-estado estado-confirmado">
+                  <ion-icon name="checkmark-done-circle-outline"></ion-icon>
+                  <span>¡Pedido listo!</span>
+                </div>
+                <p class="explicacion-estado">
+                  Cocina y bar terminaron tu pedido. El mozo ya está por llevarlo a tu mesa.
+                </p>
+
                 <ion-button
                   expand="block"
                   class="btonTerracota btn-juegos"

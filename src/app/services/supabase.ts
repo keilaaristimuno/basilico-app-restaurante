@@ -229,6 +229,72 @@ export class Supabase {
     return (data ?? []) as Producto[];
   }
 
+  /* ====================================
+          EDITAR / ELIMINAR PRODUCTO (perfil empleado)
+  =======================================*/
+  async actualizarProducto(
+    id: string,
+    cambios: Pick<Producto, 'nombre' | 'descripcion' | 'tiempo_elaboracion' | 'precio' | 'fotos'>
+  ): Promise<Producto> {
+    const { data, error } = await this.clienteSupabase
+      .from('productos')
+      .update({
+        nombre: cambios.nombre.trim(),
+        descripcion: cambios.descripcion.trim(),
+        tiempo_elaboracion: cambios.tiempo_elaboracion,
+        precio: cambios.precio,
+        fotos: cambios.fotos
+      })
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) {
+      throw new Error(`Error al actualizar el producto: ${error.message}`);
+    }
+    return data as Producto;
+  }
+
+  async eliminarProducto(id: string): Promise<void> {
+    const { error } = await this.clienteSupabase
+      .from('productos')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      // 23503: el producto está referenciado por pedidos existentes (clave foránea)
+      if (error.code === '23503') {
+        throw new Error('No se puede eliminar: el producto forma parte de pedidos registrados.');
+      }
+      throw new Error(`Error al eliminar el producto: ${error.message}`);
+    }
+  }
+
+  /**
+   * Borra del bucket 'productos' los archivos correspondientes a las URLs públicas recibidas.
+   * Ignora las URLs que no pertenecen al bucket.
+   */
+  async eliminarFotosProducto(urls: string[]): Promise<void> {
+    const marcador = '/storage/v1/object/public/productos/';
+    const rutas = urls
+      .map(url => {
+        const indice = url.indexOf(marcador);
+        if (indice === -1) return '';
+        return decodeURIComponent(url.substring(indice + marcador.length).split('?')[0]);
+      })
+      .filter(ruta => ruta !== '');
+
+    if (rutas.length === 0) return;
+
+    const { error } = await this.clienteSupabase.storage
+      .from('productos')
+      .remove(rutas);
+
+    if (error) {
+      throw new Error(`Error al eliminar las fotos: ${error.message}`);
+    }
+  }
+
   //verificar si un plato ya existe en la base de datos por su nombre
   async platoExiste(nombre: string) {
     const { data, error } = await this.clienteSupabase

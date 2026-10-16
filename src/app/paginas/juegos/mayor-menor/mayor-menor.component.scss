@@ -1,147 +1,67 @@
 .fondo-mayor-menor {
   --background: #283720;
-  background-color: #283720;
+  --overflow: hidden;
+  height: 100%;
   color: #ede5d2;
   font-family: 'Montserrat', sans-serif;
 }
 
-.contenedor-principal {
-  padding: 16px;
+.pantalla-juego-completa {
+  height: calc(100% - 68px);
+  width: 100%;
   max-width: 520px;
   margin: 0 auto;
+  padding: 8px 12px 12px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  min-height: calc(100vh - 56px);
-  box-sizing: border-box;
+  justify-content: space-between;
+  gap: 8px;
 }
 
-/* Encabezado */
-.encabezado-juego {
-  text-align: center;
-
-  .logo-juego {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 4px;
-
-    .logo-img {
-      height: 48px;
-      object-fit: contain;
-    }
-  }
-
-  .font-logo {
-    font-family: 'Alex Brush', cursive;
-    font-size: 2.8rem;
-    color: #ede5d2;
-    margin: 0;
-    line-height: 1.1;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-  }
-
-  .subtitulo-juego {
-    font-size: 0.85rem;
-    color: rgba(237, 229, 210, 0.85);
-    margin: 4px 0 0;
-  }
-}
-
-/* Banner de Promoción */
-.banner-promo {
-  .tarjeta-promo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 14px;
-    border-radius: 12px;
-    font-size: 0.85rem;
-
-    .icono-promo {
-      font-size: 1.6rem;
-      flex-shrink: 0;
-    }
-
-    .texto-promo {
-      .etiqueta-promo {
-        display: block;
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        font-weight: 700;
-        margin-bottom: 2px;
-      }
-      p {
-        margin: 0;
-        line-height: 1.25;
-      }
-    }
-
-    &.activa {
-      background: rgba(46, 125, 50, 0.35);
-      border: 1px solid rgba(129, 199, 132, 0.5);
-      color: #e8f5e9;
-      .etiqueta-promo { color: #a5d6a7; }
-    }
-
-    &.participa {
-      background: rgba(184, 93, 56, 0.35);
-      border: 1px solid rgba(224, 122, 95, 0.6);
-      color: #ede5d2;
-      .etiqueta-promo { color: #ffb74d; }
-    }
-
-    &.libre {
-      background: rgba(237, 229, 210, 0.12);
-      border: 1px solid rgba(237, 229, 210, 0.25);
-      color: #ede5d2;
-      .etiqueta-promo { color: #ede5d2; }
-    }
-  }
-}
-
-/* Marcadores */
-.marcador-partida {
+/* =========================================================
+   MARCADOR COMPACTO SUPERIOR
+   ========================================================= */
+.marcador-partida-compacto {
+  flex-shrink: 0;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(237, 229, 210, 0.2);
+  border-radius: 12px;
+  padding: 6px 14px;
   display: flex;
   align-items: center;
   justify-content: space-around;
-  background: rgba(0, 0, 0, 0.28);
-  border: 1px solid rgba(237, 229, 210, 0.2);
-  border-radius: 14px;
-  padding: 10px 12px;
 
-  .stat-caja {
+  .stat-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
-    gap: 2px;
 
-    .stat-icono {
-      font-size: 1.2rem;
-    }
-
-    .stat-etiqueta {
-      font-size: 0.72rem;
+    .stat-lbl {
+      font-size: 0.68rem;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      color: rgba(237, 229, 210, 0.7);
+      color: #c5d4be;
+      font-weight: 600;
     }
 
-    .stat-valor {
-      font-size: 1.15rem;
+    .stat-val {
+      font-size: 1.05rem;
       font-weight: 800;
       color: #ede5d2;
+
+      &.highlight {
+        color: #ffb74d;
+      }
     }
 
     .corazones-fila {
       display: flex;
-      gap: 4px;
+      gap: 3px;
 
       .icono-corazon {
-        font-size: 1.25rem;
+        font-size: 1.15rem;
         color: #e53935;
-        transition: transform 0.2s ease;
 
         &.vida-perdida {
           color: rgba(237, 229, 210, 0.3);
@@ -150,26 +70,29 @@
     }
   }
 
-  .divisor-stat {
+  .stat-divisor {
     width: 1px;
-    height: 34px;
-    background: rgba(237, 229, 210, 0.15);
+    height: 24px;
+    background: rgba(237, 229, 210, 0.2);
   }
 }
 
-/* Carta Culinaria */
-.seccion-carta {
+/* =========================================================
+   CARTA CULINARIA CENTRAL
+   ========================================================= */
+.seccion-carta-central {
+  flex: 1;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  min-height: 0;
   perspective: 1000px;
-  margin: 4px 0;
 
   .carta-marco {
     position: relative;
-    width: 250px;
-    height: 330px;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 220px;
+    height: 270px;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     transform-style: preserve-3d;
 
     &.volteando {
@@ -184,9 +107,9 @@
     background: linear-gradient(145deg, #ede5d2 0%, #f4f0e6 100%);
     border-radius: 20px;
     border: 3px solid #b85d38;
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5), inset 0 0 0 4px rgba(40, 55, 32, 0.15);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5), inset 0 0 0 3px rgba(40, 55, 32, 0.12);
     color: #283720;
-    padding: 16px;
+    padding: 12px 14px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -206,16 +129,15 @@
       .badge-categoria {
         background: #283720;
         color: #ede5d2;
-        font-size: 0.68rem;
+        font-size: 0.65rem;
         font-weight: 700;
         text-transform: uppercase;
-        padding: 4px 8px;
-        border-radius: 8px;
-        letter-spacing: 0.5px;
+        padding: 3px 7px;
+        border-radius: 6px;
       }
 
       .valor-esquina {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
         font-weight: 900;
         color: #b85d38;
       }
@@ -225,23 +147,23 @@
       text-align: center;
 
       .icono-plato {
-        font-size: 3.8rem;
-        margin-bottom: 6px;
-        filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.15));
+        font-size: 3.2rem;
+        margin-bottom: 2px;
+        filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.15));
       }
 
       .nombre-plato {
-        font-size: 1.25rem;
+        font-size: 1.15rem;
         font-weight: 800;
         color: #283720;
         margin: 0;
-        line-height: 1.2;
+        line-height: 1.15;
       }
 
       .subtitulo-plato {
-        font-size: 0.8rem;
+        font-size: 0.72rem;
         color: #666;
-        margin: 4px 0 0;
+        margin: 2px 0 0;
         font-style: italic;
       }
     }
@@ -251,16 +173,16 @@
       justify-content: space-between;
       align-items: center;
       border-top: 1px dashed rgba(40, 55, 32, 0.25);
-      padding-top: 8px;
+      padding-top: 6px;
 
       .valor-central-destacado {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
         font-weight: 900;
         color: #b85d38;
       }
 
       .rango-carta {
-        font-size: 0.65rem;
+        font-size: 0.62rem;
         text-transform: uppercase;
         color: #888;
         font-weight: 600;
@@ -269,16 +191,19 @@
   }
 }
 
-/* Acciones y Botones Gigantes */
-.seccion-acciones {
-  margin-top: auto;
+/* =========================================================
+   BOTONES XXL GIGANTES: MAYOR O MENOR
+   ========================================================= */
+.seccion-acciones-xxl {
+  flex-shrink: 0;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 6px;
 
-  .instruccion-turno {
+  .instruccion-turno-compacta {
     text-align: center;
-    font-size: 0.95rem;
+    font-size: 0.88rem;
     margin: 0;
     color: #ede5d2;
 
@@ -287,57 +212,60 @@
     }
   }
 
-  .fila-botones-gigantes {
+  .fila-botones-xxl {
     display: flex;
-    gap: 12px;
+    gap: 10px;
+    width: 100%;
 
-    ion-button {
+    .boton-accion-xxl {
       flex: 1;
-      height: 72px;
-      --border-radius: 16px;
-      font-weight: 700;
+      height: 80px;
+      min-height: 76px;
+      --border-radius: 18px;
+      font-weight: 800;
       text-transform: uppercase;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-      transition: transform 0.15s ease, filter 0.15s ease;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+      margin: 0;
+      transition: transform 0.15s ease;
 
       &:active {
-        transform: scale(0.97);
+        transform: scale(0.96);
       }
 
-      .icono-flecha {
-        font-size: 2.2rem;
+      .icono-flecha-xxl {
+        font-size: 2.6rem;
         margin-right: 6px;
       }
 
-      .texto-boton {
+      .texto-boton-xxl {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         text-align: left;
 
-        .titulo-accion {
-          font-size: 1.25rem;
+        .titulo-accion-xxl {
+          font-size: 1.35rem;
           font-weight: 900;
           letter-spacing: 0.5px;
           line-height: 1.1;
         }
 
-        .subtexto-accion {
+        .subtexto-accion-xxl {
           font-size: 0.68rem;
           font-weight: 500;
-          opacity: 0.85;
+          opacity: 0.9;
           text-transform: none;
         }
       }
     }
 
-    .boton-accion-mayor {
+    .btonVerde {
       --background: #3b522b;
       --color: #ede5d2;
       border: 2px solid rgba(237, 229, 210, 0.4);
     }
 
-    .boton-accion-menor {
+    .btonTerracota {
       --background: #b85d38;
       --color: #ede5d2;
       border: 2px solid rgba(237, 229, 210, 0.4);
@@ -345,74 +273,84 @@
   }
 }
 
-/* Panel de Fin de Partida */
-.panel-resultado {
+/* =========================================================
+   PANEL FIN DE PARTIDA XXL
+   ========================================================= */
+.tarjeta-fin-partida-xxl {
+  flex: 1;
   background: rgba(0, 0, 0, 0.45);
-  border-radius: 18px;
-  padding: 20px 16px;
+  border: 2px solid rgba(237, 229, 210, 0.25);
+  border-radius: 22px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  border: 2px solid rgba(237, 229, 210, 0.3);
-  animation: fadeIn 0.3s ease-out;
+  gap: 12px;
 
-  .icono-resultado {
-    font-size: 3.5rem;
-    margin-bottom: 6px;
+  .icono-resultado-xxl {
+    font-size: 4rem;
   }
 
-  h2 {
+  .titulo-fin {
     font-size: 1.6rem;
-    font-weight: 800;
+    font-weight: 900;
     margin: 0;
     color: #ede5d2;
   }
 
-  .mensaje-resultado {
-    font-size: 0.95rem;
-    color: rgba(237, 229, 210, 0.9);
-    margin: 8px 0 16px;
-    line-height: 1.35;
+  .subtitulo-fin {
+    font-size: 0.9rem;
+    margin: 0;
+    color: #c5d4be;
   }
 
-  &.victoria {
-    border-color: #81c784;
-    h2 { color: #a5d6a7; }
+  .caja-premio-xxl {
+    background: linear-gradient(135deg, rgba(46, 125, 50, 0.5), rgba(76, 175, 80, 0.3));
+    border: 2px solid #81c784;
+    border-radius: 16px;
+    padding: 12px 18px;
+    width: 100%;
+
+    .badge-premio-otorgado {
+      background: #ffd700;
+      color: #283720;
+      font-weight: 800;
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+    }
+
+    h3 {
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: #ede5d2;
+      margin: 6px 0 2px;
+    }
+
+    p {
+      font-size: 0.8rem;
+      color: #c5d4be;
+      margin: 0;
+    }
   }
 
-  &.derrota {
-    border-color: #e57373;
-    h2 { color: #ef9a9a; }
-  }
-
-  .botones-resultado {
+  .zona-botones-fin-xxl {
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    margin-top: 6px;
 
-    ion-button {
-      height: 48px;
-      --border-radius: 12px;
-      font-weight: 700;
+    .boton-accion-xxl {
+      height: 62px;
+      --border-radius: 16px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin: 0;
     }
   }
-}
-
-/* Botones con estilo corporativo */
-.btonVerde {
-  --background: #3b522b;
-  --color: #ede5d2;
-}
-
-.btonTerracota {
-  --background: #b85d38;
-  --color: #ede5d2;
-}
-
-.btonBeige {
-  --color: #ede5d2;
-  --border-color: #ede5d2;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
 }

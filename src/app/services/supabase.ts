@@ -427,19 +427,33 @@ export class Supabase {
 
   //para asignar una mesa a un cliente en la lista de espera
   async asignarMesaACliente(clienteId: string, numeroMesa: string) {
-    
+
+    // El metre asigna → disponibilidad pasa a 'asignada' (no 'ocupada').
+    // 'ocupada' se establece recién cuando el cliente escanea el QR de la mesa.
     const { error: errorMesa } = await this.clienteSupabase
       .from('mesas')
       .update({
-        disponibilidad: 'ocupada',
+        disponibilidad: 'asignada',
         cliente_id: clienteId
       })
       .eq('numero', numeroMesa);
 
     if (errorMesa) throw errorMesa;
 
-    // eliminar cliente de lista de espera 
-    this.eliminarDeListaDeEspera(clienteId);
+    // Eliminar de lista de espera filtrando por cliente_id (no por el id del registro).
+    await this.eliminarClienteDeListaDeEspera(clienteId);
+  }
+
+  // Elimina el registro de lista_espera cuyo cliente_id coincide.
+  async eliminarClienteDeListaDeEspera(clienteId: string) {
+    const { error } = await this.clienteSupabase
+      .from('lista_espera')
+      .delete()
+      .eq('cliente_id', clienteId);
+
+    if (error) {
+      console.error('Error al eliminar de lista de espera:', error.message);
+    }
   }
 
   
@@ -555,6 +569,32 @@ escucharChat(callback: (nuevoMensaje: any) => void) {
       }
     )
     .subscribe();
+  }
+
+  /**
+   * Registra el resultado de una partida de juego en Supabase.
+   */
+  async guardarResultadoJuego(juego: string, gano: boolean, descuento: number | null) {
+    try {
+      const { data: { user } } = await this.clienteSupabase.auth.getUser();
+      const payload: any = {
+        juego,
+        gano,
+        descuento,
+        user_id: user?.id || null,
+        created_at: new Date().toISOString()
+      };
+
+      const { error } = await this.clienteSupabase
+        .from('juegos')
+        .insert([payload]);
+
+      if (error) {
+        console.warn('Registro de juego en Supabase (tabla opcional):', error.message);
+      }
+    } catch (e) {
+      console.warn('No se pudo registrar resultado del juego en Supabase:', e);
+    }
   }
 }
 

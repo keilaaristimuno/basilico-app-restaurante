@@ -1,77 +1,200 @@
 @import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Montserrat:ital,wght@0,100..900;1,100..900&family=SN+Pro:ital,wght@0,200..900;1,200..900&display=swap');
+
 .login-content {
-  --background: var(--basilico-olive);
+  --background: var(--basilico-olive, #283720);
+  --overflow: hidden;
+  height: 100%;
 }
 
-.contenido-cliente {
+.pantalla-completa-cliente {
   width: 100%;
-  max-width: 580px;
+  max-width: 540px;
+  height: calc(100% - 68px);
   margin: 0 auto;
-  padding: 1.5rem 1.25rem 2rem;
+  padding: 16px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
-/* =========================
-   LOGO
-   ========================= */
-.contenedorLogo {
+.tarjeta-pantalla-completa {
+  flex: 1;
   width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 0.8rem;
-
-  img {
-    width: clamp(55px, 18vw, 85px);
-    height: auto;
-    display: block;
-  }
-}
-
-/* =========================
-   BIENVENIDA
-   ========================= */
-.header-section {
-  width: 100%;
-  text-align: center;
-  margin-bottom: 1.2rem;
-}
-
-.titulo {
-  font-family: 'Alex Brush', cursive;
-  font-size: clamp(2.6rem, 13vw, 4rem);
-  line-height: 1;
-  color: #ede5d2;
-  margin: 0 0 0.8rem;
-}
-
-.texto {
-  display: block;
-  font-family: 'Montserrat', sans-serif;
-  font-size: clamp(0.85rem, 3.8vw, 1rem);
-  line-height: 1.35;
-  color: #ede5d2;
-  text-align: center;
-  max-width: 420px;
-  margin: 0 auto;
-}
-
-/* =========================
-   BOTONES
-   ========================= */
-.acciones-cliente {
-  width: 100%;
-  height: 15.5rem;
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
-  margin-top: 0.5rem;
+  justify-content: space-between;
+  background: rgba(237, 229, 210, 0.08);
+  border: 2px solid rgba(237, 229, 210, 0.22);
+  border-radius: 24px;
+  padding: 20px 16px;
+  box-sizing: border-box;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
 
-  ion-button, button {
-    height: 100%;
+  .info-superior {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+
+    .badge-bienvenida,
+    .badge-espera,
+    .badge-asignada {
+      display: inline-block;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 20px;
+    }
+
+    .badge-bienvenida {
+      background: #ede5d2;
+      color: #283720;
+    }
+
+    .badge-espera {
+      background: #d48b1d;
+      color: #ede5d2;
+    }
+
+    .badge-asignada {
+      background: #2e7d32;
+      color: #ede5d2;
+    }
+
+    .numero-mesa-destacado {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 8px 0;
+      padding: 8px 20px;
+      background: rgba(237, 229, 210, 0.15);
+      border-radius: 16px;
+      border: 1px solid rgba(237, 229, 210, 0.3);
+
+      .etiqueta-mesa {
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+        color: #c5d4be;
+        font-weight: 700;
+      }
+
+      .valor-mesa {
+        font-size: 2.8rem;
+        font-weight: 900;
+        color: #ede5d2;
+        line-height: 1;
+      }
+    }
+
+    .subtexto-instruccion {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      color: #ede5d2;
+      opacity: 0.92;
+      max-width: 360px;
+      margin: 4px auto 0;
+    }
+  }
+
+  .zona-boton-xxl {
+    flex: 1;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    margin-top: 18px;
+    min-height: 180px;
+
+    .boton-xxl {
+      width: 100%;
+      height: 100%;
+      min-height: 180px;
+      --border-radius: 22px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+      margin: 0;
+
+      .contenido-boton-xxl {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        padding: 16px;
+
+        .icono-xxl {
+          font-size: 4.2rem;
+          color: #283720;
+          filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+        }
+
+        .texto-boton-xxl {
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1.3rem;
+          font-weight: 900;
+          letter-spacing: 0.5px;
+          color: #283720;
+          text-transform: uppercase;
+          line-height: 1.2;
+        }
+
+        .subtexto-boton-xxl {
+          font-family: 'Montserrat', sans-serif;
+          font-size: 0.8rem;
+          color: #4a5643;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+  .zona-espera-xxl {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px 0;
+
+    .circulo-espera-animado {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: rgba(237, 229, 210, 0.12);
+      border: 3px solid rgba(237, 229, 210, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: pulsar 2s ease-in-out infinite;
+
+      .icono-espera-xxl {
+        font-size: 4rem;
+        color: #ede5d2;
+      }
+    }
+
+    .texto-estado-espera {
+      text-align: center;
+
+      h3 {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.35rem;
+        font-weight: 800;
+        color: #ede5d2;
+        margin: 0 0 6px;
+      }
+
+      p {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.9rem;
+        color: #c5d4be;
+        margin: 0;
+      }
+    }
   }
 }
 
@@ -293,3 +416,38 @@ ion-modal.modal-basilico {
     }
   }
 }
+
+/* =========================
+   INDICADOR DE ESPERA
+   ========================= */
+.waiting-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  padding: 1.2rem 1.5rem;
+  background: rgba(237, 229, 210, 0.12);
+  border: 1px solid rgba(237, 229, 210, 0.3);
+  border-radius: 16px;
+
+  .icono-espera {
+    font-size: 2.4rem;
+    color: #ede5d2;
+    opacity: 0.85;
+    animation: pulsar 1.6s ease-in-out infinite;
+  }
+
+  .texto-espera {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    color: #ede5d2;
+    opacity: 0.8;
+    letter-spacing: 0.02em;
+  }
+}
+
+@keyframes pulsar {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.12); }
+}

@@ -1,80 +1,83 @@
-<ion-content class="login-content ion-text-center">
-  <app-navbar rutaInicio="/clienteInicio"></app-navbar>
+<ion-content [fullscreen]="true" class="login-content ion-text-center">
+  <app-navbar rutaInicio="/clienteInicio" titulo="Recepción"></app-navbar>
 
-  <div class="contenido-cliente">
-    <div class="contenedorLogo">
-      <img src="assets/Basilico/Logo_beige.png"
-          alt="Logotipo">
-    </div>
-
+  <div class="pantalla-completa-cliente">
     @if(!codigoQrIngreso()){
-      <div class="header-section">
-      
-        <p class="titulo">¡Bienvenido!</p>
-        <ion-note class="texto">
-          Escaneá el QR para recepcionarte
-        </ion-note>    
-      </div>
+      <div class="tarjeta-pantalla-completa">
+        <div class="info-superior">
+          <span class="badge-bienvenida">Bienvenido a Basílico</span>
+          <p class="subtexto-instruccion">
+            Escaneá el código QR ubicado en el ingreso para anotarte en la lista de espera
+          </p>
+        </div>
 
-      <div class="acciones-cliente">
-        <ion-button
-          expand="block"
-          class="btonBeige"
-          (click)="escanearIngreso()">
-
-          <ion-icon
-            name="qr-code-outline"
-            slot="start">
-          </ion-icon>
-          Escanear QR de Ingreso
-        </ion-button>
-      
-<!-- 
-        <ion-button
-          expand="block"
-          class="btonTerracota"
-          routerLink="/juegos">
-
-          <ion-icon
-            name="game-controller-outline"
-            slot="start">
-          </ion-icon>
-          Juegos y Descuentos
-        </ion-button> -->
-        
+        <div class="zona-boton-xxl">
+          <ion-button
+            expand="block"
+            class="boton-xxl btonBeige"
+            (click)="escanearIngreso()">
+            <div class="contenido-boton-xxl">
+              <ion-icon name="qr-code-outline" class="icono-xxl"></ion-icon>
+              <span class="texto-boton-xxl">Escanear QR de Ingreso</span>
+              <span class="subtexto-boton-xxl">Tocar para abrir la cámara</span>
+            </div>
+          </ion-button>
+        </div>
       </div>
     }
-     @if(codigoQrIngreso()){
-        <p class="titulo">¡Gracias por recepcionarte!</p>
-        <ion-note class="texto">
-          Una vez que el METRE te asigne mesa, escaneá el QR correspondiente
-        </ion-note>
-        <div class="acciones-cliente">
-        <ion-button
-          expand="block"
-          class="btonBeige"
-          (click)="escanearQrMesa()">
 
-          <ion-icon
-            name="qr-code-outline"
-            slot="start">
-          </ion-icon>
-          Escanear QR de la mesa
-        </ion-button>
-        <ion-button
-          expand="block"
-          class="btonBeige"
-          (click)="escanearQrMesa()">
+    @if(codigoQrIngreso()){
+      <!-- ESTADO 1: Esperando que el metre asigne mesa -->
+      @if(!mesaAsignada()){
+        <div class="tarjeta-pantalla-completa tarjeta-espera">
+          <div class="info-superior">
+            <span class="badge-espera">En Lista de Espera</span>
+            <p class="subtexto-instruccion">
+              ¡Gracias por registrarte! Estamos notificando al metre para asignarte una mesa.
+            </p>
+          </div>
 
-          <ion-icon
-            name="qr-code-outline"
-            slot="start">
-          </ion-icon>
-         Acceder a encuestas
-        </ion-button>
+          <div class="zona-espera-xxl">
+            <div class="circulo-espera-animado">
+              <ion-icon name="hourglass-outline" class="icono-espera-xxl"></ion-icon>
+            </div>
+            <div class="texto-estado-espera">
+              <h3>Esperando al metre</h3>
+              <p>Te avisaremos en cuanto tu mesa esté lista</p>
+            </div>
+          </div>
         </div>
       }
 
+      <!-- ESTADO 2: Mesa asignada por el metre -->
+      @if(mesaAsignada()){
+        <div class="tarjeta-pantalla-completa tarjeta-asignada">
+          <div class="info-superior">
+            <span class="badge-asignada">¡Mesa Asignada!</span>
+            <div class="numero-mesa-destacado">
+              <span class="etiqueta-mesa">MESA NÚMERO</span>
+              <span class="valor-mesa">{{ numeroMesa() }}</span>
+            </div>
+            <p class="subtexto-instruccion">
+              Dirigite a tu mesa y escaneá su código QR para confirmar tu ubicación
+            </p>
+          </div>
+
+          <div class="zona-boton-xxl">
+            <ion-button
+              expand="block"
+              class="boton-xxl btonBeige"
+              (click)="escanearQrMesa()">
+              <div class="contenido-boton-xxl">
+                <ion-icon name="qr-code-outline" class="icono-xxl"></ion-icon>
+                <span class="texto-boton-xxl">Escanear QR Mesa {{ numeroMesa() }}</span>
+                <span class="subtexto-boton-xxl">Confirmar mi ubicación en el restaurante</span>
+              </div>
+            </ion-button>
+          </div>
+        </div>
+      }
+    }
   </div>
 </ion-content>
 

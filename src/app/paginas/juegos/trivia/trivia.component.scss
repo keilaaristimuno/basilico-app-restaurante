@@ -1,217 +1,160 @@
 .fondo-trivia {
   --background: #283720;
-  background-color: #283720;
+  --overflow: hidden;
+  height: 100%;
   color: #ede5d2;
   font-family: 'Montserrat', sans-serif;
 }
 
-.contenedor-principal {
-  padding: 16px;
+.pantalla-juego-completa {
+  height: calc(100% - 68px);
+  width: 100%;
   max-width: 520px;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  min-height: calc(100vh - 56px);
+  padding: 8px 12px 12px;
   box-sizing: border-box;
-}
-
-/* Encabezado */
-.encabezado-juego {
-  text-align: center;
-
-  .logo-juego {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 4px;
-
-    .logo-img {
-      height: 48px;
-      object-fit: contain;
-    }
-  }
-
-  .font-logo {
-    font-family: 'Alex Brush', cursive;
-    font-size: 2.8rem;
-    color: #ede5d2;
-    margin: 0;
-    line-height: 1.1;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-  }
-
-  .subtitulo-juego {
-    font-size: 0.85rem;
-    color: rgba(237, 229, 210, 0.85);
-    margin: 4px 0 0;
-  }
-}
-
-/* Banner de Promoción */
-.banner-promo {
-  .tarjeta-promo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 14px;
-    border-radius: 12px;
-    font-size: 0.85rem;
-
-    .icono-promo {
-      font-size: 1.6rem;
-      flex-shrink: 0;
-    }
-
-    .texto-promo {
-      .etiqueta-promo {
-        display: block;
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        font-weight: 700;
-        margin-bottom: 2px;
-      }
-      p {
-        margin: 0;
-        line-height: 1.25;
-      }
-    }
-
-    &.activa {
-      background: rgba(46, 125, 50, 0.35);
-      border: 1px solid rgba(129, 199, 132, 0.5);
-      color: #e8f5e9;
-      .etiqueta-promo { color: #a5d6a7; }
-    }
-
-    &.participa {
-      background: rgba(184, 93, 56, 0.35);
-      border: 1px solid rgba(224, 122, 95, 0.6);
-      color: #ede5d2;
-      .etiqueta-promo { color: #ffb74d; }
-    }
-
-    &.libre {
-      background: rgba(237, 229, 210, 0.12);
-      border: 1px solid rgba(237, 229, 210, 0.25);
-      color: #ede5d2;
-      .etiqueta-promo { color: #ede5d2; }
-    }
-  }
-}
-
-/* Marcadores y Barra de Progreso */
-.marcador-progreso {
-  background: rgba(0, 0, 0, 0.28);
-  border: 1px solid rgba(237, 229, 210, 0.2);
-  border-radius: 14px;
-  padding: 10px 14px;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   gap: 8px;
+}
+
+/* =========================================================
+   MARCADOR Y PROGRESO COMPACTO
+   ========================================================= */
+.marcador-progreso-compacto {
+  flex-shrink: 0;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(237, 229, 210, 0.2);
+  border-radius: 12px;
+  padding: 6px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 
   .stats-fila {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-around;
 
     .stat-item {
       display: flex;
       flex-direction: column;
+      align-items: center;
 
-      .stat-etiqueta {
-        font-size: 0.7rem;
+      .stat-lbl {
+        font-size: 0.68rem;
         text-transform: uppercase;
         letter-spacing: 0.5px;
-        color: rgba(237, 229, 210, 0.7);
+        color: #c5d4be;
+        font-weight: 600;
       }
 
-      .stat-valor {
-        font-size: 1.1rem;
+      .stat-val {
+        font-size: 1.05rem;
         font-weight: 800;
         color: #ede5d2;
 
-        &.premio-destacado {
+        &.highlight {
           color: #ffb74d;
         }
       }
+    }
+
+    .stat-divisor {
+      width: 1px;
+      height: 24px;
+      background: rgba(237, 229, 210, 0.2);
     }
   }
 
   .barra-progreso {
     --progress-background: #b85d38;
     --background: rgba(237, 229, 210, 0.2);
-    height: 8px;
-    border-radius: 4px;
+    height: 6px;
+    border-radius: 3px;
   }
 }
 
-/* Pregunta Actual */
-.seccion-pregunta {
+/* =========================================================
+   PREGUNTA ACTUAL
+   ========================================================= */
+.seccion-pregunta-xxl {
+  flex-shrink: 0;
+
   .tarjeta-pregunta {
     background: linear-gradient(135deg, rgba(237, 229, 210, 0.12) 0%, rgba(237, 229, 210, 0.05) 100%);
     border: 2px solid rgba(237, 229, 210, 0.25);
-    border-radius: 18px;
-    padding: 16px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    border-radius: 16px;
+    padding: 10px 14px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
 
     .etiqueta-categoria {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
       background: #b85d38;
       color: #ede5d2;
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      padding: 4px 10px;
-      border-radius: 8px;
-      margin-bottom: 10px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      margin-bottom: 6px;
     }
 
     .texto-pregunta {
-      font-size: 1.15rem;
+      font-size: 1.05rem;
       font-weight: 700;
       color: #ede5d2;
-      line-height: 1.35;
+      line-height: 1.3;
       margin: 0;
     }
   }
 }
 
-/* Opciones de Respuesta Gigantes */
-.seccion-opciones {
-  .lista-opciones {
+/* =========================================================
+   OPCIONES DE RESPUESTA XXL
+   ========================================================= */
+.seccion-opciones-xxl {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+
+  .lista-opciones-xxl {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
+    height: 100%;
 
-    .boton-opcion {
-      width: 100%;
-      min-height: 58px;
+    .boton-opcion-xxl {
+      flex: 1;
+      min-height: 52px;
       background: rgba(237, 229, 210, 0.15);
-      border: 2px solid rgba(237, 229, 210, 0.3);
+      border: 2px solid rgba(237, 229, 210, 0.32);
       border-radius: 14px;
-      padding: 10px 14px;
+      padding: 6px 12px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       color: #ede5d2;
       font-family: inherit;
       font-size: 0.95rem;
-      font-weight: 600;
+      font-weight: 700;
       text-align: left;
       cursor: pointer;
-      transition: all 0.2s ease;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      transition: all 0.15s ease;
 
       &:active:not(:disabled) {
-        transform: scale(0.98);
+        transform: scale(0.97);
         background: rgba(237, 229, 210, 0.25);
       }
 
-      .letra-opcion {
+      .letra-opcion-xxl {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -220,186 +163,166 @@
         background: rgba(0, 0, 0, 0.35);
         border: 1px solid rgba(237, 229, 210, 0.4);
         border-radius: 8px;
-        font-weight: 800;
+        font-weight: 900;
         font-size: 0.9rem;
         flex-shrink: 0;
         color: #ede5d2;
       }
 
-      .texto-opcion {
+      .texto-opcion-xxl {
         flex: 1;
         line-height: 1.25;
       }
 
       .icono-veredicto {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
         flex-shrink: 0;
 
         &.acierto {
-          color: #a5d6a7;
+          color: #81c784;
         }
 
         &.error {
-          color: #ef9a9a;
+          color: #e57373;
         }
       }
 
       &.correcta {
-        background: rgba(46, 125, 50, 0.65) !important;
-        border-color: #81c784 !important;
-        color: #ffffff !important;
-
-        .letra-opcion {
-          background: #2e7d32;
-          border-color: #a5d6a7;
-        }
+        background: rgba(46, 125, 50, 0.55);
+        border-color: #81c784;
+        box-shadow: 0 0 14px rgba(129, 199, 132, 0.4);
       }
 
       &.incorrecta {
-        background: rgba(184, 93, 56, 0.75) !important;
-        border-color: #e57373 !important;
-        color: #ffffff !important;
-
-        .letra-opcion {
-          background: #b85d38;
-          border-color: #ef9a9a;
-        }
+        background: rgba(184, 93, 56, 0.55);
+        border-color: #e57373;
       }
     }
   }
 }
 
-/* Feedback y Botón Siguiente */
-.seccion-feedback {
+/* =========================================================
+   FEEDBACK Y BOTÓN SIGUIENTE XXL
+   ========================================================= */
+.seccion-feedback-xxl {
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  animation: fadeIn 0.25s ease-out;
+  gap: 6px;
 
-  .tarjeta-curiosidad {
-    background: rgba(0, 0, 0, 0.35);
-    border: 1px solid rgba(255, 183, 77, 0.45);
-    border-radius: 12px;
-    padding: 10px 14px;
+  .tarjeta-curiosidad-compacta {
     display: flex;
-    align-items: flex-start;
-    gap: 10px;
+    align-items: center;
+    gap: 8px;
+    background: rgba(237, 229, 210, 0.12);
+    border: 1px solid rgba(237, 229, 210, 0.25);
+    border-radius: 12px;
+    padding: 6px 10px;
 
     .icono-curiosidad {
-      font-size: 1.5rem;
-      color: #ffb74d;
+      font-size: 1.4rem;
+      color: #ffd700;
       flex-shrink: 0;
-      margin-top: 2px;
     }
 
-    .texto-curiosidad {
-      .titulo-curiosidad {
-        display: block;
-        font-size: 0.75rem;
-        font-weight: 800;
-        text-transform: uppercase;
-        color: #ffb74d;
-        margin-bottom: 2px;
-      }
-
-      p {
-        font-size: 0.85rem;
-        color: rgba(237, 229, 210, 0.95);
-        margin: 0;
-        line-height: 1.3;
-      }
-    }
-  }
-
-  .boton-siguiente {
-    height: 52px;
-    --border-radius: 14px;
-    font-weight: 700;
-    font-size: 1rem;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-  }
-}
-
-/* Panel de Fin de Partida */
-.seccion-resultado {
-  margin-top: auto;
-
-  .panel-resultado {
-    background: rgba(0, 0, 0, 0.45);
-    border-radius: 18px;
-    padding: 22px 16px;
-    text-align: center;
-    border: 2px solid rgba(237, 229, 210, 0.3);
-    animation: fadeIn 0.3s ease-out;
-
-    .icono-resultado {
-      font-size: 3.5rem;
-      margin-bottom: 6px;
-    }
-
-    h2 {
-      font-size: 1.6rem;
-      font-weight: 800;
+    p {
       margin: 0;
+      font-size: 0.78rem;
       color: #ede5d2;
+      line-height: 1.25;
     }
+  }
 
-    .subtitulo-resultado {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: #ffb74d;
-      margin-top: 4px;
-    }
-
-    .mensaje-resultado {
-      font-size: 0.95rem;
-      color: rgba(237, 229, 210, 0.9);
-      margin: 10px 0 18px;
-      line-height: 1.35;
-    }
-
-    &.victoria {
-      border-color: #81c784;
-      h2 { color: #a5d6a7; }
-    }
-
-    &.derrota {
-      border-color: #e57373;
-      h2 { color: #ef9a9a; }
-    }
-
-    .botones-resultado {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-
-      ion-button {
-        height: 48px;
-        --border-radius: 12px;
-        font-weight: 700;
-      }
-    }
+  .boton-siguiente-xxl {
+    height: 60px;
+    min-height: 56px;
+    --border-radius: 16px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin: 0;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
   }
 }
 
-/* Botones con estilo corporativo */
-.btonVerde {
-  --background: #3b522b;
-  --color: #ede5d2;
-}
+/* =========================================================
+   PANEL FIN DE PARTIDA XXL
+   ========================================================= */
+.tarjeta-fin-partida-xxl {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.45);
+  border: 2px solid rgba(237, 229, 210, 0.25);
+  border-radius: 22px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
 
-.btonTerracota {
-  --background: #b85d38;
-  --color: #ede5d2;
-}
+  .icono-resultado-xxl {
+    font-size: 4rem;
+  }
 
-.btonBeige {
-  --color: #ede5d2;
-  --border-color: #ede5d2;
-}
+  .titulo-fin {
+    font-size: 1.6rem;
+    font-weight: 900;
+    margin: 0;
+    color: #ede5d2;
+  }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  .subtitulo-fin {
+    font-size: 0.9rem;
+    margin: 0;
+    color: #c5d4be;
+  }
+
+  .caja-premio-xxl {
+    background: linear-gradient(135deg, rgba(46, 125, 50, 0.5), rgba(76, 175, 80, 0.3));
+    border: 2px solid #81c784;
+    border-radius: 16px;
+    padding: 12px 18px;
+    width: 100%;
+
+    .badge-premio-otorgado {
+      background: #ffd700;
+      color: #283720;
+      font-weight: 800;
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+    }
+
+    h3 {
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: #ede5d2;
+      margin: 6px 0 2px;
+    }
+
+    p {
+      font-size: 0.8rem;
+      color: #c5d4be;
+      margin: 0;
+    }
+  }
+
+  .zona-botones-fin-xxl {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 6px;
+
+    .boton-accion-xxl {
+      height: 62px;
+      --border-radius: 16px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin: 0;
+    }
+  }
 }

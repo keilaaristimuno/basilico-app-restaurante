@@ -14,6 +14,7 @@ import { PushNotificationsService } from '../../services/push-notifications.serv
 export class NavbarComponent implements OnInit {
 
   @Input() rutaInicio: string = '/';
+  @Input() titulo: string = '';
 
   nombre: string | null = null;
   constructor(

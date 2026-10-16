@@ -1,21 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import {
   IonContent,
-  IonHeader,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardSubtitle,
-  IonCardContent,
   IonButton,
   IonIcon,
   IonBadge,
-  ToastController,
-  IonToolbar, 
-  IonButtons,
-  IonBackButton
+  ToastController
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import {
@@ -48,11 +39,7 @@ import { Supabase } from '../../services/supabase';
     IonContent,
     IonButton,
     IonIcon,
-    IonBadge,
-    IonToolbar,
-    IonButtons,
-    IonBackButton,
-    IonHeader
+    IonBadge
   ]
 })
 export class JuegosPage implements OnInit {

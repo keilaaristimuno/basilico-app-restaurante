@@ -7,7 +7,9 @@ import {
   signal
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 import {
   IonContent,
@@ -32,7 +34,12 @@ import {
   restaurantOutline,
   wineOutline,
   arrowForwardOutline,
-  alertCircleOutline
+  alertCircleOutline,
+  createOutline,
+  saveOutline,
+  warningOutline,
+  cameraOutline,
+  arrowUndoOutline
 } from 'ionicons/icons';
 
 import { Supabase } from '../../services/supabase';
@@ -48,6 +55,7 @@ import { Producto } from '../../interfaces/producto';
   styleUrls: ['./carta.page.scss'],
   imports: [
     CommonModule,
+    FormsModule,
     IonContent,
     IonHeader,
     IonToolbar,
@@ -106,6 +114,13 @@ export class CartaPage implements OnInit, OnDestroy {
   private readonly UMBRAL_SWIPE_HORIZONTAL: number = 45;
   private ultimoWheelTimestamp: number = 0;
 
+  /**
+   * Indica si el usuario logueado es un empleado (cocinero, cantinero, mozo, etc.).
+   * Los empleados solo consultan la carta: no pueden agregar productos al pedido.
+   */
+  esEmpleado: boolean = false;
+  private readonly PERFILES_EMPLEADO: string[] = ['duenio', 'supervisor', 'metre', 'mozo', 'cocinero', 'cantinero'];
+
   ngOnInit(): void {
   }
 
@@ -114,7 +129,12 @@ export class CartaPage implements OnInit, OnDestroy {
   }
 
   async ionViewWillEnter(): Promise<void> {
-    await this.verificarSesionYMesa();
+    const perfil = localStorage.getItem('perfil')?.toLowerCase()?.trim() ?? '';
+    this.esEmpleado = this.PERFILES_EMPLEADO.includes(perfil);
+
+    if (!this.esEmpleado) {
+      await this.verificarSesionYMesa();
+    }
     await this.cargarProductos();
   }
 
@@ -175,7 +195,12 @@ export class CartaPage implements OnInit, OnDestroy {
       restaurantOutline,
       wineOutline,
       arrowForwardOutline,
-      alertCircleOutline
+      alertCircleOutline,
+      createOutline,
+      saveOutline,
+      warningOutline,
+      cameraOutline,
+      arrowUndoOutline
     });
   }
 
@@ -613,6 +638,7 @@ export class CartaPage implements OnInit, OnDestroy {
   ============================================================ */
 
   agregarProducto(producto: Producto): void {
+    if (this.esEmpleado) return;
     this.pedidoService.agregarProducto(producto);
   }
 
@@ -676,6 +702,234 @@ export class CartaPage implements OnInit, OnDestroy {
       await this.mostrarToast(detalle, 'danger');
     } finally {
       this.enviandoPedido.set(false);
+    }
+  }
+
+  /* ============================================================
+     EDICIÓN Y BAJA DE PRODUCTOS (SOLO EMPLEADOS)
+  ============================================================ */
+
+  /**
+   * Estado del modal de edición y copia editable del producto seleccionado
+   */
+  mostrarModalEdicion = signal<boolean>(false);
+  guardandoEdicion = signal<boolean>(false);
+  productoEnEdicion: Producto | null = null;
+  formularioEdicion = {
+    nombre: '',
+    descripcion: '',
+    tiempo_elaboracion: null as number | null,
+    precio: null as number | null
+  };
+  erroresEdicion = {
+    nombre: false,
+    descripcion: false,
+    tiempo_elaboracion: false,
+    precio: false
+  };
+
+  /**
+   * Fotos mostradas en el modal: URL actual del producto o ruta local (webPath) de la foto nueva.
+   * fotosReemplazadas[i] indica si la foto i fue cambiada y debe subirse al guardar.
+   */
+  fotosEdicion: string[] = [];
+  fotosReemplazadas: boolean[] = [];
+
+  abrirEdicionProducto(producto: Producto): void {
+    if (!this.esEmpleado) return;
+
+    this.productoEnEdicion = producto;
+    this.formularioEdicion = {
+      nombre: producto.nombre,
+      descripcion: producto.descripcion,
+      tiempo_elaboracion: producto.tiempo_elaboracion,
+      precio: producto.precio
+    };
+    this.erroresEdicion = { nombre: false, descripcion: false, tiempo_elaboracion: false, precio: false };
+    this.fotosEdicion = [...(producto.fotos ?? [])];
+    this.fotosReemplazadas = this.fotosEdicion.map(() => false);
+    this.pausarTemporalmenteAutoPlay();
+    this.mostrarModalEdicion.set(true);
+  }
+
+  cerrarModalEdicion(): void {
+    this.mostrarModalEdicion.set(false);
+    this.productoEnEdicion = null;
+  }
+
+  /**
+   * Reemplaza una foto puntual con la cámara o la galería (se sube recién al guardar)
+   */
+  async seleccionarFotoEdicion(indice: number): Promise<void> {
+    try {
+      const imagen = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: false,
+        resultType: CameraResultType.Uri,
+        source: CameraSource.Prompt,
+        webUseInput: true
+      });
+
+      if (!imagen.webPath) return;
+
+      this.fotosEdicion[indice] = imagen.webPath;
+      this.fotosReemplazadas[indice] = true;
+      this.cdr.detectChanges();
+    } catch (error) {
+      // El usuario canceló la selección o no se pudo acceder a la cámara
+      console.warn('No se seleccionó una foto nueva:', error);
+    }
+  }
+
+  /**
+   * Descarta la foto nueva y vuelve a mostrar la original del producto
+   */
+  deshacerFotoEdicion(indice: number): void {
+    const original = this.productoEnEdicion?.fotos?.[indice];
+    if (original === undefined) return;
+
+    this.fotosEdicion[indice] = original;
+    this.fotosReemplazadas[indice] = false;
+    this.cdr.detectChanges();
+  }
+
+  async guardarEdicionProducto(): Promise<void> {
+    const producto = this.productoEnEdicion;
+    if (!producto || this.guardandoEdicion()) return;
+
+    const { nombre, descripcion, tiempo_elaboracion, precio } = this.formularioEdicion;
+
+    // Mismas validaciones que en el alta de platos y bebidas
+    this.erroresEdicion = {
+      nombre: nombre.trim().length < 3,
+      descripcion: descripcion.trim().length < 10,
+      tiempo_elaboracion: tiempo_elaboracion === null || tiempo_elaboracion <= 0,
+      precio: precio === null || precio <= 0
+    };
+
+    if (Object.values(this.erroresEdicion).some(error => error)) {
+      await this.vibracion.errorFuerte();
+      return;
+    }
+
+    this.guardandoEdicion.set(true);
+    const fotosOriginales = [...(producto.fotos ?? [])];
+    const urlsSubidas: string[] = [];
+
+    try {
+      const actualizado = await this.carga.ejecutar(
+        'Guardando cambios...',
+        async () => {
+          // 1. Subir solo las fotos que se reemplazaron
+          const carpeta = producto.tipo === 'bebida' ? 'bebidas' : 'platos';
+          const idFotos = Date.now();
+          const fotosFinales = [...this.fotosEdicion];
+
+          for (let i = 0; i < fotosFinales.length; i++) {
+            if (!this.fotosReemplazadas[i]) continue;
+
+            const resultado = await this.supabase.subirFotoProducto(
+              fotosFinales[i],
+              `${carpeta}/${idFotos}-${i}.jpg`
+            );
+            const url = this.supabase.obtenerUrlFotoProducto(resultado.path);
+            urlsSubidas.push(url);
+            fotosFinales[i] = url;
+          }
+
+          // 2. Guardar los datos y el nuevo arreglo de fotos
+          return this.supabase.actualizarProducto(producto.id, {
+            nombre,
+            descripcion,
+            tiempo_elaboracion: tiempo_elaboracion!,
+            precio: precio!,
+            fotos: fotosFinales
+          });
+        }
+      );
+
+      // 3. Borrar de Storage las fotos viejas que ya no se usan (si falla, no afecta al producto)
+      const fotosViejas = fotosOriginales.filter(url => !actualizado.fotos.includes(url));
+      this.supabase.eliminarFotosProducto(fotosViejas)
+        .catch(err => console.warn('No se pudieron borrar las fotos anteriores:', err));
+
+      this.productos = this.productos.map(p => p.id === producto.id ? { ...p, ...actualizado } : p);
+      this.cerrarModalEdicion();
+      await this.mostrarToast('Producto actualizado con éxito.', 'success');
+    } catch (error: any) {
+      console.error('Error al editar el producto:', error);
+
+      // Si el guardado falló, se borran las fotos nuevas que alcanzaron a subirse
+      this.supabase.eliminarFotosProducto(urlsSubidas)
+        .catch(err => console.warn('No se pudieron borrar las fotos subidas:', err));
+
+      await this.vibracion.errorFuerte();
+      await this.mostrarToast(error?.message || 'No se pudo actualizar el producto.', 'danger');
+    } finally {
+      this.guardandoEdicion.set(false);
+      this.cdr.detectChanges();
+    }
+  }
+
+  /**
+   * Estado del diálogo de eliminación y producto pendiente de confirmación.
+   * El producto se limpia recién al terminar la animación de cierre (didDismiss).
+   */
+  mostrarDialogoEliminar = signal<boolean>(false);
+  productoAEliminar = signal<Producto | null>(null);
+
+  confirmarEliminarProducto(producto: Producto): void {
+    if (!this.esEmpleado) return;
+
+    this.pausarTemporalmenteAutoPlay();
+    this.vibracion.toque().catch(() => {});
+    this.productoAEliminar.set(producto);
+    this.mostrarDialogoEliminar.set(true);
+  }
+
+  cerrarDialogoEliminar(): void {
+    this.mostrarDialogoEliminar.set(false);
+  }
+
+  alCerrarDialogoEliminar(): void {
+    this.mostrarDialogoEliminar.set(false);
+    this.productoAEliminar.set(null);
+  }
+
+  async eliminarProductoConfirmado(): Promise<void> {
+    const producto = this.productoAEliminar();
+    if (!producto) return;
+
+    this.cerrarDialogoEliminar();
+    await this.eliminarProductoDeCarta(producto);
+  }
+
+  private async eliminarProductoDeCarta(producto: Producto): Promise<void> {
+    try {
+      await this.carga.ejecutar(
+        'Eliminando producto...',
+        () => this.supabase.eliminarProducto(producto.id)
+      );
+
+      // El producto ya no existe: se liberan sus fotos del Storage
+      this.supabase.eliminarFotosProducto(producto.fotos ?? [])
+        .catch(err => console.warn('No se pudieron borrar las fotos del producto:', err));
+
+      this.productos = this.productos.filter(p => p.id !== producto.id);
+
+      // Evita quedar apuntando a un índice inexistente si se eliminó el último
+      const total = this.productosVisibles.length;
+      if (this.indiceProductoActual > total - 1) {
+        this.indiceProductoActual = Math.max(0, total - 1);
+      }
+
+      await this.mostrarToast('Producto eliminado de la carta.', 'success');
+    } catch (error: any) {
+      console.error('Error al eliminar el producto:', error);
+      await this.vibracion.errorFuerte();
+      await this.mostrarToast(error?.message || 'No se pudo eliminar el producto.', 'danger');
+    } finally {
+      this.cdr.detectChanges();
     }
   }
 

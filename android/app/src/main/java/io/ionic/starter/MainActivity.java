@@ -6,6 +6,7 @@ import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.webkit.WebSettings;
 
 import com.getcapacitor.BridgeActivity;
 
@@ -22,6 +23,11 @@ public class MainActivity extends BridgeActivity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    // Permite que el viewport definido en index.html escale el diseño de celular en tablets
+    WebSettings ajustesWeb = getBridge().getWebView().getSettings();
+    ajustesWeb.setUseWideViewPort(true);
+    ajustesWeb.setLoadWithOverviewMode(true);
 
     AudioAttributes atributos = new AudioAttributes.Builder()
       .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)

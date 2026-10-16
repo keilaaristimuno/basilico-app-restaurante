@@ -176,7 +176,7 @@
    ========================================================= */
 .plato-card {
   width: 100%;
-  height: auto;
+  min-height: 0;
   max-height: 100%;
   display: flex;
   flex-direction: column;
@@ -191,11 +191,10 @@
 .imagen-plato {
   position: relative;
   width: 100%;
+  /* Puede reducir su altura para dejar visibles los datos y botones */
   flex: 0 1 auto;
-  /* Evita que la imagen se estire verticalmente */
-  height: clamp(190px, 45vh, 360px);
-  min-height: 0;
-  max-height: 55%;
+  height: clamp(160px, 34vh, 320px);
+  min-height: 120px;
   overflow: hidden;
   background: #ded5bf;
 }
@@ -326,17 +325,16 @@
    INFORMACIÓN DEL PLATO (RESPONSIVE Y EQUILIBRADA)
    ========================================================= */
 .detalle-plato {
-  /* Ocupa el espacio necesario para su contenido */
-  flex: 0 0 auto;
+  /* Ocupa el espacio de su contenido y scrollea si no entra */
+  flex: 0 1 auto;
   min-height: 0;
-  max-height: none;
   display: flex;
   flex-direction: column;
   padding: 12px 14px 14px;
   background: var(--basilico-beige);
   box-sizing: border-box;
-  /* overflow-y: auto;
-  overscroll-behavior: contain; */
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .encabezado-plato {
@@ -492,21 +490,6 @@
     .indice-navegacion .btn-categoria { min-height: 26px; padding: 0.18rem 0.75rem; font-size: 0.75rem; }
   }
 
-  .imagen-plato {
-    flex: 1 1 auto;
-    min-height: 110px;
-    max-height: none;
-  }
-
-  .detalle-plato {
-    flex: 0 0 auto;
-    padding: 8px 12px 10px;
-  }
-
-  .descripcion-plato {
-    -webkit-line-clamp: 2;
-  }
-
   .descripcion-plato.expandida {
     max-height: 55px;
   }
@@ -561,27 +544,16 @@
 
   /* La tarjeta deja de estar centrada verticalmente */
   .card-reel-slide {
-    justify-content: flex-start;
     padding-top: 18px;
   }
 
   .plato-card {
     width: min(100%, 750px);
-    height: auto;
-    max-height: 100%;
-  }
-
-  .imagen-plato {
-    flex: 0 0 auto;
-    height: clamp(340px, 38vh, 500px);
-    max-height: none;
   }
 
   .detalle-plato {
-    flex: 0 1 auto;
     max-height: 40%;
     padding: 20px 24px;
-    overflow-y: auto;
   }
 
   .encabezado-plato h3 {
@@ -607,13 +579,6 @@
 }
 
 
-@media (min-width: 1024px) {
-  .carta-layout-completo {
-    max-width: 900px;
-  }
-}
-
-
 /* =========================================================
    ELEMENTOS DE PEDIDO Y PERSONALIZACIÓN (PUNTOS 11, 12, 13)
    ========================================================= */
@@ -622,9 +587,9 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  background: var(--basilico-terracotta, #b85d38);
+  background: var(--basilico-terracotta);
   color: #ede5d2;
-  font-family: var(--font-body, 'Montserrat', sans-serif);
+  font-family: var(--font-body);
   font-weight: 700;
   font-size: 0.85rem;
   padding: 6px 12px;
@@ -642,7 +607,7 @@
   align-items: center;
   gap: 12px;
   background: rgba(184, 93, 56, 0.25);
-  border: 1.5px solid var(--basilico-terracotta, #b85d38);
+  border: 1.5px solid var(--basilico-terracotta);
   border-radius: 12px;
   padding: 12px 16px;
   margin: 1rem auto 0;
@@ -670,10 +635,13 @@
 }
 
 /* Acciones en la tarjeta de plato/bebida */
+/* Los botones de cantidad conservan su espacio y no se comprimen */
 .accion-pedido-card {
-  margin-top: 14px;
-  padding-top: 12px;
-  border-top: 1px dashed rgba(237, 229, 210, 0.18);
+  flex-shrink: 0;
+  width: 100%;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(40, 55, 32, 0.2);
   display: flex;
   justify-content: flex-end;
 }
@@ -684,12 +652,13 @@
   justify-content: center;
   gap: 8px;
   width: 100%;
-  background: var(--basilico-terracotta, #b85d38);
+  min-height: 40px;
+  background: var(--basilico-terracotta);
   color: #ede5d2;
   border: none;
   border-radius: 10px;
   padding: 10px 14px;
-  font-family: var(--font-body, 'Montserrat', sans-serif);
+  font-family: var(--font-body);
   font-weight: 700;
   font-size: 0.9rem;
   cursor: pointer;
@@ -710,7 +679,7 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  background: rgba(40, 55, 32, 0.5);
+  background: rgba(40, 55, 32, 0.92);
   border: 1px solid rgba(237, 229, 210, 0.25);
   border-radius: 10px;
   padding: 4px 8px;
@@ -719,7 +688,7 @@
     width: 34px;
     height: 34px;
     border-radius: 50%;
-    background: var(--basilico-terracotta, #b85d38);
+    background: var(--basilico-terracotta);
     color: #ede5d2;
     border: none;
     display: flex;
@@ -735,7 +704,7 @@
   }
 
   .cantidad-actual-card {
-    font-family: var(--font-body, 'Montserrat', sans-serif);
+    font-family: var(--font-body);
     font-weight: 800;
     font-size: 1.15rem;
     color: #ede5d2;
@@ -754,7 +723,7 @@
   right: 0;
   z-index: 999;
   background: #1b2616;
-  border-top: 2px solid var(--basilico-terracotta, #b85d38);
+  border-top: 2px solid var(--basilico-terracotta);
   padding: 12px 18px env(safe-area-inset-bottom, 12px);
   display: flex;
   align-items: center;
@@ -767,58 +736,58 @@
     display: flex;
     flex-direction: column;
     gap: 3px;
+  }
 
-    .columna-precio {
-      display: flex;
-      flex-direction: column;
+  .columna-precio {
+    display: flex;
+    flex-direction: column;
 
-      .texto-etiqueta {
-        font-family: var(--font-body, 'Montserrat', sans-serif);
-        font-size: 0.65rem;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-        color: #bca085;
-        text-transform: uppercase;
-      }
-
-      .monto-acumulado {
-        font-family: var(--font-body, 'Montserrat', sans-serif);
-        font-size: 1.45rem;
-        font-weight: 800;
-        color: #f7eecf;
-        line-height: 1.1;
-      }
+    .texto-etiqueta {
+      font-family: var(--font-body);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #bca085;
+      text-transform: uppercase;
     }
 
-    .columna-tiempo {
-      display: flex;
+    .monto-acumulado {
+      font-family: var(--font-body);
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #f7eecf;
+      line-height: 1.1;
+    }
+  }
+
+  .columna-tiempo {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    .texto-etiqueta {
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: #8fa382;
+    }
+
+    .tiempo-acumulado {
+      display: inline-flex;
       align-items: center;
-      gap: 5px;
+      gap: 3px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #ede5d2;
 
-      .texto-etiqueta {
-        font-size: 0.65rem;
-        font-weight: 600;
-        color: #8fa382;
-      }
-
-      .tiempo-acumulado {
-        display: inline-flex;
-        align-items: center;
-        gap: 3px;
-        font-size: 0.85rem;
-        font-weight: 700;
-        color: #ede5d2;
-
-        ion-icon {
-          font-size: 0.95rem;
-          color: #e28762;
-        }
+      ion-icon {
+        font-size: 0.95rem;
+        color: #e28762;
       }
     }
   }
 
   .btn-revisar-pedido {
-    background: var(--basilico-terracotta, #b85d38);
+    background: var(--basilico-terracotta);
     color: #ede5d2;
     border: none;
     border-radius: 12px;
@@ -826,7 +795,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    font-family: var(--font-body, 'Montserrat', sans-serif);
+    font-family: var(--font-body);
     font-weight: 800;
     font-size: 0.95rem;
     cursor: pointer;
@@ -859,7 +828,7 @@
 /* =========================================================
    MODAL DE CONFIRMACIÓN DE PEDIDO
    ========================================================= */
-ion-modal.modal-pedido-basilico {
+.modal-pedido-basilico {
   --background: #283720;
 
   .toolbar-modal-pedido {
@@ -868,7 +837,7 @@ ion-modal.modal-pedido-basilico {
     border-bottom: 1px solid rgba(237, 229, 210, 0.15);
 
     ion-title {
-      font-family: var(--font-body, 'Montserrat', sans-serif);
+      font-family: var(--font-body);
       font-weight: 800;
       font-size: 1.15rem;
       color: #ede5d2;
@@ -940,86 +909,86 @@ ion-modal.modal-pedido-basilico {
     .info-item-pedido {
       flex: 1;
       min-width: 0;
+    }
 
-      .tipo-tag {
-        display: inline-block;
-        font-size: 0.65rem;
-        font-weight: 800;
-        text-transform: uppercase;
-        padding: 2px 6px;
-        border-radius: 4px;
-        background: #283720;
-        color: #ede5d2;
-        margin-bottom: 4px;
+    .tipo-tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: #283720;
+      color: #ede5d2;
+      margin-bottom: 4px;
 
-        &.tipo-bebida {
-          background: #b85d38;
-        }
+      &.tipo-bebida {
+        background: #b85d38;
       }
+    }
 
-      h4 {
-        margin: 0 0 3px;
-        font-family: var(--font-body, 'Montserrat', sans-serif);
-        font-size: 0.98rem;
-        font-weight: 700;
-        color: #283720;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
+    h4 {
+      margin: 0 0 3px;
+      font-family: var(--font-body);
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: #283720;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
-      .precio-unitario-detalle {
-        font-size: 0.78rem;
-        color: #555;
-      }
+    .precio-unitario-detalle {
+      font-size: 0.78rem;
+      color: #555;
     }
 
     .acciones-item-pedido {
       display: flex;
       align-items: center;
       gap: 8px;
+    }
 
-      .controles-stepper {
-        display: flex;
-        align-items: center;
-        background: #e1d8bf;
-        border-radius: 8px;
-        padding: 2px 4px;
+    .controles-stepper {
+      display: flex;
+      align-items: center;
+      background: #e1d8bf;
+      border-radius: 8px;
+      padding: 2px 4px;
+    }
 
-        .btn-stepper {
-          background: transparent;
-          border: none;
-          color: #283720;
-          font-size: 1rem;
-          padding: 4px;
-          cursor: pointer;
-        }
+    .btn-stepper {
+      background: transparent;
+      border: none;
+      color: #283720;
+      font-size: 1rem;
+      padding: 4px;
+      cursor: pointer;
+    }
 
-        .cantidad-stepper {
-          font-weight: 800;
-          font-size: 0.95rem;
-          min-width: 20px;
-          text-align: center;
-          color: #283720;
-        }
-      }
+    .cantidad-stepper {
+      font-weight: 800;
+      font-size: 0.95rem;
+      min-width: 20px;
+      text-align: center;
+      color: #283720;
+    }
 
-      .subtotal-item {
-        font-weight: 800;
-        font-size: 1rem;
-        color: #283720;
-        min-width: 70px;
-        text-align: right;
-      }
+    .subtotal-item {
+      font-weight: 800;
+      font-size: 1rem;
+      color: #283720;
+      min-width: 70px;
+      text-align: right;
+    }
 
-      .btn-eliminar-item {
-        background: transparent;
-        border: none;
-        color: #c93b2b;
-        font-size: 1.15rem;
-        padding: 4px;
-        cursor: pointer;
-      }
+    .btn-eliminar-item {
+      background: transparent;
+      border: none;
+      color: #c93b2b;
+      font-size: 1.15rem;
+      padding: 4px;
+      cursor: pointer;
     }
   }
 
@@ -1100,7 +1069,7 @@ ion-modal.modal-pedido-basilico {
     padding-bottom: 20px;
 
     .btn-confirmar-envio {
-      background: var(--basilico-terracotta, #b85d38);
+      background: var(--basilico-terracotta);
       color: #ede5d2;
       border: none;
       border-radius: 12px;
@@ -1109,7 +1078,7 @@ ion-modal.modal-pedido-basilico {
       align-items: center;
       justify-content: center;
       gap: 8px;
-      font-family: var(--font-body, 'Montserrat', sans-serif);
+      font-family: var(--font-body);
       font-weight: 800;
       font-size: 1rem;
       cursor: pointer;
@@ -1136,7 +1105,7 @@ ion-modal.modal-pedido-basilico {
       color: #ede5d2;
       border-radius: 12px;
       padding: 12px;
-      font-family: var(--font-body, 'Montserrat', sans-serif);
+      font-family: var(--font-body);
       font-weight: 700;
       font-size: 0.88rem;
       cursor: pointer;
@@ -1147,80 +1116,7 @@ ion-modal.modal-pedido-basilico {
 
 
 
-/* AJUSTES DE INTEGRACIÓN: CARTA REELS + PEDIDOS */
-
-/* Los botones de cantidad deben conservar su espacio */
-.accion-pedido-card {
-  flex-shrink: 0;
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px dashed rgba(40, 55, 32, 0.2);
-}
-
-/* Contraste de los controles sobre el fondo beige */
-.control-cantidad-card {
-  background: rgba(40, 55, 32, 0.92);
-}
-
-/* La tarjeta necesita poder comprimir la zona fotográfica */
-.imagen-plato {
-  min-height: 0;
-}
-
-/* En celulares pequeños priorizamos los datos y el botón */
-@media (max-height: 680px) {
-  .detalle-plato {
-    padding: 8px 12px 10px;
-    overflow-y: auto;
-    flex-shrink: 1;
-  }
-
-  .imagen-plato {
-    min-height: 100px;
-  }
-}
-
-
-/* ================================================
-   CORRECCIÓN: BOTÓN DE PEDIDO VISIBLE EN CARTA
-   ================================================ */
-
-/* Reservamos espacio para la tarjeta completa */
-.plato-card {
-  min-height: 0;
-  max-height: 100%;
-}
-
-/* La imagen puede reducir su altura si hace falta */
-.imagen-plato {
-  flex: 0 1 auto;
-  min-height: 120px;
-  height: clamp(160px, 34vh, 320px);
-  max-height: none;
-}
-
-/* Permite acceder a los controles del pedido */
-.detalle-plato {
-  flex: 0 1 auto;
-  min-height: 0;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-}
-
-/* Evita que el botón se comprima o desaparezca */
-.accion-pedido-card {
-  flex-shrink: 0;
-  width: 100%;
-  margin-top: 10px;
-  padding-top: 10px;
-}
-
-/* Botón de agregar al carrito */
-.btn-agregar-producto {
-  min-height: 40px;
-}
-
-/* Celulares de menor altura */
+/* Celulares de menor altura: se prioriza ver los datos y el botón */
 @media (max-height: 700px) {
   .imagen-plato {
     height: clamp(140px, 30vh, 230px);
@@ -1243,7 +1139,6 @@ ion-modal.modal-pedido-basilico {
 
 /* Ubicar la tarjeta más arriba */
 .carta-content:has(.barra-resumen-pedido) .card-reel-slide {
-  justify-content: flex-start;
   padding-top: 0;
   transform: translateY(-20px);
 }
@@ -1273,7 +1168,7 @@ ion-modal.modal-pedido-basilico {
   min-height: 40px;
   border-radius: 10px;
   padding: 8px 12px;
-  font-family: var(--font-body, 'Montserrat', sans-serif);
+  font-family: var(--font-body);
   font-weight: 700;
   font-size: 0.88rem;
   cursor: pointer;
@@ -1304,7 +1199,7 @@ ion-modal.modal-pedido-basilico {
 /* ================================================
    MODAL DE EDICIÓN DE PRODUCTO
    ================================================ */
-ion-modal.modal-edicion-producto {
+.modal-edicion-producto {
   .formulario-edicion {
     color: #ede5d2;
   }
@@ -1318,7 +1213,7 @@ ion-modal.modal-edicion-producto {
   }
 
   .label-edicion {
-    font-family: var(--font-body, 'Montserrat', sans-serif);
+    font-family: var(--font-body);
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.04em;
@@ -1335,7 +1230,7 @@ ion-modal.modal-edicion-producto {
     border: 2px solid transparent;
     border-radius: 10px;
     padding: 10px 12px;
-    font-family: var(--font-body, 'Montserrat', sans-serif);
+    font-family: var(--font-body);
     font-size: 0.95rem;
     outline: none;
 
@@ -1456,13 +1351,13 @@ ion-modal.modal-edicion-producto {
    (el tamaño del modal se define en global.scss)
    ================================================ */
 .dialogo-eliminar {
-  background: var(--basilico-beige, #ede5d2);
-  font-family: var(--font-body, 'Montserrat', sans-serif);
-  color: var(--basilico-olive, #283720);
+  background: var(--basilico-beige);
+  font-family: var(--font-body);
+  color: var(--basilico-olive);
 }
 
 .dialogo-eliminar-header {
-  background: var(--basilico-olive, #283720);
+  background: var(--basilico-olive);
   padding: 18px 16px 14px;
   display: flex;
   flex-direction: column;
@@ -1487,7 +1382,7 @@ ion-modal.modal-edicion-producto {
     margin: 0;
     font-size: 1.15rem;
     font-weight: 800;
-    color: var(--basilico-beige, #ede5d2);
+    color: var(--basilico-beige);
   }
 }
 
@@ -1534,18 +1429,18 @@ ion-modal.modal-edicion-producto {
     text-transform: uppercase;
     padding: 2px 6px;
     border-radius: 4px;
-    background: var(--basilico-olive, #283720);
-    color: var(--basilico-beige, #ede5d2);
+    background: var(--basilico-olive);
+    color: var(--basilico-beige);
 
     &.tipo-bebida {
-      background: var(--basilico-terracotta, #b24d39);
+      background: var(--basilico-terracotta);
     }
   }
 
   .precio-eliminar {
     font-size: 0.8rem;
     font-weight: 700;
-    color: var(--basilico-terracotta, #b24d39);
+    color: var(--basilico-terracotta);
   }
 }
 
@@ -1597,7 +1492,7 @@ ion-modal.modal-edicion-producto {
   gap: 6px;
   min-height: 44px;
   border-radius: 10px;
-  font-family: var(--font-body, 'Montserrat', sans-serif);
+  font-family: var(--font-body);
   font-weight: 700;
   font-size: 0.9rem;
   cursor: pointer;
@@ -1614,8 +1509,8 @@ ion-modal.modal-edicion-producto {
 
 .btn-dialogo-cancelar {
   background: transparent;
-  color: var(--basilico-olive, #283720);
-  border: 2px solid var(--basilico-olive, #283720);
+  color: var(--basilico-olive);
+  border: 2px solid var(--basilico-olive);
 }
 
 .btn-dialogo-eliminar {

@@ -519,6 +519,8 @@ export class Supabase {
         id,
         estado,
         created_at,
+        cocina_listo,
+        bar_listo,
         mesas (
           id,
           numero
@@ -535,6 +537,7 @@ export class Supabase {
         )
       `)
       .eq('estado', 'confirmado')
+      .eq('cocina_listo', false)
       .order('created_at', { ascending: true })
       .returns<PedidoSupabaseRelacional[]>();
 
@@ -556,6 +559,8 @@ export class Supabase {
         id,
         estado,
         created_at,
+        cocina_listo,
+        bar_listo,
         mesas (
           id,
           numero
@@ -572,6 +577,7 @@ export class Supabase {
         )
       `)
       .eq('estado', 'confirmado')
+      .eq('bar_listo', false)
       .order('created_at', { ascending: true })
       .returns<PedidoSupabaseRelacional[]>();
 
@@ -697,6 +703,25 @@ export class Supabase {
     return data;
   }
 
+  /**
+   * Cocina o Bar marcan su parte del pedido como lista (Punto 15).
+   * La función de base de datos pasa el pedido a 'listo' solo cuando
+   * todos los sectores intervinientes terminaron. Devuelve el estado final.
+   */
+  async marcarSectorListo(pedidoId: string, sector: 'cocina' | 'bar'): Promise<string> {
+    const { data, error } = await this.clienteSupabase.rpc('marcar_sector_listo', {
+      p_pedido_id: pedidoId,
+      p_sector: sector
+    });
+
+    if (error) {
+      console.error('Error al marcar sector listo:', error.message);
+      throw new Error(`Error al marcar el pedido como listo: ${error.message}`);
+    }
+
+    return data as string;
+  }
+
   async obtenerPedidoActivoPorCliente(clienteId?: string, mesaId?: string) {
     let query = this.clienteSupabase
       .from('pedidos')
@@ -708,6 +733,8 @@ export class Supabase {
         importe_total,
         tiempo_estimado,
         created_at,
+        cocina_listo,
+        bar_listo,
         mesas (
           id,
           numero
@@ -747,7 +774,12 @@ export class Supabase {
     return data && data.length > 0 ? data[0] : null;
   }
 
-  async obtenerPedidosPendientesMozo() {
+  /**
+   * Pedidos que ve el mozo según su estado:
+   * - ['enviado']: pendientes de autorizar (Puntos 13 y 14)
+   * - ['confirmado', 'listo']: en preparación por sector y listos para entregar (Punto 15)
+   */
+  async obtenerPedidosPendientesMozo(estados: string[] = ['enviado']) {
     const { data, error } = await this.clienteSupabase
       .from('pedidos')
       .select(`
@@ -758,6 +790,8 @@ export class Supabase {
         importe_total,
         tiempo_estimado,
         created_at,
+        cocina_listo,
+        bar_listo,
         mesas (
           id,
           numero,
@@ -777,7 +811,7 @@ export class Supabase {
           )
         )
       `)
-      .eq('estado', 'enviado')
+      .in('estado', estados)
       .order('created_at', { ascending: true });
 
     if (error) {

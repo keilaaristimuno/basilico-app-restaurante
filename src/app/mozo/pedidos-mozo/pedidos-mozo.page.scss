@@ -331,3 +331,81 @@
     }
   }
 }
+
+/* =========================================================
+   PEDIDOS EN PREPARACIÓN / LISTOS PARA ENTREGAR (PUNTO 15)
+   ========================================================= */
+.encabezado-en-curso {
+  margin-top: 2rem;
+}
+
+.tarjeta-pedido-mozo.pedido-completo {
+  border: 3px solid #34a853;
+}
+
+.aviso-pedido-completo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #e6f4ea;
+  color: #1e6638;
+  border: 1.5px solid #34a853;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 0.95rem;
+
+  ion-icon {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+  }
+}
+
+.parte-sector {
+  background: rgba(40, 55, 32, 0.05);
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: #283720;
+
+  .cabecera-sector {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .nombre-sector {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+  }
+
+  .estado-sector {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: #fdf3d8;
+    color: #8c6b12;
+    border: 1px solid #d9b64c;
+
+    &.sector-listo {
+      background: #e6f4ea;
+      color: #1e6638;
+      border-color: #34a853;
+    }
+  }
+
+  .item-sector {
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 2px 0;
+  }
+}

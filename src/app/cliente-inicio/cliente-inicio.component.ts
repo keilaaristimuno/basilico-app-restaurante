@@ -29,7 +29,9 @@ import {
   chatbubblesOutline,
   peopleOutline,
   closeOutline,
-  refreshOutline
+  refreshOutline,
+  wineOutline,
+  checkmarkDoneCircleOutline
 } from 'ionicons/icons';
 import { RealtimeChannel } from '@supabase/supabase-js';
 
@@ -100,7 +102,9 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
       chatbubblesOutline,
       peopleOutline,
       closeOutline,
-      refreshOutline
+      refreshOutline,
+      wineOutline,
+      checkmarkDoneCircleOutline
     });
   }
 
@@ -327,6 +331,14 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
    */
   async consultarMozo() {
     await this.mostrarToast(`Consulta enviada al mozo para la Mesa N° ${this.numeroMesa()}.`, 'success');
+  }
+
+  /**
+   * Indica si el pedido tiene productos de un sector (cocina: platos, bar: bebidas),
+   * para mostrar el avance solo de los sectores intervinientes (Punto 15)
+   */
+  tieneProductosDe(pedido: PedidoClienteUI, tipo: 'plato' | 'bebida'): boolean {
+    return pedido.items.some((it) => it.producto?.tipo === tipo);
   }
 
   formatearPrecio(precio: number): string {

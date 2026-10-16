@@ -11,6 +11,8 @@ export interface Pedido {
   importe_total: number;
   tiempo_estimado: number;
   created_at: string;
+  cocina_listo: boolean;
+  bar_listo: boolean;
 }
 
 export interface PedidoItem {
@@ -47,6 +49,8 @@ export interface PedidoSupabaseRelacional {
   id: string;
   estado: string;
   created_at: string;
+  cocina_listo: boolean;
+  bar_listo: boolean;
   mesas: MesaRelacion | null;
   pedido_items: PedidoItemRelacionCocina[];
 }
@@ -71,6 +75,7 @@ export interface ItemPlatoCocinaUI {
  */
 export interface PedidoMesaCocinaUI {
   pedidoId: string;
+  numeroMesa: number;
   fechaHora: string;
   platos: ItemPlatoCocinaUI[];
 }
@@ -96,6 +101,7 @@ export interface ItemBebidaBarUI {
 
 export interface PedidoMesaBarUI {
   pedidoId: string;
+  numeroMesa: number;
   fechaHora: string;
   bebidas: ItemBebidaBarUI[];
 }
@@ -129,6 +135,8 @@ export interface PedidoClienteUI {
   importe_total: number;
   tiempo_estimado: number;
   created_at: string;
+  cocina_listo: boolean;
+  bar_listo: boolean;
   items: ItemDetallePedidoUI[];
 }
 
@@ -153,6 +161,13 @@ export interface PedidoPendienteMozoUI {
   tiempo_estimado: number;
   created_at: string;
   fechaHora: string;
+  cocina_listo: boolean;
+  bar_listo: boolean;
   items: ItemPedidoMozoUI[];
 }
+
+/**
+ * 7. Sectores que elaboran productos y avisan cuando su parte está lista (Punto 15).
+ */
+export type SectorPedido = 'cocina' | 'bar';
 

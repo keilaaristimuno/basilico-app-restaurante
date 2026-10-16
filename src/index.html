@@ -9,6 +9,31 @@
 
   <meta name="color-scheme" content="light" />
   <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <script>
+    /* En tablets se dibuja el mismo diseño del celular (480px de ancho) y se escala
+       para cubrir toda la pantalla, así los botones y textos quedan grandes y sin espacios vacíos */
+    (function () {
+      var ANCHO_CELULAR = 480;
+      var MIN_LADO_TABLET = 600;
+      var meta = document.querySelector('meta[name="viewport"]');
+
+      function ajustarViewport() {
+        var ancho = window.screen.width;
+        var ladoCorto = Math.min(window.screen.width, window.screen.height);
+        if (ladoCorto < MIN_LADO_TABLET) return;
+
+        var escala = ladoCorto / ANCHO_CELULAR;
+        var anchoLayout = Math.round(ancho / escala);
+        var e = escala.toFixed(4);
+        meta.setAttribute('content', 'viewport-fit=cover, width=' + anchoLayout +
+          ', initial-scale=' + e + ', minimum-scale=' + e + ', maximum-scale=' + e + ', user-scalable=no');
+      }
+
+      ajustarViewport();
+      window.addEventListener('orientationchange', function () { setTimeout(ajustarViewport, 200); });
+      window.addEventListener('resize', ajustarViewport);
+    })();
+  </script>
   <meta name="format-detection" content="telephone=no" />
   <meta name="msapplication-tap-highlight" content="no" />
 

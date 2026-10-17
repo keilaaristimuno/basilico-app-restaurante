@@ -221,6 +221,32 @@ export class PedidosMozoPage implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * El Mozo entrega el pedido completo en la mesa del cliente (Punto 18)
+   */
+  async entregarPedido(pedido: PedidoPendienteMozoUI) {
+    if (this.procesandoId()) return;
+    this.procesandoId.set(pedido.id);
+
+    try {
+      await this.carga.ejecutar(
+        'Entregando pedido en la mesa...',
+        async () => {
+          await this.pedidoService.entregarPedidoPorMozo(pedido);
+        }
+      );
+
+      await this.mostrarToast(`¡Pedido entregado en la Mesa N° ${pedido.numeroMesa}!`, 'success');
+      await this.cargarPedidos();
+    } catch (error: any) {
+      console.error('Error al entregar pedido:', error);
+      await this.vibracion.errorFuerte();
+      await this.mostrarToast('No se pudo registrar la entrega del pedido.', 'danger');
+    } finally {
+      this.procesandoId.set(null);
+    }
+  }
+
   formatearPrecio(precio: number): string {
     return new Intl.NumberFormat('es-AR').format(precio);
   }

@@ -144,10 +144,15 @@ export class RegistroAnonimoComponent  implements OnInit {
       perfil,
       estado
     );
+    const fcmToken = localStorage.getItem('fcm_device_token');
     localStorage.clear();
+    if (fcmToken) {
+      localStorage.setItem('fcm_device_token', fcmToken);
+    }
     localStorage.setItem('nombre', nombres);
+    localStorage.setItem('perfil', 'cliente');
     this.resetearForm();
-    this.router.navigate(['/clienteInicio']);
+    this.router.navigate(['/clienteInicio'], { replaceUrl: true });
   }
 }
 

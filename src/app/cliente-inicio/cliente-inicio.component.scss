@@ -198,6 +198,25 @@
   }
 }
 
+.acciones-espera-encuesta {
+  margin-top: 14px;
+  flex-shrink: 0;
+  width: 100%;
+
+  .btn-ver-encuestas-espera {
+    --background: #b24d39;
+    --background-activated: #943e2d;
+    --color: #ede5d2;
+    --border-radius: 16px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 0.95rem;
+    min-height: 52px;
+    margin: 0;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.28);
+  }
+}
+
 
 /* ESTILOS DEL MODAL BASÍLICO */
 ion-modal.modal-basilico {
@@ -630,25 +649,37 @@ ion-modal.modal-basilico {
     }
 
     .explicacion-estado {
-      margin: 4px 0 0;
+      margin: 6px 0 4px;
       font-family: 'Montserrat', sans-serif;
-      font-size: 0.84rem;
-      line-height: 1.35;
-      color: #444;
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.42;
+      color: #2f3b28;
+    }
+
+    .btn-confirmar-recepcion,
+    .btn-juegos {
+      width: 100%;
+      margin: 6px 0 0;
+      --background: #283720;
+      --background-activated: #1c2716;
+      --color: #ede5d2;
+      --border-radius: 12px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      min-height: 54px;
     }
 
     .btn-modificar {
+      width: 100%;
+      margin: 6px 0 0;
       --background: #b85d38;
       --color: #ede5d2;
+      --border-radius: 12px;
+      font-family: 'Montserrat', sans-serif;
       font-weight: 800;
-      margin-top: 6px;
-    }
-
-    .btn-juegos {
-      --background: #283720;
-      --color: #ede5d2;
-      font-weight: 800;
-      margin-top: 6px;
+      min-height: 52px;
     }
 
     /* AVANCE POR SECTOR (PUNTO 15) */
@@ -795,15 +826,59 @@ ion-modal.modal-basilico {
 
   .acciones-inferiores-pedido {
     margin-top: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
+}
+
+.contenido-btn-icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  text-align: center;
+
+  ion-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  span {
+    line-height: 1.2;
+  }
+}
+
+.btn-encuesta-cliente {
+  --background: #b24d39;
+  --background-activated: #943e2d;
+  --color: #ede5d2;
+  --border-radius: 12px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  margin: 0;
+}
+
+.btn-encuesta-completada {
+  --background: #283720;
+  --background-activated: #1c2716;
+  --color: #ede5d2;
+  --border-radius: 12px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  margin: 0;
 }
 
 .btonBeigeOutline {
   --color: #283720;
   --border-color: #283720;
   --border-width: 2px;
+  --border-radius: 12px;
   font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
+  font-weight: 800;
+  font-size: 0.98rem;
+  min-height: 52px;
   margin: 0;
 }
 
@@ -819,7 +894,7 @@ ion-modal.modal-basilico {
   max-width: 580px;
   min-height: calc(100% - 68px);
   margin: 0 auto;
-  padding: 16px;
+  padding: 12px 16px 14px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -829,7 +904,7 @@ ion-modal.modal-basilico {
     display: none;
   }
 
-  // Sin pedido activo la pantalla no scrollea: todo entra justo debajo de la navbar
+  // Sin pedido activo o con recepción confirmada la pantalla no scrollea y la card ocupa hasta el margen inferior
   &.sin-pedido {
     height: calc(100% - 68px);
     min-height: 0;
@@ -837,12 +912,15 @@ ion-modal.modal-basilico {
 
     .seccion-mesa-activa,
     .card-bienvenida-pedido,
-    .acciones-pedido-cliente {
+    .acciones-pedido-cliente,
+    .card-estadia-recibida,
+    .acciones-estadia-recibida {
       min-height: 0;
     }
 
     .card-bienvenida-pedido .acciones-pedido-cliente .btn-hacer-pedido,
-    .card-bienvenida-pedido .acciones-pedido-cliente .btn-consulta-mozo {
+    .card-bienvenida-pedido .acciones-pedido-cliente .btn-consulta-mozo,
+    .card-estadia-recibida .acciones-estadia-recibida .btn-accion-estadia {
       min-height: 0;
     }
   }
@@ -852,6 +930,162 @@ ion-modal.modal-basilico {
     flex: 1;
     max-width: 540px;
     margin-top: 0;
+  }
+
+  // Card de estadía luego de confirmar la recepción del pedido (ocupa casi toda la pantalla hasta el margen inferior)
+  .card-estadia-recibida {
+    flex: 1;
+    width: 100%;
+    background: #ede5d2;
+    color: #283720;
+    border-radius: 24px;
+    padding: 20px 18px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 16px;
+    box-sizing: border-box;
+
+    .encabezado-estadia-recibida {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      text-align: center;
+
+      .badge-estado {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 16px;
+        border-radius: 12px;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 800;
+        font-size: 1rem;
+
+        ion-icon {
+          font-size: 1.35rem;
+          flex-shrink: 0;
+        }
+
+        &.estado-confirmado {
+          background: #e6f4ea;
+          color: #1e6638;
+          border: 1.5px solid #34a853;
+        }
+      }
+
+      .explicacion-estado {
+        margin: 2px 0 0;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        line-height: 1.4;
+        color: #2f3b28;
+      }
+    }
+
+    .acciones-estadia-recibida {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(4, 1fr);
+      gap: 12px;
+      min-height: 0;
+
+      .btn-accion-estadia {
+        width: 100%;
+        height: 100%;
+        min-height: 68px;
+        margin: 0;
+        --border-radius: 18px;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 900;
+        font-size: 1.16rem;
+        letter-spacing: 0.4px;
+        text-transform: uppercase;
+
+        &::part(native) {
+          width: 100%;
+          height: 100%;
+          padding: 10px 16px;
+        }
+
+        .contenido-btn-estadia {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 14px;
+          width: 100%;
+          text-align: center;
+          white-space: normal;
+
+          ion-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+          }
+
+          span {
+            line-height: 1.2;
+          }
+        }
+      }
+
+      .btn-estadia-juegos {
+        --background: #283720;
+        --background-activated: #1c2716;
+        --color: #ede5d2;
+      }
+
+      .btn-estadia-encuesta {
+        --background: #b24d39;
+        --background-activated: #943e2d;
+        --color: #ede5d2;
+      }
+
+      .btn-estadia-encuesta-completada {
+        --background: #3a5230;
+        --background-activated: #283720;
+        --color: #ede5d2;
+      }
+
+      .btn-estadia-resultados {
+        --color: #283720;
+        --border-color: #283720;
+        --border-width: 2.5px;
+        --background: rgba(40, 55, 32, 0.06);
+        --background-activated: rgba(40, 55, 32, 0.14);
+      }
+
+      .btn-estadia-cuenta {
+        --background: #283720;
+        --background-activated: #1c2716;
+        --color: #ede5d2;
+      }
+    }
+
+    .zona-realizar-otro-pedido {
+      margin-top: 6px;
+      padding-top: 10px;
+      border-top: 1.5px dashed rgba(40, 55, 32, 0.25);
+
+      .btn-realizar-otro-pedido {
+        width: 100%;
+        min-height: 48px;
+        margin: 0;
+        --color: #283720;
+        --border-color: #283720;
+        --border-width: 2px;
+        --border-radius: 14px;
+        --background: transparent;
+        --background-activated: rgba(40, 55, 32, 0.1);
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 800;
+        font-size: 0.94rem;
+        text-transform: uppercase;
+      }
+    }
   }
 
   // Sin pedido activo: la card se estira y el botón principal toma el espacio libre

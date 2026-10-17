@@ -1,61 +1,36 @@
-<ion-content  [fullscreen]="true" class="fondo">
-  <app-navbar rutaInicio="/duenioInicio"></app-navbar>
-  <div class="contenedor">
-    <section class="encabezado">
-      <img
-        src="assets/Basilico/Logo_beige.png"
-        alt="Logotipo de Basílico"
-        class="logo">
+<ion-content [fullscreen]="true" class="fondo" [scrollY]="false">
+  <div class="pantalla-completa">
+    <app-navbar rutaInicio="/duenioInicio"></app-navbar>
 
-      <h1>Dueño</h1>
-      <p>
-        Seleccione la opción que desea realizar
-      </p>
-    </section>
+    <div class="contenedor-duenio">
+      <section class="encabezado">
+        <img
+          src="assets/Basilico/Logo_beige.png"
+          alt="Logotipo de Basílico"
+          class="logo">
 
-    <section class="acciones">
-      <ion-card class="tarjeta" routerLink="/alta-empleado" button="true">
-        <ion-card-content>
+        <h1>Dueño</h1>
+        <p>
+          Seleccione la opción que desea realizar
+        </p>
+      </section>
 
-          <div class="informacion">
+      <section class="acciones">
+        <div class="tarjeta-duenio" routerLink="/alta-empleado">
+          <h2>Alta empleados</h2>
+          <p>Seleccione para dar de alta un nuevo empleado</p>
+        </div>
 
-            <h2>Alta empleados</h2>
-            <p>
-              Seleccione para dar de alta un nuevo empleado
-            </p>
+        <div class="tarjeta-duenio" routerLink="/alta-mesa">
+          <h2>Alta mesa</h2>
+          <p>Seleccione para dar de alta una nueva mesa</p>
+        </div>
 
-          </div>
-        </ion-card-content>
-      </ion-card>
-
-      <ion-card class="tarjeta" routerLink="/alta-mesa" button="true">
-        <ion-card-content>
-          <div class="informacion">
-            <h2>Alta mesa</h2>
-            <p>
-              Seleccione para dar de alta una nueva mesa
-            </p>
-
-          </div>
-        </ion-card-content>
-      </ion-card>
-
-      <ion-card class="tarjeta" routerLink="/clientes-pendientes" button="true" >
-        <ion-card-content>
-          <!-- <ion-icon
-            name="receipt-outline"
-            class="icono">
-          </ion-icon> -->
-
-          <div class="informacion">
-            <h2>Clientes pendientes</h2>
-            <p>
-              Visualizar los clientes pendientes a autorizar.
-            </p>
-
-          </div>
-        </ion-card-content>
-      </ion-card>
-    </section>
+        <div class="tarjeta-duenio" routerLink="/clientes-pendientes">
+          <h2>Clientes pendientes</h2>
+          <p>Visualizar los clientes pendientes a autorizar.</p>
+        </div>
+      </section>
     </div>
+  </div>
 </ion-content>

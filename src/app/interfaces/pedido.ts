@@ -11,6 +11,8 @@ export interface Pedido {
   importe_total: number;
   tiempo_estimado: number;
   created_at: string;
+  cocina_listo: boolean;
+  bar_listo: boolean;
 }
 
 export interface PedidoItem {
@@ -47,6 +49,8 @@ export interface PedidoSupabaseRelacional {
   id: string;
   estado: string;
   created_at: string;
+  cocina_listo: boolean;
+  bar_listo: boolean;
   mesas: MesaRelacion | null;
   pedido_items: PedidoItemRelacionCocina[];
 }
@@ -71,6 +75,7 @@ export interface ItemPlatoCocinaUI {
  */
 export interface PedidoMesaCocinaUI {
   pedidoId: string;
+  numeroMesa: number;
   fechaHora: string;
   platos: ItemPlatoCocinaUI[];
 }
@@ -96,6 +101,7 @@ export interface ItemBebidaBarUI {
 
 export interface PedidoMesaBarUI {
   pedidoId: string;
+  numeroMesa: number;
   fechaHora: string;
   bebidas: ItemBebidaBarUI[];
 }
@@ -104,4 +110,64 @@ export interface MesaConPedidosBarUI {
   numeroMesa: number;
   pedidos: PedidoMesaBarUI[];
 }
+
+/**
+ * 5. Modelos para el Carrito y la experiencia de realización de Pedido del Cliente (Puntos 11, 12, 13).
+ */
+export interface ItemCarritoPedido {
+  producto: Producto;
+  cantidad: number;
+}
+
+export interface ItemDetallePedidoUI {
+  id?: string;
+  producto: Producto;
+  cantidad: number;
+  precio_unitario: number;
+}
+
+export interface PedidoClienteUI {
+  id: string;
+  mesa_id: string;
+  numeroMesa: number;
+  cliente_id: string;
+  estado: string;
+  importe_total: number;
+  tiempo_estimado: number;
+  created_at: string;
+  cocina_listo: boolean;
+  bar_listo: boolean;
+  items: ItemDetallePedidoUI[];
+}
+
+/**
+ * 6. Modelos para la gestión y autorización/rechazo de Pedidos por parte del Mozo (Puntos 13 y 14).
+ */
+export interface ItemPedidoMozoUI {
+  nombre: string;
+  tipo: Producto['tipo'];
+  cantidad: number;
+  precio_unitario: number;
+}
+
+export interface PedidoPendienteMozoUI {
+  id: string;
+  mesa_id: string;
+  numeroMesa: number;
+  cliente_id: string;
+  clienteNombre: string;
+  estado: string;
+  importe_total: number;
+  tiempo_estimado: number;
+  created_at: string;
+  fechaHora: string;
+  cocina_listo: boolean;
+  bar_listo: boolean;
+  items: ItemPedidoMozoUI[];
+}
+
+/**
+ * 7. Sectores que elaboran productos y avisan cuando su parte está lista (Punto 15).
+ */
+export type SectorPedido = 'cocina' | 'bar';
 

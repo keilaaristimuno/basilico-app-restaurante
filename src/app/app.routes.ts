@@ -111,6 +111,10 @@ export const routes: Routes = [
     loadComponent: () => import('./paginas/cantinero/pedidos-bar/pedidos-bar.page').then(m => m.PedidosBarPage)
   },
   {
+    path: 'pedidos-mozo',
+    loadComponent: () => import('./mozo/pedidos-mozo/pedidos-mozo.page').then(m => m.PedidosMozoPage)
+  },
+  {
     path: 'chat',
     loadComponent: () => import('./components/chat/chat.component').then(m => m.ChatComponent)
   },
@@ -118,4 +122,6 @@ export const routes: Routes = [
     path: '**',
     redirectTo: 'inicio'
   }
+];
+
 ];

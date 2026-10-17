@@ -42,6 +42,7 @@ import { QrService } from '../services/qr.service';
 import { Supabase } from '../services/supabase';
 import { VibracionService } from '../services/vibracion';
 import { PedidoService } from '../services/pedido.service';
+import { PushNotificationsService } from '../services/push-notifications.service';
 import { NavbarComponent } from '../components/navbar/navbar.component';
 import { PedidoClienteUI } from '../interfaces/pedido';
 import { ChatComponent } from '../components/chat/chat.component';
@@ -94,6 +95,7 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
     private toastCtrl: ToastController,
     private vibracion: VibracionService,
     public pedidoService: PedidoService,
+    private pushNotifications: PushNotificationsService,
     private router: Router
   ) {
     addIcons({
@@ -121,11 +123,11 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     await this.cargarDatosClienteYEstado();
     this.iniciarSuscripcionRealtime();
-    
   }
 
   async ionViewWillEnter() {
     await this.cargarDatosClienteYEstado();
+    this.iniciarSuscripcionRealtime();
   }
 
   ngOnDestroy() {
@@ -168,10 +170,14 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
       // 1. Verificar si está en lista de espera
       const lista = await this.supabase.obtenerListaDeEspera();
       const enEspera = lista.some((it: any) => it.cliente_id === idCliente);
+      const estabaEnEspera =
+        this.enListaEspera() || localStorage.getItem(`en_lista_espera_${idCliente}`) === 'true';
+
       this.enListaEspera.set(enEspera);
       if (enEspera) {
         // Si el cliente está actualmente en la lista de espera, el metre todavía no le asignó mesa
         // para esta nueva estadía, por lo que permanece en la vista de espera.
+        localStorage.setItem(`en_lista_espera_${idCliente}`, 'true');
         this.codigoQrIngreso.set(true);
         this.numeroMesa.set('');
         this.mesaId.set('');
@@ -182,6 +188,24 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
 
       // 2. Buscar si el metre ya le asignó mesa
       await this.buscarMesaAsignada();
+
+      // Si estaba en lista de espera, ya no está en lista_espera y tampoco tiene mesa asignada -> fue rechazado por el metre
+      if (estabaEnEspera && !this.numeroMesa()) {
+        localStorage.removeItem(`en_lista_espera_${idCliente}`);
+        this.codigoQrIngreso.set(false);
+        this.mesaEscaneada.set(false);
+        await this.vibracion.errorFuerte();
+        await this.mostrarToast('Tu solicitud en la lista de espera fue rechazada por el metre.', 'danger');
+        return;
+      }
+
+      if (this.numeroMesa()) {
+        localStorage.removeItem(`en_lista_espera_${idCliente}`);
+      } else {
+        // No está en lista de espera ni tiene mesa asignada -> pantalla inicial de escanear QR de ingreso
+        this.codigoQrIngreso.set(false);
+        this.mesaEscaneada.set(false);
+      }
 
       // 3. Consultar pedido activo
       if (this.numeroMesa()) {
@@ -237,6 +261,9 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
 
   cerrarModuleComensales() {
     this.abrirInputComensales.set(false);
+    if (!this.enListaEspera() && !this.numeroMesa()) {
+      this.codigoQrIngreso.set(false);
+    }
   }
 
   async agregarAListaDeEspera() {
@@ -263,7 +290,21 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
 
     // Al entrar a lista de espera, ya no está bloqueado en el estado de reinicio previo
     localStorage.removeItem(`esperando_nuevo_ingreso_${idCliente}`);
+    localStorage.setItem(`en_lista_espera_${idCliente}`, 'true');
     this.enListaEspera.set(true);
+
+    // Notificación push al Metre (Punto 9)
+    try {
+      await this.pushNotifications.enviarNotificacion(
+        '¡Nuevo Cliente en Lista de Espera!',
+        `${this.nombreCliente()} (${this.comensalesValidados()} comensales) espera asignación de mesa.`,
+        { profiles: ['metre'] },
+        { ruta: '/listaEspera' }
+      );
+    } catch (pushErr) {
+      console.warn('[Push] Error al enviar notificación al metre por lista de espera:', pushErr);
+    }
+
     await this.mostrarToast(`¡Te anotaste con éxito en la lista de espera como "${this.nombreCliente()}"!`, 'success');
   }
 
@@ -287,6 +328,7 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
       this.numeroMesa.set(String(mesaEncontrada.numero));
       this.mesaId.set(mesaEncontrada.id);
       this.codigoQrIngreso.set(true);
+      localStorage.setItem('identificador', `Mesa ${mesaEncontrada.numero}`);
 
       // Verificamos si el cliente YA HABÍA escaneado esta mesa antes (guardado en localStorage)
       const guardada = localStorage.getItem(`mesa_escaneada_${mesaEncontrada.numero}`);
@@ -470,6 +512,13 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'pedidos' },
+        () => {
+          void this.cargarDatosClienteYEstado();
+        }
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'lista_espera' },
         () => {
           void this.cargarDatosClienteYEstado();
         }

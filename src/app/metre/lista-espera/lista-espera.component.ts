@@ -2,6 +2,7 @@ import { Component, OnInit, signal } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterLink } from "@angular/router";
 import { PushNotificationsService } from "../../services/push-notifications.service";
+import { RealtimeChannel } from '@supabase/supabase-js';
 import {
   IonContent,
   IonHeader,
@@ -73,7 +74,9 @@ export class ListaEsperaComponent implements OnInit {
 
   // Variables para detección de swipe
   private touchStartX = 0;
-  private touchEndX = 0;
+  private touchEndX = 0;  
+
+  private canalListaEspera: RealtimeChannel | null = null;
 
   constructor(
     private supabase: Supabase,
@@ -97,6 +100,7 @@ export class ListaEsperaComponent implements OnInit {
 
   ngOnInit() {
     this.obtenerListaEspera();
+    this.iniciarSuscripcionRealtime();
   }
 
   async obtenerListaEspera() {
@@ -110,6 +114,30 @@ export class ListaEsperaComponent implements OnInit {
       }
     } catch (error) {
       console.error('Error al obtener la lista de espera:', error);
+    }
+  }
+
+  private iniciarSuscripcionRealtime() {
+    this.detenerSuscripcionRealtime();
+
+    this.canalListaEspera = this.supabase.clienteSupabase
+      .channel('cambios-lista-espera')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'lista_espera' },
+        () => {
+          // Cada vez que entra, sale o cambia alguien en la lista de espera,
+          // volvemos a pedir los datos actualizados:
+          void this.obtenerListaEspera();
+        }
+      )
+      .subscribe();
+  }
+
+  private detenerSuscripcionRealtime() {
+    if (this.canalListaEspera) {
+      void this.supabase.clienteSupabase.removeChannel(this.canalListaEspera);
+      this.canalListaEspera = null;
     }
   }
 

@@ -142,7 +142,7 @@
                 expand="block"
                 fill="outline"
                 class="btn-consulta-mozo"
-                (click)="consultarMozo()">
+                (click)="alternarChat()">
                 <div class="contenido-btn-pedido">
                   <ion-icon name="chatbubbles-outline" class="icono-btn-pedido"></ion-icon>
                   <span class="texto-btn-pedido">Consulta al Mozo</span>
@@ -487,3 +487,9 @@
     </ion-content>
   </ng-template>
 </ion-modal>
+
+@if (abrirChatModal()) {
+  <div class="chat-contenedor-overlay">
+    <app-chat></app-chat>
+  </div>
+}

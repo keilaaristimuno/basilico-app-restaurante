@@ -44,6 +44,7 @@ import { VibracionService } from '../services/vibracion';
 import { PedidoService } from '../services/pedido.service';
 import { NavbarComponent } from '../components/navbar/navbar.component';
 import { PedidoClienteUI } from '../interfaces/pedido';
+import { ChatComponent } from '../components/chat/chat.component';
 
 @Component({
   selector: 'app-cliente-inicio',
@@ -64,7 +65,8 @@ import { PedidoClienteUI } from '../interfaces/pedido';
     IonButtons,
     IonTitle,
     FormsModule,
-    IonInput
+    IonInput,
+    ChatComponent,
   ],
 })
 export class ClienteInicioComponent implements OnInit, OnDestroy {
@@ -79,6 +81,7 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
   enListaEspera = signal<boolean>(false);
   mesaEscaneada = signal<boolean>(false);
   encuestaCompletada = signal<boolean>(false);
+  abrirChatModal = signal<boolean>(false);
 
   /**
    * Canal activo de Supabase Realtime para cambios en pedidos y mesas
@@ -167,7 +170,14 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
       const enEspera = lista.some((it: any) => it.cliente_id === idCliente);
       this.enListaEspera.set(enEspera);
       if (enEspera) {
+        // Si el cliente está actualmente en la lista de espera, el metre todavía no le asignó mesa
+        // para esta nueva estadía, por lo que permanece en la vista de espera.
         this.codigoQrIngreso.set(true);
+        this.numeroMesa.set('');
+        this.mesaId.set('');
+        this.mesaEscaneada.set(false);
+        this.pedidoService.pedidoActivo.set(null);
+        return;
       }
 
       // 2. Buscar si el metre ya le asignó mesa
@@ -175,7 +185,7 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
 
       // 3. Consultar pedido activo
       if (this.numeroMesa()) {
-        const pedido = await this.pedidoService.consultarPedidoActivo(idCliente);
+        const pedido = await this.pedidoService.consultarPedidoActivo(idCliente, this.mesaId());
         if (pedido) {
           this.mesaEscaneada.set(true);
         }
@@ -251,6 +261,8 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
       return;
     }
 
+    // Al entrar a lista de espera, ya no está bloqueado en el estado de reinicio previo
+    localStorage.removeItem(`esperando_nuevo_ingreso_${idCliente}`);
     this.enListaEspera.set(true);
     await this.mostrarToast(`¡Te anotaste con éxito en la lista de espera como "${this.nombreCliente()}"!`, 'success');
   }
@@ -259,8 +271,16 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
     const idCliente = this.clienteId();
     if (!idCliente) return;
 
+    // Si el cliente tocó "Realizar otro pedido" y aún no escaneó el QR de ingreso, no retomar la mesa vieja
+    if (localStorage.getItem(`esperando_nuevo_ingreso_${idCliente}`) === 'true') {
+      return;
+    }
+
     const mesas = await this.supabase.obtenerMesas();
-    const mesaEncontrada = mesas.find((m: any) => m.cliente_id === idCliente);
+    const mesasDelCliente = mesas.filter((m: any) => m.cliente_id === idCliente);
+    const mesaEncontrada =
+      mesasDelCliente.find((m: any) => m.disponibilidad === 'asignada') ||
+      mesasDelCliente[0];
 
     if (mesaEncontrada) {
       // Seteamos el número y la ID de la mesa, pero NO mesaEscaneada todavía
@@ -270,8 +290,8 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
 
       // Verificamos si el cliente YA HABÍA escaneado esta mesa antes (guardado en localStorage)
       const guardada = localStorage.getItem(`mesa_escaneada_${mesaEncontrada.numero}`);
-      if (mesaEncontrada.disponibilidad === 'ocupada' || guardada === 'true') {
-        this.mesaEscaneada.set(true); // Solo si ya fue escaneada previamente
+      if (guardada === 'true') {
+        this.mesaEscaneada.set(true); // Solo si ya fue escaneada previamente en esta estadía
       }
 
       this.pedidoService.setMesa(mesaEncontrada.id, mesaEncontrada.numero);
@@ -385,6 +405,7 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
     const nroMesa = this.numeroMesa();
 
     if (idCliente) {
+      localStorage.setItem(`esperando_nuevo_ingreso_${idCliente}`, 'true');
       try {
         await this.supabase.eliminarClienteDeListaDeEspera(idCliente);
       } catch (e) {
@@ -392,7 +413,7 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
       }
     }
 
-    await this.pedidoService.finalizarEstadiaParaOtroPedido(pedido?.id, idMesa, nroMesa);
+    await this.pedidoService.finalizarEstadiaParaOtroPedido(pedido?.id, idMesa, nroMesa, idCliente);
 
     this.mesaEscaneada.set(false);
     this.numeroMesa.set('');
@@ -462,11 +483,16 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
           // Si la mesa modificada nos involucra
           if (mesaModificada && mesaModificada.cliente_id === idCliente) {
             await this.buscarMesaAsignada();
+            localStorage.setItem("identificador", `Mesa ${mesaModificada.numero}`);
           }
         }
       )
       .subscribe();
   }
+  alternarChat() {
+  this.abrirChatModal.set(!this.abrirChatModal());  
+  } 
+
 
   private detenerSuscripcionRealtime(): void {
     if (this.canalRealtime) {

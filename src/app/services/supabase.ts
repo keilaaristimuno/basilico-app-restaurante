@@ -507,6 +507,18 @@ export class Supabase {
 
   //para asignar una mesa a un cliente en la lista de espera
   async asignarMesaACliente(clienteId: string, numeroMesa: string) {
+    // Primero liberamos cualquier otra mesa que pudiera haber quedado asociada a este cliente
+    try {
+      await this.clienteSupabase
+        .from('mesas')
+        .update({
+          disponibilidad: 'libre',
+          cliente_id: null
+        })
+        .eq('cliente_id', clienteId);
+    } catch (e) {
+      console.warn('No se pudo limpiar mesa previa del cliente:', e);
+    }
 
     // El metre asigna → disponibilidad pasa a 'asignada' (no 'ocupada').
     // 'ocupada' se establece recién cuando el cliente escanea el QR de la mesa.
@@ -731,6 +743,30 @@ export class Supabase {
     return data;
   }
 
+  async eliminarPedidoCompleto(pedidoId: string) {
+    try {
+      await this.clienteSupabase
+        .from('pedido_items')
+        .delete()
+        .eq('pedido_id', pedidoId);
+    } catch (e) {
+      console.warn('Error eliminando items del pedido:', e);
+    }
+
+    const { error } = await this.clienteSupabase
+      .from('pedidos')
+      .delete()
+      .eq('id', pedidoId);
+
+    if (error) {
+      console.warn('No se pudo eliminar el pedido en DB, intentando actualizar estado:', error.message);
+      await this.clienteSupabase
+        .from('pedidos')
+        .update({ estado: 'finalizado' })
+        .eq('id', pedidoId);
+    }
+  }
+
   /**
    * Cocina o Bar marcan su parte del pedido como lista (Punto 15).
    * La función de base de datos pasa el pedido a 'listo' solo cuando
@@ -869,6 +905,17 @@ async enviarMensaje(identificador: string, textoMensaje: string) {
     
 
   if (error) console.error('Error al guardar mensaje:', error.message);
+  try {
+    await this.clienteSupabase.functions.invoke('enviar-push', {
+      body: {
+        title: `Nuevo mensaje de: ${identificador}`,
+        body: textoMensaje,
+       
+      }
+    });
+  } catch (err) {
+    console.error('Error al disparar la push:', err);
+  }
 }
 
 //Suscribirse al tiempo real para recibir mensajes de otros clientes

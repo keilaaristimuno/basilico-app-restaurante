@@ -15,6 +15,7 @@ import { SonidoService } from '../../services/sonido';
 export class NavbarComponent implements OnInit {
 
   @Input() rutaInicio: string = '/';
+  @Input() titulo: string = '';
 
   nombre: string | null = null;
   constructor(

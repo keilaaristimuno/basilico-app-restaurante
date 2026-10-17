@@ -1,21 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import {
   IonContent,
-  IonHeader,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardSubtitle,
-  IonCardContent,
   IonButton,
   IonIcon,
   IonBadge,
-  ToastController,
-  IonToolbar, 
-  IonButtons,
-  IonBackButton
+  ToastController
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import {
@@ -28,11 +19,14 @@ import {
   ribbonOutline,
   playCircleOutline,
   alertCircleOutline,
-  checkmarkCircleOutline
+  checkmarkCircleOutline,
+  swapVerticalOutline,
+  gridOutline
 } from 'ionicons/icons';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { JuegosService, DefinicionJuego } from '../../services/juegos.service';
 import { VibracionService } from '../../services/vibracion';
+import { Supabase } from '../../services/supabase';
 
 @Component({
   selector: 'app-juegos',
@@ -45,15 +39,12 @@ import { VibracionService } from '../../services/vibracion';
     IonContent,
     IonButton,
     IonIcon,
-    IonBadge,
-    IonToolbar,
-    IonButtons,
-    IonBackButton,
-    IonHeader
+    IonBadge
   ]
 })
 export class JuegosPage implements OnInit {
   public juegosService = inject(JuegosService);
+  private supabase = inject(Supabase);
   private vibracion = inject(VibracionService);
   private toastCtrl = inject(ToastController);
   private router = inject(Router);
@@ -66,33 +57,33 @@ export class JuegosPage implements OnInit {
 
   juegos: DefinicionJuego[] = [
     {
-      id: 'juego-1',
-      titulo: 'Trivia Basílico',
-      subtitulo: 'Desafío de Cultura Culinaria',
+      id: 'bingo',
+      titulo: 'Bingo Basílico',
+      subtitulo: 'Llená tu Cartón Culinario',
       descuento: 10,
-      icono: 'help-circle-outline',
+      icono: 'grid-outline',
       colorIcono: 'icono-verde',
-      descripcion: 'Respondé correctamente preguntas sobre cocina italiana y recetas de la casa.',
+      descripcion: 'Sacá las bolillas del bolillero y completá las 5 casillas de tu cartón antes de agotar las 15 chances.',
       disponibleParaDescuento: true
     },
     {
-      id: 'juego-2',
-      titulo: 'Memoria del Chef',
-      subtitulo: 'Parejas de Ingredientes',
+      id: 'mayor-menor',
+      titulo: 'Mayor o Menor',
+      subtitulo: 'Cartas de Cocina Italiana',
       descuento: 15,
-      icono: 'restaurant-outline',
+      icono: 'swap-vertical-outline',
       colorIcono: 'icono-terracota',
-      descripcion: 'Encontrá los pares de platos e ingredientes típicos antes de que se agote el tiempo.',
+      descripcion: 'Adiviná si la siguiente carta gastronómica es mayor o menor y acumulá aciertos sin perder tus vidas.',
       disponibleParaDescuento: true
     },
     {
-      id: 'juego-3',
-      titulo: 'Reflejos en la Cocina',
-      subtitulo: 'Atrapá el Ingrediente',
+      id: 'trivia',
+      titulo: 'Trivia Culinaria',
+      subtitulo: 'Sabores y Tradiciones',
       descuento: 20,
-      icono: 'sparkles-outline',
+      icono: 'help-circle-outline',
       colorIcono: 'icono-dorado',
-      descripcion: 'Poné a prueba tu velocidad atrapando los ingredientes frescos sin dejar caer ninguno.',
+      descripcion: 'Respondé preguntas sobre recetas clásicas, orígenes y secretos de la auténtica comida italiana.',
       disponibleParaDescuento: true
     }
   ];
@@ -108,7 +99,9 @@ export class JuegosPage implements OnInit {
       ribbonOutline,
       playCircleOutline,
       alertCircleOutline,
-      checkmarkCircleOutline
+      checkmarkCircleOutline,
+      swapVerticalOutline,
+      gridOutline
     });
   }
 
@@ -128,10 +121,18 @@ export class JuegosPage implements OnInit {
 
   async seleccionarJuego(juego: DefinicionJuego) {
     this.juegoSeleccionado = juego;
-    await this.mostrarToast(
-      `Seleccionaste: ${juego.titulo}. ¡Próximamente disponible para jugar!`,
-      'warning'
-    );
+    if (juego.id === 'bingo') {
+      await this.router.navigate(['/juegos/bingo']);
+      return;
+    }
+    if (juego.id === 'mayor-menor') {
+      await this.router.navigate(['/juegos/mayor-menor']);
+      return;
+    }
+    if (juego.id === 'trivia') {
+      await this.router.navigate(['/juegos/trivia']);
+      return;
+    }
   }
 
   /**
@@ -141,6 +142,17 @@ export class JuegosPage implements OnInit {
   async simularResultado(juego: DefinicionJuego, gano: boolean) {
     const resultado = this.juegosService.registrarResultado(juego.id, gano, juego.descuento);
     this.actualizarDisponibilidadJuegos();
+
+    // Impactar en la base de datos Supabase igual que al jugar
+    try {
+      await this.supabase.guardarResultadoJuego(
+        juego.id,
+        resultado.exito,
+        resultado.exito ? juego.descuento : null
+      );
+    } catch (e) {
+      console.warn('Error al guardar simulación en Supabase:', e);
+    }
 
     if (resultado.exito) {
       await this.mostrarToast(resultado.mensaje, 'success');

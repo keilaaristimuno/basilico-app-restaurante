@@ -391,12 +391,12 @@ Cada producto presenta su información correspondiente, incluyendo nombre, descr
   <img src="docs/capturas/cocina-bar/03-carta-platos.png" width="300">
 </p>
 
-Editar menu
+**Editar menu**
 <p align="center">
   <img src="docs/capturas/cocina-bar/07-editar-menu.png" width="300">
 </p>
 
-Eliminar menu
+**Eliminar menu**
 <p align="center">
   <img src="docs/capturas/cocina-bar/08-eliminar-menu.png" width="300">
 </p>
@@ -409,6 +409,7 @@ Esta sección permitirá al cocinero visualizar los pedidos confirmados que cont
 
 Los pedidos deberán mostrar la mesa correspondiente, fecha y hora, junto con los productos y cantidades que deben ser preparados, agrupados por número de mesa.
 
+**Sin pedidos pendientes**
 <p align="center">
   <img src="docs/capturas/cocina-bar/sin-pedido-cocina.png" width="300">
 </p>
@@ -705,8 +706,6 @@ Sección destinada a visualizar los pedidos cuya preparación fue completada por
 
 El pedido deberá estar disponible para entrega una vez que todos los productos que lo componen se encuentren listos. Desde esta sección, el mozo podrá identificar los pedidos preparados y continuar con la entrega al cliente.
 
-> 🚧 **REVEEERRRRR:**
-
 <p align="center">
   <img src="docs/capturas/mozo-metre/mozo-pedido-listo.png" width="300">
 </p>
@@ -745,33 +744,37 @@ El sistema permitirá mantener una sala de conversación entre clientes y mozos,
 
 ## 📧 Correos Electrónicos Automáticos
 
-Al aceptar o rechazar un cliente registrado desde **Clientes Pendientes** (Puntos 7 y 8), el sistema envía automáticamente un correo personalizado mediante la Edge Function de Supabase `enviar-correo` (servicio Resend), con el logo de Basílico y los colores y tipografías propios de la marca.
+Al aceptar o rechazar un cliente registrado desde **Clientes Pendientes** (Puntos 7 y 8), el sistema envía automáticamente un correo personalizado mediante la Edge Function de Supabase `enviar-correo` (servicio Resend), con el logo de Basílico, los colores y tipografías propios de la marca.
 
-### 1. Mail de Aceptación de Cliente Registrado
+### 1. Mail de Solicitud recibida por cliente
 
-Correo con fondo verde oliva Basílico (`#283720`) y tipografía Segoe UI / Arial. Incluye la etiqueta **"Registro Aprobado"**, el título **"¡Cuenta Habilitada!"**, el DNI registrado y el estado *Habilitado*, e invita al cliente a ingresar a la aplicación con su correo y contraseña.
+El cliente recibe un correo notificando que su solicitud fue recibida y se encuentra en observacion.
 
-> 📷 **Captura pendiente:** agregar la imagen en `docs/capturas/mails/01-mail-aceptacion-cliente.png`.
-
-<!-- Captura pendiente:
 <p align="center">
-  <img src="docs/capturas/mails/01-mail-aceptacion-cliente.png" width="400">
+  <img src="docs/capturas/mails/correo-basilico-solicitud-recibida.png" width="400">
 </p>
--->
+
+
+### 2. Mail de Aceptación de Cliente Registrado
+
+Correo incluye la etiqueta **"Registro Aprobado"**, el título **"¡Cuenta Habilitada!"**, el DNI registrado y el estado *Habilitado*, e invita al cliente a ingresar a la aplicación con su correo y contraseña.
+
+
+<p align="center">
+  <img src="docs/capturas/mails/correo-basilico-solicitud-aceptada.png" width="400">
+</p>
+
 
 ---
 
-### 2. Mail de Rechazo de Cliente Registrado
+### 3. Mail de Rechazo de Cliente Registrado
 
-Correo con fondo terracota Basílico (`#b24d39`) y tipografía Georgia / serif. Incluye la etiqueta **"Solicitud No Admitida"**, el título **"Solicitud Desestimada"**, el DNI consultado y el estado *No admitido*, junto con la indicación de comunicarse con la administración ante cualquier error.
+Correo incluye la etiqueta **"Solicitud No Admitida"**, el título **"Solicitud Desestimada"**, el DNI consultado y el estado *No admitido*, junto con la indicación de comunicarse con la administración ante cualquier error.
 
-> 📷 **Captura pendiente:** agregar la imagen en `docs/capturas/mails/02-mail-rechazo-cliente.png`.
-
-<!-- Captura pendiente:
 <p align="center">
-  <img src="docs/capturas/mails/02-mail-rechazo-cliente.png" width="400">
+  <img src="docs/capturas/mails/correo-basilico-solicitud-rechazada.png" width="400">
 </p>
--->
+
 
 ---
 

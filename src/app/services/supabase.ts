@@ -905,6 +905,17 @@ async enviarMensaje(identificador: string, textoMensaje: string) {
     
 
   if (error) console.error('Error al guardar mensaje:', error.message);
+  try {
+    await this.clienteSupabase.functions.invoke('enviar-push', {
+      body: {
+        title: `Nuevo mensaje de: ${identificador}`,
+        body: textoMensaje,
+       
+      }
+    });
+  } catch (err) {
+    console.error('Error al disparar la push:', err);
+  }
 }
 
 //Suscribirse al tiempo real para recibir mensajes de otros clientes

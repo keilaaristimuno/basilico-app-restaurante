@@ -44,6 +44,7 @@ import { VibracionService } from '../services/vibracion';
 import { PedidoService } from '../services/pedido.service';
 import { NavbarComponent } from '../components/navbar/navbar.component';
 import { PedidoClienteUI } from '../interfaces/pedido';
+import { ChatComponent } from '../components/chat/chat.component';
 
 @Component({
   selector: 'app-cliente-inicio',
@@ -64,7 +65,8 @@ import { PedidoClienteUI } from '../interfaces/pedido';
     IonButtons,
     IonTitle,
     FormsModule,
-    IonInput
+    IonInput,
+    ChatComponent,
   ],
 })
 export class ClienteInicioComponent implements OnInit, OnDestroy {
@@ -79,6 +81,7 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
   enListaEspera = signal<boolean>(false);
   mesaEscaneada = signal<boolean>(false);
   encuestaCompletada = signal<boolean>(false);
+  abrirChatModal = signal<boolean>(false);
 
   /**
    * Canal activo de Supabase Realtime para cambios en pedidos y mesas
@@ -480,11 +483,16 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
           // Si la mesa modificada nos involucra
           if (mesaModificada && mesaModificada.cliente_id === idCliente) {
             await this.buscarMesaAsignada();
+            localStorage.setItem("identificador", `Mesa ${mesaModificada.numero}`);
           }
         }
       )
       .subscribe();
   }
+  alternarChat() {
+  this.abrirChatModal.set(!this.abrirChatModal());  
+  } 
+
 
   private detenerSuscripcionRealtime(): void {
     if (this.canalRealtime) {

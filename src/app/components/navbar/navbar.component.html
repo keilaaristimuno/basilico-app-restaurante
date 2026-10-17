@@ -1,8 +1,17 @@
 <ion-tab-bar class="custom-tab-bar">
   
-  <ion-tab-button [routerLink]="rutaInicio" class="tab-btn-logo">
-    <img class="logoChico" src="assets/Basilico/Logo_beige.png" alt="Logotipo">
-  </ion-tab-button>
+  @if (modoVolver) {
+    <ion-tab-button [routerLink]="rutaInicio" class="tab-btn-volver">
+      <div class="contenido-volver-nav">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+        <span>Volver</span>
+      </div>
+    </ion-tab-button>
+  } @else {
+    <ion-tab-button [routerLink]="rutaInicio" class="tab-btn-logo">
+      <img class="logoChico" src="assets/Basilico/Logo_beige.png" alt="Logotipo">
+    </ion-tab-button>
+  }
 
   <div class="navbar-centro">
     @if(titulo){
@@ -12,8 +21,15 @@
     }
   </div>
 
-  <ion-tab-button (click)="cerrarSesion()" class="tab-btn-salir">
-    <ion-label>Salir</ion-label>
-  </ion-tab-button>
+  @if (!modoVolver) {
+    <ion-tab-button (click)="cerrarSesion()" class="tab-btn-salir">
+      <ion-label class="label-cerrar-sesion">
+        <span>Cerrar</span>
+        <span>sesión</span>
+      </ion-label>
+    </ion-tab-button>
+  } @else {
+    <div class="espaciador-volver-derecha"></div>
+  }
 
 </ion-tab-bar>

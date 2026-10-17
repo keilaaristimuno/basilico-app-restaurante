@@ -31,7 +31,10 @@ import {
   refreshOutline,
   wineOutline,
   checkmarkDoneCircleOutline,
-  hourglassOutline
+  hourglassOutline,
+  clipboardOutline,
+  barChartOutline,
+  receiptOutline
 } from 'ionicons/icons';
 import { RealtimeChannel } from '@supabase/supabase-js';
 
@@ -75,6 +78,7 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
   nombreCliente = signal<string>("Cliente");
   enListaEspera = signal<boolean>(false);
   mesaEscaneada = signal<boolean>(false);
+  encuestaCompletada = signal<boolean>(false);
 
   /**
    * Canal activo de Supabase Realtime para cambios en pedidos y mesas
@@ -104,7 +108,10 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
       refreshOutline,
       wineOutline,
       checkmarkDoneCircleOutline,
-      hourglassOutline
+      hourglassOutline,
+      clipboardOutline,
+      barChartOutline,
+      receiptOutline
     });
   }
 
@@ -173,6 +180,16 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
           this.mesaEscaneada.set(true);
         }
       }
+
+      // 4. Verificar si ya completó la encuesta en la estadía actual (Punto 20)
+      const pedidoActual = this.pedidoService.pedidoActivo();
+      const desdeFecha = pedidoActual?.created_at ?? null;
+      const encuestaPrevia = await this.supabase.obtenerEncuestaEstadiaActual(
+        idCliente,
+        this.mesaId() || null,
+        desdeFecha
+      );
+      this.encuestaCompletada.set(!!encuestaPrevia);
     } catch (error) {
       console.warn('Error al cargar datos del cliente y estado:', error);
     }
@@ -331,6 +348,72 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
    */
   async consultarMozo() {
     await this.mostrarToast(`Consulta enviada al mozo para la Mesa N° ${this.numeroMesa()}.`, 'success');
+  }
+
+  /**
+   * El cliente confirma que recibió el pedido en su mesa (Punto 19)
+   */
+  async confirmarRecepcionPedido() {
+    const pedido = this.pedidoService.pedidoActivo();
+    if (!pedido) return;
+
+    try {
+      await this.pedidoService.confirmarRecepcionPorCliente(pedido.id);
+      await this.mostrarToast('¡Recepción confirmada! Que disfrutes tu comida.', 'success');
+    } catch (error) {
+      console.error('Error al confirmar recepción del pedido:', error);
+      await this.vibracion.errorFuerte();
+      await this.mostrarToast('No se pudo confirmar la recepción del pedido.', 'danger');
+    }
+  }
+
+  /**
+   * Solicita la cuenta al mozo para cerrar la mesa
+   */
+  async pedirLaCuenta() {
+    await this.mostrarToast(`¡Solicitud de cuenta enviada al mozo para la Mesa N° ${this.numeroMesa()}!`, 'success');
+  }
+
+  /**
+   * Reinicia la estadía y el pedido actual para que el cliente vuelva al botón de escanear QR de ingreso
+   * y pueda realizar otro pedido desde cero.
+   */
+  async realizarOtroPedido() {
+    const pedido = this.pedidoService.pedidoActivo();
+    const idCliente = this.clienteId();
+    const idMesa = this.mesaId();
+    const nroMesa = this.numeroMesa();
+
+    if (idCliente) {
+      try {
+        await this.supabase.eliminarClienteDeListaDeEspera(idCliente);
+      } catch (e) {
+        console.warn('Error limpiando lista de espera al reiniciar:', e);
+      }
+    }
+
+    await this.pedidoService.finalizarEstadiaParaOtroPedido(pedido?.id, idMesa, nroMesa);
+
+    this.mesaEscaneada.set(false);
+    this.numeroMesa.set('');
+    this.mesaId.set('');
+    this.enListaEspera.set(false);
+    this.codigoQrIngreso.set(false);
+    this.encuestaCompletada.set(false);
+
+    await this.mostrarToast('¡Estadía reiniciada! Podés escanear el QR de ingreso para un nuevo pedido.', 'success');
+  }
+
+  /**
+   * Navega a la encuesta de satisfacción o directamente a los gráficos si ya la completó en esta estadía (Punto 20)
+   */
+  async irAEncuesta() {
+    if (this.encuestaCompletada()) {
+      await this.mostrarToast('Ya completaste la encuesta en esta estadía. Mostrando gráficos.', 'warning');
+      await this.router.navigate(['/graficos-encuesta']);
+      return;
+    }
+    await this.router.navigate(['/encuesta-cliente']);
   }
 
   /**

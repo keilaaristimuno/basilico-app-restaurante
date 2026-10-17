@@ -239,7 +239,7 @@ export class PedidoService {
       const idMesa = mesaId || this.mesaActual()?.id;
       const idCliente = clienteId || this.clienteActual()?.id;
       const dataRaw = await this.supabase.obtenerPedidoActivoPorCliente(idCliente, idMesa);
-      if (!dataRaw) {
+      if (!dataRaw || localStorage.getItem(`pedido_finalizado_${dataRaw.id}`) === 'true') {
         this.pedidoActivo.set(null);
         return null;
       }
@@ -256,12 +256,17 @@ export class PedidoService {
         ? (mesasObj[0]?.numero ?? 0)
         : (mesasObj?.numero ?? 0);
 
+      const recepcionLocal = localStorage.getItem(`recepcion_confirmada_${dataRaw.id}`) === 'true';
+      const estadoEfectivo = (dataRaw.estado === 'entregado' && recepcionLocal)
+        ? 'recibido'
+        : dataRaw.estado;
+
       const pedidoUI: PedidoClienteUI = {
         id: dataRaw.id,
         mesa_id: dataRaw.mesa_id,
         numeroMesa,
         cliente_id: dataRaw.cliente_id,
-        estado: dataRaw.estado,
+        estado: estadoEfectivo,
         importe_total: dataRaw.importe_total,
         tiempo_estimado: dataRaw.tiempo_estimado,
         created_at: dataRaw.created_at,
@@ -384,4 +389,76 @@ export class PedidoService {
 
     return pedidoCompleto;
   }
+
+  /**
+   * El Mozo entrega el pedido completo en la mesa del cliente (Punto 18 / habilita encuesta Punto 20)
+   */
+  async entregarPedidoPorMozo(pedido: PedidoPendienteMozoUI): Promise<void> {
+    await this.supabase.actualizarEstadoPedido(pedido.id, 'entregado');
+
+    try {
+      const destinatarios: { userIds?: string[]; profiles?: string[] } = {};
+      if (pedido.cliente_id) {
+        destinatarios.userIds = [pedido.cliente_id];
+      }
+      destinatarios.profiles = ['cliente'];
+
+      await this.pushNotifications.enviarNotificacion(
+        '¡Pedido Entregado!',
+        `El mozo entregó el pedido en tu Mesa N° ${pedido.numeroMesa}. Confirmá su recepción desde tu pantalla.`,
+        destinatarios,
+        { ruta: '/clienteInicio' }
+      );
+    } catch (err) {
+      console.warn('[Push] Error notificando al cliente entrega de pedido:', err);
+    }
+  }
+
+  /**
+   * El Cliente confirma la recepción del pedido entregado por el mozo (Punto 19).
+   * Habilita acceso completo a juegos, encuesta de satisfacción, resultados y pedir la cuenta.
+   */
+  async confirmarRecepcionPorCliente(pedidoId: string): Promise<void> {
+    localStorage.setItem(`recepcion_confirmada_${pedidoId}`, 'true');
+
+    try {
+      await this.supabase.actualizarEstadoPedido(pedidoId, 'recibido');
+    } catch (err) {
+      console.warn('[PedidoService] No se pudo persistir estado "recibido" en DB (posible check constraint o RLS), manteniendo confirmación local:', err);
+    }
+
+    await this.consultarPedidoActivo();
+  }
+
+  /**
+   * Reinicia el pedido actual y libera la mesa para que el cliente pueda realizar otro pedido
+   * comenzando nuevamente desde el escaneo del QR de lista de espera.
+   */
+  async finalizarEstadiaParaOtroPedido(pedidoId?: string, mesaId?: string, numeroMesa?: string): Promise<void> {
+    if (pedidoId) {
+      localStorage.setItem(`pedido_finalizado_${pedidoId}`, 'true');
+      try {
+        await this.supabase.actualizarEstadoPedido(pedidoId, 'finalizado');
+      } catch (err) {
+        console.warn('[PedidoService] No se pudo pasar pedido a finalizado en DB, manteniendo marca local:', err);
+      }
+    }
+
+    if (mesaId) {
+      try {
+        await this.supabase.liberarMesa(mesaId);
+      } catch (err) {
+        console.warn('[PedidoService] No se pudo liberar la mesa en DB:', err);
+      }
+    }
+
+    if (numeroMesa) {
+      localStorage.removeItem(`mesa_escaneada_${numeroMesa}`);
+    }
+
+    this.limpiarCarrito();
+    this.pedidoActivo.set(null);
+    this.mesaActual.set(null);
+  }
 }
+

@@ -30,7 +30,11 @@ export class InicioComponent implements OnInit {
     private router: Router
   ) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+    if (await this.verificarSesionActivaYRedirigir()) {
+      return;
+    }
+
     if (!InicioComponent.animacionRealizada) {
       InicioComponent.animacionRealizada = true;
       this.mostrarAnimacion.set(true);
@@ -46,6 +50,74 @@ export class InicioComponent implements OnInit {
     } else {
       // Si ya se mostró antes (ej. volvió de login), muestra directamente los botones
       this.mostrarAnimacion.set(false);
+    }
+  }
+
+  async ionViewWillEnter() {
+    await this.verificarSesionActivaYRedirigir();
+  }
+
+  private async verificarSesionActivaYRedirigir(): Promise<boolean> {
+    let perfilGuardado = localStorage.getItem('perfil');
+    const nombreGuardado = localStorage.getItem('nombre');
+
+    // Si hay sesión de Supabase Auth pero por algún motivo falta el perfil en localStorage, lo recuperamos
+    if (!perfilGuardado) {
+      try {
+        const { data: { session } } = await this.supabase.clienteSupabase.auth.getSession();
+        if (session?.user?.email) {
+          const cliente = await this.supabase.obtenerClientePorCorreo(session.user.email);
+          if (cliente && cliente.estado === 'aprobado') {
+            perfilGuardado = 'cliente';
+            localStorage.setItem('perfil', 'cliente');
+            localStorage.setItem('nombre', `${cliente.nombres} ${cliente.apellidos}`.trim());
+          } else {
+            const empleado = await this.supabase.obtenerPerfilUsuarioLogueado();
+            if (empleado?.perfil) {
+              perfilGuardado = empleado.perfil;
+              localStorage.setItem('perfil', empleado.perfil);
+              localStorage.setItem('nombre', empleado.nombres ?? '');
+            }
+          }
+        } else if (nombreGuardado) {
+          perfilGuardado = 'cliente';
+          localStorage.setItem('perfil', 'cliente');
+        }
+      } catch (err) {
+        console.warn('Error verificando sesión al iniciar:', err);
+      }
+    }
+
+    if (!perfilGuardado) {
+      return false;
+    }
+
+    const rutaDestino = this.obtenerRutaPorPerfil(perfilGuardado);
+    if (rutaDestino) {
+      await this.router.navigate([rutaDestino], { replaceUrl: true });
+      return true;
+    }
+    return false;
+  }
+
+  private obtenerRutaPorPerfil(perfil: string): string | null {
+    switch (perfil) {
+      case 'duenio':
+      case 'supervisor':
+        return '/duenioInicio';
+      case 'metre':
+        return '/metreInicio';
+      case 'cocinero':
+        return '/inicio-cocinero';
+      case 'cantinero':
+        return '/inicio-cantinero';
+      case 'mozo':
+        return '/mozoInicio';
+      case 'cliente':
+      case 'anonimo':
+        return '/clienteInicio';
+      default:
+        return null;
     }
   }
 

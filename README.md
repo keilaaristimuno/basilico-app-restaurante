@@ -92,7 +92,7 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 
 ---
 ### 👤 Ignacio Arriaga
-* **Módulos / Objetivos a desarrollar:** 
+* **Módulos / Objetivos a desarrollar:**
 * **Planificación de Tareas:**
 
 | Tarea / Módulo | Fecha Inicio | Fecha Fin (Estimada/Real) | Branch | Estado |
@@ -102,7 +102,7 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 
 ---
 ### 👤 Seggiaro, Agustina Anabel
-* **Módulos / Objetivos a desarrollar:** 
+* **Módulos / Objetivos a desarrollar:**
  - Login principal
  - Metre
  - Mozo
@@ -143,11 +143,48 @@ Qr al ingresar un cliente al local para figurar en listad e espera
 </p>
 
 ### 🍽️ QRs de Mesas
-Qr para escanear mesa
+Qr para escanear mesa 1
 
 <p align="center">
-  <img src="docs/qr/qr-mesa.png" width="300">
+  <img src="docs/qr/qr-mesa-1.jpeg" width="300">
 </p>
+
+Qr para escanear mesa 2
+
+<p align="center">
+  <img src="docs/qr/qr-mesa-2.png" width="300">
+</p>
+
+Qr para escanear mesa 3
+
+<p align="center">
+  <img src="docs/qr/qr-mesa-3.png" width="300">
+</p>
+
+Qr para escanear mesa 4
+
+<p align="center">
+  <img src="docs/qr/qr-mesa-4.png" width="300">
+</p>
+
+Qr para escanear mesa 5
+
+<p align="center">
+  <img src="docs/qr/qr-mesa-5.png" width="300">
+</p>
+
+Qr para escanear mesa 6
+
+<p align="center">
+  <img src="docs/qr/qr-mesa-6.png" width="300">
+</p>
+
+Qr para escanear mesa 7
+
+<p align="center">
+  <img src="docs/qr/qr-mesa-7.png" width="300">
+</p>
+
 
 ### 💰 QRs de Propinas
 
@@ -212,7 +249,13 @@ Pantalla de ingreso sin registro previo. El cliente anónimo ingresa su nombre y
 Ícono identificatorio de la aplicación Basílico.
 
 <p align="center">
-  <img src="docs/capturas/generales/05-logo-icono-inicio.png" width="300">
+  <img src="docs/capturas/generales/08-logo-estatico.png" width="300">
+</p>
+
+Icono splash con nombre de los integrantes
+
+<p align="center">
+  <img src="docs/capturas/generales/07-logo-splash.png" width="300">
 </p>
 
 ---
@@ -264,6 +307,11 @@ La funcionalidad contempla la validación de los datos ingresados y la posibilid
 <p align="center">
   <img src="docs/capturas/duenio-supervisor/02-alta-empleado.png" width="300">
 </p>
+
+<p align="center">
+  <img src="docs/capturas/duenio-supervisor/02.1-alta-empleado.png" width="300">
+</p>
+
 
 ---
 
@@ -343,6 +391,16 @@ Cada producto presenta su información correspondiente, incluyendo nombre, descr
   <img src="docs/capturas/cocina-bar/03-carta-platos.png" width="300">
 </p>
 
+Editar menu
+<p align="center">
+  <img src="docs/capturas/cocina-bar/07-editar-menu.png" width="300">
+</p>
+
+Eliminar menu
+<p align="center">
+  <img src="docs/capturas/cocina-bar/08-eliminar-menu.png" width="300">
+</p>
+
 ---
 
 ### 4. Pedidos Pendientes de Cocina
@@ -352,7 +410,7 @@ Esta sección permitirá al cocinero visualizar los pedidos confirmados que cont
 Los pedidos deberán mostrar la mesa correspondiente, fecha y hora, junto con los productos y cantidades que deben ser preparados, agrupados por número de mesa.
 
 <p align="center">
-  <img src="docs/capturas/cocina-bar/pedidos_cocina.jpg" width="300">
+  <img src="docs/capturas/cocina-bar/sin-pedido-cocina.png" width="300">
 </p>
 
 
@@ -380,23 +438,40 @@ Al igual que en el alta de platos, se ingresan el nombre, descripción, tiempo e
 ---
 ### 7. Pedidos Pendientes Cantinero
 
-Esta sección permitirá al cantinero visualizar los pedidos confirmados que contienen productos correspondientes al sector BAR.
+Esta sección permite al cantinero visualizar los pedidos confirmados que contienen productos correspondientes al sector BAR.
 
-Los pedidos deberán mostrar la mesa correspondiente, fecha y hora, junto con los productos y cantidades que deben ser preparados, agrupados por número de mesa.
+Los pedidos muestran la mesa correspondiente, número de pedido, fecha y hora, junto con las bebidas y cantidades que deben ser preparadas, agrupados por número de mesa. Al presionar **Bebidas listos**, el producto se marca como terminado.
 
 <p align="center">
-  <img src="docs/capturas/cocina-bar/pedidos_bar.jpg" width="300">
+  <img src="docs/capturas/cocina-bar/pedidos_bar.png" width="300">
 </p>
+
+---
+
+### 8. Sin Pedidos Pendientes y Aviso al Mozo
+
+Cuando todos los productos de un pedido están listos, el sistema avisa automáticamente al mozo (push notification) que el pedido de la mesa está completo para su entrega. Si no quedan productos por preparar, el sector muestra el estado **"Sin pedidos pendientes"**.
+
+<p align="center">
+  <img src="docs/capturas/cocina-bar/06-sin-pedidos.png" width="300">
+</p>
+
+---
 
 ## 👤 Cliente
 
-### 1. Pantalla Principal del Cliente antes de repcionarse
+### 1. Pantalla Principal del Cliente antes de recepcionarse
 
-Pantalla principal correspondiente al perfil cliente. Desde esta sección el usuario puede escanear el código QR de ingreso al local para acceder al flujo de atención del restaurante.
+Pantalla principal correspondiente al perfil cliente. Desde esta sección el usuario puede escanear el código QR de ingreso al local para anotarse en la lista de espera.
+
+La versión actual incorpora la barra de navegación con el logo, el título de la sección y la opción **Salir**, y confirma el registro del token para recibir push notifications.
 
 <p align="center">
-  <img src="docs/capturas/cliente/01-inicio-cliente.png" width="300">
+  <img src="docs/capturas/cliente/05-qr-ingreso.png" width="300">
+
 </p>
+
+---
 
 ### 2. Cargar cantidad de comensales
 
@@ -407,35 +482,137 @@ Esta pantalla se visualiza una vez que el usuario escaneo el QR para recepcionar
 </p>
 
 ---
+### 3. Pendiente confirmacion por metre
 
-### 3. Pantalla "Gracias por recepcionarte"
-Esta pantalla se visualiza una vez que el cliente eligio la cantidad de comensales y le llego al metre correctamente la solicitud. 
-Pantalla de espera hasta que el metre asigne mesa.
-Boton para una vez que se le asigne mesa (Push notification) pueda escanear el QR de la mesa
+El cliente espera confirmacion del metre
 
 <p align="center">
-  <img src="docs/capturas/mozo-metre/gracias_por_recepcionarte.jpg" width="300">
+  <img src="docs/capturas/cliente/Pendiente-de-confirmacion-1.jpg" width="300">
 </p>
 
 ---
 
-### 2. Juegos y Descuentos
+### 4. Mesa Asignada — Escaneo del QR de Mesa
+
+Una vez que el metre asigna la mesa, el cliente visualiza el número de mesa asignado y debe dirigirse a ella y escanear su código QR para confirmar su ubicación en el restaurante.
+
+<p align="center">
+  <img src="docs/capturas/cliente/04-escaneo-mesa.png" width="300">
+</p>
+
+---
+
+### 5. Listo para Ordenar
+
+Luego de validar el QR de la mesa, el cliente visualiza su mesa y nombre de comensal, y puede elegir entre:
+
+- **Hacer pedido:** acceder a la carta para armar el pedido.
+- **Consulta al mozo:** enviar una consulta al mozo.
+
+<p align="center">
+  <img src="docs/capturas/cliente/03-ordenar-pedido.png" width="300">
+</p>
+
+---
+
+### 6. Carta y Armado del Pedido
+
+El cliente recorre la carta filtrando por **Todos**, **Platos** o **Bebidas**. Cada producto muestra su carrusel de fotos, descripción, precio y tiempo estimado, y permite agregarlo al pedido o modificar su cantidad.
+
+El **importe acumulado** y el **tiempo estimado** se mantienen siempre visibles en la parte inferior, junto al botón **Ver pedido**.
+
+<p align="center">
+  <img src="docs/capturas/cliente/08-carta-pedido.png" width="300">
+  <img src="docs/capturas/cliente/09-carta-pedido.png" width="300">
+</p>
+
+---
+
+### 7. Confirmar Pedido
+
+Resumen del pedido antes de enviarlo al mozo: productos con su sector, cantidad y precio, tiempo estimado total e importe total. El cliente puede **terminar y enviar el pedido** o **seguir agregando productos**.
+
+Al finalizar, el mozo recibe una notificación automática para autorizar el pedido.
+
+<p align="center">
+  <img src="docs/capturas/cliente/07-enviar-pedido.png" width="300">
+</p>
+
+---
+
+### 8. Estado del Pedido — Esperando Confirmación del Mozo
+
+Tras enviar el pedido, el cliente visualiza su estado (**"Esperando confirmación del mozo"**), el importe acumulado, el tiempo total estimado y el detalle de los ítems. Desde aquí también puede realizar una consulta al mozo.
+
+<p align="center">
+  <img src="docs/capturas/cliente/06-pedido-solicitado.png" width="300">
+</p>
+
+---
+
+### 9. Estado del Pedido — Confirmado y en Preparación
+
+Una vez que el mozo confirma el pedido, este se deriva a cocina y/o bar y el cliente ve el estado de preparación de cada sector. En este momento se habilita el acceso a **Juegos y Descuentos**.
+
+<p align="center">
+  <img src="docs/capturas/cliente/10-pedido-enPreparacion.png" width="300">
+</p>
+
+---
+
+### 10. Juegos y Descuentos
 
 Sección destinada a los juegos disponibles para clientes registrados. Los juegos permiten obtener descuentos sobre la cuenta final según las condiciones establecidas para cada uno.
 
 El beneficio se obtiene únicamente al ganar en el primer intento y el primer descuento conseguido será el aplicado a la cuenta.
 
-> 🚧 **En desarrollo:** La sección de juegos se encuentra actualmente en proceso de implementación. La captura corresponde al estado actual de la interfaz y será actualizada a medida que avance el desarrollo.
 
-Pagina de inicio de juegos 
+Pantalla de inicio de la sección de juegos, rediseñada a pantalla completa con botones XXL y navbar con título. Muestra la **regla de promoción** (ganá en tu primer intento y obtené hasta 20% OFF) y el listado de juegos disponibles:
+
+| Juego | Descripción | Descuento |
+| :--- | :--- | :---: |
+| Bingo Basílico | Llenar el cartón con las bolillas sorteadas | 10% |
+| Mayor o Menor | Adivinar si la siguiente carta de cocina es mayor o menor | 15% |
+| Trivia Culinaria | Preguntas sobre sabores y tradiciones de la cocina italiana | 20% |
+
+Para facilitar las pruebas, la barra inferior permite simular cada descuento (+10%, +15%, +20%) y reiniciar el estado.
 
 <p align="center">
-  <img src="docs/capturas/generales/inicio-juegos.jpg" width="300">
+  <img src="docs/capturas/cliente/11-juegos-inicio.png" width="300">
 </p>
 
+---
+
+### 1. Bingo Basílico (10% OFF)
+
+El cliente saca bolillas y marca los números de su cartón. Se muestran el premio, las chances restantes, los aciertos y las bolillas que ya salieron.
+
 <p align="center">
-  <img src="docs/capturas/generales/juegos-2.jpg" width="300">
+  <img src="docs/capturas/cliente/12-juego-bingo.png" width="300">
 </p>
+
+---
+
+### 2. Mayor o Menor (15% OFF)
+
+El cliente debe adivinar si la siguiente carta (platos de la carta con un valor del 1 al 12) será **mayor** o **menor** que la actual. Se muestran el premio, los aciertos y las vidas restantes.
+
+<p align="center">
+  <img src="docs/capturas/cliente/13-juego-mayormenor.png" width="300">
+</p>
+
+---
+
+### 3. Trivia Culinaria (20% OFF)
+
+Trivia de 5 preguntas sobre cocina italiana organizadas por categoría (salsas, tradición, etc.). Al responder, se marca la opción correcta en verde y la incorrecta en rojo, junto con un dato curioso sobre la respuesta.
+
+<p align="center">
+  <img src="docs/capturas/cliente/14-trivia-inicio.png" width="300">
+  <img src="docs/capturas/cliente/15-trivia-error.png" width="300">
+  <img src="docs/capturas/cliente/16-trivia-ok.png" width="300">
+</p>
+
 
 ---
 
@@ -451,7 +628,7 @@ Actualmente permite acceder a:
 - **Lista de espera:** permite visualizar los clientes que se encuentran esperando una mesa y gestionar la asignación correspondiente.
 
 <p align="center">
-  <img src="docs/capturas/cocina-bar/inicio_metre.jpg" width="300">
+  <img src="docs/capturas/mozo-metre/01-inicio-metre.png" width="300">
 </p>
 
 ---
@@ -469,14 +646,18 @@ Una vez disponible una mesa, el metre puede asignarla al cliente correspondiente
   <img src="docs/capturas/mozo-metre/clientes_pendientes.jpg" width="300">
 </p>
 
+**Sin clientes pendientes**
+<p align="center">
+  <img src="docs/capturas/mozo-metre/sin-clientes.png" width="300">
+</p>
+
 ---
 
-### 3. Asiganción de mesa
+### 3. Asignación de mesa
 
-Desde la lista de espera, el metre puede visualizar los clientes que solicitaron ingresar al restaurante y se encuentran esperando la asignación de una mesa.
+Al seleccionar un cliente de la lista de espera, el metre visualiza las mesas disponibles con su cantidad de comensales y tipo (estándar / VIP), y asigna la mesa mediante el botón **Asignar**. También puede rechazar la solicitud del cliente.
 
-Una vez disponible una mesa, el metre puede asignarla al cliente correspondiente para continuar con el flujo de atención.
-
+Al asignarse la mesa, el cliente recibe una push notification para escanear el QR de su mesa.
 
 <p align="center">
   <img src="docs/capturas/mozo-metre/asignar_mesa.jpg" width="300">
@@ -484,16 +665,18 @@ Una vez disponible una mesa, el metre puede asignarla al cliente correspondiente
 
 ---
 
-### 3. Pantalla Principal del Mozo
+### 4. Pantalla Principal del Mozo
 
 Pantalla principal correspondiente al perfil mozo. Desde esta sección se centralizan las funcionalidades necesarias para gestionar los pedidos, la entrega de productos, las cuentas de las mesas y las consultas realizadas por los clientes.
 
 Actualmente dispone de los siguientes accesos:
 
-- **Nuevos pedidos:** pedidos enviados por los clientes que requieren confirmación o rechazo por parte del mozo.
+- **Pedidos:** pedidos enviados por los clientes que requieren autorización o rechazo por parte del mozo.
 - **Pedidos listos:** pedidos cuya preparación fue finalizada y se encuentran disponibles para ser entregados.
 - **Cuentas y liberación:** gestión del proceso de cobro y posterior liberación de la mesa.
 - **Chat de consultas:** acceso a las consultas y conversaciones iniciadas por los clientes.
+
+Cada acceso muestra un contador con la cantidad de elementos pendientes (por ejemplo, pedidos a autorizar o chats nuevos).
 
 <p align="center">
   <img src="docs/capturas/mozo-metre/02-inicio-mozo.png" width="300">
@@ -501,33 +684,36 @@ Actualmente dispone de los siguientes accesos:
 
 ---
 
-### 4. Nuevos Pedidos
+### 5. Nuevos Pedidos
 
-Sección destinada a visualizar los nuevos pedidos realizados por los clientes.
+Pantalla de **Autorización de Pedidos**, destinada a visualizar los nuevos pedidos realizados por los clientes.
 
-El mozo podrá revisar el pedido recibido y decidir si lo **confirma** o lo **rechaza**. En caso de ser rechazado, el cliente podrá modificar los productos o cantidades y volver a enviar el pedido.
+Cada pedido muestra la mesa, el comensal, la fecha y hora, los productos solicitados con su sector (cocina / bar) y precio, el tiempo estimado y el importe total. El mozo puede:
 
-Una vez confirmado por el mozo, el pedido será derivado a los sectores correspondientes para comenzar su preparación.
+- **Rechazar (pedir modificación):** el cliente podrá modificar los productos o cantidades y volver a enviar el pedido.
+- **Confirmar y derivar:** el pedido se deriva a los sectores correspondientes para comenzar su preparación.
 
-> 🚧 **En desarrollo:** La implementación de la gestión de nuevos pedidos se encuentra actualmente en proceso. La captura de esta pantalla será incorporada cuando la funcionalidad se encuentre finalizada.
-
-<!-- Captura pendiente: 02-nuevos-pedidos-mozo.png -->
+<p align="center">
+  <img src="docs/capturas/mozo-metre/04-autoriza-pedido.png" width="300">
+</p>
 
 ---
 
-### 5. Pedidos Listos
+### 6. Pedidos Listos
 
 Sección destinada a visualizar los pedidos cuya preparación fue completada por los sectores correspondientes.
 
 El pedido deberá estar disponible para entrega una vez que todos los productos que lo componen se encuentren listos. Desde esta sección, el mozo podrá identificar los pedidos preparados y continuar con la entrega al cliente.
 
-> 🚧 **En desarrollo:** La implementación de la gestión de pedidos listos se encuentra actualmente en proceso. La captura de esta pantalla será incorporada cuando la funcionalidad se encuentre finalizada.
+> 🚧 **REVEEERRRRR:**
 
-<!-- Captura pendiente: 03-pedidos-listos-mozo.png -->
+<p align="center">
+  <img src="docs/capturas/mozo-metre/mozo-pedido-listo.png" width="300">
+</p>
 
 ---
 
-### 6. Cuentas y Liberación de Mesa
+### 7. Cuentas y Liberación de Mesa
 
 Sección destinada a gestionar las cuentas solicitadas por los clientes y completar el proceso de pago.
 
@@ -539,7 +725,7 @@ Luego de la confirmación correspondiente, se podrá finalizar la atención y li
 
 ---
 
-### 7. Chat de Consultas
+### 8. Chat de Consultas
 
 Sección destinada a recibir y responder las consultas realizadas por los clientes desde sus mesas.
 
@@ -551,15 +737,41 @@ El sistema permitirá mantener una sala de conversación entre clientes y mozos,
 
 ---
 
-## 🎮 Juegos
-
-*Las capturas correspondientes a los juegos de descuento se incorporarán a medida que sean desarrollados.*
-
----
-
 ## 📊 Encuestas y Gráficos
 
 *Las capturas correspondientes a las encuestas y gráficos estadísticos se incorporarán a medida que sean desarrollados.*
+
+---
+
+## 📧 Correos Electrónicos Automáticos
+
+Al aceptar o rechazar un cliente registrado desde **Clientes Pendientes** (Puntos 7 y 8), el sistema envía automáticamente un correo personalizado mediante la Edge Function de Supabase `enviar-correo` (servicio Resend), con el logo de Basílico y los colores y tipografías propios de la marca.
+
+### 1. Mail de Aceptación de Cliente Registrado
+
+Correo con fondo verde oliva Basílico (`#283720`) y tipografía Segoe UI / Arial. Incluye la etiqueta **"Registro Aprobado"**, el título **"¡Cuenta Habilitada!"**, el DNI registrado y el estado *Habilitado*, e invita al cliente a ingresar a la aplicación con su correo y contraseña.
+
+> 📷 **Captura pendiente:** agregar la imagen en `docs/capturas/mails/01-mail-aceptacion-cliente.png`.
+
+<!-- Captura pendiente:
+<p align="center">
+  <img src="docs/capturas/mails/01-mail-aceptacion-cliente.png" width="400">
+</p>
+-->
+
+---
+
+### 2. Mail de Rechazo de Cliente Registrado
+
+Correo con fondo terracota Basílico (`#b24d39`) y tipografía Georgia / serif. Incluye la etiqueta **"Solicitud No Admitida"**, el título **"Solicitud Desestimada"**, el DNI consultado y el estado *No admitido*, junto con la indicación de comunicarse con la administración ante cualquier error.
+
+> 📷 **Captura pendiente:** agregar la imagen en `docs/capturas/mails/02-mail-rechazo-cliente.png`.
+
+<!-- Captura pendiente:
+<p align="center">
+  <img src="docs/capturas/mails/02-mail-rechazo-cliente.png" width="400">
+</p>
+-->
 
 ---
 

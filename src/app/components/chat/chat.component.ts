@@ -62,6 +62,11 @@ export class ChatComponent implements OnInit, OnDestroy {
       this.scrollToBottom();
     });
   }
+
+  ionViewWillEnter() {
+    const identificador = localStorage.getItem('identificador');
+    this.identif.set(identificador || 'Anónimo');
+  }
   
   cerrar() {
     this.abierto.set(false);
@@ -69,6 +74,11 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   async mandar() {
     if (!this.nuevoMensaje.trim()) return; 
+
+    const identificadorActual = localStorage.getItem('identificador');
+    if (identificadorActual) {
+      this.identif.set(identificadorActual);
+    }
 
     const texto = this.nuevoMensaje;
     const remitente = this.identif(); 

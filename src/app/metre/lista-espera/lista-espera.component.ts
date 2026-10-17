@@ -189,11 +189,21 @@ export class ListaEsperaComponent implements OnInit, OnDestroy {
   async rechazarCliente(cliente: any) {
     this.procesandoId.set(cliente.id);
     try {
-      await this.supabase.eliminarDeListaDeEspera(cliente.id);
+      const idClienteReal = cliente.cliente_id || cliente.id;
+      await this.supabase.eliminarDeListaDeEspera(idClienteReal);
+      try {
+        await this.supabase.clienteSupabase
+          .from('mesas')
+          .update({ disponibilidad: 'libre', cliente_id: null })
+          .eq('cliente_id', idClienteReal);
+      } catch (e) {
+        console.warn('No se pudo liberar mesa previa al rechazar cliente:', e);
+      }
+
       await this.pushNotificationsService.enviarNotificacion(
         '¡Solicitud rechazada!',
         'El metre te ha rechazado su solicitud de mesa.',
-        { userIds: [cliente.cliente_id || cliente.id] },
+        { userIds: [idClienteReal] },
         { ruta: '/clienteInicio' }
       );
       await this.obtenerListaEspera();

@@ -1,6 +1,7 @@
-<ion-content  [fullscreen]="true" class="fondo">
-  <app-navbar></app-navbar>
-  <div class="contenedor">
+<ion-content [fullscreen]="true" class="fondo" [scrollY]="false">
+  <div class="pantalla-completa">
+  <app-navbar rutaInicio="/mozoInicio"></app-navbar>
+  <div class="contenedor-mozo">
     <section class="encabezado">
       <img
         src="assets/Basilico/Logo_beige.png"
@@ -81,4 +82,5 @@
       </ion-card>
     </section>
     </div>
+  </div>
 </ion-content>

@@ -1,185 +1,136 @@
 .fondo-juegos {
   --background: #283720; // Verde oliva oficial Basílico
+  --overflow: hidden;
+  height: 100%;
   color: #ede5d2; // Beige oficial
   font-family: 'Montserrat', sans-serif;
 }
 
-.contenedor-principal {
-  padding: 1rem;
+.pantalla-juegos {
+  height: calc(100% - 68px);
+  width: 100%;
+  max-width: 540px;
+  margin: 0 auto;
+  padding: 12px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
-  min-height: calc(100% - 60px);
-  box-sizing: border-box;
+  justify-content: space-between;
+  gap: 10px;
 }
 
 /* ====================================
-   ENCABEZADO
+   BANNER COMPACTO DE DESCUENTO
 ==================================== */
-.encabezado-seccion {
-  text-align: center;
-  margin-top: 0.5rem;
+.banner-descuento-compacto {
+  flex-shrink: 0;
 
-  .icono-cabecera {
-    font-size: 2.8rem;
-    color: #ede5d2;
-    margin-bottom: 0.25rem;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
-  }
-
-  h1 {
-    font-size: clamp(2rem, 5vw, 2.6rem);
-    color: #ede5d2;
-    margin: 0;
-    font-weight: 700;
-  }
-
-  .subtitulo-encabezado {
-    font-size: 0.92rem;
-    color: #ede5d2;
-    opacity: 0.9;
-    margin: 0.4rem auto 0;
-    max-width: 320px;
-    line-height: 1.35;
-  }
-}
-
-/* ====================================
-   BANNER DE ESTADO DEL DESCUENTO
-==================================== */
-.banner-descuento {
-  .tarjeta-premio {
+  .tarjeta-premio-compacta {
     background: linear-gradient(135deg, #1f4214, #2d5a1e);
     border: 2px solid #a3c293;
-    border-radius: 16px;
-    padding: 1rem;
+    border-radius: 14px;
+    padding: 8px 12px;
     display: flex;
     align-items: center;
-    gap: 0.9rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    gap: 10px;
 
-    .premio-icono {
-      font-size: 2.6rem;
+    .icono-premio-mini {
+      font-size: 1.8rem;
       color: #ffd700;
-      flex-shrink: 0;
     }
 
-    .premio-info {
-      .badge-premio {
+    .texto-premio-mini {
+      font-size: 0.85rem;
+      color: #ede5d2;
+
+      .badge-mini-premio {
         background: #ffd700;
         color: #283720;
         font-weight: 800;
-        font-size: 0.72rem;
+        font-size: 0.68rem;
+        padding: 2px 6px;
+        border-radius: 6px;
+        margin-right: 6px;
         text-transform: uppercase;
-        padding: 3px 8px;
-        border-radius: 8px;
-        letter-spacing: 0.5px;
-      }
-
-      h2 {
-        font-size: 1.3rem;
-        font-weight: 800;
-        margin: 0.25rem 0 0.15rem;
-        color: #ede5d2;
-      }
-
-      p {
-        font-size: 0.8rem;
-        margin: 0;
-        color: #d1dfcb;
       }
     }
   }
 
-  .tarjeta-info-descuento {
+  .tarjeta-info-compacta {
     background: rgba(237, 229, 210, 0.12);
     border: 1px solid rgba(237, 229, 210, 0.25);
-    border-radius: 14px;
-    padding: 0.85rem 1rem;
+    border-radius: 12px;
+    padding: 8px 12px;
     display: flex;
     align-items: center;
-    gap: 0.85rem;
+    gap: 10px;
 
-    .info-icono {
-      font-size: 2rem;
-      color: #b24d39;
-      flex-shrink: 0;
+    .icono-info-mini {
+      font-size: 1.6rem;
+      color: #ffb74d;
     }
 
-    .info-texto {
-      .badge-info {
-        background: #b24d39;
-        color: #ede5d2;
-        font-size: 0.68rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        padding: 2px 7px;
-        border-radius: 6px;
-      }
+    .texto-info-mini {
+      font-size: 0.85rem;
+      color: #ede5d2;
 
-      h3 {
-        font-size: 1.05rem;
-        font-weight: 700;
-        margin: 0.2rem 0 0.1rem;
-        color: #ede5d2;
-      }
-
-      p {
-        font-size: 0.8rem;
-        margin: 0;
-        color: #ede5d2;
-        opacity: 0.88;
-        line-height: 1.3;
+      strong {
+        color: #ffb74d;
       }
     }
   }
 }
 
 /* ====================================
-   LISTA DE JUEGOS (Cards completas)
+   SECCIÓN DE JUEGOS (Full Height Cards)
 ==================================== */
-.seccion-juegos {
+.seccion-juegos-completa {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
-
-  .titulo-listado {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #ede5d2;
-    margin: 0 0 0.25rem;
-    letter-spacing: 0.5px;
-  }
+  min-height: 0;
 
   .lista-juegos-cards {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 1.1rem;
+    gap: 10px;
+    height: 100%;
   }
 
-  .tarjeta-juego {
-    background: #ede5d2; // Fondo Beige oficial para contraste nítido con texto oscuro
+  .tarjeta-juego-xxl {
+    flex: 1;
+    min-height: 0;
+    background: #ede5d2;
     color: #283720;
     border-radius: 18px;
-    padding: 1.15rem;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    padding: 10px 14px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
     display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
 
-    .cabecera-tarjeta {
+    &:active {
+      transform: scale(0.98);
+    }
+
+    .lateral-izquierdo {
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
       align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
 
-      .icono-juego {
+      .icono-juego-xxl {
         width: 50px;
         height: 50px;
         border-radius: 14px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.8rem;
+        font-size: 1.9rem;
 
         &.icono-verde {
           background: #283720;
@@ -187,7 +138,7 @@
         }
 
         &.icono-terracota {
-          background: #b24d39;
+          background: #b85d38;
           color: #ede5d2;
         }
 
@@ -197,117 +148,109 @@
         }
       }
 
-      .descuento-etiqueta {
-        background: #b24d39;
+      .badge-descuento-xxl {
+        background: #b85d38;
         color: #ede5d2;
-        padding: 6px 12px;
-        border-radius: 12px;
+        padding: 2px 6px;
+        border-radius: 8px;
         display: flex;
         align-items: baseline;
-        gap: 3px;
-        box-shadow: 0 2px 6px rgba(178, 77, 57, 0.35);
-
-        .porcentaje {
-          font-size: 1.35rem;
-          font-weight: 900;
-        }
-
-        .texto-off {
-          font-size: 0.75rem;
-          font-weight: 700;
-        }
-      }
-    }
-
-    .cuerpo-tarjeta {
-      h3 {
-        font-size: 1.25rem;
+        gap: 2px;
         font-weight: 800;
-        color: #283720;
-        margin: 0;
-      }
 
-      h4 {
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: #7b4b32;
-        margin: 0.15rem 0 0.4rem;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-      }
+        .numero-descuento {
+          font-size: 0.88rem;
+        }
 
-      p {
-        font-size: 0.9rem;
-        color: #3b4237;
-        margin: 0;
-        line-height: 1.4;
+        .label-descuento {
+          font-size: 0.62rem;
+        }
       }
     }
 
-    .pie-tarjeta {
+    .cuerpo-juego-xxl {
+      flex: 1;
+      min-width: 0;
       display: flex;
       flex-direction: column;
-      gap: 0.65rem;
+      justify-content: center;
 
-      .estado-intento {
+      .titulo-juego {
+        font-size: 1.25rem;
+        font-weight: 900;
+        color: #283720;
+        margin: 0;
+        line-height: 1.15;
+      }
+
+      .subtitulo-juego {
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: #7b4b32;
+        margin: 2px 0 6px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .estado-badge-juego {
         .badge-estado {
-          font-size: 0.78rem;
-          font-weight: 700;
-          padding: 6px 10px;
-          border-radius: 8px;
           display: inline-flex;
           align-items: center;
-          gap: 5px;
+          gap: 4px;
+          font-size: 0.72rem;
+          font-weight: 700;
+          padding: 3px 8px;
+          border-radius: 6px;
+
+          &.ganado {
+            background: #2e7d32;
+            color: #ffffff;
+          }
+
+          &.participa {
+            background: #e65100;
+            color: #ffffff;
+          }
+
+          &.libre {
+            background: #607d8b;
+            color: #ffffff;
+          }
         }
       }
+    }
 
-      .boton-jugar {
+    .lateral-derecho {
+      flex-shrink: 0;
+      height: 100%;
+      display: flex;
+      align-items: center;
+
+      .boton-jugar-xxl {
+        height: 100%;
+        min-height: 64px;
+        --border-radius: 14px;
         --background: #283720;
         --color: #ede5d2;
-        --border-radius: 12px;
-        font-weight: 700;
-        font-size: 1rem;
-        height: 48px;
         margin: 0;
-      }
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 
-      /* Panel de testing temporal */
-      .panel-test-simulacion {
-        background: rgba(40, 55, 32, 0.08);
-        border: 1px dashed rgba(40, 55, 32, 0.3);
-        border-radius: 10px;
-        padding: 6px 8px;
-
-        .label-test {
-          font-size: 0.72rem;
-          font-weight: 600;
-          color: #4a5445;
-          display: block;
-          margin-bottom: 4px;
-        }
-
-        .botones-test {
+        .contenido-btn-jugar {
           display: flex;
-          gap: 6px;
+          flex-direction: column;
+          align-items: center;
+          gap: 4px;
+          padding: 4px 8px;
 
-          .btn-test {
-            flex: 1;
-            padding: 5px;
-            border-radius: 6px;
-            font-size: 0.72rem;
-            font-weight: 700;
-            border: none;
-            cursor: pointer;
+          .icono-play {
+            font-size: 1.6rem;
+          }
 
-            &.ganar {
-              background: #283720;
-              color: #ede5d2;
-            }
-
-            &.perder {
-              background: #a84837;
-              color: #ede5d2;
-            }
+          .texto-play {
+            font-size: 0.85rem;
+            font-weight: 800;
+            text-transform: uppercase;
           }
         }
       }
@@ -316,16 +259,39 @@
 }
 
 /* ====================================
-   REINICIO DE TEST
+   PIE DE PRUEBAS
 ==================================== */
-.contenedor-reinicio {
-  margin-top: 0.5rem;
-  margin-bottom: 1.5rem;
+.pie-pruebas-compacto {
+  flex-shrink: 0;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  padding: 6px 10px;
 
-  .boton-reiniciar {
-    --color: #ede5d2;
-    opacity: 0.75;
-    font-size: 0.8rem;
-    text-decoration: underline;
+  .fila-test-simulacion {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    .label-simular {
+      font-size: 0.72rem;
+      color: #c5d4be;
+      font-weight: 600;
+    }
+
+    .btn-test-mini {
+      background: #283720;
+      color: #ede5d2;
+      border: 1px solid rgba(237, 229, 210, 0.3);
+      border-radius: 6px;
+      padding: 3px 8px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+
+      &.reset {
+        background: #a84837;
+      }
+    }
   }
 }

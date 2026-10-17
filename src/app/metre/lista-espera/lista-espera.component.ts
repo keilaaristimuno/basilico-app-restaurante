@@ -159,7 +159,7 @@ export class ListaEsperaComponent implements OnInit {
       await this.pushNotificationsService.enviarNotificacion(
         '¡Solicitud rechazada!',
         'El metre te ha rechazado su solicitud de mesa.',
-        { userIds: [cliente.user_id] },
+        { userIds: [cliente.cliente_id || cliente.id] },
         { ruta: '/clienteInicio' }
       );
       await this.obtenerListaEspera();
@@ -178,7 +178,8 @@ export class ListaEsperaComponent implements OnInit {
       await this.pushNotificationsService.enviarNotificacion(
         '¡Mesa Asignada!',
         `El metre te ha asignado la Mesa N° ${numeroMesa}. Ya puedes escanear el código QR correspondiente.`,
-        { userIds: [idCliente] }
+        { userIds: [idCliente] },
+        { ruta: '/clienteInicio' }
       );
 
       this.cerrarModalMesas();

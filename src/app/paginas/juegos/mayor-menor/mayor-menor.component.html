@@ -1,0 +1,138 @@
+<ion-content [fullscreen]="true" class="fondo-mayor-menor">
+  <app-navbar rutaInicio="/juegos" titulo="Mayor o Menor"></app-navbar>
+
+  <div class="pantalla-juego-completa">
+    <!-- Marcadores Rápidos de la Partida -->
+    <header class="marcador-partida-compacto">
+      <div class="stat-item">
+        <span class="stat-lbl">Premio</span>
+        <span class="stat-val highlight">{{ DESCUENTO_JUEGO }}% OFF</span>
+      </div>
+      <div class="stat-divisor"></div>
+      <div class="stat-item">
+        <span class="stat-lbl">Aciertos</span>
+        <span class="stat-val">{{ aciertos() }}/{{ ACIERTOS_PARA_GANAR }}</span>
+      </div>
+      <div class="stat-divisor"></div>
+      <div class="stat-item">
+        <span class="stat-lbl">Vidas</span>
+        <div class="corazones-fila">
+          @for (i of [1, 2]; track i) {
+            <ion-icon
+              [name]="i <= vidas() ? 'heart' : 'heart-outline'"
+              [class.vida-perdida]="i > vidas()"
+              class="icono-corazon">
+            </ion-icon>
+          }
+        </div>
+      </div>
+    </header>
+
+    @if (estadoJuego() === 'jugando') {
+      <!-- Card Culinaria Central -->
+      <section class="seccion-carta-central">
+        <div class="carta-marco" [class.volteando]="revelando()">
+          <!-- Cara Frontal de la Carta Actual -->
+          <article class="carta-culinaria">
+            <div class="cabecera-carta">
+              <span class="badge-categoria">{{ cartaActual().categoria }}</span>
+              <span class="valor-esquina">{{ cartaActual().valor }}</span>
+            </div>
+
+            <div class="cuerpo-carta">
+              <div class="icono-plato">{{ cartaActual().icono }}</div>
+              <h2 class="nombre-plato">{{ cartaActual().nombre }}</h2>
+              <p class="subtitulo-plato">{{ cartaActual().subtitulo }}</p>
+            </div>
+
+            <div class="pie-carta">
+              <span class="valor-central-destacado">{{ cartaActual().valor }}</span>
+              <span class="rango-carta">Valor entre 1 y 12</span>
+            </div>
+          </article>
+
+          <!-- Carta Siguiente Revelada -->
+          @if (revelando() && cartaSiguiente()) {
+            <article class="carta-culinaria carta-revelada">
+              <div class="cabecera-carta">
+                <span class="badge-categoria">{{ cartaSiguiente()!.categoria }}</span>
+                <span class="valor-esquina">{{ cartaSiguiente()!.valor }}</span>
+              </div>
+              <div class="cuerpo-carta">
+                <div class="icono-plato">{{ cartaSiguiente()!.icono }}</div>
+                <h2 class="nombre-plato">{{ cartaSiguiente()!.nombre }}</h2>
+                <p class="subtitulo-plato">{{ cartaSiguiente()!.subtitulo }}</p>
+              </div>
+              <div class="pie-carta">
+                <span class="valor-central-destacado">{{ cartaSiguiente()!.valor }}</span>
+              </div>
+            </article>
+          }
+        </div>
+      </section>
+
+      <!-- Botones XXL Gigantes: MAYOR o MENOR -->
+      <section class="seccion-acciones-xxl">
+        <p class="instruccion-turno-compacta">¿La siguiente carta será <strong>Mayor</strong> o <strong>Menor</strong>?</p>
+
+        <div class="fila-botones-xxl">
+          <ion-button
+            expand="block"
+            class="boton-accion-xxl btonVerde"
+            [disabled]="revelando()"
+            (click)="adivinar('mayor')">
+            <ion-icon name="arrow-up-outline" slot="start" class="icono-flecha-xxl"></ion-icon>
+            <div class="texto-boton-xxl">
+              <span class="titulo-accion-xxl">MAYOR</span>
+              <span class="subtexto-accion-xxl">Valor más alto</span>
+            </div>
+          </ion-button>
+
+          <ion-button
+            expand="block"
+            class="boton-accion-xxl btonTerracota"
+            [disabled]="revelando()"
+            (click)="adivinar('menor')">
+            <ion-icon name="arrow-down-outline" slot="start" class="icono-flecha-xxl"></ion-icon>
+            <div class="texto-boton-xxl">
+              <span class="titulo-accion-xxl">MENOR</span>
+              <span class="subtexto-accion-xxl">Valor más bajo</span>
+            </div>
+          </ion-button>
+        </div>
+      </section>
+    } @else {
+      <!-- Panel de Fin de Partida XXL -->
+      <section class="tarjeta-fin-partida-xxl" [class.victoria]="estadoJuego() === 'ganado'" [class.derrota]="estadoJuego() === 'perdido'">
+        @if (estadoJuego() === 'ganado') {
+          <div class="icono-resultado-xxl">🎉</div>
+          <h2 class="titulo-fin">¡Felicitaciones!</h2>
+          @if (resultadoPromo()?.exito) {
+            <div class="caja-premio-xxl">
+              <span class="badge-premio-otorgado">¡Premio Otorgado!</span>
+              <h3>{{ DESCUENTO_JUEGO }}% DE DESCUENTO</h3>
+              <p>¡Ganaste en tu 1er intento! Se aplicará automáticamente a tu mesa.</p>
+            </div>
+          } @else {
+            <p class="subtitulo-fin">¡Gran partida! Adivinaste las 4 cartas con éxito.</p>
+          }
+        } @else {
+          <div class="icono-resultado-xxl">💔</div>
+          <h2 class="titulo-fin">¡Partida Finalizada!</h2>
+          <p class="subtitulo-fin">Te quedaste sin vidas en esta ronda. ¡Podés volver a intentarlo!</p>
+        }
+
+        <div class="zona-botones-fin-xxl">
+          <ion-button expand="block" class="boton-accion-xxl btonVerde" (click)="iniciarPartida()">
+            <ion-icon name="refresh-outline" slot="start"></ion-icon>
+            Jugar de Nuevo
+          </ion-button>
+          <ion-button expand="block" fill="outline" class="boton-accion-xxl btonBordeBeige" (click)="volverAJuegos()">
+            <ion-icon name="arrow-back-outline" slot="start"></ion-icon>
+            Volver a Juegos
+          </ion-button>
+        </div>
+      </section>
+    }
+  </div>
+</ion-content>

@@ -20,7 +20,9 @@ import {
   timeOutline,
   alertCircleOutline,
   wineOutline,
-  receiptOutline
+  receiptOutline,
+  hourglassOutline,
+  checkmarkDoneCircleOutline
 } from 'ionicons/icons';
 import { RealtimeChannel } from '@supabase/supabase-js';
 
@@ -50,6 +52,11 @@ import { PedidoPendienteMozoUI } from '../../interfaces/pedido';
 })
 export class PedidosMozoPage implements OnInit, OnDestroy {
   pedidosPendientes = signal<PedidoPendienteMozoUI[]>([]);
+
+  /**
+   * Pedidos confirmados que están en preparación en los sectores o ya listos para entregar (Punto 15)
+   */
+  pedidosEnCurso = signal<PedidoPendienteMozoUI[]>([]);
   procesandoId = signal<string | null>(null);
 
   private canalRealtime: RealtimeChannel | null = null;
@@ -68,7 +75,9 @@ export class PedidosMozoPage implements OnInit, OnDestroy {
       timeOutline,
       alertCircleOutline,
       wineOutline,
-      receiptOutline
+      receiptOutline,
+      hourglassOutline,
+      checkmarkDoneCircleOutline
     });
   }
 
@@ -95,49 +104,67 @@ export class PedidosMozoPage implements OnInit, OnDestroy {
 
   async cargarPedidos() {
     try {
-      const dataRaw = await this.carga.ejecutar(
-        'Cargando pedidos para autorizar...',
-        () => this.supabase.obtenerPedidosPendientesMozo()
-      );
+      const [pendientesRaw, enCursoRaw] = (await this.carga.ejecutar(
+        'Cargando pedidos...',
+        () => Promise.all([
+          this.supabase.obtenerPedidosPendientesMozo(['enviado']),
+          this.supabase.obtenerPedidosPendientesMozo(['confirmado', 'listo'])
+        ])
+      )) as [any[], any[]];
 
-      const formateados: PedidoPendienteMozoUI[] = dataRaw.map((p: any) => {
-        const mesasObj: any = p.mesas;
-        const numeroMesa = Array.isArray(mesasObj)
-          ? (mesasObj[0]?.numero ?? 0)
-          : (mesasObj?.numero ?? 0);
+      this.pedidosPendientes.set(pendientesRaw.map((p) => this.mapearPedido(p)));
 
-        const clienteNombre = p.clientes
-          ? `${p.clientes.nombres || ''} ${p.clientes.apellidos || ''}`.trim()
-          : (numeroMesa ? `Comensal Mesa N° ${numeroMesa}` : 'Cliente');
-
-        const items = (p.pedido_items || []).map((it: any) => ({
-          nombre: it.productos?.nombre || 'Producto',
-          tipo: it.productos?.tipo || 'plato',
-          cantidad: it.cantidad,
-          precio_unitario: it.precio_unitario
-        }));
-
-        return {
-          id: p.id,
-          mesa_id: p.mesa_id,
-          numeroMesa,
-          cliente_id: p.cliente_id,
-          clienteNombre,
-          estado: p.estado,
-          importe_total: p.importe_total,
-          tiempo_estimado: p.tiempo_estimado,
-          created_at: p.created_at,
-          fechaHora: this.formatearFechaHora(p.created_at),
-          items
-        };
-      });
-
-      this.pedidosPendientes.set(formateados);
+      // Los pedidos completos (listos para entregar) se muestran primero
+      const enCurso = enCursoRaw.map((p) => this.mapearPedido(p));
+      enCurso.sort((a, b) => Number(b.estado === 'listo') - Number(a.estado === 'listo'));
+      this.pedidosEnCurso.set(enCurso);
     } catch (error) {
       console.error('Error al cargar pedidos para mozo:', error);
       await this.vibracion.errorFuerte();
       await this.mostrarToast('No se pudieron obtener los pedidos pendientes.', 'danger');
     }
+  }
+
+  private mapearPedido(p: any): PedidoPendienteMozoUI {
+    const mesasObj: any = p.mesas;
+    const numeroMesa = Array.isArray(mesasObj)
+      ? (mesasObj[0]?.numero ?? 0)
+      : (mesasObj?.numero ?? 0);
+
+    const clienteNombre = p.clientes
+      ? `${p.clientes.nombres || ''} ${p.clientes.apellidos || ''}`.trim()
+      : (numeroMesa ? `Comensal Mesa N° ${numeroMesa}` : 'Cliente');
+
+    const items = (p.pedido_items || []).map((it: any) => ({
+      nombre: it.productos?.nombre || 'Producto',
+      tipo: it.productos?.tipo || 'plato',
+      cantidad: it.cantidad,
+      precio_unitario: it.precio_unitario
+    }));
+
+    return {
+      id: p.id,
+      mesa_id: p.mesa_id,
+      numeroMesa,
+      cliente_id: p.cliente_id,
+      clienteNombre,
+      estado: p.estado,
+      importe_total: p.importe_total,
+      tiempo_estimado: p.tiempo_estimado,
+      created_at: p.created_at,
+      fechaHora: this.formatearFechaHora(p.created_at),
+      cocina_listo: !!p.cocina_listo,
+      bar_listo: !!p.bar_listo,
+      items
+    };
+  }
+
+  /**
+   * Indica si el pedido tiene productos de un sector (cocina: platos, bar: bebidas),
+   * para mostrar solo el estado de los sectores intervinientes (Punto 15)
+   */
+  tieneProductosDe(pedido: PedidoPendienteMozoUI, tipo: 'plato' | 'bebida'): boolean {
+    return pedido.items.some((it) => it.tipo === tipo);
   }
 
   /**

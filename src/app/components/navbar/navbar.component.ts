@@ -3,6 +3,7 @@ import { IonTabBar, IonTabButton, IonLabel} from '@ionic/angular';
 import { Router, RouterLink } from '@angular/router';
 import { Supabase } from '../../services/supabase';
 import { PushNotificationsService } from '../../services/push-notifications.service';
+import { SonidoService } from '../../services/sonido';
 
 @Component({
   selector: 'app-navbar',
@@ -14,12 +15,14 @@ import { PushNotificationsService } from '../../services/push-notifications.serv
 export class NavbarComponent implements OnInit {
 
   @Input() rutaInicio: string = '/';
+  @Input() titulo: string = '';
 
   nombre: string | null = null;
   constructor(
     private supabase: Supabase, 
     private router: Router,
-    private pushNotifications: PushNotificationsService
+    private pushNotifications: PushNotificationsService,
+    private sonido: SonidoService
   ) { }
   
   ngOnInit(){
@@ -45,6 +48,8 @@ export class NavbarComponent implements OnInit {
     if (fcmToken) {
       localStorage.setItem('fcm_device_token', fcmToken);
     }
+
+    await this.sonido.cierre();
 
     await this.router.navigate(['/login'], {
       replaceUrl: true

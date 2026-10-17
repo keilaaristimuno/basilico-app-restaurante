@@ -6,7 +6,8 @@ import { Producto } from '../interfaces/producto';
 import {
   ItemCarritoPedido,
   PedidoClienteUI,
-  PedidoPendienteMozoUI
+  PedidoPendienteMozoUI,
+  SectorPedido
 } from '../interfaces/pedido';
 
 @Injectable({
@@ -264,6 +265,8 @@ export class PedidoService {
         importe_total: dataRaw.importe_total,
         tiempo_estimado: dataRaw.tiempo_estimado,
         created_at: dataRaw.created_at,
+        cocina_listo: !!dataRaw.cocina_listo,
+        bar_listo: !!dataRaw.bar_listo,
         items
       };
 
@@ -354,5 +357,31 @@ export class PedidoService {
     } catch (err) {
       console.warn('[Push] Error notificando al cliente tras confirmación:', err);
     }
+  }
+
+  /**
+   * Cocina o Bar avisan que su parte del pedido está lista (Punto 15).
+   * Solo cuando el pedido queda completo en todos los sectores intervinientes
+   * se envía la notificación push al mozo para que lo entregue.
+   * Devuelve true si con esta acción el pedido quedó completo.
+   */
+  async marcarSectorListo(pedidoId: string, sector: SectorPedido, numeroMesa: number): Promise<boolean> {
+    const estadoFinal = await this.supabase.marcarSectorListo(pedidoId, sector);
+    const pedidoCompleto = estadoFinal === 'listo';
+
+    if (pedidoCompleto) {
+      try {
+        await this.pushNotifications.enviarNotificacion(
+          '¡Pedido Listo para Entregar!',
+          `Mesa N° ${numeroMesa}: todos los productos del pedido están listos. Pasá a retirarlo.`,
+          { profiles: ['mozo'] },
+          { ruta: '/pedidos-mozo' }
+        );
+      } catch (err) {
+        console.warn('[Push] Error notificando al mozo pedido completo:', err);
+      }
+    }
+
+    return pedidoCompleto;
   }
 }

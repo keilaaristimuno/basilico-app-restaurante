@@ -5,6 +5,7 @@ import { RealtimeChannel } from '@supabase/supabase-js';
 import { Supabase } from '../../../services/supabase';
 import { Carga } from '../../../services/carga';
 import { VibracionService } from '../../../services/vibracion';
+import { PedidoService } from '../../../services/pedido.service';
 import {
   PedidoSupabaseRelacional,
   MesaConPedidosCocinaUI,
@@ -26,6 +27,7 @@ import { addIcons } from 'ionicons';
 import {
   alertCircleOutline,
   checkmarkDoneCircleOutline,
+  checkmarkCircleOutline,
   restaurantOutline,
   timeOutline
 } from 'ionicons/icons';
@@ -60,6 +62,11 @@ export class PedidosCocinaPage implements OnDestroy {
   mensajeError = signal<string | null>(null);
 
   /**
+   * Id del pedido que se está marcando como listo (evita doble toque).
+   */
+  procesandoId = signal<string | null>(null);
+
+  /**
    * Canal activo de Supabase Realtime para escuchar eventos de la tabla 'pedidos'.
    */
   private canalRealtime: RealtimeChannel | null = null;
@@ -68,11 +75,13 @@ export class PedidosCocinaPage implements OnDestroy {
     private supabase: Supabase,
     public carga: Carga,
     private vibracion: VibracionService,
+    private pedidoService: PedidoService,
     private toastCtrl: ToastController
   ) {
     addIcons({
       alertCircleOutline,
       checkmarkDoneCircleOutline,
+      checkmarkCircleOutline,
       restaurantOutline,
       timeOutline
     });
@@ -130,6 +139,36 @@ export class PedidosCocinaPage implements OnDestroy {
   }
 
   /**
+   * El sector Cocina avisa que terminó su parte del pedido (Punto 18).
+   * Si con esto el pedido queda completo, el servicio notifica al mozo por push.
+   */
+  async marcarListo(pedido: PedidoMesaCocinaUI): Promise<void> {
+    if (this.procesandoId()) return;
+    this.procesandoId.set(pedido.pedidoId);
+
+    try {
+      const pedidoCompleto = await this.carga.ejecutar(
+        'Marcando platos como listos...',
+        () => this.pedidoService.marcarSectorListo(pedido.pedidoId, 'cocina', pedido.numeroMesa)
+      );
+
+      await this.mostrarToast(
+        pedidoCompleto
+          ? `¡Pedido de Mesa ${pedido.numeroMesa} completo! Se avisó al mozo para entregarlo.`
+          : `Platos de Mesa ${pedido.numeroMesa} listos. Falta que termine el otro sector.`,
+        'success'
+      );
+      await this.cargarPedidos();
+    } catch (error: any) {
+      console.error('Error al marcar pedido listo:', error);
+      await this.vibracion.errorFuerte();
+      await this.mostrarToast('No se pudo marcar el pedido como listo.', 'danger');
+    } finally {
+      this.procesandoId.set(null);
+    }
+  }
+
+  /**
    * Transforma la respuesta relacional de Supabase:
    * 1. Ignora pedidos sin mesa válida.
    * 2. Filtra pedido_items dejando únicamente los platos (tipo === 'plato').
@@ -169,6 +208,7 @@ export class PedidosCocinaPage implements OnDestroy {
 
       const pedidoUI: PedidoMesaCocinaUI = {
         pedidoId: pedido.id,
+        numeroMesa,
         fechaHora,
         platos
       };

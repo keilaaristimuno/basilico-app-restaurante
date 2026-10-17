@@ -229,6 +229,72 @@ export class Supabase {
     return (data ?? []) as Producto[];
   }
 
+  /* ====================================
+          EDITAR / ELIMINAR PRODUCTO (perfil empleado)
+  =======================================*/
+  async actualizarProducto(
+    id: string,
+    cambios: Pick<Producto, 'nombre' | 'descripcion' | 'tiempo_elaboracion' | 'precio' | 'fotos'>
+  ): Promise<Producto> {
+    const { data, error } = await this.clienteSupabase
+      .from('productos')
+      .update({
+        nombre: cambios.nombre.trim(),
+        descripcion: cambios.descripcion.trim(),
+        tiempo_elaboracion: cambios.tiempo_elaboracion,
+        precio: cambios.precio,
+        fotos: cambios.fotos
+      })
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) {
+      throw new Error(`Error al actualizar el producto: ${error.message}`);
+    }
+    return data as Producto;
+  }
+
+  async eliminarProducto(id: string): Promise<void> {
+    const { error } = await this.clienteSupabase
+      .from('productos')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      // 23503: el producto está referenciado por pedidos existentes (clave foránea)
+      if (error.code === '23503') {
+        throw new Error('No se puede eliminar: el producto forma parte de pedidos registrados.');
+      }
+      throw new Error(`Error al eliminar el producto: ${error.message}`);
+    }
+  }
+
+  /**
+   * Borra del bucket 'productos' los archivos correspondientes a las URLs públicas recibidas.
+   * Ignora las URLs que no pertenecen al bucket.
+   */
+  async eliminarFotosProducto(urls: string[]): Promise<void> {
+    const marcador = '/storage/v1/object/public/productos/';
+    const rutas = urls
+      .map(url => {
+        const indice = url.indexOf(marcador);
+        if (indice === -1) return '';
+        return decodeURIComponent(url.substring(indice + marcador.length).split('?')[0]);
+      })
+      .filter(ruta => ruta !== '');
+
+    if (rutas.length === 0) return;
+
+    const { error } = await this.clienteSupabase.storage
+      .from('productos')
+      .remove(rutas);
+
+    if (error) {
+      throw new Error(`Error al eliminar las fotos: ${error.message}`);
+    }
+  }
+
   //verificar si un plato ya existe en la base de datos por su nombre
   async platoExiste(nombre: string) {
     const { data, error } = await this.clienteSupabase
@@ -422,24 +488,38 @@ export class Supabase {
     const { error } = await this.clienteSupabase
       .from('lista_espera')
       .delete()
-      .eq('id', id);
+      .or(`id.eq.${id},cliente_id.eq.${id}`);
   }
 
   //para asignar una mesa a un cliente en la lista de espera
   async asignarMesaACliente(clienteId: string, numeroMesa: string) {
-    
+
+    // El metre asigna → disponibilidad pasa a 'asignada' (no 'ocupada').
+    // 'ocupada' se establece recién cuando el cliente escanea el QR de la mesa.
     const { error: errorMesa } = await this.clienteSupabase
       .from('mesas')
       .update({
-        disponibilidad: 'ocupada',
+        disponibilidad: 'asignada',
         cliente_id: clienteId
       })
       .eq('numero', numeroMesa);
 
     if (errorMesa) throw errorMesa;
 
-    // eliminar cliente de lista de espera 
-    this.eliminarDeListaDeEspera(clienteId);
+    // Eliminar de lista de espera filtrando por cliente_id (no por el id del registro).
+    await this.eliminarClienteDeListaDeEspera(clienteId);
+  }
+
+  // Elimina el registro de lista_espera cuyo cliente_id coincide.
+  async eliminarClienteDeListaDeEspera(clienteId: string) {
+    const { error } = await this.clienteSupabase
+      .from('lista_espera')
+      .delete()
+      .eq('cliente_id', clienteId);
+
+    if (error) {
+      console.error('Error al eliminar de lista de espera:', error.message);
+    }
   }
 
   
@@ -453,6 +533,8 @@ export class Supabase {
         id,
         estado,
         created_at,
+        cocina_listo,
+        bar_listo,
         mesas (
           id,
           numero
@@ -469,6 +551,7 @@ export class Supabase {
         )
       `)
       .eq('estado', 'confirmado')
+      .eq('cocina_listo', false)
       .order('created_at', { ascending: true })
       .returns<PedidoSupabaseRelacional[]>();
 
@@ -490,6 +573,8 @@ export class Supabase {
         id,
         estado,
         created_at,
+        cocina_listo,
+        bar_listo,
         mesas (
           id,
           numero
@@ -506,6 +591,7 @@ export class Supabase {
         )
       `)
       .eq('estado', 'confirmado')
+      .eq('bar_listo', false)
       .order('created_at', { ascending: true })
       .returns<PedidoSupabaseRelacional[]>();
 
@@ -631,6 +717,25 @@ export class Supabase {
     return data;
   }
 
+  /**
+   * Cocina o Bar marcan su parte del pedido como lista (Punto 15).
+   * La función de base de datos pasa el pedido a 'listo' solo cuando
+   * todos los sectores intervinientes terminaron. Devuelve el estado final.
+   */
+  async marcarSectorListo(pedidoId: string, sector: 'cocina' | 'bar'): Promise<string> {
+    const { data, error } = await this.clienteSupabase.rpc('marcar_sector_listo', {
+      p_pedido_id: pedidoId,
+      p_sector: sector
+    });
+
+    if (error) {
+      console.error('Error al marcar sector listo:', error.message);
+      throw new Error(`Error al marcar el pedido como listo: ${error.message}`);
+    }
+
+    return data as string;
+  }
+
   async obtenerPedidoActivoPorCliente(clienteId?: string, mesaId?: string) {
     let query = this.clienteSupabase
       .from('pedidos')
@@ -642,6 +747,8 @@ export class Supabase {
         importe_total,
         tiempo_estimado,
         created_at,
+        cocina_listo,
+        bar_listo,
         mesas (
           id,
           numero
@@ -681,7 +788,12 @@ export class Supabase {
     return data && data.length > 0 ? data[0] : null;
   }
 
-  async obtenerPedidosPendientesMozo() {
+  /**
+   * Pedidos que ve el mozo según su estado:
+   * - ['enviado']: pendientes de autorizar (Puntos 13 y 14)
+   * - ['confirmado', 'listo']: en preparación por sector y listos para entregar (Punto 15)
+   */
+  async obtenerPedidosPendientesMozo(estados: string[] = ['enviado']) {
     const { data, error } = await this.clienteSupabase
       .from('pedidos')
       .select(`
@@ -692,6 +804,8 @@ export class Supabase {
         importe_total,
         tiempo_estimado,
         created_at,
+        cocina_listo,
+        bar_listo,
         mesas (
           id,
           numero,
@@ -711,7 +825,7 @@ export class Supabase {
           )
         )
       `)
-      .eq('estado', 'enviado')
+      .in('estado', estados)
       .order('created_at', { ascending: true });
 
     if (error) {
@@ -758,6 +872,32 @@ escucharChat(callback: (nuevoMensaje: any) => void) {
       }
     )
     .subscribe();
+  }
+
+  /**
+   * Registra el resultado de una partida de juego en Supabase.
+   */
+  async guardarResultadoJuego(juego: string, gano: boolean, descuento: number | null) {
+    try {
+      const { data: { user } } = await this.clienteSupabase.auth.getUser();
+      const payload: any = {
+        juego,
+        gano,
+        descuento,
+        user_id: user?.id || null,
+        created_at: new Date().toISOString()
+      };
+
+      const { error } = await this.clienteSupabase
+        .from('juegos')
+        .insert([payload]);
+
+      if (error) {
+        console.warn('Registro de juego en Supabase (tabla opcional):', error.message);
+      }
+    } catch (e) {
+      console.warn('No se pudo registrar resultado del juego en Supabase:', e);
+    }
   }
 }
 

@@ -1,4 +1,3 @@
-import { Component } from '@angular/core';
 import { Component, OnInit, OnDestroy, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -31,7 +30,8 @@ import {
   closeOutline,
   refreshOutline,
   wineOutline,
-  checkmarkDoneCircleOutline
+  checkmarkDoneCircleOutline,
+  hourglassOutline
 } from 'ionicons/icons';
 import { RealtimeChannel } from '@supabase/supabase-js';
 
@@ -64,18 +64,6 @@ import { PedidoClienteUI } from '../interfaces/pedido';
     IonInput
   ],
 })
-export class ClienteInicioComponent {
-  cantidadComensales = signal<string>('');
-  comensalesValidados = signal<number>(0);
-  abrirInputComensales = signal<boolean>(false);
-  codigoQrIngreso = signal<boolean>(false);
-  numeroMesa = signal<string>('');
-  clienteId = signal<string>('');
-
-  /** true cuando el metre ya asigno una mesa y el cliente aun no escaneo el QR de la mesa */
-  mesaAsignada = signal<boolean>(false);
-
-  private canalRealtimeMesas: any = null;
 export class ClienteInicioComponent implements OnInit, OnDestroy {
   cantidadComensales = signal<string>("");
   comensalesValidados = signal<number>(0);
@@ -115,7 +103,8 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
       closeOutline,
       refreshOutline,
       wineOutline,
-      checkmarkDoneCircleOutline
+      checkmarkDoneCircleOutline,
+      hourglassOutline
     });
   }
 
@@ -189,100 +178,12 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
     }
   }
 
-  async ionViewWillEnter() {
-    await this.inicializarClienteId();
-  }
-
-  ionViewWillLeave() {
-    this.detenerSuscripcionMesas();
-  }
-
-  /**
-   * Carga el clienteId desde Supabase Auth al entrar a la vista,
-   * verifica si ya tiene mesa asignada y arranca la suscripcion Realtime.
-   */
-  private async inicializarClienteId() {
-    const { data: { user } } = await this.supabase.clienteSupabase.auth.getUser();
-    if (!user?.email) return;
-
-    const cliente = await this.supabase.obtenerClientePorCorreo(user.email);
-    if (!cliente || cliente.estado !== 'aprobado') return;
-
-    this.clienteId.set(cliente.id);
-
-    // Verificar si ya hay una mesa asignada (por si el metre actuo antes de que llegara aqui)
-    await this.verificarMesaAsignada();
-
-    // Escuchar cambios en 'mesas' en tiempo real
-    this.suscribirseACambiosMesas();
-  }
-
-  /**
-   * Consulta la tabla mesas y actualiza los signals si hay una mesa
-   * en estado 'asignada' vinculada a este cliente.
-   */
-  private async verificarMesaAsignada() {
-    if (!this.clienteId()) return;
-
-    const mesas = await this.supabase.obtenerMesas();
-    const mesaDelCliente = mesas.find(
-      (m: any) => m.cliente_id === this.clienteId() && m.disponibilidad === 'asignada'
-    );
-
-    if (mesaDelCliente) {
-      this.numeroMesa.set(String(mesaDelCliente.numero));
-      this.mesaAsignada.set(true);
-      this.codigoQrIngreso.set(true);
-    }
-  }
-
-  /**
-   * Suscripcion Realtime a la tabla 'mesas'.
-   * Cuando el metre asigna la mesa (UPDATE a 'asignada'), la UI del cliente
-   * se actualiza automaticamente sin necesidad de recargar.
-   */
-  private suscribirseACambiosMesas() {
-    this.detenerSuscripcionMesas();
-
-    this.canalRealtimeMesas = this.supabase.clienteSupabase
-      .channel('cliente-mesas-realtime')
-      .on(
-        'postgres_changes',
-        { event: 'UPDATE', schema: 'public', table: 'mesas' },
-        async (payload: any) => {
-          const mesa = payload.new;
-
-          if (mesa.cliente_id !== this.clienteId()) return;
-
-          if (mesa.disponibilidad === 'asignada') {
-            this.numeroMesa.set(String(mesa.numero));
-            this.mesaAsignada.set(true);
-            await this.mostrarToast(
-              `El metre te asigno la Mesa N ${mesa.numero}. Escanea el QR de la mesa.`,
-              'success'
-            );
-          } else if (mesa.disponibilidad === 'vacia') {
-            this.numeroMesa.set('');
-            this.mesaAsignada.set(false);
-          }
-        }
-      )
-      .subscribe();
-  }
-
-  private detenerSuscripcionMesas() {
-    if (this.canalRealtimeMesas) {
-      void this.supabase.clienteSupabase.removeChannel(this.canalRealtimeMesas);
-      this.canalRealtimeMesas = null;
-    }
-  }
-
   async escanearIngreso() {
     const codigoEscaneado = await this.qrService.leerQR();
 
     if (!codigoEscaneado) {
       await this.vibracion.errorFuerte();
-      await this.mostrarToast('Se cancelo la lectura o no se pudo acceder a la camara.', 'warning');
+      await this.mostrarToast('Se canceló la lectura o no se pudo acceder a la cámara.', 'warning');
       return;
     }
 
@@ -291,7 +192,7 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
       this.abrirInputComensales.set(true);
     } else {
       await this.vibracion.errorFuerte();
-      await this.mostrarToast('El codigo QR no corresponde al ingreso del local.', 'danger');
+      await this.mostrarToast('El código QR no corresponde al ingreso del local.', 'danger');
     }
   }
 
@@ -301,9 +202,6 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
       this.comensalesValidados.set(comensalesNum);
       this.cerrarModuleComensales();
       this.agregarAListaDeEspera();
-      this.cantidadComensales.set('');
-    } else {
-      this.mostrarToast('Por favor, ingrese un numero valido de comensales.', 'warning');
       this.cantidadComensales.set("");
     } else {
       this.mostrarToast('Por favor, ingrese un número válido de comensales.', 'warning');
@@ -313,19 +211,6 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
   cerrarModuleComensales() {
     this.abrirInputComensales.set(false);
   }
-
-  async agregarAListaDeEspera() {
-    const { data: { user } } = await this.supabase.clienteSupabase.auth.getUser();
-
-    if (!user?.email) {
-      await this.mostrarToast('Iniciá sesion para anotarte.', 'warning');
-      return;
-    }
-
-    const cliente = await this.supabase.obtenerClientePorCorreo(user.email);
-
-    if (!cliente || cliente.estado !== 'aprobado') {
-      await this.mostrarToast('No se encontro una cuenta de cliente aprobada.', 'warning');
 
   async agregarAListaDeEspera() {
     const idCliente = this.clienteId();
@@ -349,7 +234,6 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
       return;
     }
 
-    await this.mostrarToast(`Te anotaste con exito en la lista de espera como "${nombreCliente}".`, 'success');
     this.enListaEspera.set(true);
     await this.mostrarToast(`¡Te anotaste con éxito en la lista de espera como "${this.nombreCliente()}"!`, 'success');
   }
@@ -367,8 +251,6 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
       this.mesaId.set(mesaEncontrada.id);
       this.codigoQrIngreso.set(true);
 
-  async escanearQrMesa() {
-    const codigoEscaneado = await this.qrService.leerQR();
       // Verificamos si el cliente YA HABÍA escaneado esta mesa antes (guardado en localStorage)
       const guardada = localStorage.getItem(`mesa_escaneada_${mesaEncontrada.numero}`);
       if (mesaEncontrada.disponibilidad === 'ocupada' || guardada === 'true') {
@@ -386,41 +268,10 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
 
     if (!codigoEscaneado) {
       await this.vibracion.errorFuerte();
-      await this.mostrarToast('Se cancelo la lectura o no se pudo acceder a la camara.', 'warning');
+      await this.mostrarToast('Se canceló la lectura o no se pudo acceder a la cámara.', 'warning');
       return;
     }
 
-    if (codigoEscaneado === `mesa_numero:${this.numeroMesa()}`) {
-      await this.confirmarOcupacionMesa();
-    } else {
-      await this.vibracion.errorFuerte();
-      await this.mostrarToast('El codigo QR no corresponde a la mesa asignada.', 'danger');
-    }
-  }
-
-  /**
-   * Cambia la disponibilidad de la mesa de 'asignada' a 'ocupada'
-   * cuando el cliente escanea fisicamente el QR de la mesa.
-   */
-  private async confirmarOcupacionMesa() {
-    try {
-      const mesas = await this.supabase.obtenerMesas();
-      const mesaDelCliente = mesas.find(
-        (m: any) => String(m.numero) === this.numeroMesa() && m.cliente_id === this.clienteId()
-      );
-
-      if (!mesaDelCliente) {
-        await this.mostrarToast('No se encontro la mesa asignada.', 'danger');
-        return;
-      }
-
-      await this.supabase.actualizarDisponibilidadMesa(mesaDelCliente.id, 'ocupada');
-      this.mesaAsignada.set(false);
-      await this.mostrarToast(`Bienvenido a la Mesa N ${this.numeroMesa()}.`, 'success');
-
-    } catch (error: any) {
-      console.error('Error al confirmar ocupacion de mesa:', error);
-      await this.mostrarToast('Error al confirmar la mesa. Intenta de nuevo.', 'danger');
     const nro = this.numeroMesa();
     if (!nro) {
       await this.vibracion.errorFuerte();

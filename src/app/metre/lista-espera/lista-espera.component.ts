@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from "@angular/core";
+import { Component, OnDestroy, OnInit, signal } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterLink } from "@angular/router";
 import { PushNotificationsService } from "../../services/push-notifications.service";
@@ -62,7 +62,7 @@ import { Supabase } from "../../services/supabase";
   IonItem,
   ],
 })
-export class ListaEsperaComponent implements OnInit {
+export class ListaEsperaComponent implements OnInit, OnDestroy {
   listaEspera = signal<any[]>([]);
   listaMesas = signal<any[]>([]);
   mostrarMesas = signal<boolean>(false);
@@ -117,11 +117,17 @@ export class ListaEsperaComponent implements OnInit {
     }
   }
 
+  ngOnDestroy() {
+    this.detenerSuscripcionRealtime();
+  }
+
   private iniciarSuscripcionRealtime() {
     this.detenerSuscripcionRealtime();
 
+    // Nombre único por instancia: si el canal anterior todavía se está cerrando,
+    // supabase devolvería el mismo canal ya suscripto y .on() lanzaría error.
     this.canalListaEspera = this.supabase.clienteSupabase
-      .channel('cambios-lista-espera')
+      .channel(`cambios-lista-espera-${Date.now()}`)
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'lista_espera' },

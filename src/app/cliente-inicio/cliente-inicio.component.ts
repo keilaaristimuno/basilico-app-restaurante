@@ -83,11 +83,15 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
   mesaEscaneada = signal<boolean>(false);
   encuestaCompletada = signal<boolean>(false);
   abrirChatModal = signal<boolean>(false);
+  private escaneandoQr = false;
 
   /**
    * Canal activo de Supabase Realtime para cambios en pedidos y mesas
    */
   private canalRealtime: RealtimeChannel | null = null;
+  private intervaloEspera: any = null;
+  private subPush: any = null;
+  private cargandoEstado = false;
 
   constructor(
     private qrService: QrService,
@@ -121,23 +125,77 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+    void this.pushNotifications.inicializar().then(() =>
+      this.pushNotifications.asociarTokenDelUsuarioActual()
+    );
     await this.cargarDatosClienteYEstado();
     this.iniciarSuscripcionRealtime();
+    this.iniciarPollingEspera();
+    this.subPush = this.pushNotifications.notificacionRecibida$.subscribe(() => {
+      void this.cargarDatosClienteYEstado();
+    });
   }
 
   async ionViewWillEnter() {
+    if (this.escaneandoQr || this.abrirInputComensales()) {
+      return;
+    }
+    void this.pushNotifications.inicializar().then(() =>
+      this.pushNotifications.asociarTokenDelUsuarioActual()
+    );
     await this.cargarDatosClienteYEstado();
     this.iniciarSuscripcionRealtime();
+    this.iniciarPollingEspera();
   }
 
   ngOnDestroy() {
     this.detenerSuscripcionRealtime();
+    this.detenerPollingEspera();
+    if (this.subPush) {
+      this.subPush.unsubscribe();
+      this.subPush = null;
+    }
+  }
+
+  /**
+   * Si el cliente ingresó como anónimo en una sesión previa sin Auth, crea/recupera su sesión Auth
+   * y asocia su correo en la tabla clientes para que funcionen las notificaciones push bidireccionales.
+   */
+  private async asegurarSesionPushAnonimo(cliAnon: any): Promise<void> {
+    try {
+      const correoAnon =
+        cliAnon.correo ||
+        `anonimo_${String(cliAnon.id).replace(/-/g, '').slice(0, 12)}@basilico.com`;
+      const claveAnon = 'anonimo123';
+
+      if (!cliAnon.correo) {
+        await this.supabase.clienteSupabase
+          .from('clientes')
+          .update({ correo: correoAnon })
+          .eq('id', cliAnon.id);
+      }
+
+      const { error: loginErr } = await this.supabase.iniciarSesion(correoAnon, claveAnon);
+      if (loginErr) {
+        await this.supabase.registrar(correoAnon, claveAnon);
+      }
+
+      await this.pushNotifications.inicializar();
+      await this.pushNotifications.asociarTokenDelUsuarioActual();
+    } catch (e) {
+      console.warn('No se pudo asegurar sesión push para cliente anónimo:', e);
+    }
   }
 
   /**
    * Identifica al cliente actual, su lista de espera, la mesa asignada y su pedido activo
    */
   async cargarDatosClienteYEstado() {
+    if (this.escaneandoQr || this.abrirInputComensales() || this.cargandoEstado) {
+      return;
+    }
+
+    this.cargandoEstado = true;
     try {
       const { data: { user } } = await this.supabase.clienteSupabase.auth.getUser();
 
@@ -145,7 +203,7 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
         const cliente = await this.supabase.obtenerClientePorCorreo(user.email);
         if (cliente) {
           this.clienteId.set(cliente.id);
-          this.nombreCliente.set(`${cliente.nombres} ${cliente.apellidos}`.trim());
+          this.nombreCliente.set(`${cliente.nombres} ${cliente.apellidos || ''}`.trim());
         }
       } else {
         const nombreGuardado = localStorage.getItem('nombre');
@@ -158,7 +216,9 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
             .order('created_at', { ascending: false })
             .limit(1);
           if (anonimo && anonimo.length > 0) {
-            this.clienteId.set(anonimo[0].id);
+            const cliAnon = anonimo[0];
+            this.clienteId.set(cliAnon.id);
+            await this.asegurarSesionPushAnonimo(cliAnon);
           }
         }
       }
@@ -166,6 +226,10 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
       const idCliente = this.clienteId();
       if (!idCliente) return;
 
+      // Si entramos en modal de comensales o escáner mientras esperábamos las llamadas async, no pisar la UI
+      if (this.escaneandoQr || this.abrirInputComensales()) {
+        return;
+      }
 
       // 1. Verificar si está en lista de espera
       const lista = await this.supabase.obtenerListaDeEspera();
@@ -192,6 +256,7 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
       // Si estaba en lista de espera, ya no está en lista_espera y tampoco tiene mesa asignada -> fue rechazado por el metre
       if (estabaEnEspera && !this.numeroMesa()) {
         localStorage.removeItem(`en_lista_espera_${idCliente}`);
+        this.enListaEspera.set(false);
         this.codigoQrIngreso.set(false);
         this.mesaEscaneada.set(false);
         await this.vibracion.errorFuerte();
@@ -199,9 +264,20 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
         return;
       }
 
+      // Si estaba en lista de espera y el metre le acaba de asignar mesa -> transición en tiempo real a Escanear QR de Mesa
+      if (estabaEnEspera && this.numeroMesa()) {
+        localStorage.removeItem(`en_lista_espera_${idCliente}`);
+        localStorage.removeItem(`mesa_escaneada_${this.numeroMesa()}`);
+        this.enListaEspera.set(false);
+        this.codigoQrIngreso.set(true);
+        this.mesaEscaneada.set(false);
+        await this.mostrarToast(`¡Mesa N° ${this.numeroMesa()} asignada! Escaneá el código QR de tu mesa.`, 'success');
+        return;
+      }
+
       if (this.numeroMesa()) {
         localStorage.removeItem(`en_lista_espera_${idCliente}`);
-      } else {
+      } else if (!this.abrirInputComensales()) {
         // No está en lista de espera ni tiene mesa asignada -> pantalla inicial de escanear QR de ingreso
         this.codigoQrIngreso.set(false);
         this.mesaEscaneada.set(false);
@@ -226,36 +302,47 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
       this.encuestaCompletada.set(!!encuestaPrevia);
     } catch (error) {
       console.warn('Error al cargar datos del cliente y estado:', error);
+    } finally {
+      this.cargandoEstado = false;
     }
   }
 
   async escanearIngreso() {
-    const codigoEscaneado = await this.qrService.leerQR();
+    this.escaneandoQr = true;
+    try {
+      const codigoEscaneado = await this.qrService.leerQR();
 
-    if (!codigoEscaneado) {
-      await this.vibracion.errorFuerte();
-      await this.mostrarToast('Se canceló la lectura o no se pudo acceder a la cámara.', 'warning');
-      return;
-    }
+      if (!codigoEscaneado) {
+        await this.vibracion.errorFuerte();
+        await this.mostrarToast('Se canceló la lectura o no se pudo acceder a la cámara.', 'warning');
+        return;
+      }
 
-    if (codigoEscaneado === 'BASILICO_INGRESO_LISTA_ESPERA') {
-      this.codigoQrIngreso.set(true);
-      this.abrirInputComensales.set(true);
-    } else {
-      await this.vibracion.errorFuerte();
-      await this.mostrarToast('El código QR no corresponde al ingreso del local.', 'danger');
+      if (codigoEscaneado === 'BASILICO_INGRESO_LISTA_ESPERA') {
+        this.codigoQrIngreso.set(true);
+        this.abrirInputComensales.set(true);
+      } else {
+        await this.vibracion.errorFuerte();
+        await this.mostrarToast('El código QR no corresponde al ingreso del local.', 'danger');
+      }
+    } finally {
+      setTimeout(() => {
+        this.escaneandoQr = false;
+      }, 600);
     }
   }
 
-  confirmarComensales() {
+  async confirmarComensales() {
     const comensalesNum = parseInt(this.cantidadComensales(), 10);
     if (!isNaN(comensalesNum) && comensalesNum > 0) {
       this.comensalesValidados.set(comensalesNum);
-      this.cerrarModuleComensales();
-      this.agregarAListaDeEspera();
+      this.enListaEspera.set(true);
+      this.codigoQrIngreso.set(true);
+      this.abrirInputComensales.set(false);
+      await this.agregarAListaDeEspera();
       this.cantidadComensales.set("");
     } else {
-      this.mostrarToast('Por favor, ingrese un número válido de comensales.', 'warning');
+      await this.mostrarToast('Por favor, ingrese un número válido de comensales.', 'warning');
     }
   }
 
@@ -269,6 +356,8 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
   async agregarAListaDeEspera() {
     const idCliente = this.clienteId();
     if (!idCliente) {
+      this.enListaEspera.set(false);
+      this.codigoQrIngreso.set(false);
       await this.mostrarToast('Iniciá sesión o ingresá como cliente.', 'warning');
       return;
     }
@@ -283,6 +372,8 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
 
     if (error) {
       console.error('Error al anotarse:', error.message);
+      this.enListaEspera.set(false);
+      this.codigoQrIngreso.set(false);
       await this.vibracion.errorFuerte();
       await this.mostrarToast('Error al anotarse en la lista de espera.', 'danger');
       return;
@@ -292,6 +383,7 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
     localStorage.removeItem(`esperando_nuevo_ingreso_${idCliente}`);
     localStorage.setItem(`en_lista_espera_${idCliente}`, 'true');
     this.enListaEspera.set(true);
+    this.codigoQrIngreso.set(true);
 
     // Notificación push al Metre (Punto 9)
     try {
@@ -342,42 +434,49 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
   }
 
   async escanearQrMesa() {
-    const codigoEscaneado = await this.qrService.leerQR();
-    await this.buscarMesaAsignada();
+    this.escaneandoQr = true;
+    try {
+      const codigoEscaneado = await this.qrService.leerQR();
+      await this.buscarMesaAsignada();
 
-    if (!codigoEscaneado) {
-      await this.vibracion.errorFuerte();
-      await this.mostrarToast('Se canceló la lectura o no se pudo acceder a la cámara.', 'warning');
-      return;
-    }
-
-    const nro = this.numeroMesa();
-    if (!nro) {
-      await this.vibracion.errorFuerte();
-      await this.mostrarToast('Todavía no tenés una mesa asignada por el metre.', 'warning');
-      return;
-    }
-
-    // Acepta formato mesa_numero:X y mesa_numer:X
-    const valido = codigoEscaneado.trim() === `mesa_numero:${nro}` ||
-                  codigoEscaneado.trim() === `mesa_numer:${nro}`;
-
-    if (valido) {
-      this.mesaEscaneada.set(true);
-      localStorage.setItem(`mesa_escaneada_${nro}`, 'true');
-
-      if (this.mesaId()) {
-        try {
-          await this.supabase.actualizarDisponibilidadMesa(this.mesaId(), 'ocupada');
-        } catch (e) {
-          console.warn('No se pudo actualizar disponibilidad a ocupada:', e);
-        }
+      if (!codigoEscaneado) {
+        await this.vibracion.errorFuerte();
+        await this.mostrarToast('Se canceló la lectura o no se pudo acceder a la cámara.', 'warning');
+        return;
       }
 
-      await this.mostrarToast(`¡Mesa N° ${nro} vinculada con éxito! Ya podés hacer tu pedido.`, 'success');
-    } else {
-      await this.vibracion.errorFuerte();
-      await this.mostrarToast(`El código QR no corresponde a tu mesa asignada (Mesa N° ${nro}).`, 'danger');
+      const nro = this.numeroMesa();
+      if (!nro) {
+        await this.vibracion.errorFuerte();
+        await this.mostrarToast('Todavía no tenés una mesa asignada por el metre.', 'warning');
+        return;
+      }
+
+      // Acepta formato mesa_numero:X y mesa_numer:X
+      const valido = codigoEscaneado.trim() === `mesa_numero:${nro}` ||
+                    codigoEscaneado.trim() === `mesa_numer:${nro}`;
+
+      if (valido) {
+        this.mesaEscaneada.set(true);
+        localStorage.setItem(`mesa_escaneada_${nro}`, 'true');
+
+        if (this.mesaId()) {
+          try {
+            await this.supabase.actualizarDisponibilidadMesa(this.mesaId(), 'ocupada');
+          } catch (e) {
+            console.warn('No se pudo actualizar disponibilidad a ocupada:', e);
+          }
+        }
+
+        await this.mostrarToast(`¡Mesa N° ${nro} vinculada con éxito! Ya podés hacer tu pedido.`, 'success');
+      } else {
+        await this.vibracion.errorFuerte();
+        await this.mostrarToast(`El código QR no corresponde a tu mesa asignada (Mesa N° ${nro}).`, 'danger');
+      }
+    } finally {
+      setTimeout(() => {
+        this.escaneandoQr = false;
+      }, 600);
     }
   }
 
@@ -508,7 +607,7 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
     if (!idCliente) return;
 
     this.canalRealtime = this.supabase.clienteSupabase
-      .channel('cliente-inicio-realtime')
+      .channel(`cliente-inicio-realtime-${Date.now()}`)
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'pedidos' },
@@ -531,17 +630,35 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
           
           // Si la mesa modificada nos involucra
           if (mesaModificada && mesaModificada.cliente_id === idCliente) {
-            await this.buscarMesaAsignada();
+            await this.cargarDatosClienteYEstado();
             localStorage.setItem("identificador", `Mesa ${mesaModificada.numero}`);
           }
         }
       )
       .subscribe();
   }
-  alternarChat() {
-  this.abrirChatModal.set(!this.abrirChatModal());  
-  } 
 
+  private iniciarPollingEspera(): void {
+    this.detenerPollingEspera();
+    this.intervaloEspera = setInterval(() => {
+      // Mientras el cliente está esperando en lista de espera o con mesa asignada sin escanear,
+      // verificamos cada 2.5s por si la tabla lista_espera no tiene habilitado Realtime en Supabase
+      if (this.codigoQrIngreso() && !this.mesaEscaneada() && !this.escaneandoQr && !this.abrirInputComensales()) {
+        void this.cargarDatosClienteYEstado();
+      }
+    }, 2500);
+  }
+
+  private detenerPollingEspera(): void {
+    if (this.intervaloEspera) {
+      clearInterval(this.intervaloEspera);
+      this.intervaloEspera = null;
+    }
+  }
+
+  alternarChat() {
+    this.abrirChatModal.set(!this.abrirChatModal());  
+  } 
 
   private detenerSuscripcionRealtime(): void {
     if (this.canalRealtime) {

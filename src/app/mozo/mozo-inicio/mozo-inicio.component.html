@@ -15,38 +15,20 @@
     </section>
 
     <section class="acciones">
-      <ion-card class="tarjeta" routerLink="/pedidos-mozo" button="true">
+      <ion-card class="tarjeta" routerLink="/pedidos-mozo">
         <ion-card-content>
           <ion-icon name="list-outline" class="icono"></ion-icon>
           <p>2</p>
           <div class="informacion">
             <h2>Pedidos</h2>
             <p>
-              Visualizar los pedidos para autorizar o rechazar.
+              Visualizar los pedidos para autorizar, rechazar o entregar.
             </p>
           </div>
         </ion-card-content>
       </ion-card>
-      <ion-card class="tarjeta" >
-        <ion-card-content>
-          <ion-icon
-            name="checkmark-done-outline"
-            class="icono">
-          </ion-icon>
-          <p>-</p>
 
-          <div class="informacion">
-            <h2>Pedidos listos</h2>
-            <p>
-              Visualizar pedidos listos para entregar.
-            </p>
-
-          </div>
-        </ion-card-content>
-      </ion-card>
-
-
-      <ion-card class="tarjeta" >
+      <ion-card class="tarjeta">
         <ion-card-content>
           <ion-icon
             name="receipt-outline"
@@ -63,7 +45,7 @@
         </ion-card-content>
       </ion-card>
 
-      <ion-card class="tarjeta" (click)="alternarChat()" button="true">
+      <ion-card class="tarjeta" (click)="alternarChat()">
         <ion-card-content>
           <ion-icon
             name="chatbubbles-outline"

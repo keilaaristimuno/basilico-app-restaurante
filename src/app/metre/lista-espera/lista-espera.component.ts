@@ -77,6 +77,8 @@ export class ListaEsperaComponent implements OnInit, OnDestroy {
   private touchEndX = 0;  
 
   private canalListaEspera: RealtimeChannel | null = null;
+  private intervaloLista: any = null;
+  private subPush: any = null;
 
   constructor(
     private supabase: Supabase,
@@ -99,8 +101,24 @@ export class ListaEsperaComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    void this.pushNotificationsService.inicializar().then(() =>
+      this.pushNotificationsService.asociarTokenDelUsuarioActual()
+    );
     this.obtenerListaEspera();
     this.iniciarSuscripcionRealtime();
+    this.iniciarPolling();
+    this.subPush = this.pushNotificationsService.notificacionRecibida$.subscribe(() => {
+      void this.obtenerListaEspera();
+    });
+  }
+
+  ionViewWillEnter() {
+    void this.pushNotificationsService.inicializar().then(() =>
+      this.pushNotificationsService.asociarTokenDelUsuarioActual()
+    );
+    void this.obtenerListaEspera();
+    this.iniciarSuscripcionRealtime();
+    this.iniciarPolling();
   }
 
   async obtenerListaEspera() {
@@ -119,6 +137,27 @@ export class ListaEsperaComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.detenerSuscripcionRealtime();
+    this.detenerPolling();
+    if (this.subPush) {
+      this.subPush.unsubscribe();
+      this.subPush = null;
+    }
+  }
+
+  private iniciarPolling() {
+    this.detenerPolling();
+    this.intervaloLista = setInterval(() => {
+      if (!this.procesandoId()) {
+        void this.obtenerListaEspera();
+      }
+    }, 2500);
+  }
+
+  private detenerPolling() {
+    if (this.intervaloLista) {
+      clearInterval(this.intervaloLista);
+      this.intervaloLista = null;
+    }
   }
 
   private iniciarSuscripcionRealtime() {
@@ -200,12 +239,25 @@ export class ListaEsperaComponent implements OnInit, OnDestroy {
         console.warn('No se pudo liberar mesa previa al rechazar cliente:', e);
       }
 
-      await this.pushNotificationsService.enviarNotificacion(
-        '¡Solicitud rechazada!',
-        'El metre te ha rechazado su solicitud de mesa.',
-        { userIds: [idClienteReal] },
-        { ruta: '/clienteInicio' }
-      );
+      try {
+        const resPush = await this.pushNotificationsService.enviarNotificacion(
+          '¡Solicitud rechazada!',
+          'El metre ha rechazado tu solicitud en la lista de espera.',
+          { userIds: [idClienteReal] },
+          { ruta: '/clienteInicio' }
+        );
+        if (!resPush?.sent) {
+          await this.pushNotificationsService.enviarNotificacion(
+            '¡Solicitud rechazada!',
+            'El metre ha rechazado tu solicitud en la lista de espera.',
+            { profiles: ['cliente'] },
+            { ruta: '/clienteInicio' }
+          );
+        }
+      } catch (pushErr) {
+        console.warn('[Push] Error al notificar rechazo al cliente:', pushErr);
+      }
+
       await this.obtenerListaEspera();
     } catch (error) {
       console.error('Error al rechazar cliente:', error);
@@ -219,12 +271,24 @@ export class ListaEsperaComponent implements OnInit, OnDestroy {
     try {
       await this.supabase.asignarMesaACliente(idCliente, numeroMesa);
 
-      await this.pushNotificationsService.enviarNotificacion(
-        '¡Mesa Asignada!',
-        `El metre te ha asignado la Mesa N° ${numeroMesa}. Ya puedes escanear el código QR correspondiente.`,
-        { userIds: [idCliente] },
-        { ruta: '/clienteInicio' }
-      );
+      try {
+        const resPush = await this.pushNotificationsService.enviarNotificacion(
+          '¡Mesa Asignada!',
+          `El metre te ha asignado la Mesa N° ${numeroMesa}. Ya podés escanear el código QR de tu mesa.`,
+          { userIds: [idCliente] },
+          { ruta: '/clienteInicio' }
+        );
+        if (!resPush?.sent) {
+          await this.pushNotificationsService.enviarNotificacion(
+            '¡Mesa Asignada!',
+            `El metre te ha asignado la Mesa N° ${numeroMesa}. Ya podés escanear el código QR de tu mesa.`,
+            { profiles: ['cliente'] },
+            { ruta: '/clienteInicio' }
+          );
+        }
+      } catch (pushErr) {
+        console.warn('[Push] Error al notificar mesa asignada al cliente:', pushErr);
+      }
 
       this.cerrarModalMesas();
       await this.obtenerListaEspera();

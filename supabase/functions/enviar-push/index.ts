@@ -90,96 +90,86 @@ async function getTargetTokens(
   supabaseAdmin: any,
   payload: PushPayload
 ): Promise<string[]> {
-  let query = supabaseAdmin
-    .from("device_tokens")
-    .select("token")
-    .eq("activo", true);
+  if (!payload.userIds?.length && !payload.profiles?.length) {
+    throw new Error("Debe indicar userIds o profiles como destinatarios");
+  }
+
+  const candidateIds = new Set<string>();
+  const targetEmails = new Set<string>();
 
   if (payload.userIds?.length) {
     const validIds = payload.userIds.filter(Boolean);
-    if (!validIds.length) return [];
+    validIds.forEach((id) => candidateIds.add(id));
 
-    // Si los userIds provienen de la tabla 'clientes', resolvemos sus correos para encontrar su Auth UID
-    const { data: clientesResp } = await supabaseAdmin
-      .from("clientes")
-      .select("correo")
-      .in("id", validIds);
+    if (validIds.length) {
+      const { data: clientesResp } = await supabaseAdmin
+        .from("clientes")
+        .select("correo")
+        .in("id", validIds);
 
-    // Si provienen de la tabla 'empleados'
-    const { data: empleadosResp } = await supabaseAdmin
-      .from("empleados")
-      .select("correo")
-      .in("id", validIds);
+      const { data: empleadosResp } = await supabaseAdmin
+        .from("empleados")
+        .select("correo")
+        .in("id", validIds);
 
-    const targetEmails: string[] = [];
-    ((clientesResp as any[]) ?? []).forEach((cli: any) => {
-      if (cli?.correo) targetEmails.push(cli.correo.toLowerCase());
-    });
-    ((empleadosResp as any[]) ?? []).forEach((emp: any) => {
-      if (emp?.correo) targetEmails.push(emp.correo.toLowerCase());
-    });
-
-    let authIds: string[] = [];
-    if (targetEmails.length) {
-      const { data: users, error: usersError } = await supabaseAdmin.auth.admin.listUsers({
-        page: 1,
-        perPage: 1000
+      ((clientesResp as any[]) ?? []).forEach((cli: any) => {
+        if (cli?.correo) targetEmails.add(cli.correo.toLowerCase());
       });
-      if (!usersError && users?.users?.length) {
-        const emailSet = new Set(targetEmails);
-        authIds = users.users
-          .filter((u: any) => u.email && emailSet.has(u.email.toLowerCase()))
-          .map((u: any) => u.id);
-      }
+      ((empleadosResp as any[]) ?? []).forEach((emp: any) => {
+        if (emp?.correo) targetEmails.add(emp.correo.toLowerCase());
+      });
     }
+  }
 
-    const candidateIds = [...new Set([...validIds, ...authIds])];
-    query = query.in("user_id", candidateIds);
-  } else if (payload.profiles?.length) {
+  if (payload.profiles?.length) {
     const employeeProfiles = payload.profiles.filter((p) => p !== "cliente");
-    const targetEmails: string[] = [];
 
     if (employeeProfiles.length) {
       const { data: empleadosResp, error } = await supabaseAdmin
         .from("empleados")
-        .select("correo")
+        .select("id, correo")
         .in("perfil", employeeProfiles);
       if (error) throw error;
       ((empleadosResp as any[]) ?? []).forEach((emp: any) => {
-        if (emp?.correo) targetEmails.push(emp.correo.toLowerCase());
+        if (emp?.id) candidateIds.add(String(emp.id));
+        if (emp?.correo) targetEmails.add(emp.correo.toLowerCase());
       });
     }
 
     if (payload.profiles.includes("cliente")) {
       const { data: clientesResp, error } = await supabaseAdmin
         .from("clientes")
-        .select("correo")
+        .select("id, correo")
         .eq("estado", "aprobado");
       if (error) throw error;
       ((clientesResp as any[]) ?? []).forEach((cli: any) => {
-        if (cli?.correo) targetEmails.push(cli.correo.toLowerCase());
+        if (cli?.id) candidateIds.add(String(cli.id));
+        if (cli?.correo) targetEmails.add(cli.correo.toLowerCase());
       });
     }
+  }
 
-    if (!targetEmails.length) return [];
-
+  if (targetEmails.size > 0) {
     const { data: users, error: usersError } = await supabaseAdmin.auth.admin.listUsers({
       page: 1,
       perPage: 1000
     });
-    if (usersError) throw usersError;
-
-    const emailSet = new Set(targetEmails);
-    const ids = (users.users ?? [])
-      .filter((user: any) => user.email && emailSet.has(user.email.toLowerCase()))
-      .map((user: any) => user.id);
-    if (!ids.length) return [];
-    query = query.in("user_id", ids);
-  } else {
-    throw new Error("Debe indicar userIds o profiles como destinatarios");
+    if (!usersError && users?.users?.length) {
+      users.users
+        .filter((u: any) => u.email && targetEmails.has(u.email.toLowerCase()))
+        .forEach((u: any) => candidateIds.add(u.id));
+    }
   }
 
-  const { data, error } = await query;
+  const finalIds = [...candidateIds];
+  if (!finalIds.length) return [];
+
+  const { data, error } = await supabaseAdmin
+    .from("device_tokens")
+    .select("token")
+    .eq("activo", true)
+    .in("user_id", finalIds);
+
   if (error) throw error;
   return [...new Set(((data as any[]) ?? []).map((row: any) => row.token).filter(Boolean))];
 }

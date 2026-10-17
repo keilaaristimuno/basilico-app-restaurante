@@ -503,8 +503,10 @@ El cliente espera confirmacion del metre
 
 Una vez que el metre asigna la mesa, el cliente visualiza el número de mesa asignado y debe dirigirse a ella y escanear su código QR para confirmar su ubicación en el restaurante.
 
+Desde esta pantalla también puede **ver los resultados de las encuestas** de clientes anteriores.
+
 <p align="center">
-  <img src="docs/capturas/cliente/04-escaneo-mesa.png" width="300">
+  <img src="docs/capturas/cliente/17-mesa-asignada-escaneo-qr.png" width="300">
 </p>
 
 ---
@@ -542,7 +544,7 @@ Resumen del pedido antes de enviarlo al mozo: productos con su sector, cantidad 
 Al finalizar, el mozo recibe una notificación automática para autorizar el pedido.
 
 <p align="center">
-  <img src="docs/capturas/cliente/07-enviar-pedido.png" width="300">
+  <img src="docs/capturas/cliente/18-confirmar-pedido.png" width="300">
 </p>
 
 ---
@@ -552,7 +554,15 @@ Al finalizar, el mozo recibe una notificación automática para autorizar el ped
 Tras enviar el pedido, el cliente visualiza su estado (**"Esperando confirmación del mozo"**), el importe acumulado, el tiempo total estimado y el detalle de los ítems. Desde aquí también puede realizar una consulta al mozo.
 
 <p align="center">
-  <img src="docs/capturas/cliente/06-pedido-solicitado.png" width="300">
+  <img src="docs/capturas/cliente/19-esperando-confirmacion-mozo.png" width="300">
+</p>
+
+**Consulta al mozo (Chat)**
+
+Al tocar **Consulta al mozo**, el cliente ingresa al **Chat Global de Basílico**, donde puede intercambiar mensajes con los mozos. Cada mensaje indica quién lo envió (mesa o mozo) y la fecha y hora.
+
+<p align="center">
+  <img src="docs/capturas/chats/01-chat-global-cliente.png" width="300">
 </p>
 
 ---
@@ -773,15 +783,89 @@ Sección destinada a recibir y responder las consultas realizadas por los client
 
 El sistema permitirá mantener una sala de conversación entre clientes y mozos, identificando las consultas correspondientes y permitiendo continuar la comunicación durante la atención.
 
-> 📷 **Captura pendiente:** Se incorporará la captura correspondiente cuando la interfaz se encuentre disponible.
-
-<!-- Captura pendiente: 05-chat-consultas-mozo.png -->
+<p align="center">
+  <img src="docs/capturas/chats/01-chat-global-cliente.png" width="300">
+</p>
 
 ---
 
 ## 📊 Encuestas y Gráficos
 
-*Las capturas correspondientes a las encuestas y gráficos estadísticos se incorporarán a medida que sean desarrollados.*
+### 1. Acceso a la Encuesta desde la Pantalla del Cliente
+
+Una vez recibido el pedido, el cliente accede a un menú desde el cual puede jugar por descuentos, **completar la encuesta de satisfacción**, consultar los **resultados de la encuesta** o pedir la cuenta.
+
+<p align="center">
+  <img src="docs/capturas/encuestas/01-acceso-encuesta-cliente.png" width="300">
+</p>
+
+---
+
+### 2. Encuesta — Paso 1 de 2
+
+El cliente califica del 1 al 10 su experiencia en Basílico. En este paso se evalúan:
+
+- **Calidad de la comida:** mediante un control deslizante (slider).
+- **Atención del mozo:** seleccionando un número con botones de opción (radio buttons).
+
+<p align="center">
+  <img src="docs/capturas/encuestas/02-encuesta-paso-1.png" width="300">
+</p>
+
+---
+
+### 3. Encuesta — Paso 2 de 2
+
+Segundo paso de la encuesta, donde se evalúan:
+
+- **Ambiente y limpieza:** con botones de más/menos o tocando las estrellas.
+- **Experiencia general:** eligiendo entre **Malo**, **Regular**, **Bueno**, **Muy Bueno** o **Excelente**.
+
+Desde aquí el cliente puede volver al paso anterior, **enviar la encuesta** o **ver los resultados históricos**.
+
+<p align="center">
+  <img src="docs/capturas/encuestas/03-encuesta-paso-2.png" width="300">
+</p>
+
+---
+
+### 4. Encuesta Completada
+
+Una vez enviada la encuesta, el botón cambia a **Encuesta completada** y queda deshabilitado, ya que cada cliente puede responder la encuesta una sola vez por estadía. Los resultados siguen disponibles para consultar.
+
+<p align="center">
+  <img src="docs/capturas/encuestas/04-encuesta-completada.png" width="300">
+</p>
+
+---
+
+### 5. Estadísticas — Promedio por Categoría (Gráfico de Barras)
+
+Primera pantalla de estadísticas. Muestra el puntaje promedio (del 1 al 10) otorgado por los comensales a cada categoría: **Comida**, **Atención** y **Ambiente**. En la parte superior se indica la cantidad total de encuestas y el promedio general.
+
+<p align="center">
+  <img src="docs/capturas/encuestas/05-grafico-barras-categorias.png" width="300">
+</p>
+
+---
+
+### 6. Estadísticas — Experiencia General (Gráfico de Torta)
+
+Segunda pantalla de estadísticas. Muestra la distribución de las respuestas según las 5 opciones de calificación (**Excelente**, **Muy Bueno**, **Bueno**, **Regular** y **Malo**), con el porcentaje y la cantidad de votos de cada una, y el promedio general en el centro del gráfico.
+
+<p align="center">
+  <img src="docs/capturas/encuestas/06-grafico-torta-experiencia.png" width="300">
+</p>
+
+---
+
+### 7. Estadísticas — Evolución de Calificaciones (Gráfico Lineal)
+
+Tercera pantalla de estadísticas. Muestra la tendencia de satisfacción en las últimas 8 encuestas, junto con la calificación **mínima**, el **promedio** y la **máxima** obtenidas.
+
+<p align="center">
+  <img src="docs/capturas/encuestas/07-grafico-lineal-evolucion.png" width="300">
+</p>
 
 ---
 

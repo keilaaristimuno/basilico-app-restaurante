@@ -89,6 +89,8 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 | Punto 7 — Rechazar cliente + envío de correo automático | 18/09/2026 | 20/09/2025 | `feature/mail-respuesta-solicitud-cliente` | Finalizado |
 | Punto 8 — Aceptar cliente + envío de correo automático | 18/09/2026 | 20/09/2025 | `feature/mail-respuesta-solicitud-cliente` | Finalizado |
 | Verificación de estado de cliente en login (pendiente, rechazado, aprobado) | 19/09/2026 | 20/09/2025 | `feature/mail-respuesta-solicitud-cliente` | Finalizado |
+| Punto 8 — Aceptar cliente + envío de correo automático | 18/09/2026 | 23/09/2025 | `feature/mail-respuesta-solicitud-cliente` | Finalizado |
+| Punto 20 —  Encuesta de satisfacción + visualización de resultados en gráficos | 27/09/2026 | 17/10/2025 | `feature/cliente-encuesta` | Finalizado |
 
 ---
 ### 👤 Ignacio Arriaga

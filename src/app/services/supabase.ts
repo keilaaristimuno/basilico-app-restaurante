@@ -142,6 +142,20 @@ export class Supabase {
 
     return data;
   }
+
+  async liberarMesa(id: string) {
+    const { data, error } = await this.clienteSupabase
+      .from('mesas')
+      .update({ disponibilidad: 'libre', cliente_id: null })
+      .eq('id', id)
+      .select();
+
+    if (error) {
+      throw new Error(`Error al liberar la mesa: ${error.message}`);
+    }
+
+    return data;
+  }
   async obtenerPerfilUsuarioLogueado() {
     const { data: { user } } = await this.clienteSupabase.auth.getUser();
 
@@ -899,5 +913,100 @@ escucharChat(callback: (nuevoMensaje: any) => void) {
       console.warn('No se pudo registrar resultado del juego en Supabase:', e);
     }
   }
+
+  /* =========================================================
+     ENCUESTAS DE SATISFACCIÓN (PUNTO 20)
+     ========================================================= */
+
+  /**
+   * Guarda una nueva encuesta de satisfacción asociada al cliente y la mesa actual.
+   */
+  async guardarEncuesta(
+    clienteId: string,
+    mesaId: string | null,
+    respuestas: {
+      comida: number;
+      atencion: number;
+      ambiente: number;
+      recomienda: number;
+    }
+  ) {
+    const payload: any = {
+      cliente_id: clienteId,
+      respuestas
+    };
+
+    if (mesaId) {
+      payload.mesa_id = mesaId;
+    }
+
+    const { data, error } = await this.clienteSupabase
+      .from('encuestas')
+      .insert([payload])
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Error al guardar la encuesta:', error.message);
+      throw new Error(`No se pudo guardar la encuesta: ${error.message}`);
+    }
+
+    return data;
+  }
+
+  /**
+   * Verifica si el cliente ya completó una encuesta durante su estadía actual.
+   */
+  async obtenerEncuestaEstadiaActual(
+    clienteId: string,
+    mesaId?: string | null,
+    desdeFecha?: string | null
+  ) {
+    let query = this.clienteSupabase
+      .from('encuestas')
+      .select('*')
+      .eq('cliente_id', clienteId)
+      .order('created_at', { ascending: false })
+      .limit(1);
+
+    if (mesaId) {
+      query = query.eq('mesa_id', mesaId);
+    }
+
+    if (desdeFecha) {
+      query = query.gte('created_at', desdeFecha);
+    } else {
+      const haceSeisHoras = new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString();
+      query = query.gte('created_at', haceSeisHoras);
+    }
+
+    const { data, error } = await query;
+
+    if (error) {
+      console.error('Error al verificar encuesta de la estadía:', error.message);
+      return null;
+    }
+
+    return data && data.length > 0 ? data[0] : null;
+  }
+
+  /**
+   * Obtiene todas las encuestas registradas para alimentar los gráficos estadísticos.
+   */
+  async obtenerTodasLasEncuestas() {
+    const { data, error } = await this.clienteSupabase
+      .from('encuestas')
+      .select('id, cliente_id, mesa_id, respuestas, created_at')
+      .order('created_at', { ascending: true });
+
+    if (error) {
+      console.error('Error al obtener las encuestas:', error.message);
+      throw new Error(`Error al cargar resultados de encuestas: ${error.message}`);
+    }
+
+    return data ?? [];
+  }
 }
+
+
 

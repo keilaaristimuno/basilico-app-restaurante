@@ -196,6 +196,20 @@
             </div>
           }
 
+          @if (pedido.estado === 'listo') {
+            <div class="acciones-pedido-mozo" style="margin-top: 12px;">
+              <button
+                type="button"
+                class="btn-accion btn-confirmar"
+                style="width: 100%;"
+                [disabled]="procesandoId() === pedido.id"
+                (click)="entregarPedido(pedido)">
+                <ion-icon name="checkmark-done-circle-outline"></ion-icon>
+                <span>Entregar Pedido en Mesa</span>
+              </button>
+            </div>
+          }
+
         </article>
       }
     </div>

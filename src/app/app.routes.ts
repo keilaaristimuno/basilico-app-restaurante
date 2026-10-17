@@ -119,6 +119,14 @@ export const routes: Routes = [
     loadComponent: () => import('./components/chat/chat.component').then(m => m.ChatComponent)
   },
   {
+    path: 'encuesta-cliente',
+    loadComponent: () => import('./paginas/encuesta-cliente/encuesta-cliente.page').then(m => m.EncuestaClientePage)
+  },
+  {
+    path: 'graficos-encuesta',
+    loadComponent: () => import('./paginas/graficos-encuesta/graficos-encuesta.page').then(m => m.GraficosEncuestaPage)
+  },
+  {
     path: '**',
     redirectTo: 'inicio'
   }

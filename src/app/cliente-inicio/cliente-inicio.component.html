@@ -1,8 +1,10 @@
-<ion-content [fullscreen]="true" class="login-content ion-text-center">
+<ion-content [fullscreen]="true" class="login-content ion-text-center" [class.con-scroll]="mesaEscaneada() && !!pedidoService.pedidoActivo()">
   <app-navbar rutaInicio="/clienteInicio" titulo="Recepción"></app-navbar>
 
+  @if (!mesaEscaneada()) {
   <div class="pantalla-completa-cliente">
-    @if(!codigoQrIngreso()){
+    <!-- ESTADO 1: NO SE ESCANEÓ EL QR DE INGRESO -->
+    @if (!codigoQrIngreso()) {
       <div class="tarjeta-pantalla-completa">
         <div class="info-superior">
           <span class="badge-bienvenida">Bienvenido a Basílico</span>
@@ -26,9 +28,9 @@
       </div>
     }
 
-    @if(codigoQrIngreso()){
-      <!-- ESTADO 1: Esperando que el metre asigne mesa -->
-      @if(!mesaAsignada()){
+    @if (codigoQrIngreso()) {
+      <!-- ESTADO 2A: Esperando que el metre asigne mesa -->
+      @if (!numeroMesa()) {
         <div class="tarjeta-pantalla-completa tarjeta-espera">
           <div class="info-superior">
             <span class="badge-espera">En Lista de Espera</span>
@@ -46,72 +48,42 @@
               <p>Te avisaremos en cuanto tu mesa esté lista</p>
             </div>
           </div>
-<ion-content class="login-content ion-text-center">
-  <app-navbar rutaInicio="/clienteInicio"></app-navbar>
+        </div>
+      }
 
-  <div class="contenido-cliente">
-    <div class="contenedorLogo">
-      <img src="assets/Basilico/Logo_beige.png" alt="Logotipo de Basílico">
-    </div>
-
-    <!-- =========================================================
-         ESTADO 1: NO SE ESCANEÓ EL QR DE INGRESO
-         ========================================================= -->
-    @if (!codigoQrIngreso()) {
-      <div class="header-section">
-        <p class="titulo">¡Bienvenido!</p>
-        <ion-note class="texto">
-          Escaneá el código QR de entrada para anotarte en la lista de espera
-        </ion-note>
-      </div>
-
-      <div class="acciones-cliente">
-        <ion-button
-          expand="block"
-          class="btonBeige"
-          (click)="escanearIngreso()">
-          <ion-icon name="qr-code-outline" slot="start"></ion-icon>
-          Escanear QR de Ingreso
-        </ion-button>
-      </div>
-    }
-
-    <!-- =========================================================
-         ESTADO 2: RECEPCIONADO, ESPERANDO MESA O ESCANEO DE MESA
-         ========================================================= -->
-    @if (codigoQrIngreso() && !mesaEscaneada()) {
-      <div class="header-section">
-        <p class="titulo">¡Bienvenido a Basílico!</p>
-
-        @if (!numeroMesa()) {
-          <div class="tarjeta-aviso">
-            <ion-icon name="time-outline"></ion-icon>
-            <p>
-              Estás en la lista de espera. Aguardá a que el METRE te asigne una mesa disponible.
+      <!-- ESTADO 2B: Mesa asignada por el metre, falta escanear el QR de la mesa -->
+      @if (numeroMesa()) {
+        <div class="tarjeta-pantalla-completa tarjeta-asignada">
+          <div class="info-superior">
+            <span class="badge-asignada">¡Mesa Asignada!</span>
+            <div class="numero-mesa-destacado">
+              <span class="etiqueta-mesa">MESA NÚMERO</span>
+              <span class="valor-mesa">{{ numeroMesa() }}</span>
+            </div>
+            <p class="subtexto-instruccion">
+              Dirigite a tu mesa y escaneá su código QR para confirmar tu ubicación
             </p>
           </div>
-        } @else {
-          <div class="tarjeta-aviso aviso-mesa-lista">
-            <ion-icon name="restaurant-outline"></ion-icon>
-            <div>
-              <strong>¡Mesa N° {{ numeroMesa() }} Asignada!</strong>
-              <p>Escaneá el código QR que se encuentra en tu mesa para comenzar.</p>
-            </div>
-          </div>
 
-          <div class="acciones-cliente">
+          <div class="zona-boton-xxl">
             <ion-button
               expand="block"
-              class="btonBeige"
+              class="boton-xxl btonBeige"
               (click)="escanearQrMesa()">
-              <ion-icon name="qr-code-outline" slot="start"></ion-icon>
-              Escanear QR de la Mesa
+              <div class="contenido-boton-xxl">
+                <ion-icon name="qr-code-outline" class="icono-xxl"></ion-icon>
+                <span class="texto-boton-xxl">Escanear QR Mesa {{ numeroMesa() }}</span>
+                <span class="subtexto-boton-xxl">Confirmar mi ubicación en el restaurante</span>
+              </div>
             </ion-button>
           </div>
-        }
-      </div>
+        </div>
+      }
     }
+  </div>
+  }
 
+  <div class="contenido-cliente" [hidden]="!mesaEscaneada()" [class.sin-pedido]="!pedidoService.pedidoActivo()">
     <!-- =========================================================
          ESTADO 3: MESA VINCULADA -> BOTÓN Y UI DE PEDIDO (PUNTOS 11 AL 14)
          ========================================================= -->
@@ -136,20 +108,26 @@
               <!-- EL BOTÓN PRINCIPAL REQUERIDO -->
               <ion-button
                 expand="block"
-                class="btonBeige btn-hacer-pedido"
+                class="btn-hacer-pedido"
                 (click)="irACarta()">
-                <ion-icon name="restaurant-outline" slot="start"></ion-icon>
-                Hacer Pedido (Ver Carta)
+                <div class="contenido-btn-pedido">
+                  <ion-icon name="restaurant-outline" class="icono-btn-pedido"></ion-icon>
+                  <span class="texto-btn-pedido">Hacer Pedido</span>
+                  <span class="subtexto-btn-pedido">Ver la carta</span>
+                </div>
               </ion-button>
 
               <!-- BOTÓN DE CONSULTA AL MOZO (PUNTO 11) -->
               <ion-button
                 expand="block"
                 fill="outline"
-                class="btonBeigeOutline"
+                class="btn-consulta-mozo"
                 (click)="consultarMozo()">
-                <ion-icon name="chatbubbles-outline" slot="start"></ion-icon>
-                Consulta al Mozo
+                <div class="contenido-btn-pedido">
+                  <ion-icon name="chatbubbles-outline" class="icono-btn-pedido"></ion-icon>
+                  <span class="texto-btn-pedido">Consulta al Mozo</span>
+                  <span class="subtexto-btn-pedido">Enviar una consulta</span>
+                </div>
               </ion-button>
             </div>
           </div>
@@ -299,37 +277,9 @@
       </div>
     }
 
-      <!-- ESTADO 2: Mesa asignada por el metre -->
-      @if(mesaAsignada()){
-        <div class="tarjeta-pantalla-completa tarjeta-asignada">
-          <div class="info-superior">
-            <span class="badge-asignada">¡Mesa Asignada!</span>
-            <div class="numero-mesa-destacado">
-              <span class="etiqueta-mesa">MESA NÚMERO</span>
-              <span class="valor-mesa">{{ numeroMesa() }}</span>
-            </div>
-            <p class="subtexto-instruccion">
-              Dirigite a tu mesa y escaneá su código QR para confirmar tu ubicación
-            </p>
-          </div>
-
-          <div class="zona-boton-xxl">
-            <ion-button
-              expand="block"
-              class="boton-xxl btonBeige"
-              (click)="escanearQrMesa()">
-              <div class="contenido-boton-xxl">
-                <ion-icon name="qr-code-outline" class="icono-xxl"></ion-icon>
-                <span class="texto-boton-xxl">Escanear QR Mesa {{ numeroMesa() }}</span>
-                <span class="subtexto-boton-xxl">Confirmar mi ubicación en el restaurante</span>
-              </div>
-            </ion-button>
-          </div>
-        </div>
-      }
-    }
   </div>
 </ion-content>
+
 
 <!-- =========================================================
      MODAL DE COMENSALES (LISTA DE ESPERA)

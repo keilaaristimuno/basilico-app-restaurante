@@ -409,6 +409,10 @@ Esta sección permitirá al cocinero visualizar los pedidos confirmados que cont
 
 Los pedidos deberán mostrar la mesa correspondiente, fecha y hora, junto con los productos y cantidades que deben ser preparados, agrupados por número de mesa.
 
+<p align="center">
+  <img src="docs/capturas/cocina-bar/pedidos-pendiente-cocina.png" width="300">
+</p>
+
 **Sin pedidos pendientes**
 <p align="center">
   <img src="docs/capturas/cocina-bar/sin-pedido-cocina.png" width="300">
@@ -559,9 +563,26 @@ Una vez que el mozo confirma el pedido, este se deriva a cocina y/o bar y el cli
   <img src="docs/capturas/cliente/10-pedido-enPreparacion.png" width="300">
 </p>
 
+**Pedido rechazado por mozo**
+
+<p align="center">
+  <img src="docs/capturas/cliente/pedido-rechazado-mozo.png" width="300">
+</p>
+
+
+
+---
+### 10. Estado del Pedido — Confirmado y listo
+
+Una vez que el mozo confirma el pedido, este se deriva a cocina y/o bar y el cliente ve el estado de preparación de cada sector. En este momento se habilita el acceso a **Juegos y Descuentos**.
+
+<p align="center">
+  <img src="docs/capturas/cliente/pedido-listo-entregable.png" width="300">
+</p>
+
 ---
 
-### 10. Juegos y Descuentos
+### 11. Juegos y Descuentos
 
 Sección destinada a los juegos disponibles para clientes registrados. Los juegos permiten obtener descuentos sobre la cuenta final según las condiciones establecidas para cada uno.
 
@@ -580,6 +601,16 @@ Para facilitar las pruebas, la barra inferior permite simular cada descuento (+1
 
 <p align="center">
   <img src="docs/capturas/cliente/11-juegos-inicio.png" width="300">
+</p>
+
+**Usuario anonimo no obtiene descuentos**
+<p align="center">
+  <img src="docs/capturas/cliente/juegos-anonimo-descuentos.png" width="300">
+</p>
+
+**juego terminado**
+<p align="center">
+  <img src="docs/capturas/cliente/juego-terminado.png" width="300">
 </p>
 
 ---
@@ -698,6 +729,11 @@ Cada pedido muestra la mesa, el comensal, la fecha y hora, los productos solicit
   <img src="docs/capturas/mozo-metre/04-autoriza-pedido.png" width="300">
 </p>
 
+<p align="center">
+  <img src="docs/capturas/mozo-metre/autorizacion-vacio.png" width="300">
+</p>
+
+
 ---
 
 ### 6. Pedidos Listos
@@ -708,6 +744,11 @@ El pedido deberá estar disponible para entrega una vez que todos los productos 
 
 <p align="center">
   <img src="docs/capturas/mozo-metre/mozo-pedido-listo.png" width="300">
+</p>
+
+**pedidos listos y en preparacion**
+<p align="center">
+  <img src="docs/capturas/mozo-metre/mozo-listo-preparacion.png" width="300">
 </p>
 
 ---

@@ -70,6 +70,10 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 |Inicio cantinero | 25/09 | 25/09 |develop|Finalizado |
 |Pantalla de pedidos pendientes en cocina, agrupados por mesa | 01/10 | 02/10 |develop|Finalizado |
 |Pantalla de pedidos pendientes en bar | 02/10 | 02/10 |develop|Finalizado |
+|Arreglos de errores y style snap de carta | 14/10 | 15/10 |feature/arreglos |Finalizado |
+|Sonido al iniciar y cerrar la app | 15/10 | 15/10 |feature/arreglos |Finalizado |
+|editar y eliminar carta para empleados| 16/10 | 16/10 |feature/arreglos |Finalizado |
+|punto 18 - pedidos listos de bar / cocina| 16/10 | 16/10 |feature/arreglos |Finalizado |
 
 
 ---

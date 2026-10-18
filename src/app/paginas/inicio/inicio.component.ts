@@ -31,37 +31,49 @@ export class InicioComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    if (await this.verificarSesionActivaYRedirigir()) {
-      return;
-    }
-
     if (!InicioComponent.animacionRealizada) {
       InicioComponent.animacionRealizada = true;
       this.mostrarAnimacion.set(true);
 
-      // 1.65s: inicia la animación del logo y entrada desde la izquierda
-      setTimeout(() => this.animacionActiva.set(true), 1650);
+      // Verificamos la sesión en paralelo mientras la animación corre
+      const promesaSesion = this.obtenerRutaSesionActiva();
 
-      // 5.6s: se desvanece suavemente la capa de presentación
+      // 1.05s: inicia la animación del logo, aparición de hojas y créditos (0.2s antes)
+      setTimeout(() => this.animacionActiva.set(true), 1050);
+
+      // 5.6s: se desvanece suavemente la capa de presentación (0.5s antes)
       setTimeout(() => this.desvanecerAnimacion.set(true), 5600);
 
-      // 6.1s: se destruye la capa del DOM y se revelan los botones de inicio
-      setTimeout(() => this.mostrarAnimacion.set(false), 6100);
+      // 6.1s: termina la animación: si hay sesión va al rol, si no revela botones de inicio
+      setTimeout(async () => {
+        const rutaDestino = await promesaSesion;
+        if (rutaDestino) {
+          await this.redirigirConNotificaciones(rutaDestino);
+        } else {
+          this.mostrarAnimacion.set(false);
+        }
+      }, 6100);
     } else {
-      // Si ya se mostró antes (ej. volvió de login), muestra directamente los botones
+      // Si la animación ya se realizó en esta sesión (ej. al desloguearse), no se repite
       this.mostrarAnimacion.set(false);
+      await this.verificarSesionActivaYRedirigir();
     }
   }
 
   async ionViewWillEnter() {
-    await this.verificarSesionActivaYRedirigir();
+    // Solo redirige directo en ionViewWillEnter si la animación inicial ya fue completada
+    if (InicioComponent.animacionRealizada && !this.mostrarAnimacion()) {
+      await this.verificarSesionActivaYRedirigir();
+    }
   }
 
-  private async verificarSesionActivaYRedirigir(): Promise<boolean> {
+  /**
+   * Resuelve la ruta de sesión activa si existe, sin redirigir inmediatamente
+   */
+  private async obtenerRutaSesionActiva(): Promise<string | null> {
     let perfilGuardado = localStorage.getItem('perfil');
     const nombreGuardado = localStorage.getItem('nombre');
 
-    // Si hay sesión de Supabase Auth pero por algún motivo falta el perfil en localStorage, lo recuperamos
     if (!perfilGuardado) {
       try {
         const { data: { session } } = await this.supabase.clienteSupabase.auth.getSession();
@@ -89,18 +101,26 @@ export class InicioComponent implements OnInit {
     }
 
     if (!perfilGuardado) {
-      return false;
+      return null;
     }
 
-    const rutaDestino = this.obtenerRutaPorPerfil(perfilGuardado);
+    return this.obtenerRutaPorPerfil(perfilGuardado);
+  }
+
+  private async redirigirConNotificaciones(rutaDestino: string): Promise<void> {
+    try {
+      await this.pushNotifications.inicializar();
+      await this.pushNotifications.asociarTokenDelUsuarioActual();
+    } catch (e) {
+      console.warn('No se pudo re-asociar token al restaurar sesión:', e);
+    }
+    await this.router.navigate([rutaDestino], { replaceUrl: true });
+  }
+
+  private async verificarSesionActivaYRedirigir(): Promise<boolean> {
+    const rutaDestino = await this.obtenerRutaSesionActiva();
     if (rutaDestino) {
-      try {
-        await this.pushNotifications.inicializar();
-        await this.pushNotifications.asociarTokenDelUsuarioActual();
-      } catch (e) {
-        console.warn('No se pudo re-asociar token al restaurar sesión:', e);
-      }
-      await this.router.navigate([rutaDestino], { replaceUrl: true });
+      await this.redirigirConNotificaciones(rutaDestino);
       return true;
     }
     return false;

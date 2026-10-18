@@ -20,7 +20,7 @@ export class InicioComponent implements OnInit {
   private static animacionRealizada = false;
 
   // Signals: la app es zoneless, por lo que los setTimeout no disparan change detection con variables comunes
-  mostrarAnimacion = signal(false);
+  mostrarAnimacion = signal(!InicioComponent.animacionRealizada);
   animacionActiva = signal(false);
   desvanecerAnimacion = signal(false);
 
@@ -38,13 +38,13 @@ export class InicioComponent implements OnInit {
       // Verificamos la sesión en paralelo mientras la animación corre
       const promesaSesion = this.obtenerRutaSesionActiva();
 
-      // 1.05s: inicia la animación del logo, aparición de hojas y créditos (0.2s antes)
-      setTimeout(() => this.animacionActiva.set(true), 1050);
+      // 0.5s: inicia inmediatamente la animación del logo, hojas y créditos al entrar a la pantalla
+      setTimeout(() => this.animacionActiva.set(true), 500);
 
-      // 5.6s: se desvanece suavemente la capa de presentación (0.5s antes)
-      setTimeout(() => this.desvanecerAnimacion.set(true), 5600);
+      // 5.0s: se desvanece suavemente la capa de presentación (0.6s antes)
+      setTimeout(() => this.desvanecerAnimacion.set(true), 5000);
 
-      // 6.1s: termina la animación: si hay sesión va al rol, si no revela botones de inicio
+      // 5.5s: termina la animación: si hay sesión va al rol, si no revela botones de inicio
       setTimeout(async () => {
         const rutaDestino = await promesaSesion;
         if (rutaDestino) {
@@ -52,7 +52,7 @@ export class InicioComponent implements OnInit {
         } else {
           this.mostrarAnimacion.set(false);
         }
-      }, 6100);
+      }, 5500);
     } else {
       // Si la animación ya se realizó en esta sesión (ej. al desloguearse), no se repite
       this.mostrarAnimacion.set(false);

@@ -21,6 +21,7 @@ export class InicioComponent implements OnInit {
 
   // Signals: la app es zoneless, por lo que los setTimeout no disparan change detection con variables comunes
   mostrarAnimacion = signal(!InicioComponent.animacionRealizada);
+  animacionHojasActiva = signal(false);
   animacionActiva = signal(false);
   desvanecerAnimacion = signal(false);
 
@@ -38,7 +39,10 @@ export class InicioComponent implements OnInit {
       // Verificamos la sesión en paralelo mientras la animación corre
       const promesaSesion = this.obtenerRutaSesionActiva();
 
-      // 0.4s: se muestra logo y arbusto estáticos y a los 0.4s inicia la animación
+      // Inicia de inmediato (0.4s antes): las hojas empiezan a descender desde el arbusto al entrar
+      setTimeout(() => this.animacionHojasActiva.set(true), 20);
+
+      // 0.4s: a los 0.4s inicia la animación del logo y de los créditos
       setTimeout(() => this.animacionActiva.set(true), 400);
 
       // 5.0s: se desvanece suavemente la capa de presentación (0.6s antes)

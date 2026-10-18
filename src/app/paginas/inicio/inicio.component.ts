@@ -70,7 +70,7 @@ export class InicioComponent implements OnInit {
           if (cliente && cliente.estado === 'aprobado') {
             perfilGuardado = 'cliente';
             localStorage.setItem('perfil', 'cliente');
-            localStorage.setItem('nombre', `${cliente.nombres} ${cliente.apellidos}`.trim());
+            localStorage.setItem('nombre', `${cliente.nombres} ${cliente.apellidos || ''}`.trim());
           } else {
             const empleado = await this.supabase.obtenerPerfilUsuarioLogueado();
             if (empleado?.perfil) {
@@ -94,6 +94,12 @@ export class InicioComponent implements OnInit {
 
     const rutaDestino = this.obtenerRutaPorPerfil(perfilGuardado);
     if (rutaDestino) {
+      try {
+        await this.pushNotifications.inicializar();
+        await this.pushNotifications.asociarTokenDelUsuarioActual();
+      } catch (e) {
+        console.warn('No se pudo re-asociar token al restaurar sesión:', e);
+      }
       await this.router.navigate([rutaDestino], { replaceUrl: true });
       return true;
     }

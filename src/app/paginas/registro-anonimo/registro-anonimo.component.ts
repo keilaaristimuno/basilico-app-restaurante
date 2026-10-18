@@ -74,6 +74,7 @@ export class RegistroAnonimoComponent  implements OnInit {
     private vibracion: VibracionService,
     private toastCtrl: ToastController,
     private supabase: Supabase,
+    private pushNotifications: PushNotificationsService,
   ) { }
 
   ngOnInit(): void {
@@ -132,14 +133,21 @@ export class RegistroAnonimoComponent  implements OnInit {
     const fotoUrl = this.supabase.obtenerUrlFotoCliente(resultado.path);
     const perfil = "anonimo";
     const estado = "aprobado";
+    const correoAnonimo = `anonimo_${Date.now()}@basilico.com`;
+    const claveAnonima = 'anonimo123';
 
+    try {
+      await this.supabase.registrar(correoAnonimo, claveAnonima);
+    } catch (e) {
+      console.warn('No se pudo crear sesión Auth para cliente anónimo:', e);
+    }
 
     await this.supabase.guardarDatosClientes(  
       null,     
       nombres,
       null,
-      null,
-      null,
+      correoAnonimo,
+      claveAnonima,
       fotoUrl,
       perfil,
       estado
@@ -151,6 +159,14 @@ export class RegistroAnonimoComponent  implements OnInit {
     }
     localStorage.setItem('nombre', nombres);
     localStorage.setItem('perfil', 'cliente');
+
+    try {
+      await this.pushNotifications.inicializar();
+      await this.pushNotifications.asociarTokenDelUsuarioActual();
+    } catch (e) {
+      console.warn('No se pudo asociar token push para cliente anónimo:', e);
+    }
+
     this.resetearForm();
     this.router.navigate(['/clienteInicio'], { replaceUrl: true });
   }

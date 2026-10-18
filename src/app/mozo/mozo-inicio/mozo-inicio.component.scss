@@ -48,46 +48,55 @@
   }
 }
 
-/* LAS 4 TARJETAS SE REPARTEN EL ESPACIO RESTANTE */
+/* LAS 3 TARJETAS SE REPARTEN EL ESPACIO RESTANTE DE FORMA EQUILIBRADA */
 .acciones {
   flex: 1;
   min-height: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: clamp(10px, 1.8vh, 22px);
+  gap: clamp(14px, 2.2vh, 22px);
 }
 
 .tarjeta {
   flex: 1 1 0;
   min-height: 0;
-  max-height: 150px;
+  max-height: clamp(160px, 22vh, 200px);
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
 
   ion-card-content {
     flex: 1;
+    height: 100%;
     min-height: 0;
     width: 100%;
+    display: flex;
+    align-items: center;
     box-sizing: border-box;
-    padding: clamp(10px, 1.8vh, 22px) 20px;
+    padding: clamp(16px, 2.6vh, 28px) 22px;
   }
 }
 
 .icono {
-  font-size: clamp(2.2rem, 5.5vh, 3.4rem);
+  font-size: clamp(2.5rem, 6vh, 3.6rem);
 }
 
 .informacion {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
   h2 {
-    margin-bottom: clamp(2px, 0.6vh, 7px);
-    font-size: clamp(1.05rem, 2.6vh, 1.4rem);
+    margin-bottom: clamp(4px, 0.8vh, 8px);
+    font-size: clamp(1.15rem, 2.8vh, 1.45rem);
     line-height: 1.2;
   }
 
   p {
-    font-size: clamp(0.8rem, 1.9vh, 1rem);
-    line-height: 1.3;
+    font-size: clamp(0.88rem, 2vh, 1.05rem);
+    line-height: 1.35;
   }
 }
 
@@ -102,7 +111,7 @@
   }
 
   .tarjeta {
-    max-height: 170px;
+    max-height: 210px;
 
     ion-card-content {
       gap: 28px;

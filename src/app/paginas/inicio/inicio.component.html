@@ -2,6 +2,14 @@
   <!-- Capa de Presentación / Splash (Solo se muestra en el arranque inicial) -->
   @if (mostrarAnimacion()) {
     <div class="presentacion-container" [class.desvanecer]="desvanecerAnimacion()">
+      <!-- Rectángulo sólido beige para barra de notificaciones -->
+      <div class="barra-superior-solida"></div>
+
+      <!-- Arbusto superior (inicia justo debajo del rectángulo beige sin superponerse) -->
+      <div class="arbusto-superior">
+        <img src="assets/Basilico/Arbusto_beige.png" alt="Arbusto" class="arbusto-imagen" />
+      </div>
+
       <!-- Hojas cayendo sutilmente con balanceo natural -->
       <div class="hojas-flotantes-layer" [class.animar]="animacionActiva()">
         <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-1" />

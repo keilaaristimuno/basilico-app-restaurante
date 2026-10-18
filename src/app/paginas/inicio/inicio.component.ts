@@ -38,8 +38,8 @@ export class InicioComponent implements OnInit {
       // Verificamos la sesión en paralelo mientras la animación corre
       const promesaSesion = this.obtenerRutaSesionActiva();
 
-      // 0.5s: inicia inmediatamente la animación del logo, hojas y créditos al entrar a la pantalla
-      setTimeout(() => this.animacionActiva.set(true), 500);
+      // 0.4s: se muestra logo y arbusto estáticos y a los 0.4s inicia la animación
+      setTimeout(() => this.animacionActiva.set(true), 400);
 
       // 5.0s: se desvanece suavemente la capa de presentación (0.6s antes)
       setTimeout(() => this.desvanecerAnimacion.set(true), 5000);

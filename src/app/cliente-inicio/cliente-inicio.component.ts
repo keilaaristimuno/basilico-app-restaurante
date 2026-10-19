@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, signal } from '@angular/core';
+import { Component, OnInit, OnDestroy, computed, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -34,7 +34,9 @@ import {
   hourglassOutline,
   clipboardOutline,
   barChartOutline,
-  receiptOutline
+  receiptOutline,
+  walletOutline,
+  homeOutline
 } from 'ionicons/icons';
 import { RealtimeChannel } from '@supabase/supabase-js';
 
@@ -46,6 +48,10 @@ import { PushNotificationsService } from '../services/push-notifications.service
 import { NavbarComponent } from '../components/navbar/navbar.component';
 import { PedidoClienteUI } from '../interfaces/pedido';
 import { ChatComponent } from '../components/chat/chat.component';
+import { CuentaService } from '../services/cuenta.service';
+import { Carga } from '../services/carga';
+import { EstadoCuenta } from '../interfaces/cuenta';
+import { formatearMoneda } from '../utils/calculo-cuenta';
 
 @Component({
   selector: 'app-cliente-inicio',
@@ -86,6 +92,15 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
   private escaneandoQr = false;
 
   /**
+   * Cuenta de la estadía (Punto 21)
+   */
+  readonly cuentaCliente = this.cuentaService.cuentaCliente;
+  readonly cuentaConfirmada = computed(() => this.cuentaCliente()?.estado === 'pago_confirmado');
+  readonly formatearMoneda = formatearMoneda;
+  private solicitandoCuenta = false;
+  private subEstadiaFinalizada: any = null;
+
+  /**
    * Canal activo de Supabase Realtime para cambios en pedidos y mesas
    */
   private canalRealtime: RealtimeChannel | null = null;
@@ -100,7 +115,9 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
     private vibracion: VibracionService,
     public pedidoService: PedidoService,
     private pushNotifications: PushNotificationsService,
-    private router: Router
+    private router: Router,
+    private cuentaService: CuentaService,
+    private carga: Carga
   ) {
     addIcons({
       qrCodeOutline,
@@ -120,7 +137,9 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
       hourglassOutline,
       clipboardOutline,
       barChartOutline,
-      receiptOutline
+      receiptOutline,
+      walletOutline,
+      homeOutline
     });
   }
 
@@ -133,6 +152,9 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
     this.iniciarPollingEspera();
     this.subPush = this.pushNotifications.notificacionRecibida$.subscribe(() => {
       void this.cargarDatosClienteYEstado();
+    });
+    this.subEstadiaFinalizada = this.cuentaService.estadiaFinalizada$.subscribe(() => {
+      this.reiniciarVistaTrasPago();
     });
   }
 
@@ -154,6 +176,10 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
     if (this.subPush) {
       this.subPush.unsubscribe();
       this.subPush = null;
+    }
+    if (this.subEstadiaFinalizada) {
+      this.subEstadiaFinalizada.unsubscribe();
+      this.subEstadiaFinalizada = null;
     }
   }
 
@@ -300,6 +326,13 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
         desdeFecha
       );
       this.encuestaCompletada.set(!!encuestaPrevia);
+
+      // 5. Cuenta de la estadía (Punto 21): se recupera desde Supabase para mantener el estado
+      try {
+        await this.cuentaService.obtenerCuentaCliente(idCliente);
+      } catch (errorCuenta) {
+        console.warn('No se pudo consultar la cuenta del cliente:', errorCuenta);
+      }
     } catch (error) {
       console.warn('Error al cargar datos del cliente y estado:', error);
     } finally {
@@ -529,10 +562,94 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Solicita la cuenta al mozo para cerrar la mesa
+   * Punto 21 — El cliente solicita la cuenta al mozo.
+   * Se valida mesa y pedido recibido, se persiste la solicitud en Supabase (idempotente)
+   * y se envía la notificación push a los mozos. Luego se pasa a la pantalla de la cuenta.
    */
   async pedirLaCuenta() {
-    await this.mostrarToast(`¡Solicitud de cuenta enviada al mozo para la Mesa N° ${this.numeroMesa()}!`, 'success');
+    if (this.solicitandoCuenta) return;
+
+    const cuentaExistente = this.cuentaCliente();
+    if (cuentaExistente && cuentaExistente.estado !== 'pago_confirmado') {
+      await this.router.navigate(['/cuenta']);
+      return;
+    }
+
+    const pedido = this.pedidoService.pedidoActivo();
+    if (!this.mesaId() || !this.numeroMesa() || !this.mesaEscaneada()) {
+      await this.vibracion.errorFuerte();
+      await this.mostrarToast('Necesitás tener tu mesa asignada y vinculada para pedir la cuenta.', 'danger');
+      return;
+    }
+    if (!pedido || pedido.estado !== 'recibido') {
+      await this.vibracion.errorFuerte();
+      await this.mostrarToast('Primero tenés que confirmar la recepción de tu pedido.', 'danger');
+      return;
+    }
+
+    this.solicitandoCuenta = true;
+    try {
+      const { yaExistia, avisoEnviado } = await this.carga.ejecutar('Solicitando la cuenta...', () =>
+        this.cuentaService.solicitarCuenta(this.mesaId(), Number(this.numeroMesa()), pedido.id)
+      );
+
+      if (yaExistia) {
+        await this.mostrarToast('Ya habías solicitado la cuenta. Te mostramos su estado.', 'warning');
+      } else if (avisoEnviado) {
+        await this.mostrarToast(`¡Cuenta solicitada! El mozo de la Mesa N° ${this.numeroMesa()} ya fue notificado.`, 'success');
+      } else {
+        await this.vibracion.error();
+        await this.mostrarToast('La cuenta quedó solicitada, pero no pudimos avisar al mozo. Podés reintentar desde tu cuenta.', 'warning');
+      }
+
+      await this.router.navigate(['/cuenta']);
+    } catch (error: any) {
+      console.error('Error al solicitar la cuenta:', error);
+      await this.vibracion.errorFuerte();
+      await this.mostrarToast(error?.message ?? 'No se pudo solicitar la cuenta.', 'danger');
+    } finally {
+      this.solicitandoCuenta = false;
+    }
+  }
+
+  async irACuenta() {
+    await this.router.navigate(['/cuenta']);
+  }
+
+  /**
+   * Texto del estado de la cuenta para el botón de la pantalla de la mesa
+   */
+  descripcionEstadoCuenta(estado: EstadoCuenta): string {
+    switch (estado) {
+      case 'pendiente_propina': return 'Falta escanear el QR de propina';
+      case 'lista_para_pagar': return 'Lista para pagar';
+      case 'pago_pendiente_confirmacion': return 'Pago enviado, esperando al mozo';
+      default: return 'Pago confirmado';
+    }
+  }
+
+  /**
+   * Cierre de la visita luego de que el mozo confirmó el pago
+   */
+  async finalizarVisitaTrasPago() {
+    const cuenta = this.cuentaCliente();
+    if (!cuenta) return;
+
+    localStorage.removeItem(`mesa_escaneada_${cuenta.numero_mesa}`);
+    this.pedidoService.limpiarCarrito();
+    this.pedidoService.pedidoActivo.set(null);
+    this.pedidoService.mesaActual.set(null);
+    this.cuentaService.marcarCierreVisto(cuenta.id);
+    await this.mostrarToast('¡Gracias por visitar Basílico! Te esperamos pronto.', 'success');
+  }
+
+  private reiniciarVistaTrasPago(): void {
+    this.mesaEscaneada.set(false);
+    this.numeroMesa.set('');
+    this.mesaId.set('');
+    this.enListaEspera.set(false);
+    this.codigoQrIngreso.set(false);
+    this.encuestaCompletada.set(false);
   }
 
   /**
@@ -611,6 +728,13 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'pedidos' },
+        () => {
+          void this.cargarDatosClienteYEstado();
+        }
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'cuentas' },
         () => {
           void this.cargarDatosClienteYEstado();
         }

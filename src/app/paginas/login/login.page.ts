@@ -161,6 +161,7 @@ export class LoginPage {
     if (cliente.estado === "aprobado") {
       localStorage.setItem("nombre", `${cliente.nombres} ${cliente.apellidos}`);
       localStorage.setItem("perfil", "cliente");
+      localStorage.removeItem("tipo_cliente");
       this.perfil.set("cliente");
 
       await this.inicializarNotificaciones();

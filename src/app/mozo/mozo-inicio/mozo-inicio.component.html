@@ -28,17 +28,17 @@
         </ion-card-content>
       </ion-card>
 
-      <ion-card class="tarjeta">
+      <ion-card class="tarjeta" routerLink="/cuentas-mozo">
         <ion-card-content>
           <ion-icon
             name="receipt-outline"
             class="icono">
           </ion-icon>
-          <p>-</p>
+          <p>{{ pagosPendientes() > 0 ? pagosPendientes() : '-' }}</p>
           <div class="informacion">
             <h2>Cuentas y liberación</h2>
             <p>
-              Visualizar los pedidos listos para facturar.
+              Visualizar las cuentas solicitadas y confirmar los pagos.
             </p>
 
           </div>

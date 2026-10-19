@@ -159,6 +159,8 @@ export class RegistroAnonimoComponent  implements OnInit {
     }
     localStorage.setItem('nombre', nombres);
     localStorage.setItem('perfil', 'cliente');
+    // Distingue al cliente anónimo del registrado (los descuentos de juegos son solo para registrados)
+    localStorage.setItem('tipo_cliente', 'anonimo');
 
     try {
       await this.pushNotifications.inicializar();

@@ -1,0 +1,869 @@
+/* =========================================================
+   PUNTO 21 — CUENTA DEL CLIENTE (estilo billetera virtual)
+   Identidad Basílico: oliva #283720, beige #ede5d2, terracota #b24d39
+   ========================================================= */
+
+$oliva: var(--basilico-olive, #283720);
+$beige: var(--basilico-beige, #ede5d2);
+$terracota: var(--basilico-terracotta, #b24d39);
+$oliva-suave: #3e4b36;
+$salvia: #8fa382;
+$beige-oscuro: #ddd2b8;
+
+.fondo-cuenta {
+  --background: #283720;
+}
+
+.pantalla-cuenta {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-body);
+}
+
+.contenido-cuenta {
+  flex: 1;
+  width: 100%;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 14px 16px 24px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  &.con-barra-pago {
+    padding-bottom: calc(150px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* ---------- PROGRESO ---------- */
+.pasos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 12.5%;
+    right: 12.5%;
+    height: 3px;
+    background: rgba(237, 229, 210, 0.25);
+    border-radius: 2px;
+  }
+}
+
+.paso {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: $beige;
+  opacity: 0.6;
+
+  .punto {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: $oliva-suave;
+    border: 2px solid rgba(237, 229, 210, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    z-index: 1;
+
+    ion-icon {
+      font-size: 1.5rem;
+    }
+  }
+
+  .texto-paso {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.15;
+  }
+
+  &.hecho {
+    opacity: 1;
+
+    .punto {
+      background: $beige;
+      color: $oliva;
+      border-color: $beige;
+    }
+  }
+
+  &.actual {
+    opacity: 1;
+
+    .punto {
+      background: $terracota;
+      border-color: $beige;
+      color: $beige;
+      animation: latido 1.8s ease-in-out infinite;
+    }
+  }
+}
+
+/* ---------- TARJETAS BASE ---------- */
+.tarjeta {
+  background: $beige;
+  color: $oliva;
+  border-radius: 22px;
+  padding: 20px 18px;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
+  animation: aparecer 0.35s ease-out both;
+}
+
+.etiqueta-mini {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: $terracota;
+}
+
+.icono-circular {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: $oliva;
+  color: $beige;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  ion-icon {
+    font-size: 1.9rem;
+  }
+
+  &.pequeno {
+    width: 46px;
+    height: 46px;
+
+    ion-icon {
+      font-size: 1.5rem;
+    }
+  }
+}
+
+/* ---------- AVISOS ---------- */
+.aviso {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: $beige-oscuro;
+  color: $oliva;
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.35;
+  animation: aparecer 0.25s ease-out both;
+
+  ion-icon {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+  }
+
+  span {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &.aviso-error {
+    background: $terracota;
+    color: $beige;
+  }
+
+  &.aviso-exito {
+    background: $salvia;
+    color: $oliva;
+  }
+
+  &.aviso-reintento {
+    background: #e7c9a3;
+    color: $oliva;
+  }
+}
+
+.btn-reintentar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  border-radius: 999px;
+  padding: 8px 14px;
+  background: $oliva;
+  color: $beige;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+/* ---------- PASO B: PROPINA ---------- */
+.tarjeta-propina {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .cabecera-propina {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    h2 {
+      margin: 4px 0 0;
+      font-size: 1.35rem;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+  }
+
+  .instruccion {
+    margin: 0;
+    font-size: 0.98rem;
+    line-height: 1.45;
+  }
+}
+
+.niveles-propina {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .nivel {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 14px;
+    background: $beige-oscuro;
+
+    ion-icon {
+      font-size: 1.45rem;
+      color: $terracota;
+    }
+
+    .nombre-nivel {
+      flex: 1;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .porcentaje-nivel {
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: $oliva;
+      color: $beige;
+    }
+  }
+}
+
+.bloqueo-pago {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 2px dashed rgba(40, 55, 32, 0.4);
+  font-size: 0.88rem;
+  font-weight: 600;
+
+  ion-icon {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+  }
+}
+
+/* ---------- BOTONES ---------- */
+.btn-principal {
+  width: 100%;
+  min-height: 78px;
+  border: none;
+  border-radius: 18px;
+  background: $oliva;
+  color: $beige;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 12px 18px;
+  font-family: var(--font-body);
+  box-shadow: 0 6px 16px rgba(40, 55, 32, 0.35);
+  transition: transform 0.12s ease;
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+  }
+
+  > ion-icon {
+    font-size: 2.2rem;
+    flex-shrink: 0;
+  }
+
+  .textos-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .titulo-btn {
+    font-size: 1.15rem;
+    font-weight: 700;
+  }
+
+  .sub-btn {
+    font-size: 0.82rem;
+    opacity: 0.85;
+  }
+}
+
+.btn-escanear {
+  background: $terracota;
+  min-height: 92px;
+}
+
+/* ---------- TOTAL DESTACADO ---------- */
+.tarjeta-total {
+  text-align: center;
+  padding: 22px 18px;
+
+  .monto-total {
+    margin: 6px 0 14px;
+    font-size: clamp(2.6rem, 12vw, 3.4rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: $oliva;
+    word-break: break-word;
+  }
+}
+
+.chips-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: $oliva;
+    color: $beige;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+}
+
+/* ---------- SATISFACCIÓN ELEGIDA ---------- */
+.tarjeta-satisfaccion {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+
+  .texto-satisfaccion {
+    flex: 1;
+    min-width: 0;
+
+    strong {
+      display: block;
+      margin-top: 2px;
+      font-size: 1rem;
+      line-height: 1.25;
+    }
+  }
+}
+
+.btn-cambiar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 2px solid $oliva;
+  background: transparent;
+  color: $oliva;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+/* ---------- DETALLE / COMPROBANTE ---------- */
+.tarjeta-detalle {
+  padding: 18px 16px 20px;
+}
+
+.cabecera-detalle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 2px dashed rgba(40, 55, 32, 0.3);
+
+  .logo-detalle {
+    width: 54px;
+    height: 54px;
+    object-fit: contain;
+  }
+
+  h3 {
+    margin: 0;
+    font-family: var(--font-title);
+    font-size: 2rem;
+    font-weight: 400;
+    line-height: 1;
+  }
+
+  span {
+    font-size: 0.82rem;
+    font-weight: 600;
+  }
+}
+
+.titulo-seccion {
+  margin: 16px 0 8px;
+  font-size: 1rem;
+  font-weight: 700;
+
+  span {
+    font-weight: 400;
+    font-size: 0.85rem;
+  }
+}
+
+.lista-consumo {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item-consumo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(40, 55, 32, 0.15);
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .cantidad-item {
+    flex-shrink: 0;
+    min-width: 42px;
+    text-align: center;
+    padding: 6px 8px;
+    border-radius: 10px;
+    background: $oliva;
+    color: $beige;
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+
+  .descripcion-item {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .nombre-item {
+    font-weight: 600;
+    font-size: 1rem;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+  }
+
+  .unitario-item {
+    font-size: 0.82rem;
+    opacity: 0.8;
+  }
+
+  .importe-item {
+    flex-shrink: 0;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+}
+
+.resumen {
+  margin-top: 10px;
+  padding: 14px;
+  border-radius: 16px;
+  background: $beige-oscuro;
+}
+
+.fila-resumen {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 0;
+  font-size: 0.95rem;
+
+  .concepto {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+
+    ion-icon {
+      flex-shrink: 0;
+      font-size: 1.15rem;
+    }
+  }
+
+  > span:last-child {
+    flex-shrink: 0;
+    font-weight: 700;
+  }
+
+  &.fila-descuento {
+    color: $terracota;
+    font-weight: 600;
+
+    &.sin-descuento {
+      color: $oliva;
+      font-weight: 400;
+    }
+  }
+}
+
+.nota-descuento {
+  margin: 0 0 6px 24px;
+  font-size: 0.78rem;
+  line-height: 1.3;
+}
+
+.fila-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 10px;
+  padding-top: 12px;
+  border-top: 2px solid $oliva;
+  font-weight: 700;
+
+  span:first-child {
+    font-size: 1.05rem;
+    letter-spacing: 0.06em;
+  }
+
+  span:last-child {
+    font-size: 1.7rem;
+  }
+}
+
+/* ---------- RESULTADO DEL PAGO ---------- */
+.tarjeta-resultado {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 6px;
+  padding: 28px 18px;
+
+  .sello-exito {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: $oliva;
+    color: $beige;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    animation: sello 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+
+    ion-icon {
+      font-size: 4.2rem;
+    }
+  }
+
+  .monto-resultado {
+    margin: 4px 0;
+    font-size: clamp(2.4rem, 11vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1.05;
+  }
+
+  .detalle-resultado {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  .referencia {
+    margin: 2px 0 12px;
+    font-size: 0.8rem;
+    overflow-wrap: anywhere;
+  }
+
+  .nota-resultado {
+    margin: 10px 0 0;
+    font-size: 0.85rem;
+  }
+
+  .btn-principal {
+    margin-top: 16px;
+  }
+
+  &.confirmado .sello-exito {
+    background: $terracota;
+  }
+}
+
+.estado-espera {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px 10px 30px;
+  border-radius: 999px;
+  background: $terracota;
+  color: $beige;
+  font-weight: 700;
+  font-size: 0.92rem;
+
+  .pulso {
+    position: absolute;
+    left: 12px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: $beige;
+    animation: pulso 1.4s ease-in-out infinite;
+  }
+
+  ion-icon {
+    font-size: 1.2rem;
+  }
+}
+
+/* ---------- ESTADO VACÍO ---------- */
+.tarjeta-vacia {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px;
+
+  h2 {
+    margin: 6px 0 0;
+    font-size: 1.35rem;
+  }
+
+  p {
+    margin: 0 0 10px;
+  }
+}
+
+/* ---------- BARRA DE PAGO ---------- */
+.barra-pago {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  padding: 12px 16px calc(14px + env(safe-area-inset-bottom, 0px));
+  background: $oliva-suave;
+  border-top: 2px solid rgba(237, 229, 210, 0.35);
+  box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.3);
+
+  .seguridad {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 10px;
+    color: $beige;
+    font-size: 0.8rem;
+    font-weight: 600;
+
+    ion-icon {
+      font-size: 1.1rem;
+    }
+  }
+
+  .btn-pagar {
+    max-width: 528px;
+    margin: 0 auto;
+  }
+}
+
+.btn-pagar {
+  width: 100%;
+  min-height: 64px;
+  border: none;
+  border-radius: 16px;
+  background: $beige;
+  color: $oliva;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: var(--font-body);
+  font-size: 1.3rem;
+  font-weight: 700;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+
+  ion-icon {
+    font-size: 1.6rem;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+  }
+}
+
+/* ---------- HOJA DE CONFIRMACIÓN ---------- */
+.velo {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(20, 28, 16, 0.65);
+  animation: aparecer 0.2s ease-out both;
+}
+
+.hoja-confirmacion {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 41;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 10px 20px calc(22px + env(safe-area-inset-bottom, 0px));
+  background: $beige;
+  color: $oliva;
+  border-radius: 26px 26px 0 0;
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.35);
+  font-family: var(--font-body);
+  animation: subir 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  .manija {
+    width: 48px;
+    height: 5px;
+    border-radius: 3px;
+    background: rgba(40, 55, 32, 0.35);
+    margin: 0 auto 14px;
+  }
+
+  h3 {
+    margin: 0;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
+
+  .monto-confirmacion {
+    margin: 6px 0 14px;
+    text-align: center;
+    font-size: 2.6rem;
+    font-weight: 700;
+  }
+
+  .datos-confirmacion {
+    list-style: none;
+    margin: 0 0 18px;
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: $beige-oscuro;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 6px 0;
+      font-size: 0.95rem;
+
+      strong {
+        text-align: right;
+      }
+    }
+  }
+
+  .btn-pagar {
+    background: $oliva;
+    color: $beige;
+  }
+
+  .btn-cancelar {
+    width: 100%;
+    margin-top: 10px;
+    min-height: 50px;
+    border: 2px solid $oliva;
+    border-radius: 14px;
+    background: transparent;
+    color: $oliva;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 700;
+  }
+}
+
+/* ---------- ANIMACIONES ---------- */
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes subir {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes sello {
+  from { transform: scale(0.3); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes pulso {
+  0%, 100% { transform: scale(0.8); opacity: 0.6; }
+  50% { transform: scale(1.3); opacity: 1; }
+}
+
+@keyframes latido {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(178, 77, 57, 0.55); }
+  50% { box-shadow: 0 0 0 7px rgba(178, 77, 57, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+  }
+}

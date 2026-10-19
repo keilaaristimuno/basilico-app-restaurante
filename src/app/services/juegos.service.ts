@@ -74,8 +74,9 @@ export class JuegosService {
    */
   esClienteRegistrado(): boolean {
     const perfil = localStorage.getItem('perfil')?.toLowerCase()?.trim();
-    // Si el perfil es 'cliente' (no anónimo ni invitado)
-    return perfil === 'cliente';
+    // El anónimo también guarda perfil 'cliente', por eso se verifica 'tipo_cliente'
+    const esAnonimo = localStorage.getItem('tipo_cliente') === 'anonimo';
+    return perfil === 'cliente' && !esAnonimo;
   }
 
   /**

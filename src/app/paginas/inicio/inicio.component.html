@@ -1,8 +1,56 @@
-<ion-content class="login-content" [fullscreen]="true">
+<ion-content class="login-content" [fullscreen]="true" [scrollY]="!mostrarAnimacion()" [class.splash-activa]="mostrarAnimacion()">
   <!-- Capa de Presentación / Splash (Solo se muestra en el arranque inicial) -->
   @if (mostrarAnimacion()) {
     <div class="presentacion-container" [class.desvanecer]="desvanecerAnimacion()">
-      <!-- Logo aislado en el centro exacto de la pantalla -->
+      <!-- Rectángulo sólido beige para barra de notificaciones -->
+      <div class="barra-superior-solida"></div>
+
+      <!-- Arbusto superior (inicia justo debajo del rectángulo beige sin superponerse) -->
+      <div class="arbusto-superior">
+        <img src="assets/Basilico/Arbusto_beige.png" alt="Arbusto" class="arbusto-imagen" />
+      </div>
+
+      <!-- Hojas cayendo sutilmente con balanceo natural -->
+      <div class="hojas-flotantes-layer" [class.animar]="animacionHojasActiva()">
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-1" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-2" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-3" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-4" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-5" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-6" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-7" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-8" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-9" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-10" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-11" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-12" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-13" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-14" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-15" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-16" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-17" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-18" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-19" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-20" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-21" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-22" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-23" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-24" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-25" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-26" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-27" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-28" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-29" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-30" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-31" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-32" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-33" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-34" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-35" />
+        <img src="assets/Basilico/hojas_beige.png" alt="" class="hoja-cae h-36" />
+      </div>
+
+      <!-- Logo en el centro exacto de la pantalla (Limpio y elegante) -->
       <div class="logo-box">
         <img
           src="assets/Basilico/Logo_beige.png"

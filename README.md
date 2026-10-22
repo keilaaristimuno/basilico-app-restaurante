@@ -74,6 +74,7 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 |Sonido al iniciar y cerrar la app | 15/10 | 15/10 |feature/arreglos |Finalizado |
 |editar y eliminar carta para empleados| 16/10 | 16/10 |feature/arreglos |Finalizado |
 |punto 18 - pedidos listos de bar / cocina| 16/10 | 16/10 |feature/arreglos |Finalizado |
+|punto 21 - Pedir la cuenta, elegir propina vía QR, ver detalle y total| 19/10 | 19/10 |feature/arreglos |Finalizado |
 
 
 ---

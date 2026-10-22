@@ -13,7 +13,8 @@ import {
   IonItem,
   IonButtons,
   IonTitle,
-  IonInput
+  IonInput,
+  IonSpinner
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import {
@@ -73,6 +74,7 @@ import { formatearMoneda } from '../utils/calculo-cuenta';
     IonTitle,
     FormsModule,
     IonInput,
+    IonSpinner,
     ChatComponent,
   ],
 })
@@ -427,6 +429,12 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
       return;
     }
 
+    // Si quedó una cuenta anterior en pago_confirmado de una visita previa sin tocar "Finalizar visita", se da por cerrada
+    const cuentaPrevia = this.cuentaCliente();
+    if (cuentaPrevia && cuentaPrevia.estado === 'pago_confirmado') {
+      this.cuentaService.marcarCierreVisto(cuentaPrevia.id);
+    }
+
     localStorage.setItem(`en_lista_espera_${idCliente}`, 'true');
     this.enListaEspera.set(true);
     this.codigoQrIngreso.set(true);
@@ -501,6 +509,12 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
                     codigoEscaneado.trim() === `mesa_numer:${nro}`;
 
       if (valido) {
+        // Al vincular exitosamente la mesa para una nueva estadía, cerrar cuenta anterior si quedó en pago_confirmado
+        const cuentaPrevia = this.cuentaCliente();
+        if (cuentaPrevia && cuentaPrevia.estado === 'pago_confirmado') {
+          this.cuentaService.marcarCierreVisto(cuentaPrevia.id);
+        }
+
         this.mesaEscaneada.set(true);
         localStorage.setItem(`mesa_escaneada_${nro}`, 'true');
 

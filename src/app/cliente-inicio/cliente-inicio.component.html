@@ -445,21 +445,6 @@
                 }
               </div>
 
-              <!-- Con la cuenta solicitada no se puede reiniciar la estadía (evita perder consumos a cobrar) -->
-              @if (!cuentaCliente()) {
-                <div class="zona-realizar-otro-pedido">
-                  <ion-button
-                    expand="block"
-                    fill="outline"
-                    class="btn-realizar-otro-pedido"
-                    (click)="realizarOtroPedido()">
-                    <div class="contenido-btn-icono">
-                      <ion-icon name="refresh-outline"></ion-icon>
-                      <span>Realizar otro pedido</span>
-                    </div>
-                  </ion-button>
-                </div>
-              }
             </div>
           }
         }

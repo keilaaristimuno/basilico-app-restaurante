@@ -277,7 +277,7 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
       }
 
       // 2. Buscar si el metre ya le asignó mesa
-      await this.buscarMesaAsignada();
+      const tieneMesaEnBd = await this.buscarMesaAsignada();
 
       // Si estaba en lista de espera, ya no está en lista_espera y tampoco tiene mesa asignada -> fue rechazado por el metre
       if (estabaEnEspera && !this.numeroMesa()) {
@@ -291,7 +291,7 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
       }
 
       // Si estaba en lista de espera y el metre le acaba de asignar mesa -> transición en tiempo real a Escanear QR de Mesa
-      if (estabaEnEspera && this.numeroMesa()) {
+      if (estabaEnEspera && this.numeroMesa() && !this.mesaEscaneada()) {
         localStorage.removeItem(`en_lista_espera_${idCliente}`);
         localStorage.removeItem(`mesa_escaneada_${this.numeroMesa()}`);
         this.enListaEspera.set(false);
@@ -329,7 +329,7 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
 
       // 5. Cuenta de la estadía (Punto 21): se recupera desde Supabase para mantener el estado
       try {
-        await this.cuentaService.obtenerCuentaCliente(idCliente);
+        await this.cuentaService.obtenerCuentaCliente(idCliente, !!tieneMesaEnBd);
       } catch (errorCuenta) {
         console.warn('No se pudo consultar la cuenta del cliente:', errorCuenta);
       }
@@ -412,8 +412,6 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Al entrar a lista de espera, ya no está bloqueado en el estado de reinicio previo
-    localStorage.removeItem(`esperando_nuevo_ingreso_${idCliente}`);
     localStorage.setItem(`en_lista_espera_${idCliente}`, 'true');
     this.enListaEspera.set(true);
     this.codigoQrIngreso.set(true);
@@ -433,18 +431,14 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
     await this.mostrarToast(`¡Te anotaste con éxito en la lista de espera como "${this.nombreCliente()}"!`, 'success');
   }
 
-  async buscarMesaAsignada() {
+  async buscarMesaAsignada(): Promise<boolean | void> {
     const idCliente = this.clienteId();
     if (!idCliente) return;
-
-    // Si el cliente tocó "Realizar otro pedido" y aún no escaneó el QR de ingreso, no retomar la mesa vieja
-    if (localStorage.getItem(`esperando_nuevo_ingreso_${idCliente}`) === 'true') {
-      return;
-    }
 
     const mesas = await this.supabase.obtenerMesas();
     const mesasDelCliente = mesas.filter((m: any) => m.cliente_id === idCliente);
     const mesaEncontrada =
+      mesasDelCliente.find((m: any) => m.disponibilidad === 'ocupada') ||
       mesasDelCliente.find((m: any) => m.disponibilidad === 'asignada') ||
       mesasDelCliente[0];
 
@@ -457,12 +451,14 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
 
       // Verificamos si el cliente YA HABÍA escaneado esta mesa antes (guardado en localStorage)
       const guardada = localStorage.getItem(`mesa_escaneada_${mesaEncontrada.numero}`);
-      if (guardada === 'true') {
+      if (mesaEncontrada.disponibilidad === 'ocupada' || guardada === 'true') {
+        localStorage.setItem(`mesa_escaneada_${mesaEncontrada.numero}`, 'true');
         this.mesaEscaneada.set(true); // Solo si ya fue escaneada previamente en esta estadía
       }
 
       this.pedidoService.setMesa(mesaEncontrada.id, mesaEncontrada.numero);
       this.pedidoService.setCliente(idCliente, this.nombreCliente());
+      return true;
     }
   }
 
@@ -470,7 +466,7 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
     this.escaneandoQr = true;
     try {
       const codigoEscaneado = await this.qrService.leerQR();
-      await this.buscarMesaAsignada();
+      const tieneMesaEnBd = await this.buscarMesaAsignada();
 
       if (!codigoEscaneado) {
         await this.vibracion.errorFuerte();
@@ -650,37 +646,6 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
     this.enListaEspera.set(false);
     this.codigoQrIngreso.set(false);
     this.encuestaCompletada.set(false);
-  }
-
-  /**
-   * Reinicia la estadía y el pedido actual para que el cliente vuelva al botón de escanear QR de ingreso
-   * y pueda realizar otro pedido desde cero.
-   */
-  async realizarOtroPedido() {
-    const pedido = this.pedidoService.pedidoActivo();
-    const idCliente = this.clienteId();
-    const idMesa = this.mesaId();
-    const nroMesa = this.numeroMesa();
-
-    if (idCliente) {
-      localStorage.setItem(`esperando_nuevo_ingreso_${idCliente}`, 'true');
-      try {
-        await this.supabase.eliminarClienteDeListaDeEspera(idCliente);
-      } catch (e) {
-        console.warn('Error limpiando lista de espera al reiniciar:', e);
-      }
-    }
-
-    await this.pedidoService.finalizarEstadiaParaOtroPedido(pedido?.id, idMesa, nroMesa, idCliente);
-
-    this.mesaEscaneada.set(false);
-    this.numeroMesa.set('');
-    this.mesaId.set('');
-    this.enListaEspera.set(false);
-    this.codigoQrIngreso.set(false);
-    this.encuestaCompletada.set(false);
-
-    await this.mostrarToast('¡Estadía reiniciada! Podés escanear el QR de ingreso para un nuevo pedido.', 'success');
   }
 
   /**

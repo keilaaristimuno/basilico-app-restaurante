@@ -123,14 +123,20 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 | Acceso rápido (Redirigir) | 10/09/2026 | - | `feature/registro-login` | Finalizado |
 | Pantalla inicio Metre | 10/09/2026 | 15/09/2026 | `feature/mozo-metre` | Finalizado |
 | Pantalla inicio Mozo | 10/09/2026 | 17/09/2023 | `feature/mozo-metre` | Finalizado |
-| Pantalla inicio cliente | 15/09/2026 |  17/09/2023 | `feature/develop` | Finalizado |
-| Código QR ingreso local | 15/09/2026 |  17/09/2023 | `feature/develop` | Finalizado |
+| Pantalla inicio cliente | 15/09/2026 |  17/09/2023 | `develop` | Finalizado |
+| Código QR ingreso local | 15/09/2026 |  17/09/2023 | `develop` | Finalizado |
 | Entrada de cliente a lista de espera | 15/09/2026 |  17/09/2023 | `feature/develop` | Finalizado |
 | Lista de espera metre | 21/09/2026 | - | `feature/develop` | En proceso |
 | Registro  cliente anonimo | 23/09/2026 | 24/09/2026 |  `feature/develop`| Finalizado |
 | inicio cliente anonimo (9) | 28/09/2026 | 01/10/2026 |  `feature/develop`| Finalizado |
 | Validaciones de QR mesas (9) | 28/09/2026 | 01/10/2026 |  `feature/lista-espera-metre`| Finalizado |
 | Lista de espera Metre componente (10) | 28/09/2026 | 01/10/2026 |  `feature/lista-espera-metre`| En proceso |
+| Lista de espera Metre componente (10) | 28/09/2026 | 05/10/2026 |  `feature/lista-espera-metre`| Finalizado |
+| Asignacion de mesa al cliente (10) | 05/09/2026 | 09/10/2026 |  `feature/lista-espera-metre`| Finalizado |
+| Correcciones de diseño  | 05/09/2026 | 09/10/2026 |  `develop`| Finalizado |
+| Chat global entre MOZOS Y CLIENTES (11)  | 13/10/2026 | 15/10/2026 |  `feature/chat`| Finalizado |
+| Correcciones globales de diseño  | 15/10/2026 | 16/10/2026 |  `develop` | Finalizado |
+| Correcciones chat / diseño  | 21/10/2026 | 23/10/2026 |  `feature/arreglo` | Finalizado |
 
 
 ---

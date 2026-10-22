@@ -92,7 +92,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         `Nuevo mensaje de: ${remitente}`,
         texto,
         { 
-          userIds: ['ID_DEL_DESTINATARIO_O_ROL'] 
+          profiles: ['mozo', 'Mozo']
         },
         { ruta: '/chat' }
       );

@@ -146,7 +146,7 @@ export class Supabase {
   async liberarMesa(id: string) {
     const { data, error } = await this.clienteSupabase
       .from('mesas')
-      .update({ disponibilidad: 'libre', cliente_id: null })
+      .update({ disponibilidad: 'vacia', cliente_id: null })
       .eq('id', id)
       .select();
 
@@ -512,7 +512,7 @@ export class Supabase {
       await this.clienteSupabase
         .from('mesas')
         .update({
-          disponibilidad: 'libre',
+          disponibilidad: 'vacia',
           cliente_id: null
         })
         .eq('cliente_id', clienteId);

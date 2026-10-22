@@ -73,7 +73,7 @@ export class CuentaService {
    * Devuelve la cuenta vigente del cliente. Una cuenta con pago confirmado se sigue
    * mostrando hasta que el cliente cierra la pantalla de agradecimiento.
    */
-  async obtenerCuentaCliente(clienteId: string): Promise<Cuenta | null> {
+  async obtenerCuentaCliente(clienteId: string, tieneMesaActivaEnBd?: boolean): Promise<Cuenta | null> {
     // Sin sesión (por ejemplo, justo después de cerrar sesión) no se consulta:
     // la tabla cuentas no es accesible para el rol anónimo.
     if (!(await this.haySesion())) {
@@ -93,6 +93,22 @@ export class CuentaService {
     }
 
     const cuenta = data && data.length > 0 ? this.normalizar(data[0]) : null;
+    if (cuenta && cuenta.estado === 'pago_confirmado' && !this.cierreVisto(cuenta.id)) {
+      let mesaActiva = tieneMesaActivaEnBd;
+      if (mesaActiva === undefined) {
+        const { data: mesas } = await this.supabase.clienteSupabase
+          .from('mesas')
+          .select('id')
+          .eq('cliente_id', clienteId)
+          .limit(1);
+        mesaActiva = !!(mesas && mesas.length > 0);
+      }
+      if (mesaActiva) {
+        try {
+          localStorage.setItem(`cuenta_cerrada_vista_${cuenta.id}`, 'true');
+        } catch {}
+      }
+    }
     const vigente = cuenta && (cuenta.estado !== 'pago_confirmado' || !this.cierreVisto(cuenta.id))
       ? cuenta
       : null;

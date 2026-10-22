@@ -13,7 +13,8 @@ import {
   IonItem,
   IonButtons,
   IonTitle,
-  IonInput
+  IonInput,
+  IonSpinner
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import {
@@ -73,6 +74,7 @@ import { formatearMoneda } from '../utils/calculo-cuenta';
     IonTitle,
     FormsModule,
     IonInput,
+    IonSpinner,
     ChatComponent,
   ],
 })
@@ -90,6 +92,11 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
   encuestaCompletada = signal<boolean>(false);
   fotoUrlCliente = signal<string>("");
   abrirChatModal = signal<boolean>(false);
+  /**
+   * Evita mostrar por un instante la pantalla de ingreso mientras se resuelve el estado real del cliente
+   */
+  cargandoInicial = signal<boolean>(true);
+  private temporizadorCargaInicial: any = null;
   private escaneandoQr = false;
 
   /**
@@ -145,6 +152,8 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+    // Seguridad: si la carga inicial tarda demasiado o falla, nunca dejar la pantalla en blanco
+    this.temporizadorCargaInicial = setTimeout(() => this.cargandoInicial.set(false), 4000);
     void this.pushNotifications.inicializar().then(() =>
       this.pushNotifications.asociarTokenDelUsuarioActual()
     );
@@ -172,6 +181,10 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    if (this.temporizadorCargaInicial) {
+      clearTimeout(this.temporizadorCargaInicial);
+      this.temporizadorCargaInicial = null;
+    }
     this.detenerSuscripcionRealtime();
     this.detenerPollingEspera();
     if (this.subPush) {
@@ -339,6 +352,7 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
       console.warn('Error al cargar datos del cliente y estado:', error);
     } finally {
       this.cargandoEstado = false;
+      this.cargandoInicial.set(false);
     }
   }
 
@@ -415,6 +429,12 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
       return;
     }
 
+    // Si quedó una cuenta anterior en pago_confirmado de una visita previa sin tocar "Finalizar visita", se da por cerrada
+    const cuentaPrevia = this.cuentaCliente();
+    if (cuentaPrevia && cuentaPrevia.estado === 'pago_confirmado') {
+      this.cuentaService.marcarCierreVisto(cuentaPrevia.id);
+    }
+
     localStorage.setItem(`en_lista_espera_${idCliente}`, 'true');
     this.enListaEspera.set(true);
     this.codigoQrIngreso.set(true);
@@ -489,6 +509,12 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
                     codigoEscaneado.trim() === `mesa_numer:${nro}`;
 
       if (valido) {
+        // Al vincular exitosamente la mesa para una nueva estadía, cerrar cuenta anterior si quedó en pago_confirmado
+        const cuentaPrevia = this.cuentaCliente();
+        if (cuentaPrevia && cuentaPrevia.estado === 'pago_confirmado') {
+          this.cuentaService.marcarCierreVisto(cuentaPrevia.id);
+        }
+
         this.mesaEscaneada.set(true);
         localStorage.setItem(`mesa_escaneada_${nro}`, 'true');
 
@@ -733,9 +759,16 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
   private iniciarPollingEspera(): void {
     this.detenerPollingEspera();
     this.intervaloEspera = setInterval(() => {
-      // Mientras el cliente está esperando en lista de espera o con mesa asignada sin escanear,
-      // verificamos cada 2.5s por si la tabla lista_espera no tiene habilitado Realtime en Supabase
-      if (this.codigoQrIngreso() && !this.mesaEscaneada() && !this.escaneandoQr && !this.abrirInputComensales()) {
+      // Mientras el cliente no tenga la mesa escaneada (pantalla de ingreso, lista de espera o mesa asignada),
+      // verificamos cada 2.5s por si la tabla lista_espera no tiene habilitado Realtime en Supabase.
+      // Así otro dispositivo del mismo cliente también refleja el cambio sin recargar.
+      if (
+        this.clienteId() &&
+        !this.mesaEscaneada() &&
+        !this.escaneandoQr &&
+        !this.abrirInputComensales() &&
+        !document.hidden
+      ) {
         void this.cargarDatosClienteYEstado();
       }
     }, 2500);

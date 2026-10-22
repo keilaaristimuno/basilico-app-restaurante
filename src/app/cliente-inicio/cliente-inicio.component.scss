@@ -1246,3 +1246,68 @@ ion-modal.modal-basilico {
 .contenido-cliente .card-estadia-recibida.card-pago-confirmado .acciones-estadia-recibida {
   grid-template-rows: repeat(2, 1fr);
 }
+
+/* =========================================================
+   PANTALLA DE CARGA INICIAL (SPINNER BASILICO)
+   ========================================================= */
+.pantalla-carga-mesa-inicial {
+  width: 100%;
+  max-width: 540px;
+  height: calc(100% - 68px);
+  margin: 0 auto;
+  padding: 16px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .tarjeta-carga-mesa {
+    width: min(88%, 340px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 34px 24px;
+    box-sizing: border-box;
+    background: #ede5d2;
+    border-radius: 24px;
+    color: #283720;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+    animation: fadeInCargaMesa 0.25s ease-out;
+
+    .logo-carga-mesa {
+      width: 115px;
+      height: auto;
+      margin-bottom: 22px;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+    }
+
+    .spinner-carga-mesa {
+      width: 52px;
+      height: 52px;
+      margin-bottom: 16px;
+      color: #b85d38; // Terracota Basilico
+    }
+
+    .texto-carga-mesa {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      text-align: center;
+      color: #283720;
+    }
+  }
+}
+
+@keyframes fadeInCargaMesa {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

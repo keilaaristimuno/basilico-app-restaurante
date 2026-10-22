@@ -103,6 +103,7 @@ export class CuentaService {
           .limit(1);
         mesaActiva = !!(mesas && mesas.length > 0);
       }
+      // Si el cliente tiene una mesa activa en BD o ingresó a una nueva estadía, la cuenta previa pagada se da por vista
       if (mesaActiva) {
         try {
           localStorage.setItem(`cuenta_cerrada_vista_${cuenta.id}`, 'true');
@@ -360,7 +361,7 @@ export class CuentaService {
       const respuesta: any = await this.pushNotifications.enviarNotificacion(
         'Nueva solicitud de cuenta',
         `La mesa N.º ${numeroMesa} solicitó la cuenta. Revisá los consumos pendientes.`,
-        { profiles: ['mozo'] },
+        { profiles: ['mozo', 'duenio', 'supervisor'] },
         { ruta: '/cuentas-mozo' }
       );
       if (respuesta?.error) {

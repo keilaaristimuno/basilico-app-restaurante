@@ -1,7 +1,27 @@
 <ion-content [fullscreen]="true" class="login-content ion-text-center" [class.con-scroll]="mesaEscaneada() && !!pedidoService.pedidoActivo() && pedidoService.pedidoActivo()?.estado !== 'recibido'">
   <app-navbar rutaInicio="/clienteInicio" titulo="Recepción"></app-navbar>
 
-  @if (!mesaEscaneada()) {
+  @if (cargandoInicial()) {
+    <div class="pantalla-carga-mesa-inicial">
+      <div class="tarjeta-carga-mesa">
+        <img
+          src="assets/Basilico/Logo_terracota.png"
+          alt="Logo Basílico"
+          class="logo-carga-mesa">
+
+        <ion-spinner
+          name="crescent"
+          class="spinner-carga-mesa">
+        </ion-spinner>
+
+        <p class="texto-carga-mesa">
+          Cargando...
+        </p>
+      </div>
+    </div>
+  }
+
+  @if (!cargandoInicial() && !mesaEscaneada()) {
   <div class="pantalla-completa-cliente">
     <!-- ESTADO 1: NO SE ESCANEÓ EL QR DE INGRESO -->
     @if (!codigoQrIngreso()) {
@@ -103,7 +123,7 @@
   </div>
   }
 
-  <div class="contenido-cliente" [hidden]="!mesaEscaneada()" [class.sin-pedido]="!pedidoService.pedidoActivo() || pedidoService.pedidoActivo()?.estado === 'recibido'">
+  <div class="contenido-cliente" [hidden]="cargandoInicial() || !mesaEscaneada()" [class.sin-pedido]="!pedidoService.pedidoActivo() || pedidoService.pedidoActivo()?.estado === 'recibido'">
     <!-- =========================================================
          ESTADO 3: MESA VINCULADA -> BOTÓN Y UI DE PEDIDO (PUNTOS 11 AL 14)
          ========================================================= -->

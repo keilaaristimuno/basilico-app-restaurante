@@ -95,6 +95,7 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 | Verificación de estado de cliente en login (pendiente, rechazado, aprobado) | 19/09/2026 | 20/09/2025 | `feature/mail-respuesta-solicitud-cliente` | Finalizado |
 | Punto 8 — Aceptar cliente + envío de correo automático | 18/09/2026 | 23/09/2025 | `feature/mail-respuesta-solicitud-cliente` | Finalizado |
 | Punto 20 —  Encuesta de satisfacción + visualización de resultados en gráficos | 27/09/2026 | 17/10/2025 | `feature/cliente-encuesta` | Finalizado |
+| Punto 22 —  Notificación automática a dueño/supervisor tras el pago | 20/09/2026 | 22/10/2025 | `feature/notificacion-pago` | Finalizado |
 
 ---
 ### 👤 Ignacio Arriaga

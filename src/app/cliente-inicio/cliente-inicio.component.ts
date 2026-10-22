@@ -88,6 +88,7 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
   enListaEspera = signal<boolean>(false);
   mesaEscaneada = signal<boolean>(false);
   encuestaCompletada = signal<boolean>(false);
+  fotoUrlCliente = signal<string>("");
   abrirChatModal = signal<boolean>(false);
   private escaneandoQr = false;
 
@@ -230,6 +231,7 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
         if (cliente) {
           this.clienteId.set(cliente.id);
           this.nombreCliente.set(`${cliente.nombres} ${cliente.apellidos || ''}`.trim());
+          this.fotoUrlCliente.set(cliente.foto_url || "");
         }
       } else {
         const nombreGuardado = localStorage.getItem('nombre');
@@ -401,6 +403,7 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
         cliente_id: idCliente,
         nombre: this.nombreCliente(),
         comensales: this.comensalesValidados(),
+        foto_url: this.fotoUrlCliente(),
       });
 
     if (error) {

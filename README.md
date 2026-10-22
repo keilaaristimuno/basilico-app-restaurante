@@ -85,17 +85,17 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 | Tarea / Módulo | Fecha Inicio | Fecha Fin (Estimada/Real) | Branch | Estado |
 | :--- | :---: | :---: | :---: | :---: |
 | Sevicio reutilizable de QR | 04/09/2026 | 04/09/2026 | `feature/qr-service` | Finalizado |
-| Punto 1 — Alta de empleado | 05/09/2026 | 13/09/2025 | `feature/alta-empleado` | Finalizado |
-| Punto 4 — Alta de mesas | 13/09/2026 | 19/09/2025 | `feature/alta-mesas` | Finalizado |
-| Punto 6 — Listado clientes pendientes de aprobación | 16/09/2026 | 19/09/2025 | `feature/listado-clientes` | Finalizado |
-| Servicio push notifications y tokens con Firebase | 17/09/2026 | 19/09/2025 | `feature/notifications-service` | Finalizado |
-| Agrego logo a push notifications | 19/09/2026 | 19/09/2025 | `feature/notifications-service` | Finalizado |
-| Punto 7 — Rechazar cliente + envío de correo automático | 18/09/2026 | 20/09/2025 | `feature/mail-respuesta-solicitud-cliente` | Finalizado |
-| Punto 8 — Aceptar cliente + envío de correo automático | 18/09/2026 | 20/09/2025 | `feature/mail-respuesta-solicitud-cliente` | Finalizado |
-| Verificación de estado de cliente en login (pendiente, rechazado, aprobado) | 19/09/2026 | 20/09/2025 | `feature/mail-respuesta-solicitud-cliente` | Finalizado |
-| Punto 8 — Aceptar cliente + envío de correo automático | 18/09/2026 | 23/09/2025 | `feature/mail-respuesta-solicitud-cliente` | Finalizado |
-| Punto 20 —  Encuesta de satisfacción + visualización de resultados en gráficos | 27/09/2026 | 17/10/2025 | `feature/cliente-encuesta` | Finalizado |
-| Punto 22 —  Notificación automática a dueño/supervisor tras el pago | 20/09/2026 | 22/10/2025 | `feature/notificacion-pago` | Finalizado |
+| Punto 1 — Alta de empleado | 05/09/2026 | 13/09/2026 | `feature/alta-empleado` | Finalizado |
+| Punto 4 — Alta de mesas | 13/09/2026 | 19/09/2026 | `feature/alta-mesas` | Finalizado |
+| Punto 6 — Listado clientes pendientes de aprobación | 16/09/2026 | 19/09/2026 | `feature/listado-clientes` | Finalizado |
+| Servicio push notifications y tokens con Firebase | 17/09/2026 | 19/09/2026 | `feature/notifications-service` | Finalizado |
+| Agrego logo a push notifications | 19/09/2026 | 19/09/2026 | `feature/notifications-service` | Finalizado |
+| Punto 7 — Rechazar cliente + envío de correo automático | 18/09/2026 | 20/09/2026 | `feature/mail-respuesta-solicitud-cliente` | Finalizado |
+| Punto 8 — Aceptar cliente + envío de correo automático | 18/09/2026 | 20/09/2026 | `feature/mail-respuesta-solicitud-cliente` | Finalizado |
+| Verificación de estado de cliente en login (pendiente, rechazado, aprobado) | 19/09/2026 | 20/09/2026 | `feature/mail-respuesta-solicitud-cliente` | Finalizado |
+| Punto 8 — Aceptar cliente + envío de correo automático | 18/09/2026 | 23/09/2026 | `feature/mail-respuesta-solicitud-cliente` | Finalizado |
+| Punto 20 —  Encuesta de satisfacción + visualización de resultados en gráficos | 27/09/2026 | 17/10/2026 | `feature/cliente-encuesta` | Finalizado |
+| Punto 22 —  Notificación automática a dueño/supervisor tras el pago | 20/09/2026 | 22/10/2026 | `feature/notificacion-pago` | Finalizado |
 
 ---
 ### 👤 Ignacio Arriaga

@@ -889,12 +889,24 @@ ion-modal.modal-basilico {
   --overflow: auto;
 }
 
+/* Sin rebote elástico (efecto "gelatina") al arrastrar en el área de contenido */
+.login-content::part(scroll) {
+  overscroll-behavior-y: none;
+}
+
+/* Respaldo: en pantallas muy bajas el contenido del pedido activo puede no entrar; se permite scroll sin rebote */
+@media (max-height: 700px) {
+  .login-content.pedido-activo {
+    --overflow: auto;
+  }
+}
+
 .contenido-cliente {
   width: 100%;
   max-width: 580px;
   min-height: calc(100% - 68px);
   margin: 0 auto;
-  padding: 12px 16px 14px;
+  padding: 12px 16px 16px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -1309,5 +1321,131 @@ ion-modal.modal-basilico {
   to {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+/* =========================================================
+   PEDIDO ACTIVO: TARJETA DE SEGUIMIENTO A PANTALLA COMPLETA
+   (esperando confirmación, en preparación, listo, entregado)
+   Todo se dimensiona en función del alto de la pantalla (vh) para
+   que con 1 o 2 productos la tarjeta entre en una sola pantalla
+   sin scroll. Con 3 o más productos la tarjeta crece por su
+   contenido y recién ahí aparece el scroll.
+   ========================================================= */
+.contenido-cliente .seccion-mesa-activa > .tarjeta-seguimiento-pedido {
+  flex: 1 1 auto;
+  justify-content: space-between;
+  border-radius: 24px;
+  padding: clamp(10px, 1.8vh, 22px) clamp(14px, 2.2vh, 20px);
+  gap: clamp(7px, 1.3vh, 18px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+  box-sizing: border-box;
+
+  .encabezado-estado-pedido {
+    gap: clamp(8px, 1.2vh, 12px);
+
+    .subtitulo-estado {
+      font-size: clamp(0.68rem, 1.35vh, 0.78rem);
+    }
+
+    .badge-estado {
+      padding: clamp(7px, 1.1vh, 11px) 14px;
+      font-size: clamp(0.86rem, 1.6vh, 1rem);
+
+      ion-icon {
+        font-size: clamp(1.2rem, 2.3vh, 1.4rem);
+      }
+    }
+
+    .explicacion-estado {
+      margin: 2px 0;
+      font-size: clamp(0.9rem, 1.8vh, 1.06rem);
+      line-height: 1.4;
+    }
+
+    .btn-confirmar-recepcion,
+    .btn-juegos {
+      margin-top: clamp(4px, 0.9vh, 10px);
+      min-height: clamp(44px, 5.8vh, 58px);
+      font-size: clamp(0.95rem, 1.7vh, 1.06rem);
+    }
+
+    .btn-modificar {
+      margin-top: clamp(4px, 0.9vh, 10px);
+      min-height: clamp(44px, 5.8vh, 58px);
+      font-size: clamp(0.95rem, 1.7vh, 1.06rem);
+    }
+
+    .avance-sectores {
+      gap: clamp(5px, 0.9vh, 8px);
+
+      .fila-sector {
+        padding: clamp(6px, 1vh, 11px) 14px;
+        font-size: clamp(0.84rem, 1.5vh, 0.96rem);
+      }
+
+      .estado-sector {
+        font-size: clamp(0.68rem, 1.3vh, 0.76rem);
+        padding: 3px 9px;
+      }
+    }
+  }
+
+  /* El importe acumulado absorbe parte del espacio sobrante (con tope) y queda centrado */
+  .totales-pedido-activo {
+    flex: 1 1 auto;
+    max-height: clamp(150px, 26vh, 240px);
+    justify-content: center;
+    padding: clamp(10px, 2vh, 22px) 18px;
+    gap: clamp(6px, 1vh, 12px);
+
+    .bloque-total-destacado {
+      .label-acumulado-ui {
+        font-size: clamp(0.74rem, 1.4vh, 0.86rem);
+        letter-spacing: 0.6px;
+      }
+
+      .monto-acumulado-ui {
+        font-size: clamp(1.7rem, 3.8vh, 2.5rem);
+      }
+    }
+
+    .bloque-tiempo-destacado {
+      font-size: clamp(0.86rem, 1.5vh, 1.06rem);
+
+      ion-icon {
+        font-size: clamp(1.05rem, 2vh, 1.25rem);
+      }
+    }
+  }
+
+  .desglose-items-pedido {
+    h4 {
+      margin-bottom: clamp(6px, 1vh, 12px);
+      font-size: clamp(0.86rem, 1.5vh, 0.96rem);
+    }
+
+    .lista-items-compacta {
+      gap: 6px;
+    }
+
+    .item-fila {
+      padding: clamp(4px, 0.8vh, 8px) 0;
+      font-size: clamp(0.84rem, 1.5vh, 0.96rem);
+
+      .item-cantidad-badge {
+        padding: 2px 7px;
+        font-size: clamp(0.74rem, 1.35vh, 0.84rem);
+      }
+    }
+  }
+
+  .acciones-inferiores-pedido {
+    margin-top: 0;
+
+    .btonBeigeOutline {
+      min-height: clamp(44px, 5.8vh, 56px);
+      font-size: clamp(0.92rem, 1.65vh, 1.04rem);
+    }
   }
 }

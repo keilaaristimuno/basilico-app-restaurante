@@ -474,9 +474,11 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
 
       // Verificamos si el cliente YA HABÍA escaneado esta mesa antes (guardado en localStorage)
       const guardada = localStorage.getItem(`mesa_escaneada_${mesaEncontrada.numero}`);
-      if (mesaEncontrada.disponibilidad === 'ocupada' || guardada === 'true') {
+      if (mesaEncontrada.disponibilidad === 'ocupada' && guardada === 'true') {
         localStorage.setItem(`mesa_escaneada_${mesaEncontrada.numero}`, 'true');
         this.mesaEscaneada.set(true); // Solo si ya fue escaneada previamente en esta estadía
+      } else {
+        this.mesaEscaneada.set(false);
       }
 
       this.pedidoService.setMesa(mesaEncontrada.id, mesaEncontrada.numero);
@@ -526,6 +528,32 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
           }
         }
 
+        // SEGURIDAD: Archivar pedidos anteriores no finalizados para arrancar siempre limpio
+        try {
+          if (this.mesaId()) {
+            await this.supabase.clienteSupabase
+              .from('pedidos')
+              .update({ estado: 'finalizado' })
+              .eq('mesa_id', this.mesaId())
+              .not('estado', 'in', '("finalizado","pagado")');
+          }
+          if (this.clienteId()) {
+            await this.supabase.clienteSupabase
+              .from('pedidos')
+              .update({ estado: 'finalizado' })
+              .eq('cliente_id', this.clienteId())
+              .not('estado', 'in', '("finalizado","pagado")');
+          }
+        } catch (e) {
+          console.warn('Error al archivar pedidos anteriores:', e);
+        }
+
+        // Iniciar siempre desde 0
+        this.pedidoService.limpiarCarrito();
+        this.pedidoService.pedidoActivo.set(null);
+        this.pedidoService.setMesa(this.mesaId(), Number(nro));
+        this.pedidoService.setCliente(this.clienteId(), this.nombreCliente());
+
         await this.mostrarToast(`¡Mesa N° ${nro} vinculada con éxito! Ya podés hacer tu pedido.`, 'success');
       } else {
         await this.vibracion.errorFuerte();
@@ -545,6 +573,9 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
     if (!this.numeroMesa()) {
       await this.mostrarToast('Debés tener una mesa asignada para hacer un pedido.', 'warning');
       return;
+    }
+    if (!this.pedidoService.pedidoActivo()) {
+      this.pedidoService.limpiarCarrito();
     }
     this.pedidoService.setMesa(this.mesaId(), Number(this.numeroMesa()));
     this.pedidoService.setCliente(this.clienteId(), this.nombreCliente());

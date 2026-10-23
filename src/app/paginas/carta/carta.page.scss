@@ -226,7 +226,7 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  padding: clamp(4px, 1vw, 8px);
+  padding: clamp(6px, 1.2vw, 10px);
 
   img {
     width: 100%;
@@ -371,15 +371,15 @@
 
   .precio-plato {
     flex-shrink: 0;
-    padding: 3px 8px;
-    border-radius: 8px;
+    padding: 4px 10px;
+    border-radius: 9px;
     background: var(--basilico-terracotta);
     color: #ffffff;
     font-family: var(--font-body);
-    font-size: clamp(0.9rem, 2.4vw, 1.05rem);
+    font-size: clamp(1rem, 2.65vw, 1.16rem);
     font-weight: 700;
     letter-spacing: 0.3px;
-    box-shadow: 0 2px 6px rgba(178, 77, 57, 0.25);
+    box-shadow: 0 2px 7px rgba(178, 77, 57, 0.28);
   }
 }
 
@@ -680,15 +680,15 @@
   justify-content: center;
   gap: 6px;
   width: 100%;
-  min-height: 43px;
+  min-height: 51px;
   background: var(--basilico-terracotta);
   color: #ede5d2;
   border: none;
   border-radius: 12px;
-  padding: 8px 14px;
+  padding: 10px 14px;
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 0.92rem;
+  font-size: 0.96rem;
   cursor: pointer;
   transition: transform 0.15s ease, background-color 0.2s ease;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
@@ -698,7 +698,7 @@
   }
 
   ion-icon {
-    font-size: 1.3rem;
+    font-size: 1.38rem;
   }
 }
 
@@ -707,16 +707,16 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  min-height: 43px;
+  min-height: 51px;
   background: rgba(40, 55, 32, 0.92);
   border: 1px solid rgba(237, 229, 210, 0.25);
   border-radius: 12px;
-  padding: 3px 8px;
+  padding: 4px 10px;
   box-sizing: border-box;
 
   .btn-circulo {
-    width: 35px;
-    height: 35px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     background: var(--basilico-terracotta);
     color: #ede5d2;
@@ -725,7 +725,7 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    font-size: 1.25rem;
+    font-size: 1.35rem;
     transition: transform 0.1s ease;
 
     &:active {
@@ -736,9 +736,9 @@
   .cantidad-actual-card {
     font-family: var(--font-body);
     font-weight: 800;
-    font-size: 1.2rem;
+    font-size: 1.28rem;
     color: #ede5d2;
-    min-width: 35px;
+    min-width: 40px;
     text-align: center;
   }
 }

@@ -831,7 +831,9 @@ export class Supabase {
       .order('created_at', { ascending: false })
       .limit(1);
 
-    if (mesaId) {
+    if (mesaId && clienteId) {
+      query = query.eq('mesa_id', mesaId).eq('cliente_id', clienteId);
+    } else if (mesaId) {
       query = query.eq('mesa_id', mesaId);
     } else if (clienteId) {
       query = query.eq('cliente_id', clienteId);

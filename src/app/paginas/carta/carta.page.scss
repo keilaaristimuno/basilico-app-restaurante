@@ -1,20 +1,14 @@
-﻿
+
 /* =========================================================
-   CARTA GASTRONÓMICA BASÍLICO (Diseño Responsive Equilibrado)
+   CARTA GASTRONÓMICA BASÃLICO (Diseño Responsive Equilibrado)
    ========================================================= */
 
 :host {
-  display: block;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
   background: var(--basilico-olive);
 }
 
 .carta-content {
   --background: var(--basilico-olive);
-  height: 100%;
-  overflow: hidden;
 }
 
 /* =========================================================
@@ -26,7 +20,7 @@
     --border-width: 0;
     --color: var(--basilico-beige);
     font-family: var(--font-body);
-    --min-height: 42px;
+    --min-height: 36px;
   }
 
   ion-back-button {
@@ -48,51 +42,57 @@
   max-width: 500px;
   height: 100%;
   margin: 0 auto;
-  padding: 0 clamp(0.65rem, 2.5vw, 1.15rem) calc(6px + env(safe-area-inset-bottom, 0px));
+  padding: 0;
   box-sizing: border-box;
   overflow: hidden;
 }
 
 
+
+
 /* =========================================================
-   ENCABEZADO INSTITUCIONAL BASÍLICO
+   ENCABEZADO INSTITUCIONAL BASÃLICO
    ========================================================= */
 .carta-header {
   flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
   text-align: center;
-  padding: clamp(0.12rem, 0.7vh, 0.35rem) 0 clamp(0.2rem, 0.9vh, 0.45rem);
-  margin-bottom: clamp(0.15rem, 0.6vh, 0.35rem);
+  padding: 0 clamp(0.5rem, 2vw, 1rem) 0;
+  margin-bottom: 2px;
 
   .font-logo {
     font-family: var(--font-title);
-    font-size: clamp(2.1rem, 5.2vh, 3.2rem);
+    font-size: clamp(2.22rem, 4.8vh, 2.95rem);
     font-weight: normal;
-    line-height: 1;
+    line-height: 1.2;
     color: var(--basilico-beige);
-    margin: 0 0 0.1rem;
+    margin: -4px 0 0;
   }
 
   h2 {
     font-family: var(--font-body);
-    font-size: clamp(1.05rem, 2.6vw, 1.35rem);
+    font-size: clamp(0.92rem, 1.9vh, 1.08rem);
     font-weight: 700;
+    line-height: 1.15;
     color: var(--basilico-beige);
-    margin: 0;
+    margin: 1px 0 0;
   }
 
   p {
-    margin: 0.15rem 0 0;
-    font-family: var(--font-body);
-    font-size: clamp(0.76rem, 1.8vw, 0.88rem);
-    color: var(--basilico-beige);
-    opacity: 0.8;
+    margin: 0;
+    display: none;
   }
 }
 
 .decoracion-header {
-  width: clamp(40px, 8vw, 55px);
+  flex: 0 0 auto;
+  width: clamp(34px, 7vw, 44px);
   height: 2px;
-  margin: clamp(0.25rem, 0.6vh, 0.45rem) auto 0;
+  margin: 3px auto 0;
+  align-self: center;
   background: var(--basilico-terracotta);
   border-radius: 2px;
 }
@@ -101,25 +101,31 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: clamp(0.35rem, 1vw, 0.6rem);
-  margin-top: clamp(0.35rem, 0.8vh, 0.6rem);
+  align-self: center;
+  gap: clamp(0.3rem, 1.1vw, 0.5rem);
+  width: 100%;
+  margin: 3px auto 0;
   padding: 0;
+  box-sizing: border-box;
   flex-wrap: wrap;
 
   .btn-categoria {
+    flex: 0 0 auto;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: clamp(28px, 3.6vh, 35px);
-    padding: clamp(0.2rem, 0.5vh, 0.35rem) clamp(0.85rem, 2.5vw, 1.25rem);
+    min-height: clamp(25px, 2.8vh, 28px);
+    width: clamp(78px, 21.5vw, 92px);
+    padding: 2px clamp(0.4rem, 1.2vw, 0.7rem);
     border-radius: 999px;
     border: 1.5px solid rgba(var(--ion-color-secondary-rgb), 0.45);
     background: rgba(var(--ion-color-secondary-rgb), 0.08);
     color: var(--basilico-beige);
     font-family: var(--font-body);
-    font-size: clamp(0.78rem, 1.8vw, 0.88rem);
+    font-size: clamp(0.75rem, 1.6vw, 0.82rem);
     font-weight: 600;
     cursor: pointer;
+    text-align: center;
     transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
@@ -165,24 +171,25 @@
   height: 100%;
   flex: 0 0 100%;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: flex-start;
   box-sizing: border-box;
-  padding: 2px 0 clamp(4px, 1vh, 8px);
+  padding: 8px clamp(0.65rem, 2.5vw, 1.15rem) 8px;
 }
 
 /* =========================================================
-   TARJETA DEL PLATO (IDENTIDAD BASÍLICO)
+   TARJETA DEL PLATO (IDENTIDAD BASÃLICO)
    ========================================================= */
 .plato-card {
   width: 100%;
-  min-height: 0;
+  height: 100%;
   max-height: 100%;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   background: var(--basilico-beige);
-  border-radius: clamp(14px, 2.5vw, 20px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+  border-radius: clamp(12px, 2.5vw, 18px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22);
   overflow: hidden;
   box-sizing: border-box;
 }
@@ -191,10 +198,10 @@
 .imagen-plato {
   position: relative;
   width: 100%;
-  /* Puede reducir su altura para dejar visibles los datos y botones */
-  flex: 0 1 auto;
-  height: clamp(160px, 34vh, 320px);
-  min-height: 120px;
+  /* La foto ocupa el espacio sobrante flexible sin desbordar */
+  flex: 1 1 0;
+  height: auto;
+  min-height: 40px;
   overflow: hidden;
   background: #ded5bf;
 }
@@ -322,15 +329,16 @@
 }
 
 /* =========================================================
-   INFORMACIÓN DEL PLATO (RESPONSIVE Y EQUILIBRADA)
+   INFORMACIÃ“N DEL PLATO (RESPONSIVE Y EQUILIBRADA)
    ========================================================= */
 .detalle-plato {
-  /* Ocupa el espacio de su contenido y scrollea si no entra */
-  flex: 0 1 auto;
+  /* Alto segun su contenido; nunca se comprime ni desborda la tarjeta */
+  flex: 0 0 auto;
+  max-height: calc(100% - 60px);
   min-height: 0;
   display: flex;
   flex-direction: column;
-  padding: 12px 14px 14px;
+  padding: clamp(6px, 1.2vh, 10px) 12px clamp(8px, 1.4vh, 12px);
   background: var(--basilico-beige);
   box-sizing: border-box;
   overflow-y: auto;
@@ -341,48 +349,57 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: clamp(8px, 2vw, 14px);
-  margin-bottom: clamp(4px, 0.8vh, 8px);
+  gap: 8px;
+  margin-bottom: 2px;
 
   h3 {
     flex: 1;
     margin: 0;
     font-family: var(--font-body);
-    font-size: clamp(1.1rem, 3.4vw, 1.45rem);
+    font-size: clamp(0.95rem, 2.5vw, 1.2rem);
     font-weight: 700;
     color: var(--basilico-olive);
-    line-height: 1.2;
+    line-height: 1.15;
+    /* Siempre reserva 2 renglones para que todas las tarjetas midan igual */
+    min-height: 2.3em;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
     word-break: break-word;
   }
 
   .precio-plato {
     flex-shrink: 0;
-    padding: clamp(4px, 0.7vh, 7px) clamp(8px, 2vw, 13px);
-    border-radius: clamp(8px, 1.5vw, 11px);
+    padding: 3px 8px;
+    border-radius: 8px;
     background: var(--basilico-terracotta);
     color: #ffffff;
     font-family: var(--font-body);
-    font-size: clamp(0.95rem, 2.8vw, 1.18rem);
+    font-size: clamp(0.9rem, 2.4vw, 1.05rem);
     font-weight: 700;
     letter-spacing: 0.3px;
-    box-shadow: 0 2px 7px rgba(178, 77, 57, 0.25);
+    box-shadow: 0 2px 6px rgba(178, 77, 57, 0.25);
   }
 }
 
 .descripcion-plato {
-  margin: 0 0 clamp(4px, 0.7vh, 7px);
+  margin: 0 0 2px;
   font-family: var(--font-body);
-  font-size: clamp(0.82rem, 2vw, 0.92rem);
-  line-height: 1.42;
+  font-size: clamp(0.76rem, 1.8vw, 0.85rem);
+  line-height: 1.3;
   color: #485043;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
+  /* Siempre reserva 2 renglones */
+  min-height: calc(1.3em * 2);
 
   &.expandida {
     display: block;
-    max-height: clamp(60px, 12vh, 100px);
+    min-height: 0;
+    max-height: 55px;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     padding-right: 6px;
@@ -392,13 +409,16 @@
 
 .boton-descripcion {
   align-self: flex-start;
-  margin: 0 0 clamp(4px, 0.8vh, 8px);
-  padding: 1px 0;
+  display: block;
+  height: 16px;
+  margin: 0 0 2px;
+  padding: 0;
   border: none;
   background: transparent;
   font-family: var(--font-body);
-  font-size: clamp(0.78rem, 1.8vw, 0.88rem);
+  font-size: 0.74rem;
   font-weight: 700;
+  line-height: 16px;
   color: var(--basilico-terracotta);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -406,17 +426,22 @@
   &:active {
     opacity: 0.75;
   }
+
+  /* Espacio reservado cuando la descripcion es corta (no hay "Ver mas") */
+  &.boton-descripcion-vacio {
+    pointer-events: none;
+    cursor: default;
+  }
 }
 
 .informacion-plato {
   flex-shrink: 0; // Garantiza que NUNCA se comprima ni se corte
-  /* Ya no empuja el tiempo hacia abajo */
-  margin-top: 12px;
+  margin-top: 4px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  padding-top: clamp(6px, 1vh, 10px);
+  gap: 8px;
+  padding-top: 4px;
   padding-bottom: 2px;
   border-top: 1px solid rgba(40, 55, 32, 0.15);
 }
@@ -445,7 +470,7 @@
 }
 
 /* =========================================================
-   CARTA VACÍA
+   CARTA VACÃA
    ========================================================= */
 .sin-productos {
   width: 100%;
@@ -474,26 +499,25 @@
 }
 
 /* =========================================================
-   ADAPTACIÓN RESPONSIVA PANTALLAS PEQUEÑAS (ANDROID)
+   ADAPTACIÃ“N RESPONSIVA PANTALLAS PEQUEÃ‘AS (ANDROID)
    ========================================================= */
 @media (max-height: 680px) {
   .carta-header {
-    padding-top: 0.1rem;
-    padding-bottom: 0.2rem;
-    margin-bottom: 0.15rem;
+    padding: 0;
+    margin-bottom: 2px;
 
-    .font-logo { font-size: clamp(1.8rem, 4.8vh, 2.3rem); }
-    h2 { font-size: 1rem; }
+    .font-logo { font-size: clamp(2.1rem, 4.5vh, 2.7rem); line-height: 1.18; margin: -4px 0 0; }
+    h2 { font-size: clamp(0.86rem, 1.7vh, 0.98rem); margin-top: 1px; }
     p { display: none; }
-    .decoracion-header { margin: 0.2rem auto 0; }
-    .indice-navegacion { margin-top: 0.25rem; }
-    .indice-navegacion .btn-categoria { min-height: 26px; padding: 0.18rem 0.75rem; font-size: 0.75rem; }
+    .decoracion-header { margin: 3px auto 0; align-self: center; }
+    .indice-navegacion { margin-top: 3px; align-self: center; }
+    .indice-navegacion .btn-categoria { min-height: 25px; width: clamp(74px, 20vw, 86px); padding: 1px 4px; font-size: 0.73rem; }
   }
+}
 
   .descripcion-plato.expandida {
     max-height: 55px;
   }
-}
 
 @media (max-width: 360px) {
   .carta-layout-completo {
@@ -544,7 +568,7 @@
 
   /* La tarjeta deja de estar centrada verticalmente */
   .card-reel-slide {
-    padding-top: 18px;
+    padding-top: 8px;
   }
 
   .plato-card {
@@ -580,21 +604,21 @@
 
 
 /* =========================================================
-   ELEMENTOS DE PEDIDO Y PERSONALIZACIÓN (PUNTOS 11, 12, 13)
+   ELEMENTOS DE PEDIDO Y PERSONALIZACIÃ“N (PUNTOS 11, 12, 13)
    ========================================================= */
 
 .badge-mesa-header {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 5px;
   background: var(--basilico-terracotta);
   color: #ede5d2;
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 0.85rem;
-  padding: 6px 12px;
-  border-radius: 20px;
-  margin-right: 12px;
+  font-size: 0.78rem;
+  padding: 3px 9px;
+  border-radius: 16px;
+  margin-right: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 
   ion-icon {
@@ -605,31 +629,35 @@
 .banner-edicion-pedido {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
+  width: 100%;
+  box-sizing: border-box;
   background: rgba(184, 93, 56, 0.25);
   border: 1.5px solid var(--basilico-terracotta);
-  border-radius: 12px;
-  padding: 12px 16px;
-  margin: 1rem auto 0;
+  border-radius: 10px;
+  padding: 3px 8px;
+  margin: 2px auto 0;
   max-width: 520px;
   text-align: left;
   color: #ede5d2;
 
   ion-icon {
-    font-size: 2rem;
+    font-size: 1.2rem;
     color: #e28762;
     flex-shrink: 0;
   }
 
   strong {
     display: block;
-    font-size: 0.95rem;
+    font-size: 0.76rem;
+    line-height: 1.15;
     color: #ede5d2;
   }
 
   p {
-    margin: 3px 0 0;
-    font-size: 0.82rem;
+    margin: 1px 0 0;
+    font-size: 0.66rem;
+    line-height: 1.15;
     opacity: 0.9;
   }
 }
@@ -639,8 +667,8 @@
 .accion-pedido-card {
   flex-shrink: 0;
   width: 100%;
-  margin-top: 10px;
-  padding-top: 10px;
+  margin-top: 5px;
+  padding-top: 5px;
   border-top: 1px dashed rgba(40, 55, 32, 0.2);
   display: flex;
   justify-content: flex-end;
@@ -650,17 +678,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
   width: 100%;
-  min-height: 40px;
+  min-height: 43px;
   background: var(--basilico-terracotta);
   color: #ede5d2;
   border: none;
-  border-radius: 10px;
-  padding: 10px 14px;
+  border-radius: 12px;
+  padding: 8px 14px;
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   cursor: pointer;
   transition: transform 0.15s ease, background-color 0.2s ease;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
@@ -670,7 +698,7 @@
   }
 
   ion-icon {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
   }
 }
 
@@ -679,14 +707,16 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  min-height: 43px;
   background: rgba(40, 55, 32, 0.92);
   border: 1px solid rgba(237, 229, 210, 0.25);
-  border-radius: 10px;
-  padding: 4px 8px;
+  border-radius: 12px;
+  padding: 3px 8px;
+  box-sizing: border-box;
 
   .btn-circulo {
-    width: 34px;
-    height: 34px;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
     background: var(--basilico-terracotta);
     color: #ede5d2;
@@ -695,7 +725,7 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    font-size: 1.1rem;
+    font-size: 1.25rem;
     transition: transform 0.1s ease;
 
     &:active {
@@ -706,9 +736,9 @@
   .cantidad-actual-card {
     font-family: var(--font-body);
     font-weight: 800;
-    font-size: 1.15rem;
+    font-size: 1.2rem;
     color: #ede5d2;
-    min-width: 32px;
+    min-width: 35px;
     text-align: center;
   }
 }
@@ -716,31 +746,38 @@
 /* =========================================================
    BARRA FIJA INFERIOR DE RESUMEN (PUNTO 12)
    ========================================================= */
+.footer-resumen-pedido {
+  --background: #1b2616;
+  background: #1b2616;
+}
+
 .barra-resumen-pedido {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 999;
+  box-sizing: border-box;
+  width: 100%;
+  height: calc(76px + env(safe-area-inset-bottom, 0px));
   background: #1b2616;
   border-top: 2px solid var(--basilico-terracotta);
-  padding: 12px 18px env(safe-area-inset-bottom, 12px);
+  padding: 8px 12px calc(6px + env(safe-area-inset-bottom, 0px));
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
+  gap: 8px;
   box-shadow: 0 -4px 18px rgba(0, 0, 0, 0.45);
-  animation: slideUp 0.3s ease-out;
 
   .info-resumen-barra {
+    flex: 1 1 auto;
+    min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 2px;
+    overflow: hidden;
   }
 
   .columna-precio {
     display: flex;
     flex-direction: column;
+    white-space: nowrap;
+    flex-shrink: 0;
 
     .texto-etiqueta {
       font-family: var(--font-body);
@@ -749,6 +786,7 @@
       letter-spacing: 0.5px;
       color: #bca085;
       text-transform: uppercase;
+      white-space: nowrap;
     }
 
     .monto-acumulado {
@@ -757,6 +795,7 @@
       font-weight: 800;
       color: #f7eecf;
       line-height: 1.1;
+      white-space: nowrap;
     }
   }
 
@@ -764,11 +803,15 @@
     display: flex;
     align-items: center;
     gap: 5px;
+    white-space: nowrap;
+    flex-shrink: 0;
 
     .texto-etiqueta {
       font-size: 0.65rem;
       font-weight: 600;
       color: #8fa382;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
     .tiempo-acumulado {
@@ -778,6 +821,8 @@
       font-size: 0.85rem;
       font-weight: 700;
       color: #ede5d2;
+      white-space: nowrap;
+      flex-shrink: 0;
 
       ion-icon {
         font-size: 0.95rem;
@@ -787,31 +832,64 @@
   }
 
   .btn-revisar-pedido {
+    flex: 0 0 auto;
+    max-width: 48%;
+    height: 48px;
+    box-sizing: border-box;
     background: var(--basilico-terracotta);
     color: #ede5d2;
     border: none;
     border-radius: 12px;
-    padding: 12px 18px;
+    padding: 0 10px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: center;
+    gap: 6px;
     font-family: var(--font-body);
     font-weight: 800;
-    font-size: 0.95rem;
+    font-size: clamp(0.78rem, 3.2vw, 0.9rem);
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(184, 93, 56, 0.4);
     transition: transform 0.15s ease, background 0.2s ease;
+    white-space: nowrap;
 
     &:active {
       transform: scale(0.96);
     }
 
     ion-icon {
-      font-size: 1.35rem;
+      flex-shrink: 0;
+      font-size: 1.2rem;
     }
 
     .texto-btn-pedido {
       white-space: nowrap;
+      line-height: 1.1;
+      text-align: center;
+    }
+  }
+
+  /* Carrito vacio: mensaje centrado */
+  &.barra-vacia {
+    justify-content: center;
+  }
+
+  .mensaje-carrito-vacio {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: #ede5d2;
+    font-family: var(--font-body);
+    font-size: clamp(0.82rem, 3.4vw, 0.95rem);
+    font-weight: 600;
+    line-height: 1.25;
+    text-align: center;
+
+    ion-icon {
+      flex-shrink: 0;
+      font-size: 1.6rem;
+      color: #bca085;
     }
   }
 }
@@ -834,12 +912,12 @@
   .toolbar-modal-pedido {
     --background: #283720;
     --color: #ede5d2;
-    border-bottom: 1.5px solid rgba(237, 229, 210, 0.2);
+    border-bottom: 1px solid rgba(237, 229, 210, 0.15);
 
     ion-title {
       font-family: var(--font-body);
       font-weight: 800;
-      font-size: clamp(1.05rem, 1.9vh, 1.25rem);
+      font-size: 1.15rem;
       color: #ede5d2;
     }
 
@@ -850,125 +928,130 @@
       font-size: 1.6rem;
       padding: 6px 12px;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
   }
 
   .contenido-modal-pedido {
     --background: #283720;
-    --overflow: hidden;
+  }
+  .mensaje-pedido-vacio {
+    flex: 1 1 auto;
+    width: 100%;
     height: 100%;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: rgba(40, 55, 32, 0.55);
+    border: 2px dashed rgba(237, 229, 210, 0.4);
+    border-radius: 18px;
+    padding: clamp(16px, 3vh, 26px) clamp(16px, 3.5vw, 22px);
+    box-sizing: border-box;
+    gap: 12px;
+    margin: auto 0;
+    color: #ede5d2;
 
-    /* Con 4 o más productos se activa el scroll */
-    &.con-scroll {
-      --overflow: auto;
+    .icono-contenedor-vacio {
+      width: clamp(52px, 8vh, 66px);
+      height: clamp(52px, 8vh, 66px);
+      border-radius: 50%;
+      background: rgba(184, 93, 56, 0.25);
+      border: 1.5px solid rgba(184, 93, 56, 0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
-      &::part(scroll) {
-        overscroll-behavior-y: none;
-      }
-
-      .contenedor-resumen-modal {
-        min-height: 100%;
-        height: auto;
-        justify-content: flex-start;
+      ion-icon {
+        font-size: clamp(1.8rem, 3.8vh, 2.3rem);
+        color: #e28762;
       }
     }
 
-    /* Con 1 a 3 productos: ocupa toda la pantalla con distribución balanceada sin scroll */
-    &:not(.con-scroll) {
-      --overflow: hidden !important;
-      overflow: hidden !important;
+    h4 {
+      margin: 0;
+      font-family: var(--font-body);
+      font-weight: 800;
+      font-size: clamp(1.05rem, 2vh, 1.25rem);
+      color: #ede5d2 !important;
+      letter-spacing: 0.2px;
+    }
 
-      &::part(scroll) {
-        overflow: hidden !important;
-        overscroll-behavior-y: none !important;
-        touch-action: none;
-      }
-
-      .contenedor-resumen-modal {
-        height: 100%;
-        min-height: 100%;
-        justify-content: space-between;
-      }
+    p {
+      margin: 0;
+      font-family: var(--font-body);
+      font-size: clamp(0.82rem, 1.5vh, 0.94rem);
+      color: #d8ceb8 !important;
+      line-height: 1.4;
+      max-width: 320px;
     }
   }
 
   .contenedor-resumen-modal {
-    padding: clamp(10px, 1.5vh, 18px) clamp(12px, 1.8vh, 18px);
+    padding: 16px;
     display: flex;
     flex-direction: column;
-    gap: clamp(8px, 1.3vh, 16px);
+    gap: 16px;
     max-width: 600px;
     margin: 0 auto;
     box-sizing: border-box;
-    width: 100%;
   }
 
-  /* Banner informativo */
   .banner-aviso-pedido {
-    background: rgba(188, 160, 133, 0.18);
-    border: 1.5px solid rgba(188, 160, 133, 0.4);
-    border-radius: 14px;
-    padding: clamp(8px, 1.2vh, 12px) clamp(12px, 1.6vh, 16px);
+    background: rgba(188, 160, 133, 0.15);
+    border: 1px solid rgba(188, 160, 133, 0.35);
+    border-radius: 10px;
+    padding: 10px 14px;
     display: flex;
     align-items: center;
     gap: 10px;
     color: #ede5d2;
-    flex-shrink: 0;
 
     ion-icon {
-      font-size: clamp(1.3rem, 2vh, 1.6rem);
+      font-size: 1.6rem;
       color: #bca085;
       flex-shrink: 0;
     }
 
     p {
       margin: 0;
-      font-size: clamp(0.82rem, 1.35vh, 0.92rem);
-      line-height: 1.32;
-      font-weight: 500;
+      font-size: 0.82rem;
+      line-height: 1.3;
     }
   }
 
-  /* Listado de ítems seleccionados */
   .lista-items-pedido {
     display: flex;
     flex-direction: column;
-    gap: clamp(6px, 1.1vh, 12px);
-    width: 100%;
+    gap: 10px;
   }
 
   .tarjeta-item-pedido {
     background: #ede5d2;
-    border-radius: 14px;
-    padding: clamp(8px, 1.2vh, 14px) clamp(10px, 1.5vh, 14px);
+    border-radius: 12px;
+    padding: 12px 14px;
     color: #283720;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
-    box-sizing: border-box;
-    flex-shrink: 0;
-    width: 100%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 
     .info-item-pedido {
       flex: 1;
       min-width: 0;
-      padding-right: 8px;
     }
 
     .tipo-tag {
       display: inline-block;
-      font-size: clamp(0.65rem, 1.1vh, 0.74rem);
+      font-size: 0.65rem;
       font-weight: 800;
       text-transform: uppercase;
-      padding: 2px 7px;
-      border-radius: 5px;
+      padding: 2px 6px;
+      border-radius: 4px;
       background: #283720;
       color: #ede5d2;
-      margin-bottom: 3px;
+      margin-bottom: 4px;
 
       &.tipo-bebida {
         background: #b85d38;
@@ -976,68 +1059,57 @@
     }
 
     h4 {
-      margin: 1px 0 3px;
+      margin: 0 0 3px;
       font-family: var(--font-body);
-      font-size: clamp(0.94rem, 1.65vh, 1.1rem);
-      font-weight: 800;
+      font-size: 0.98rem;
+      font-weight: 700;
       color: #283720;
-      line-height: 1.22;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
     .precio-unitario-detalle {
-      font-size: clamp(0.78rem, 1.35vh, 0.88rem);
-      color: #4b5843;
-      font-weight: 600;
+      font-size: 0.78rem;
+      color: #555;
     }
 
     .acciones-item-pedido {
       display: flex;
       align-items: center;
-      gap: clamp(6px, 1vh, 10px);
-      flex-shrink: 0;
+      gap: 8px;
     }
 
     .controles-stepper {
       display: flex;
       align-items: center;
-      background: #dfd5ba;
+      background: #e1d8bf;
       border-radius: 8px;
-      padding: clamp(2px, 0.4vh, 4px) clamp(3px, 0.6vh, 6px);
-      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
+      padding: 2px 4px;
     }
 
     .btn-stepper {
       background: transparent;
       border: none;
       color: #283720;
-      font-size: clamp(1rem, 1.8vh, 1.25rem);
-      padding: 3px 5px;
+      font-size: 1rem;
+      padding: 4px;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      &:active {
-        transform: scale(0.9);
-      }
     }
 
     .cantidad-stepper {
       font-weight: 800;
-      font-size: clamp(0.94rem, 1.65vh, 1.1rem);
+      font-size: 0.95rem;
       min-width: 20px;
       text-align: center;
       color: #283720;
     }
 
     .subtotal-item {
-      font-weight: 900;
-      font-size: clamp(0.98rem, 1.75vh, 1.18rem);
+      font-weight: 800;
+      font-size: 1rem;
       color: #283720;
-      min-width: 62px;
+      min-width: 70px;
       text-align: right;
     }
 
@@ -1045,31 +1117,21 @@
       background: transparent;
       border: none;
       color: #c93b2b;
-      font-size: clamp(1.15rem, 1.9vh, 1.35rem);
+      font-size: 1.15rem;
       padding: 4px;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      &:active {
-        transform: scale(0.9);
-      }
     }
   }
 
-  /* TOTALES DESTACADOS */
   .tarjeta-totales-pedido {
-    background: rgba(237, 229, 210, 0.14);
-    border: 1.5px solid rgba(237, 229, 210, 0.28);
-    border-radius: 16px;
-    padding: clamp(10px, 1.5vh, 16px);
+    background: rgba(237, 229, 210, 0.12);
+    border: 1px solid rgba(237, 229, 210, 0.25);
+    border-radius: 14px;
+    padding: 16px;
     color: #ede5d2;
     display: flex;
     flex-direction: column;
-    gap: clamp(5px, 0.8vh, 10px);
-    box-sizing: border-box;
-    flex-shrink: 0;
+    gap: 10px;
 
     .fila-total {
       display: flex;
@@ -1077,38 +1139,36 @@
       align-items: center;
 
       .label-totales {
-        font-size: clamp(0.84rem, 1.35vh, 0.94rem);
-        font-weight: 700;
-        opacity: 0.9;
+        font-size: 0.85rem;
+        font-weight: 600;
+        opacity: 0.85;
       }
 
       .valor-tiempo {
         display: inline-flex;
         align-items: center;
         gap: 5px;
-        font-size: clamp(0.9rem, 1.45vh, 1.02rem);
+        font-size: 0.95rem;
         color: #f7eecf;
-        font-weight: 800;
 
         ion-icon {
           color: #e28762;
-          font-size: clamp(1rem, 1.6vh, 1.2rem);
         }
       }
 
       &.destacado-importe {
-        padding-top: clamp(6px, 1vh, 10px);
-        border-top: 1.5px dashed rgba(237, 229, 210, 0.35);
+        padding-top: 8px;
+        border-top: 1px dashed rgba(237, 229, 210, 0.3);
 
         .label-totales {
-          font-size: clamp(1rem, 1.6vh, 1.15rem);
-          font-weight: 900;
+          font-size: 1.05rem;
+          font-weight: 800;
           letter-spacing: 0.5px;
           color: #bca085;
         }
 
         .valor-importe {
-          font-size: clamp(1.6rem, 3.2vh, 2.2rem);
+          font-size: 1.7rem;
           font-weight: 900;
           color: #f7eecf;
         }
@@ -1116,45 +1176,42 @@
     }
 
     .nota-mozo-espera {
-      margin-top: clamp(2px, 0.5vh, 6px);
+      margin-top: 6px;
       display: flex;
       align-items: flex-start;
       gap: 6px;
-      font-size: clamp(0.74rem, 1.2vh, 0.84rem);
-      opacity: 0.85;
+      font-size: 0.75rem;
+      opacity: 0.75;
       line-height: 1.3;
 
       ion-icon {
-        font-size: clamp(0.95rem, 1.5vh, 1.1rem);
-        margin-top: 1px;
+        font-size: 0.95rem;
+        margin-top: 2px;
         flex-shrink: 0;
       }
     }
   }
 
-  /* ACCIONES DEL MODAL */
   .acciones-finales-modal {
     display: flex;
     flex-direction: column;
-    gap: clamp(6px, 1vh, 12px);
-    margin-top: 0;
-    padding-bottom: clamp(4px, 0.8vh, 12px);
-    flex-shrink: 0;
+    gap: 10px;
+    margin-top: 4px;
+    padding-bottom: 20px;
 
     .btn-confirmar-envio {
-      background: var(--basilico-terracotta, #b85d38);
+      background: var(--basilico-terracotta);
       color: #ede5d2;
       border: none;
       border-radius: 12px;
-      padding: clamp(10px, 1.5vh, 14px);
-      min-height: clamp(44px, 5.8vh, 54px);
+      padding: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
       font-family: var(--font-body);
       font-weight: 800;
-      font-size: clamp(0.96rem, 1.7vh, 1.1rem);
+      font-size: 1rem;
       cursor: pointer;
       box-shadow: 0 4px 14px rgba(184, 93, 56, 0.45);
       transition: transform 0.15s ease;
@@ -1169,61 +1226,533 @@
       }
 
       ion-icon {
-        font-size: clamp(1.2rem, 2vh, 1.45rem);
+        font-size: 1.3rem;
       }
     }
 
     .btn-seguir-comprando {
       background: transparent;
-      border: 1.5px solid rgba(237, 229, 210, 0.45);
+      border: 1px solid rgba(237, 229, 210, 0.4);
       color: #ede5d2;
       border-radius: 12px;
-      padding: clamp(8px, 1.2vh, 12px);
-      min-height: clamp(38px, 4.8vh, 46px);
+      padding: 12px;
       font-family: var(--font-body);
       font-weight: 700;
-      font-size: clamp(0.88rem, 1.45vh, 0.98rem);
+      font-size: 0.88rem;
       cursor: pointer;
       text-align: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background-color 0.15s ease;
-
-      &:active {
-        background: rgba(237, 229, 210, 0.1);
-      }
     }
   }
 }
 
+
+/* =========================================================
+   PANTALLA ENVIAR / REENVIAR PEDIDO
+   Solo afecta al ion-content .contenido-pedido-envio (no al modal de ediciÃ³n).
+   - 1 a 4 productos distintos: sin scroll, la lista se adapta al espacio.
+   - 5 o más productos distintos: scroll vertical sin rebote.
+   ========================================================= */
+.modal-pedido-basilico .contenido-pedido-envio {
+  --background: #283720;
+  --overflow: hidden;
+
+  &::part(scroll) {
+    overscroll-behavior-y: none;
+  }
+
+  &.con-scroll {
+    --overflow: auto;
+  }
+
+  &:not(.con-scroll)::part(scroll) {
+    overflow: hidden;
+    touch-action: none;
+  }
+
+  .contenedor-resumen-modal {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 1.4vh, 16px);
+    padding: clamp(10px, 1.6vh, 18px) clamp(12px, 3.4vw, 18px) clamp(12px, 2vh, 22px);
+    min-height: 100%;
+  }
+
+  &:not(.con-scroll) .contenedor-resumen-modal {
+    height: 100%;
+    min-height: 0;
+  }
+
+  /* ---------- Banner informativo ---------- */
+  .banner-aviso-pedido {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: clamp(8px, 1.3vh, 14px) clamp(12px, 1.8vh, 16px);
+    background: rgba(188, 160, 133, 0.18);
+    border: 1.5px solid rgba(188, 160, 133, 0.4);
+    border-radius: 14px;
+    color: #ede5d2;
+
+    ion-icon {
+      font-size: clamp(1.3rem, 2.1vh, 1.7rem);
+      color: #bca085;
+      flex-shrink: 0;
+    }
+
+    p {
+      margin: 0;
+      font-size: clamp(0.8rem, 1.45vh, 0.94rem);
+      line-height: 1.3;
+      font-weight: 500;
+    }
+  }
+
+  /* ---------- Lista de Ã­tems: ocupa el espacio libre y reparte las tarjetas ---------- */
+  .lista-items-pedido {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(6px, 1.2vh, 12px);
+
+    &.es-vacio {
+      align-items: stretch;
+      justify-content: stretch;
+      height: 100%;
+    }
+  }
+
+  &.con-scroll .lista-items-pedido {
+    flex: 0 0 auto;
+    justify-content: flex-start;
+  }
+
+  .tarjeta-item-pedido {
+    flex: 1 1 0;
+    max-height: clamp(84px, 14vh, 132px);
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: clamp(8px, 1.4vh, 14px) clamp(10px, 3vw, 14px);
+    background: #ede5d2;
+    border-radius: 14px;
+    color: #283720;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
+
+    .info-item-pedido {
+      flex: 1 1 auto;
+      min-width: 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      column-gap: 7px;
+      row-gap: 2px;
+    }
+
+    .tipo-tag {
+      flex: 0 0 auto;
+      display: inline-block;
+      font-size: clamp(0.64rem, 1.1vh, 0.74rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 5px;
+      background: #283720;
+      color: #ede5d2;
+
+      &.tipo-bebida {
+        background: #b85d38;
+      }
+    }
+
+    h4 {
+      flex: 1 1 0;
+      min-width: 0;
+      margin: 0;
+      font-family: var(--font-body);
+      font-size: clamp(0.98rem, 1.8vh, 1.12rem);
+      font-weight: 800;
+      color: #283720;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .precio-unitario-detalle {
+      flex: 0 0 100%;
+      font-size: clamp(0.78rem, 1.4vh, 0.9rem);
+      color: #4b5843;
+      font-weight: 600;
+    }
+
+    .acciones-item-pedido {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      gap: clamp(6px, 1vh, 10px);
+    }
+
+    .controles-stepper {
+      display: flex;
+      align-items: center;
+      background: #dfd5ba;
+      border-radius: 8px;
+      padding: 2px 4px;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
+    }
+
+    .btn-stepper {
+      background: transparent;
+      border: none;
+      color: #283720;
+      font-size: clamp(1.1rem, 2vh, 1.3rem);
+      padding: 3px 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:active {
+        transform: scale(0.9);
+      }
+    }
+
+    .cantidad-stepper {
+      font-weight: 800;
+      font-size: clamp(0.95rem, 1.7vh, 1.1rem);
+      min-width: 22px;
+      text-align: center;
+      color: #283720;
+    }
+
+    .subtotal-item {
+      font-weight: 900;
+      font-size: clamp(1rem, 1.85vh, 1.2rem);
+      min-width: 60px;
+      text-align: right;
+      color: #283720;
+    }
+
+    .btn-eliminar-item {
+      background: transparent;
+      border: none;
+      color: #c93b2b;
+      font-size: clamp(1.15rem, 2vh, 1.35rem);
+      padding: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:active {
+        transform: scale(0.9);
+      }
+    }
+  }
+
+  &.con-scroll .tarjeta-item-pedido {
+    flex: 0 0 auto;
+    max-height: none;
+  }
+
+  /* ---------- Totales ---------- */
+  .tarjeta-totales-pedido {
+    flex: 0 0 auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(5px, 0.9vh, 10px);
+    padding: clamp(10px, 1.6vh, 16px);
+    background: rgba(237, 229, 210, 0.14);
+    border: 1.5px solid rgba(237, 229, 210, 0.28);
+    border-radius: 16px;
+    color: #ede5d2;
+
+    .fila-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .label-totales {
+        font-size: clamp(0.84rem, 1.4vh, 0.96rem);
+        font-weight: 700;
+        opacity: 0.9;
+      }
+
+      .valor-tiempo {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-size: clamp(0.92rem, 1.5vh, 1.05rem);
+        color: #f7eecf;
+        font-weight: 800;
+
+        ion-icon {
+          color: #e28762;
+          font-size: clamp(1rem, 1.7vh, 1.2rem);
+        }
+      }
+
+      &.destacado-importe {
+        padding-top: clamp(6px, 1vh, 10px);
+        border-top: 1.5px dashed rgba(237, 229, 210, 0.35);
+
+        .label-totales {
+          font-size: clamp(1rem, 1.7vh, 1.18rem);
+          font-weight: 900;
+          letter-spacing: 0.5px;
+          color: #bca085;
+        }
+
+        .valor-importe {
+          font-size: clamp(1.6rem, 3.3vh, 2.3rem);
+          font-weight: 900;
+          color: #f7eecf;
+        }
+      }
+    }
+
+    .nota-mozo-espera {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      font-size: clamp(0.74rem, 1.25vh, 0.86rem);
+      opacity: 0.85;
+      line-height: 1.3;
+
+      ion-icon {
+        font-size: 1rem;
+        margin-top: 1px;
+        flex-shrink: 0;
+      }
+    }
+  }
+
+  /* ---------- Botones ---------- */
+  .acciones-finales-modal {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(6px, 1vh, 12px);
+    margin: 0;
+    padding: 0;
+
+    .btn-confirmar-envio {
+      min-height: clamp(46px, 6vh, 56px);
+      padding: clamp(10px, 1.5vh, 14px);
+      font-size: clamp(0.98rem, 1.75vh, 1.12rem);
+      border-radius: 12px;
+
+      ion-icon {
+        font-size: clamp(1.2rem, 2vh, 1.45rem);
+      }
+    }
+
+    .btn-seguir-comprando {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: clamp(40px, 5vh, 48px);
+      padding: clamp(8px, 1.2vh, 12px);
+      font-size: clamp(0.88rem, 1.5vh, 1rem);
+      border-width: 1.5px;
+    }
+  }
+
+  /* ---------- 1 producto: se agrandan elementos para no dejar huecos ---------- */
+  &.pocos-items {
+    .contenedor-resumen-modal {
+      gap: clamp(10px, 2vh, 22px);
+      padding-top: clamp(12px, 2.2vh, 24px);
+    }
+
+    .banner-aviso-pedido {
+      padding: clamp(10px, 1.8vh, 18px) clamp(14px, 2vh, 20px);
+
+      ion-icon {
+        font-size: clamp(1.5rem, 2.6vh, 2rem);
+      }
+
+      p {
+        font-size: clamp(0.88rem, 1.6vh, 1.02rem);
+      }
+    }
+
+    .tarjeta-item-pedido {
+      max-height: clamp(110px, 19vh, 170px);
+      padding: clamp(12px, 2.2vh, 22px) clamp(14px, 3.4vw, 18px);
+
+      .info-item-pedido {
+        flex-direction: column;
+        align-items: flex-start;
+        row-gap: clamp(3px, 0.6vh, 6px);
+      }
+
+      .tipo-tag {
+        font-size: clamp(0.7rem, 1.25vh, 0.8rem);
+        padding: 3px 9px;
+      }
+
+      h4 {
+        flex: 0 0 auto;
+        width: 100%;
+        font-size: clamp(1.12rem, 2.3vh, 1.4rem);
+      }
+
+      .precio-unitario-detalle {
+        flex: 0 0 auto;
+        font-size: clamp(0.86rem, 1.6vh, 1rem);
+      }
+
+      .btn-stepper {
+        font-size: clamp(1.3rem, 2.5vh, 1.6rem);
+      }
+
+      .cantidad-stepper {
+        font-size: clamp(1.1rem, 2vh, 1.3rem);
+      }
+
+      .subtotal-item {
+        font-size: clamp(1.15rem, 2.4vh, 1.45rem);
+        min-width: 70px;
+      }
+
+      .btn-eliminar-item {
+        font-size: clamp(1.3rem, 2.4vh, 1.6rem);
+      }
+    }
+
+    .tarjeta-totales-pedido {
+      padding: clamp(14px, 2.2vh, 22px);
+      gap: clamp(8px, 1.4vh, 14px);
+
+      .fila-total .label-totales {
+        font-size: clamp(0.9rem, 1.6vh, 1.05rem);
+      }
+
+      .fila-total .valor-tiempo {
+        font-size: clamp(1rem, 1.75vh, 1.15rem);
+      }
+
+      .fila-total.destacado-importe .valor-importe {
+        font-size: clamp(1.8rem, 3.8vh, 2.6rem);
+      }
+
+      .nota-mozo-espera {
+        font-size: clamp(0.8rem, 1.4vh, 0.92rem);
+      }
+    }
+
+    .acciones-finales-modal {
+      gap: clamp(8px, 1.4vh, 14px);
+
+      .btn-confirmar-envio {
+        min-height: clamp(52px, 7vh, 64px);
+      }
+
+      .btn-seguir-comprando {
+        min-height: clamp(44px, 5.6vh, 54px);
+      }
+    }
+  }
+
+  /* ---------- 4 o más productos: diseño compacto para que entren sin scroll ---------- */
+  &.muchos-items {
+    .contenedor-resumen-modal {
+      gap: clamp(6px, 1vh, 12px);
+    }
+
+    .lista-items-pedido {
+      gap: clamp(5px, 0.9vh, 9px);
+    }
+
+    .banner-aviso-pedido {
+      padding: 6px 12px;
+
+      p {
+        font-size: clamp(0.76rem, 1.3vh, 0.86rem);
+      }
+    }
+
+    .tarjeta-item-pedido {
+      max-height: clamp(58px, 9.5vh, 84px);
+      padding: clamp(6px, 1vh, 10px) clamp(10px, 3vw, 14px);
+
+      h4 {
+        font-size: clamp(0.9rem, 1.55vh, 1rem);
+      }
+
+      .precio-unitario-detalle {
+        font-size: clamp(0.72rem, 1.25vh, 0.8rem);
+      }
+
+      .btn-stepper {
+        font-size: 1.1rem;
+        padding: 2px 4px;
+      }
+
+      .subtotal-item {
+        font-size: clamp(0.92rem, 1.6vh, 1.05rem);
+        min-width: 56px;
+      }
+    }
+
+    .tarjeta-totales-pedido {
+      padding: clamp(8px, 1.2vh, 12px) 14px;
+      gap: clamp(4px, 0.7vh, 8px);
+
+      .nota-mozo-espera {
+        font-size: 0.72rem;
+        line-height: 1.2;
+      }
+    }
+
+    .acciones-finales-modal {
+      .btn-confirmar-envio {
+        min-height: clamp(42px, 5.4vh, 50px);
+      }
+
+      .btn-seguir-comprando {
+        min-height: clamp(36px, 4.6vh, 42px);
+      }
+    }
+  }
+
+  &.con-scroll .tarjeta-item-pedido {
+    max-height: none;
+  }
+}
+
+/* Pantallas muy bajas con 4 productos: se oculta el aviso para que todo entre sin scroll */
+@media (max-height: 640px) {
+  .modal-pedido-basilico .contenido-pedido-envio.muchos-items:not(.con-scroll) .banner-aviso-pedido {
+    display: none;
+  }
+}
+
+
 /* Celulares de menor altura: se prioriza ver los datos y el botón */
 @media (max-height: 700px) {
   .imagen-plato {
-    height: clamp(140px, 30vh, 230px);
-    min-height: 100px;
+    min-height: 45px;
   }
 
   .detalle-plato {
-    padding: 8px 12px 10px;
+    padding: 5px 10px 6px;
   }
 }
 
-/* ================================================
-   AJUSTE DE ESPACIO CON CARRITO VISIBLE
-   ================================================ */
-
-/* Reservar espacio inferior para el carrito */
-.carta-content:has(.barra-resumen-pedido) .carta-layout-completo {
-  height: calc(100% - 86px);
-}
-
-/* Ubicar la tarjeta más arriba */
-.carta-content:has(.barra-resumen-pedido) .card-reel-slide {
-  padding-top: 0;
-  transform: translateY(-20px);
-}
-
+/* Barra inferior integrada de forma natural al flex de .carta-layout-completo */
 /* ================================================
    ACCIONES DE EMPLEADO: EDITAR / ELIMINAR PRODUCTO
    Separados a izquierda y derecha para evitar toques accidentales
@@ -1428,7 +1957,7 @@
 }
 
 /* ================================================
-   DIÁLOGO DE CONFIRMACIÓN: ELIMINAR PRODUCTO
+   DIÃLOGO DE CONFIRMACIÓN: ELIMINAR PRODUCTO
    (el tamaño del modal se define en global.scss)
    ================================================ */
 .dialogo-eliminar {

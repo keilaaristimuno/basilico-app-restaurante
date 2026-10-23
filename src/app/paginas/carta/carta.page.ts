@@ -20,6 +20,7 @@ import {
   IonTitle,
   IonIcon,
   IonModal,
+  IonFooter,
   ToastController
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
@@ -63,7 +64,8 @@ import { Producto } from '../../interfaces/producto';
     IonBackButton,
     IonTitle,
     IonIcon,
-    IonModal
+    IonModal,
+    IonFooter
   ]
 })
 export class CartaPage implements OnInit, OnDestroy {

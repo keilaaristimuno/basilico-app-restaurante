@@ -101,12 +101,20 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 ---
 ### 👤 Ignacio Arriaga
 * **Módulos / Objetivos a desarrollar:**
+  - Puntos 12, 13, 14 — Armado de pedido, PedidoService e integración con la carta
+  - Punto 15 — Sección de Juegos y Descuentos (Bingo, Mayor o Menor, Trivia)
+  - Servicio de correo electrónico transaccional (EmailService + Edge Function Supabase)
 * **Planificación de Tareas:**
 
 | Tarea / Módulo | Fecha Inicio | Fecha Fin (Estimada/Real) | Branch | Estado |
 | :--- | :---: | :---: | :---: | :---: |
-| Desarrollo del Juego de Descuento (10%, 15%, 20%) | 21/09/2026 | DD/MM/2026 | `feature/juegos` | En proceso |
-| [Módulo W] | DD/MM/2026 | DD/MM/2026 | `feature/modulo-w` | Pendiente |
+| Servicio de envío de correos (EmailService con RxJS + Edge Function Supabase con Resend) | 13/09/2026 | 13/09/2026 | `feature/servicio-smtp` | Finalizado |
+| Punto 15 — Hub de juegos, JuegosService de descuentos y navegación integrada | 21/09/2026 | 21/09/2026 | `feature/juegos` | Finalizado |
+| Punto 15 — Bingo Basílico (10% OFF) + persistencia del descuento en la DB | 24/09/2026 | 24/09/2026 | `feature/juegos` | Finalizado |
+| Corrección de estilos en la página de clientes-pendientes | 25/09/2026 | 25/09/2026 | `develop` | Finalizado |
+| Puntos 12, 13, 14 — Integración de armado de pedido en la carta existente (importe acumulado, agregar/modificar ítems), PedidoService, interfaz Pedido, confirmación y vista de estado esperando al mozo | 12/10/2026 | 12/10/2026 | `feature/flujo-pedidos` | Finalizado |
+| Punto 15 — Juego Mayor o Menor (15% OFF) y Trivia Culinaria (20% OFF) con rutas integradas | 12/10/2026 | 12/10/2026 | `feature/juegos` | Finalizado |
+| Punto 15 — Rediseño de la pantalla de juegos (pantalla completa, botones XXL, navbar con título) | 16/10/2026 | 16/10/2026 | `feature/juegos` | Finalizado |
 
 ---
 ### 👤 Seggiaro, Agustina Anabel

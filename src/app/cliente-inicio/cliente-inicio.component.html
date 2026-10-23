@@ -1,4 +1,4 @@
-<ion-content [fullscreen]="true" class="login-content ion-text-center" [class.con-scroll]="mesaEscaneada() && !!pedidoService.pedidoActivo() && pedidoService.pedidoActivo()?.estado !== 'recibido' && (pedidoService.pedidoActivo()?.items?.length ?? 0) >= 3" [class.pedido-activo]="mesaEscaneada() && !!pedidoService.pedidoActivo() && pedidoService.pedidoActivo()?.estado !== 'recibido'">
+﻿<ion-content [fullscreen]="true" class="login-content ion-text-center" [class.con-scroll]="mesaEscaneada() && !!pedidoService.pedidoActivo() && pedidoService.pedidoActivo()?.estado !== 'recibido' && (pedidoService.pedidoActivo()?.items?.length ?? 0) >= 4" [class.pedido-activo]="mesaEscaneada() && !!pedidoService.pedidoActivo() && pedidoService.pedidoActivo()?.estado !== 'recibido'">
   <app-navbar rutaInicio="/clienteInicio" titulo="Recepción"></app-navbar>
 
   @if (cargandoInicial()) {
@@ -211,7 +211,7 @@
              ===================================================== -->
         @if (!cuentaConfirmada() && pedidoService.pedidoActivo(); as pedido) {
           @if (pedido.estado !== 'recibido') {
-            <div class="tarjeta-seguimiento-pedido">
+            <div class="tarjeta-seguimiento-pedido" [class.pedido-rechazado]="pedido.estado === 'rechazado'">
 
               <div class="encabezado-estado-pedido">
                 <span class="subtitulo-estado">ESTADO DEL PEDIDO</span>

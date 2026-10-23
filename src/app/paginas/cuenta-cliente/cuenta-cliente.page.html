@@ -3,7 +3,7 @@
     <app-navbar rutaInicio="/clienteInicio" titulo="Tu cuenta"></app-navbar>
 
     @if (cuenta(); as c) {
-      <main class="contenido-cuenta" [class.con-barra-pago]="c.estado === 'lista_para_pagar'">
+      <main class="contenido-cuenta" [class.con-barra-pago]="c.estado === 'lista_para_pagar'" [class.modo-propina]="c.estado === 'pendiente_propina'">
 
         <!-- ================= PROGRESO ================= -->
         <ol class="pasos" aria-label="Progreso de la cuenta">

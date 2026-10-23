@@ -535,6 +535,7 @@ El cliente espera confirmacion del metre
 
 <p align="center">
   <img src="docs/capturas/cliente/Pendiente-de-confirmacion-1.jpg" width="300">
+  <img src="docs/capturas/cliente/Pendiente-de-confirmacion-2.png" width="300">
 </p>
 
 ---
@@ -626,7 +627,7 @@ Una vez que el mozo confirma el pedido, este se deriva a cocina y/o bar y el cli
 ---
 ### 10. Estado del Pedido — Confirmado y listo
 
-Una vez que el mozo confirma el pedido, este se deriva a cocina y/o bar y el cliente ve el estado de preparación de cada sector. En este momento se habilita el acceso a **Juegos y Descuentos**.
+Cuando cocina y/o bar terminan de preparar todos los productos, el pedido pasa a estar **listo para entregar** y el mozo es notificado para llevarlo a la mesa.
 
 <p align="center">
   <img src="docs/capturas/cliente/pedido-listo-entregable.png" width="300">
@@ -634,7 +635,124 @@ Una vez que el mozo confirma el pedido, este se deriva a cocina y/o bar y el cli
 
 ---
 
-### 11. Juegos y Descuentos
+### 11. Pedido Entregado — Confirmar Recepción
+
+Cuando el mozo entrega el pedido, el cliente ve el estado **"¡Pedido entregado en tu mesa!"** y debe tocar **Confirmar recepción de pedido**. Esta confirmación habilita la encuesta y las demás opciones de la estadía.
+
+<p align="center">
+  <img src="docs/capturas/cliente/confirmar-recepcion-pedido.png" width="300">
+</p>
+
+---
+
+### 12. Pedido Recibido
+
+Una vez confirmada la recepción, el cliente accede a las opciones disponibles durante su estadía:
+
+- **Juegos y descuentos**
+- **Completar encuesta**
+- **Resultados de la encuesta**
+- **Pedir la cuenta**
+
+<p align="center">
+  <img src="docs/capturas/cliente/recibio-pedido.png" width="300">
+</p>
+
+---
+
+### 13. Pedir la Cuenta — Propina por Satisfacción
+
+Al tocar **Pedir la cuenta**, se avisa al mozo y se inicia el proceso de pago en 4 pasos (**Solicitada → Propina → Pago → Confirmación**).
+
+En el paso de propina, el cliente debe escanear uno de los **cinco códigos QR de satisfacción** que le acerca el mozo. El código escaneado define el porcentaje de propina:
+
+| Satisfacción | Propina |
+| :--- | :---: |
+| Excelente | 20% |
+| Muy bueno | 15% |
+| Bueno | 10% |
+| Regular | 5% |
+| Malo | 0% |
+
+El detalle y el pago se habilitan recién después de escanear el QR.
+
+<p align="center">
+  <img src="docs/capturas/cliente/cliente-propina.png" width="300">
+</p>
+
+**Sin cuenta abierta**
+
+Si el cliente ingresa a la cuenta sin haberla pedido, se le indica que primero debe recibir su pedido y tocar «Pedir la cuenta» desde la pantalla de su mesa.
+
+<p align="center">
+  <img src="docs/capturas/cliente/sin-cuenta.png" width="300">
+</p>
+
+---
+
+### 14. Total a Pagar
+
+Se muestra el total a pagar con la mesa, fecha, hora y número de cuenta, junto con la satisfacción registrada (que puede cambiarse). El detalle de la cuenta incluye el consumo, el subtotal, el **descuento obtenido en los juegos**, la **propina** y el total final.
+
+El pago es simulado: no se solicitan datos bancarios.
+
+<p align="center">
+  <img src="docs/capturas/cliente/total-pagar.png" width="300">
+  <img src="docs/capturas/cliente/total-pagar2.png" width="300">
+</p>
+
+---
+
+### 15. Confirmar y Procesar el Pago
+
+Al tocar **Pagar**, se abre un resumen con el importe, la mesa, la propina, el descuento y el medio de pago. Al confirmar, se muestra el proceso de pago.
+
+<p align="center">
+  <img src="docs/capturas/cliente/confirmar-pago.png" width="300">
+  <img src="docs/capturas/cliente/procesando-pago.png" width="300">
+</p>
+
+---
+
+### 16. Pago Realizado — Esperando Confirmación del Mozo
+
+Una vez realizado el pago, se muestra el número de operación y el estado **"Esperando la confirmación del mozo"**. La mesa sigue reservada para el cliente hasta que el mozo confirme el pago.
+
+<p align="center">
+  <img src="docs/capturas/cliente/confirmacion-pago.png" width="300">
+  <img src="docs/capturas/cliente/confirmacion-pago-2.png" width="300">
+</p>
+
+---
+
+### 17. Pago Confirmado y Comprobante
+
+Cuando el mozo confirma el pago, el cliente ve el mensaje **"¡Pago confirmado!"** y puede **ver el comprobante** o **finalizar la visita**.
+
+<p align="center">
+  <img src="docs/capturas/cliente/pago-confirmado.png" width="300">
+</p>
+
+El comprobante muestra la fecha y hora de confirmación, el número de operación y el detalle completo de la cuenta.
+
+<p align="center">
+  <img src="docs/capturas/cliente/comprobante.png" width="300">
+  <img src="docs/capturas/cliente/comprobante-2.png" width="300">
+</p>
+
+---
+
+### 18. Fin de la Visita
+
+Al finalizar la visita, la mesa queda liberada y el cliente vuelve a la pantalla de ingreso con el mensaje **"¡Gracias por visitar Basílico! Te esperamos pronto."**
+
+<p align="center">
+  <img src="docs/capturas/cliente/gracias-visita.png" width="300">
+</p>
+
+---
+
+### 19. Juegos y Descuentos
 
 Sección destinada a los juegos disponibles para clientes registrados. Los juegos permiten obtener descuentos sobre la cuenta final según las condiciones establecidas para cada uno.
 
@@ -779,9 +897,6 @@ Cada pedido muestra la mesa, el comensal, la fecha y hora, los productos solicit
 
 <p align="center">
   <img src="docs/capturas/mozo-metre/04-autoriza-pedido.png" width="300">
-</p>
-
-<p align="center">
   <img src="docs/capturas/mozo-metre/autorizacion-vacio.png" width="300">
 </p>
 
@@ -803,17 +918,52 @@ El pedido deberá estar disponible para entrega una vez que todos los productos 
   <img src="docs/capturas/mozo-metre/mozo-listo-preparacion.png" width="300">
 </p>
 
+**Pedido completo — listo para entregar**
+<p align="center">
+  <img src="docs/capturas/mozo-metre/pedido-listo.png" width="300">
+</p>
+
 ---
 
 ### 7. Cuentas y Liberación de Mesa
 
-Sección destinada a gestionar las cuentas solicitadas por los clientes y completar el proceso de pago.
+Sección destinada a gestionar las cuentas solicitadas por los clientes y completar el proceso de pago. Las cuentas se organizan en tres pestañas, cada una con su contador:
 
-Luego de la confirmación correspondiente, se podrá finalizar la atención y liberar la mesa para que vuelva a estar disponible.
+- **Pagos por confirmar:** mesas que ya realizaron el pago y esperan la confirmación del mozo.
+- **Cuentas solicitadas:** mesas que pidieron la cuenta y todavía no pagaron.
+- **Cerradas:** cuentas con el pago confirmado.
 
-> 📷 **Captura pendiente:** Se incorporará la captura correspondiente cuando la interfaz se encuentre disponible.
+Cada cuenta muestra la mesa, el cliente, los horarios (solicitada, pagada y confirmada), el detalle del consumo, el descuento por juegos, la propina, el total y el número de operación.
 
-<!-- Captura pendiente: 04-cuentas-liberacion-mozo.png -->
+**Cuenta solicitada**
+
+Cuando un cliente pide la cuenta, el mozo recibe una push notification y la cuenta aparece en **Cuentas solicitadas** con el estado **"Esperando propina"**, hasta que el cliente escanee un QR de propina. Una vez escaneado, se aplica la propina correspondiente y la cuenta pasa a **"Lista para pagar"**, a la espera del pago del cliente.
+
+<p align="center">
+  <img src="docs/capturas/mozo-metre/cuenta-solicitada-esperando-propina.png" width="300">
+  <img src="docs/capturas/mozo-metre/cuenta-solicitada-lista-pagar.png" width="300">
+</p>
+
+**Pago por confirmar**
+
+Al tocar **Confirmar pago y liberar mesa**, se confirma el pago del cliente y la mesa vuelve a quedar disponible.
+
+<p align="center">
+  <img src="docs/capturas/mozo-metre/05-pago-por-confirmar.png" width="300">
+</p>
+
+**Cuentas cerradas**
+<p align="center">
+  <img src="docs/capturas/mozo-metre/06-cuentas-cerradas.png" width="300">
+</p>
+
+**QR de propinas**
+
+Desde **Mostrar los QR de propina**, el mozo muestra al cliente el código QR según su nivel de satisfacción (20%, 15%, 10%, 5% o 0%). Se puede navegar entre los cinco códigos con los botones **Anterior** y **Siguiente**.
+
+<p align="center">
+  <img src="docs/capturas/mozo-metre/07-qr-propinas.png" width="300">
+</p>
 
 ---
 

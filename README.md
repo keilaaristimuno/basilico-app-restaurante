@@ -348,9 +348,6 @@ La funcionalidad contempla la validación de los datos ingresados y la posibilid
 
 <p align="center">
   <img src="docs/capturas/duenio-supervisor/02-alta-empleado.png" width="300">
-</p>
-
-<p align="center">
   <img src="docs/capturas/duenio-supervisor/02.1-alta-empleado.png" width="300">
 </p>
 

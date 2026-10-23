@@ -347,6 +347,111 @@ $beige-oscuro: #ddd2b8;
   min-height: 92px;
 }
 
+/* ---------- PASO B SIN SCROLL ----------
+   Mismo diseño, pero los tamaños se ajustan a la altura de la pantalla:
+   en pantallas altas (≥ ~860px) quedan los valores originales y en
+   celulares bajos se compactan para que todo entre sin scroll. */
+.contenido-cuenta.modo-propina {
+  padding: clamp(8px, 1.6vh, 14px) 16px clamp(10px, 2.8vh, 24px);
+  gap: clamp(8px, 1.6vh, 14px);
+
+  .paso {
+    gap: clamp(3px, 0.7vh, 6px);
+
+    .punto {
+      width: clamp(26px, 3.7vh, 32px);
+      height: clamp(26px, 3.7vh, 32px);
+      font-size: clamp(0.78rem, 1.7vh, 0.9rem);
+
+      ion-icon {
+        font-size: clamp(1.2rem, 2.8vh, 1.5rem);
+      }
+    }
+
+    .texto-paso {
+      font-size: clamp(0.66rem, 1.35vh, 0.72rem);
+    }
+  }
+
+  .pasos::before {
+    top: clamp(12px, 1.75vh, 15px);
+  }
+
+  .tarjeta-propina {
+    padding: clamp(12px, 2.3vh, 20px) 18px;
+    gap: clamp(8px, 1.86vh, 16px);
+
+    .cabecera-propina h2 {
+      font-size: clamp(1.12rem, 2.5vh, 1.35rem);
+    }
+
+    .instruccion {
+      font-size: clamp(0.84rem, 1.82vh, 0.98rem);
+      line-height: 1.38;
+    }
+  }
+
+  .icono-circular {
+    width: clamp(42px, 6.5vh, 56px);
+    height: clamp(42px, 6.5vh, 56px);
+
+    ion-icon {
+      font-size: clamp(1.45rem, 3.5vh, 1.9rem);
+    }
+  }
+
+  .etiqueta-mini {
+    font-size: clamp(0.66rem, 1.35vh, 0.72rem);
+  }
+
+  .niveles-propina {
+    gap: clamp(5px, 0.93vh, 8px);
+
+    .nivel {
+      padding: clamp(5px, 1.16vh, 10px) 14px;
+
+      ion-icon {
+        font-size: clamp(1.2rem, 2.7vh, 1.45rem);
+      }
+
+      .nombre-nivel,
+      .porcentaje-nivel {
+        font-size: clamp(0.88rem, 1.86vh, 1rem);
+      }
+
+      .porcentaje-nivel {
+        padding: clamp(1px, 0.35vh, 3px) 10px;
+      }
+    }
+  }
+
+  .btn-escanear {
+    min-height: clamp(60px, 10.7vh, 92px);
+    padding: clamp(8px, 1.4vh, 12px) 18px;
+
+    > ion-icon {
+      font-size: clamp(1.8rem, 4.1vh, 2.2rem);
+    }
+
+    .titulo-btn {
+      font-size: clamp(1.02rem, 2.14vh, 1.15rem);
+    }
+
+    .sub-btn {
+      font-size: clamp(0.75rem, 1.52vh, 0.82rem);
+    }
+  }
+
+  .bloqueo-pago {
+    padding: clamp(7px, 1.4vh, 12px) 14px;
+    font-size: clamp(0.8rem, 1.64vh, 0.88rem);
+
+    ion-icon {
+      font-size: clamp(1.15rem, 2.6vh, 1.4rem);
+    }
+  }
+}
+
 /* ---------- TOTAL DESTACADO ---------- */
 .tarjeta-total {
   text-align: center;

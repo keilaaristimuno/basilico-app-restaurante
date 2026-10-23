@@ -1197,19 +1197,90 @@
   }
 }
 
+/* Celulares de menor altura: se prioriza ver los datos y el botón */
+@media (max-height: 700px) {
+  .imagen-plato {
+    height: clamp(140px, 30vh, 230px);
+    min-height: 100px;
+  }
+
+  .detalle-plato {
+    padding: 8px 12px 10px;
+  }
+}
+
+/* ================================================
+   AJUSTE DE ESPACIO CON CARRITO VISIBLE
+   ================================================ */
+
+/* Reservar espacio inferior para el carrito */
+.carta-content:has(.barra-resumen-pedido) .carta-layout-completo {
+  height: calc(100% - 86px);
+}
+
+/* Ubicar la tarjeta más arriba */
+.carta-content:has(.barra-resumen-pedido) .card-reel-slide {
+  padding-top: 0;
+  transform: translateY(-20px);
+}
+
+/* ================================================
+   ACCIONES DE EMPLEADO: EDITAR / ELIMINAR PRODUCTO
+   Separados a izquierda y derecha para evitar toques accidentales
+   ================================================ */
+.acciones-empleado-card {
+  flex-shrink: 0;
+  width: 100%;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(40, 55, 32, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+
+.btn-accion-empleado {
+  flex: 0 1 42%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 40px;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
+
+  &:active {
+    transform: scale(0.96);
+  }
+
+  ion-icon {
+    font-size: 1.15rem;
+  }
+}
+
+.btn-editar-producto {
+  background: #283720;
+  color: #ede5d2;
+  border: none;
+}
+
+.btn-eliminar-producto {
+  background: transparent;
+  color: #a8402a;
+  border: 2px solid #a8402a;
+}
+
 /* ================================================
    MODAL DE EDICIÓN DE PRODUCTO
    ================================================ */
 .modal-edicion-producto {
-  .contenido-modal-pedido {
-    --overflow: auto !important;
-
-    .contenedor-resumen-modal {
-      height: auto !important;
-      min-height: 100% !important;
-      overflow: visible !important;
-    }
-  }
   .formulario-edicion {
     color: #ede5d2;
   }

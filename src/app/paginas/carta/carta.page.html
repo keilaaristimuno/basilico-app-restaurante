@@ -1,4 +1,4 @@
-<ion-header class="header-transparente">
+﻿<ion-header class="header-transparente">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button
@@ -363,7 +363,7 @@
       </ion-toolbar>
     </ion-header>
 
-    <ion-content class="contenido-modal-pedido">
+    <ion-content class="contenido-modal-pedido" [class.con-scroll]="pedidoService.carrito().length >= 4">
       <div class="contenedor-resumen-modal">
 
         <!-- Banner informativo -->

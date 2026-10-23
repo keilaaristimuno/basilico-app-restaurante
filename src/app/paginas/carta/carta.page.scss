@@ -1,4 +1,4 @@
-
+﻿
 /* =========================================================
    CARTA GASTRONÓMICA BASÍLICO (Diseño Responsive Equilibrado)
    ========================================================= */
@@ -834,12 +834,12 @@
   .toolbar-modal-pedido {
     --background: #283720;
     --color: #ede5d2;
-    border-bottom: 1px solid rgba(237, 229, 210, 0.15);
+    border-bottom: 1.5px solid rgba(237, 229, 210, 0.2);
 
     ion-title {
       font-family: var(--font-body);
       font-weight: 800;
-      font-size: 1.15rem;
+      font-size: clamp(1.05rem, 1.9vh, 1.25rem);
       color: #ede5d2;
     }
 
@@ -850,77 +850,125 @@
       font-size: 1.6rem;
       padding: 6px 12px;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
 
   .contenido-modal-pedido {
     --background: #283720;
+    --overflow: hidden;
+    height: 100%;
+
+    /* Con 4 o más productos se activa el scroll */
+    &.con-scroll {
+      --overflow: auto;
+
+      &::part(scroll) {
+        overscroll-behavior-y: none;
+      }
+
+      .contenedor-resumen-modal {
+        min-height: 100%;
+        height: auto;
+        justify-content: flex-start;
+      }
+    }
+
+    /* Con 1 a 3 productos: ocupa toda la pantalla con distribución balanceada sin scroll */
+    &:not(.con-scroll) {
+      --overflow: hidden !important;
+      overflow: hidden !important;
+
+      &::part(scroll) {
+        overflow: hidden !important;
+        overscroll-behavior-y: none !important;
+        touch-action: none;
+      }
+
+      .contenedor-resumen-modal {
+        height: 100%;
+        min-height: 100%;
+        justify-content: space-between;
+      }
+    }
   }
 
   .contenedor-resumen-modal {
-    padding: 16px;
+    padding: clamp(10px, 1.5vh, 18px) clamp(12px, 1.8vh, 18px);
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: clamp(8px, 1.3vh, 16px);
     max-width: 600px;
     margin: 0 auto;
     box-sizing: border-box;
+    width: 100%;
   }
 
+  /* Banner informativo */
   .banner-aviso-pedido {
-    background: rgba(188, 160, 133, 0.15);
-    border: 1px solid rgba(188, 160, 133, 0.35);
-    border-radius: 10px;
-    padding: 10px 14px;
+    background: rgba(188, 160, 133, 0.18);
+    border: 1.5px solid rgba(188, 160, 133, 0.4);
+    border-radius: 14px;
+    padding: clamp(8px, 1.2vh, 12px) clamp(12px, 1.6vh, 16px);
     display: flex;
     align-items: center;
     gap: 10px;
     color: #ede5d2;
+    flex-shrink: 0;
 
     ion-icon {
-      font-size: 1.6rem;
+      font-size: clamp(1.3rem, 2vh, 1.6rem);
       color: #bca085;
       flex-shrink: 0;
     }
 
     p {
       margin: 0;
-      font-size: 0.82rem;
-      line-height: 1.3;
+      font-size: clamp(0.82rem, 1.35vh, 0.92rem);
+      line-height: 1.32;
+      font-weight: 500;
     }
   }
 
+  /* Listado de ítems seleccionados */
   .lista-items-pedido {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: clamp(6px, 1.1vh, 12px);
+    width: 100%;
   }
 
   .tarjeta-item-pedido {
     background: #ede5d2;
-    border-radius: 12px;
-    padding: 12px 14px;
+    border-radius: 14px;
+    padding: clamp(8px, 1.2vh, 14px) clamp(10px, 1.5vh, 14px);
     color: #283720;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    flex-shrink: 0;
+    width: 100%;
 
     .info-item-pedido {
       flex: 1;
       min-width: 0;
+      padding-right: 8px;
     }
 
     .tipo-tag {
       display: inline-block;
-      font-size: 0.65rem;
+      font-size: clamp(0.65rem, 1.1vh, 0.74rem);
       font-weight: 800;
       text-transform: uppercase;
-      padding: 2px 6px;
-      border-radius: 4px;
+      padding: 2px 7px;
+      border-radius: 5px;
       background: #283720;
       color: #ede5d2;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
 
       &.tipo-bebida {
         background: #b85d38;
@@ -928,57 +976,68 @@
     }
 
     h4 {
-      margin: 0 0 3px;
+      margin: 1px 0 3px;
       font-family: var(--font-body);
-      font-size: 0.98rem;
-      font-weight: 700;
+      font-size: clamp(0.94rem, 1.65vh, 1.1rem);
+      font-weight: 800;
       color: #283720;
+      line-height: 1.22;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
     .precio-unitario-detalle {
-      font-size: 0.78rem;
-      color: #555;
+      font-size: clamp(0.78rem, 1.35vh, 0.88rem);
+      color: #4b5843;
+      font-weight: 600;
     }
 
     .acciones-item-pedido {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: clamp(6px, 1vh, 10px);
+      flex-shrink: 0;
     }
 
     .controles-stepper {
       display: flex;
       align-items: center;
-      background: #e1d8bf;
+      background: #dfd5ba;
       border-radius: 8px;
-      padding: 2px 4px;
+      padding: clamp(2px, 0.4vh, 4px) clamp(3px, 0.6vh, 6px);
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
     }
 
     .btn-stepper {
       background: transparent;
       border: none;
       color: #283720;
-      font-size: 1rem;
-      padding: 4px;
+      font-size: clamp(1rem, 1.8vh, 1.25rem);
+      padding: 3px 5px;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:active {
+        transform: scale(0.9);
+      }
     }
 
     .cantidad-stepper {
       font-weight: 800;
-      font-size: 0.95rem;
+      font-size: clamp(0.94rem, 1.65vh, 1.1rem);
       min-width: 20px;
       text-align: center;
       color: #283720;
     }
 
     .subtotal-item {
-      font-weight: 800;
-      font-size: 1rem;
+      font-weight: 900;
+      font-size: clamp(0.98rem, 1.75vh, 1.18rem);
       color: #283720;
-      min-width: 70px;
+      min-width: 62px;
       text-align: right;
     }
 
@@ -986,21 +1045,31 @@
       background: transparent;
       border: none;
       color: #c93b2b;
-      font-size: 1.15rem;
+      font-size: clamp(1.15rem, 1.9vh, 1.35rem);
       padding: 4px;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:active {
+        transform: scale(0.9);
+      }
     }
   }
 
+  /* TOTALES DESTACADOS */
   .tarjeta-totales-pedido {
-    background: rgba(237, 229, 210, 0.12);
-    border: 1px solid rgba(237, 229, 210, 0.25);
-    border-radius: 14px;
-    padding: 16px;
+    background: rgba(237, 229, 210, 0.14);
+    border: 1.5px solid rgba(237, 229, 210, 0.28);
+    border-radius: 16px;
+    padding: clamp(10px, 1.5vh, 16px);
     color: #ede5d2;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: clamp(5px, 0.8vh, 10px);
+    box-sizing: border-box;
+    flex-shrink: 0;
 
     .fila-total {
       display: flex;
@@ -1008,36 +1077,38 @@
       align-items: center;
 
       .label-totales {
-        font-size: 0.85rem;
-        font-weight: 600;
-        opacity: 0.85;
+        font-size: clamp(0.84rem, 1.35vh, 0.94rem);
+        font-weight: 700;
+        opacity: 0.9;
       }
 
       .valor-tiempo {
         display: inline-flex;
         align-items: center;
         gap: 5px;
-        font-size: 0.95rem;
+        font-size: clamp(0.9rem, 1.45vh, 1.02rem);
         color: #f7eecf;
+        font-weight: 800;
 
         ion-icon {
           color: #e28762;
+          font-size: clamp(1rem, 1.6vh, 1.2rem);
         }
       }
 
       &.destacado-importe {
-        padding-top: 8px;
-        border-top: 1px dashed rgba(237, 229, 210, 0.3);
+        padding-top: clamp(6px, 1vh, 10px);
+        border-top: 1.5px dashed rgba(237, 229, 210, 0.35);
 
         .label-totales {
-          font-size: 1.05rem;
-          font-weight: 800;
+          font-size: clamp(1rem, 1.6vh, 1.15rem);
+          font-weight: 900;
           letter-spacing: 0.5px;
           color: #bca085;
         }
 
         .valor-importe {
-          font-size: 1.7rem;
+          font-size: clamp(1.6rem, 3.2vh, 2.2rem);
           font-weight: 900;
           color: #f7eecf;
         }
@@ -1045,42 +1116,45 @@
     }
 
     .nota-mozo-espera {
-      margin-top: 6px;
+      margin-top: clamp(2px, 0.5vh, 6px);
       display: flex;
       align-items: flex-start;
       gap: 6px;
-      font-size: 0.75rem;
-      opacity: 0.75;
+      font-size: clamp(0.74rem, 1.2vh, 0.84rem);
+      opacity: 0.85;
       line-height: 1.3;
 
       ion-icon {
-        font-size: 0.95rem;
-        margin-top: 2px;
+        font-size: clamp(0.95rem, 1.5vh, 1.1rem);
+        margin-top: 1px;
         flex-shrink: 0;
       }
     }
   }
 
+  /* ACCIONES DEL MODAL */
   .acciones-finales-modal {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin-top: 4px;
-    padding-bottom: 20px;
+    gap: clamp(6px, 1vh, 12px);
+    margin-top: 0;
+    padding-bottom: clamp(4px, 0.8vh, 12px);
+    flex-shrink: 0;
 
     .btn-confirmar-envio {
-      background: var(--basilico-terracotta);
+      background: var(--basilico-terracotta, #b85d38);
       color: #ede5d2;
       border: none;
       border-radius: 12px;
-      padding: 14px;
+      padding: clamp(10px, 1.5vh, 14px);
+      min-height: clamp(44px, 5.8vh, 54px);
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
       font-family: var(--font-body);
       font-weight: 800;
-      font-size: 1rem;
+      font-size: clamp(0.96rem, 1.7vh, 1.1rem);
       cursor: pointer;
       box-shadow: 0 4px 14px rgba(184, 93, 56, 0.45);
       transition: transform 0.15s ease;
@@ -1095,26 +1169,33 @@
       }
 
       ion-icon {
-        font-size: 1.3rem;
+        font-size: clamp(1.2rem, 2vh, 1.45rem);
       }
     }
 
     .btn-seguir-comprando {
       background: transparent;
-      border: 1px solid rgba(237, 229, 210, 0.4);
+      border: 1.5px solid rgba(237, 229, 210, 0.45);
       color: #ede5d2;
       border-radius: 12px;
-      padding: 12px;
+      padding: clamp(8px, 1.2vh, 12px);
+      min-height: clamp(38px, 4.8vh, 46px);
       font-family: var(--font-body);
       font-weight: 700;
-      font-size: 0.88rem;
+      font-size: clamp(0.88rem, 1.45vh, 0.98rem);
       cursor: pointer;
       text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.15s ease;
+
+      &:active {
+        background: rgba(237, 229, 210, 0.1);
+      }
     }
   }
 }
-
-
 
 /* Celulares de menor altura: se prioriza ver los datos y el botón */
 @media (max-height: 700px) {

@@ -233,7 +233,7 @@ export class ListaEsperaComponent implements OnInit, OnDestroy {
       try {
         await this.supabase.clienteSupabase
           .from('mesas')
-          .update({ disponibilidad: 'libre', cliente_id: null })
+          .update({ disponibilidad: 'vacia', cliente_id: null })
           .eq('cliente_id', idClienteReal);
       } catch (e) {
         console.warn('No se pudo liberar mesa previa al rechazar cliente:', e);

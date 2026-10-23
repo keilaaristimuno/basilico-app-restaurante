@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Montserrat:ital,wght@0,100..900;1,100..900&family=SN+Pro:ital,wght@0,200..900;1,200..900&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Montserrat:ital,wght@0,100..900;1,100..900&family=SN+Pro:ital,wght@0,200..900;1,200..900&display=swap');
 
 .login-content {
   --background: var(--basilico-olive, #283720);
@@ -884,9 +884,39 @@ ion-modal.modal-basilico {
 
 /* =========================================================
    ESTADO 3 (MESA VINCULADA): CONTENIDO SCROLLEABLE
+   Solo hay scroll si hay 4 o más productos diferentes.
+   Con hasta 4 productos el overflow queda completamente bloqueado
+   y sin rebote elástico ("gelatina").
    ========================================================= */
 .login-content.con-scroll {
   --overflow: auto;
+}
+
+.login-content:not(.con-scroll) {
+  --overflow: hidden !important;
+  overflow: hidden !important;
+
+  &::part(scroll) {
+    overflow: hidden !important;
+    overscroll-behavior-y: none !important;
+    touch-action: none;
+  }
+
+  .contenido-cliente {
+    height: calc(100% - 68px);
+    max-height: calc(100% - 68px);
+    overflow: hidden;
+
+    .seccion-mesa-activa {
+      height: 100%;
+      min-height: 0;
+    }
+  }
+}
+
+/* Sin rebote elástico (efecto "gelatina") al arrastrar en el área de contenido */
+.login-content::part(scroll) {
+  overscroll-behavior-y: none;
 }
 
 .contenido-cliente {
@@ -894,7 +924,7 @@ ion-modal.modal-basilico {
   max-width: 580px;
   min-height: calc(100% - 68px);
   margin: 0 auto;
-  padding: 12px 16px 14px;
+  padding: 12px 16px 16px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -991,38 +1021,38 @@ ion-modal.modal-basilico {
       display: grid;
       grid-template-columns: 1fr;
       grid-template-rows: repeat(4, 1fr);
-      gap: 12px;
+      gap: 14px;
       min-height: 0;
 
       .btn-accion-estadia {
         width: 100%;
         height: 100%;
-        min-height: 68px;
+        min-height: 78px;
         margin: 0;
-        --border-radius: 18px;
+        --border-radius: 20px;
         font-family: 'Montserrat', sans-serif;
         font-weight: 900;
-        font-size: 1.16rem;
+        font-size: 1.2rem;
         letter-spacing: 0.4px;
         text-transform: uppercase;
 
         &::part(native) {
           width: 100%;
           height: 100%;
-          padding: 10px 16px;
+          padding: 12px 18px;
         }
 
         .contenido-btn-estadia {
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 14px;
+          gap: 16px;
           width: 100%;
           text-align: center;
           white-space: normal;
 
           ion-icon {
-            font-size: 2rem;
+            font-size: 2.2rem;
             flex-shrink: 0;
           }
 
@@ -1062,28 +1092,6 @@ ion-modal.modal-basilico {
         --background: #283720;
         --background-activated: #1c2716;
         --color: #ede5d2;
-      }
-    }
-
-    .zona-realizar-otro-pedido {
-      margin-top: 6px;
-      padding-top: 10px;
-      border-top: 1.5px dashed rgba(40, 55, 32, 0.25);
-
-      .btn-realizar-otro-pedido {
-        width: 100%;
-        min-height: 48px;
-        margin: 0;
-        --color: #283720;
-        --border-color: #283720;
-        --border-width: 2px;
-        --border-radius: 14px;
-        --background: transparent;
-        --background-activated: rgba(40, 55, 32, 0.1);
-        font-family: 'Montserrat', sans-serif;
-        font-weight: 800;
-        font-size: 0.94rem;
-        text-transform: uppercase;
       }
     }
   }
@@ -1267,4 +1275,306 @@ ion-modal.modal-basilico {
 
 .contenido-cliente .card-estadia-recibida.card-pago-confirmado .acciones-estadia-recibida {
   grid-template-rows: repeat(2, 1fr);
+}
+
+/* =========================================================
+   PANTALLA DE CARGA INICIAL (SPINNER BASILICO)
+   ========================================================= */
+.pantalla-carga-mesa-inicial {
+  width: 100%;
+  max-width: 540px;
+  height: calc(100% - 68px);
+  margin: 0 auto;
+  padding: 16px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .tarjeta-carga-mesa {
+    width: min(88%, 340px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 34px 24px;
+    box-sizing: border-box;
+    background: #ede5d2;
+    border-radius: 24px;
+    color: #283720;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+    animation: fadeInCargaMesa 0.25s ease-out;
+
+    .logo-carga-mesa {
+      width: 115px;
+      height: auto;
+      margin-bottom: 22px;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+    }
+
+    .spinner-carga-mesa {
+      width: 52px;
+      height: 52px;
+      margin-bottom: 16px;
+      color: #b85d38; // Terracota Basilico
+    }
+
+    .texto-carga-mesa {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      text-align: center;
+      color: #283720;
+    }
+  }
+}
+
+@keyframes fadeInCargaMesa {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* =========================================================
+   PEDIDO ACTIVO: TARJETA DE SEGUIMIENTO A PANTALLA COMPLETA
+   (esperando confirmación, rechazado, en preparación, listo, entregado)
+   Todo se dimensiona en función del alto de la pantalla (vh) para
+   que con 1 a 3 productos la tarjeta entre en una sola pantalla
+   sin scroll ni tambaleo, aprovechando el espacio disponible.
+   Con 4 o más productos la tarjeta crece por su contenido y
+   recién ahí aparece el scroll.
+   ========================================================= */
+.contenido-cliente .seccion-mesa-activa > .tarjeta-seguimiento-pedido {
+  flex: 1 1 auto;
+  min-height: 0;
+  justify-content: space-between;
+  border-radius: 24px;
+  padding: clamp(12px, 1.8vh, 22px) clamp(14px, 2.2vh, 20px);
+  gap: clamp(7px, 1.2vh, 16px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+  box-sizing: border-box;
+
+  .encabezado-estado-pedido {
+    gap: clamp(6px, 1vh, 11px);
+
+    .subtitulo-estado {
+      font-size: clamp(0.68rem, 1.35vh, 0.78rem);
+    }
+
+    .badge-estado {
+      padding: clamp(6px, 1vh, 10px) 14px;
+      font-size: clamp(0.86rem, 1.55vh, 0.98rem);
+
+      ion-icon {
+        font-size: clamp(1.15rem, 2.1vh, 1.35rem);
+      }
+    }
+
+    .explicacion-estado {
+      margin: 2px 0;
+      font-size: clamp(0.88rem, 1.65vh, 1.02rem);
+      line-height: 1.38;
+    }
+
+    .btn-confirmar-recepcion,
+    .btn-juegos {
+      margin-top: clamp(3px, 0.7vh, 8px);
+      min-height: clamp(42px, 5.4vh, 54px);
+      font-size: clamp(0.92rem, 1.6vh, 1.02rem);
+    }
+
+    .btn-modificar {
+      margin-top: clamp(3px, 0.7vh, 8px);
+      min-height: clamp(42px, 5.4vh, 54px);
+      font-size: clamp(0.92rem, 1.6vh, 1.02rem);
+    }
+
+    .avance-sectores {
+      gap: clamp(4px, 0.7vh, 7px);
+
+      .fila-sector {
+        padding: clamp(5px, 0.9vh, 9px) 12px;
+        font-size: clamp(0.82rem, 1.45vh, 0.92rem);
+      }
+
+      .estado-sector {
+        font-size: clamp(0.66rem, 1.25vh, 0.74rem);
+        padding: 2px 8px;
+      }
+    }
+  }
+
+  /* El importe acumulado absorbe parte del espacio sobrante (con tope) y queda centrado */
+  .totales-pedido-activo {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: clamp(130px, 23vh, 220px);
+    justify-content: center;
+    padding: clamp(10px, 1.8vh, 20px) 16px;
+    gap: clamp(5px, 1vh, 12px);
+
+    .bloque-total-destacado {
+      .label-acumulado-ui {
+        font-size: clamp(0.74rem, 1.4vh, 0.86rem);
+        letter-spacing: 0.6px;
+      }
+
+      .monto-acumulado-ui {
+        font-size: clamp(1.7rem, 3.6vh, 2.4rem);
+      }
+    }
+
+    .bloque-tiempo-destacado {
+      font-size: clamp(0.86rem, 1.5vh, 1.04rem);
+
+      ion-icon {
+        font-size: clamp(1.05rem, 1.9vh, 1.25rem);
+      }
+    }
+  }
+
+  /* Desglose de ítems del pedido: tamaño de fuente y precio destacados */
+  .desglose-items-pedido {
+    h4 {
+      margin-bottom: clamp(5px, 0.9vh, 10px);
+      font-size: clamp(0.88rem, 1.5vh, 1rem);
+      letter-spacing: 0.5px;
+    }
+
+    .lista-items-compacta {
+      gap: clamp(4px, 0.7vh, 8px);
+    }
+
+    .item-fila {
+      flex-shrink: 0;
+      padding: clamp(4px, 0.75vh, 8px) 0;
+      gap: 10px;
+
+      .item-cantidad-badge {
+        padding: 3px 8px;
+        font-size: clamp(0.82rem, 1.45vh, 0.94rem);
+        border-radius: 6px;
+      }
+
+      .item-nombre {
+        font-size: clamp(0.92rem, 1.65vh, 1.06rem);
+        font-weight: 700;
+        line-height: 1.25;
+      }
+
+      .item-precio {
+        font-size: clamp(0.96rem, 1.75vh, 1.12rem);
+        font-weight: 800;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  .acciones-inferiores-pedido {
+    margin-top: 0;
+
+    .btonBeigeOutline {
+      min-height: clamp(42px, 5.4vh, 54px);
+      font-size: clamp(0.9rem, 1.6vh, 1.02rem);
+    }
+  }
+
+  /* PEDIDO RECHAZADO: menos contenido que otros estados, por lo que se
+     distribuye de forma equilibrada para llenar la tarjeta sin desbordar */
+  &.pedido-rechazado {
+    padding: clamp(12px, 2vh, 22px) clamp(14px, 2vh, 20px);
+    gap: clamp(7px, 1.3vh, 16px);
+
+    .encabezado-estado-pedido {
+      gap: clamp(7px, 1.2vh, 13px);
+
+      .subtitulo-estado {
+        font-size: clamp(0.7rem, 1.35vh, 0.8rem);
+      }
+
+      .badge-estado {
+        padding: clamp(7px, 1.2vh, 11px) 14px;
+        font-size: clamp(0.88rem, 1.6vh, 1.02rem);
+      }
+
+      .explicacion-estado {
+        margin: clamp(2px, 0.4vh, 5px) 0;
+        font-size: clamp(0.92rem, 1.7vh, 1.06rem);
+        line-height: 1.42;
+      }
+
+      .btn-modificar {
+        margin-top: clamp(4px, 1vh, 12px);
+        min-height: clamp(44px, 5.8vh, 56px);
+        font-size: clamp(0.95rem, 1.7vh, 1.06rem);
+      }
+    }
+
+    .totales-pedido-activo {
+      min-height: 0;
+      max-height: clamp(140px, 24vh, 230px);
+      gap: clamp(6px, 1.1vh, 12px);
+
+      .bloque-total-destacado {
+        .label-acumulado-ui {
+          font-size: clamp(0.76rem, 1.4vh, 0.88rem);
+        }
+
+        .monto-acumulado-ui {
+          font-size: clamp(1.75rem, 3.8vh, 2.5rem);
+        }
+      }
+
+      .bloque-tiempo-destacado {
+        font-size: clamp(0.88rem, 1.5vh, 1.04rem);
+      }
+    }
+
+    .desglose-items-pedido {
+      h4 {
+        font-size: clamp(0.9rem, 1.55vh, 1.02rem);
+        margin-bottom: clamp(6px, 1vh, 10px);
+      }
+
+      .lista-items-compacta {
+        gap: clamp(4px, 0.8vh, 8px);
+      }
+
+      .item-fila {
+        flex-shrink: 0;
+        padding: clamp(5px, 0.85vh, 9px) 0;
+        gap: 10px;
+
+        .item-cantidad-badge {
+          padding: 3px 8px;
+          font-size: clamp(0.84rem, 1.5vh, 0.96rem);
+          border-radius: 6px;
+        }
+
+        .item-nombre {
+          font-size: clamp(0.96rem, 1.75vh, 1.1rem);
+          font-weight: 700;
+          line-height: 1.25;
+        }
+
+        .item-precio {
+          font-size: clamp(1rem, 1.85vh, 1.16rem);
+          font-weight: 800;
+          white-space: nowrap;
+        }
+      }
+    }
+
+    .acciones-inferiores-pedido .btonBeigeOutline {
+      min-height: clamp(44px, 5.8vh, 56px);
+      font-size: clamp(0.94rem, 1.65vh, 1.05rem);
+    }
+  }
 }

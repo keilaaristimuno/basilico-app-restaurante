@@ -244,12 +244,6 @@ export class PedidoService {
         return null;
       }
 
-      const resetTimestamp = idCliente ? localStorage.getItem(`estadia_reiniciada_at_${idCliente}`) : null;
-      if (resetTimestamp && dataRaw.created_at && new Date(dataRaw.created_at).getTime() <= Number(resetTimestamp)) {
-        this.pedidoActivo.set(null);
-        return null;
-      }
-
       const items: any[] = (dataRaw.pedido_items || []).map((it: any) => ({
         id: it.id,
         producto: it.productos,
@@ -436,45 +430,5 @@ export class PedidoService {
     await this.consultarPedidoActivo();
   }
 
-  /**
-   * Reinicia el pedido actual y libera la mesa para que el cliente pueda realizar otro pedido
-   * comenzando nuevamente desde el escaneo del QR de lista de espera.
-   */
-  async finalizarEstadiaParaOtroPedido(
-    pedidoId?: string,
-    mesaId?: string,
-    numeroMesa?: string,
-    clienteId?: string
-  ): Promise<void> {
-    if (clienteId) {
-      localStorage.setItem(`estadia_reiniciada_at_${clienteId}`, String(Date.now()));
-    }
-
-    if (pedidoId) {
-      localStorage.setItem(`pedido_finalizado_${pedidoId}`, 'true');
-      localStorage.removeItem(`recepcion_confirmada_${pedidoId}`);
-      try {
-        await this.supabase.eliminarPedidoCompleto(pedidoId);
-      } catch (err) {
-        console.warn('[PedidoService] No se pudo eliminar pedido en DB, manteniendo marca local:', err);
-      }
-    }
-
-    if (mesaId) {
-      try {
-        await this.supabase.liberarMesa(mesaId);
-      } catch (err) {
-        console.warn('[PedidoService] No se pudo liberar la mesa en DB:', err);
-      }
-    }
-
-    if (numeroMesa) {
-      localStorage.removeItem(`mesa_escaneada_${numeroMesa}`);
-    }
-
-    this.limpiarCarrito();
-    this.pedidoActivo.set(null);
-    this.mesaActual.set(null);
-  }
 }
 

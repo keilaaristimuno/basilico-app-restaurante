@@ -1,5 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap');
 
+.chat-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7); /* Oscurece el fondo al 50% de opacidad */
+  z-index: 9998; /* Justo debajo de la ventana del chat */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 /* Ventana flotante abierta */
 .chat-ventana-flotante {
@@ -10,8 +22,8 @@
   
   width: 95%;                   /* Ancho responsivo en celulares */
   max-width: 650px;             /* Ancho máximo en pantallas grandes */
-  height: 75vh;                 /* Altura controlada (ocupa el 75% de la pantalla como máximo) */
-  max-height: 650px;            /* Evita que sea demasiado alto en PCs */
+  height: 78vh;                 /* Altura controlada (ocupa el 75% de la pantalla como máximo) */
+  max-height: 670px;            /* Evita que sea demasiado alto en PCs */
 
   background: var(--basilico-olive, #8fa382);
   border-radius: 18px; 
@@ -21,7 +33,7 @@
   flex-direction: column;
   overflow: hidden;
   font-family: 'Montserrat', sans-serif;
-  border: 2px solid #8fa382;
+  border: 3px solid #8fa382;
 }
 
 /* Cabecera del chat */

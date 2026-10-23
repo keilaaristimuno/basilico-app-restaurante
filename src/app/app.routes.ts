@@ -127,6 +127,18 @@ export const routes: Routes = [
     loadComponent: () => import('./paginas/graficos-encuesta/graficos-encuesta.page').then(m => m.GraficosEncuestaPage)
   },
   {
+    path: 'cuenta',
+    loadComponent: () => import('./paginas/cuenta-cliente/cuenta-cliente.page').then(m => m.CuentaClientePage)
+  },
+  {
+    path: 'cuentas-mozo',
+    loadComponent: () => import('./mozo/cuentas-mozo/cuentas-mozo.page').then(m => m.CuentasMozoPage)
+  },
+  {
+    path: 'qr-propinas',
+    loadComponent: () => import('./paginas/qr-propinas/qr-propinas.page').then(m => m.QrPropinasPage)
+  },
+  {
     path: '**',
     redirectTo: 'inicio'
   }

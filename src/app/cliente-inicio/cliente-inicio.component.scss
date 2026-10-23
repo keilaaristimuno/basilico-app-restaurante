@@ -1247,3 +1247,24 @@ ion-modal.modal-basilico {
     }
   }
 }
+
+/* =========================================================
+   PUNTO 21: ESTADO DE LA CUENTA EN LA PANTALLA DE LA MESA
+   ========================================================= */
+.contenido-cliente .card-estadia-recibida .acciones-estadia-recibida .btn-accion-estadia .contenido-btn-cuenta {
+  flex-wrap: wrap;
+  row-gap: 4px;
+
+  .estado-cuenta-btn {
+    flex-basis: 100%;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0;
+    line-height: 1.2;
+  }
+}
+
+.contenido-cliente .card-estadia-recibida.card-pago-confirmado .acciones-estadia-recibida {
+  grid-template-rows: repeat(2, 1fr);
+}

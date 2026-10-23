@@ -94,10 +94,9 @@
       <!-- FOTOGRAFÍA DE PERFIL -->
       <div class="foto-wrapper-full">
         <img
-          [src]="cliente.foto_url || cliente.foto || 'assets/icon/favicon.png'"
+          [src]="cliente.foto_url"
           [alt]="'Foto de ' + cliente.nombre"
           class="cliente-foto"
-          (error)="onFotoError($event)"
         />
         <div class="badge-estado">
           <span class="punto-pulso"></span>

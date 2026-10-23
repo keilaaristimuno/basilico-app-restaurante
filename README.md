@@ -194,13 +194,41 @@ Qr para escanear mesa 7
 
 ### 💰 QRs de Propinas
 
-<!-- Pendientes de agregar -->
+Al pedir la cuenta (Punto 21), el cliente **debe** escanear uno de estos cinco códigos para indicar su satisfacción. El porcentaje lo define el servidor a partir del código: no se aceptan otros valores ni QR de mesa, ingreso o DNI.
+También se pueden mostrar en pantalla desde la app: **Mozo → Cuentas y liberación → Mostrar los QR de propina** (ruta `/qr-propinas`).
 
-- Excelente (20%)
-- Muy Bueno (15%)
-- Bueno (10%)
-- Regular (5%)
-- Malo (0%)
+| Satisfacción | Propina | Contenido del QR |
+| :--- | :---: | :--- |
+| Excelente | 20% | `BASILICO:PROPINA:EXCELENTE:20` |
+| Muy Bueno | 15% | `BASILICO:PROPINA:MUY_BUENO:15` |
+| Bueno | 10% | `BASILICO:PROPINA:BUENO:10` |
+| Regular | 5% | `BASILICO:PROPINA:REGULAR:5` |
+| Malo | 0% | `BASILICO:PROPINA:MALO:0` |
+
+Excelente (20%)
+<p align="center">
+  <img src="docs/qr/qr-propina-excelente.png" width="300">
+</p>
+
+Muy Bueno (15%)
+<p align="center">
+  <img src="docs/qr/qr-propina-muy-bueno.png" width="300">
+</p>
+
+Bueno (10%)
+<p align="center">
+  <img src="docs/qr/qr-propina-bueno.png" width="300">
+</p>
+
+Regular (5%)
+<p align="center">
+  <img src="docs/qr/qr-propina-regular.png" width="300">
+</p>
+
+Malo (0%)
+<p align="center">
+  <img src="docs/qr/qr-propina-malo.png" width="300">
+</p>
 
 ---
 

@@ -164,24 +164,25 @@ ion-refresher-content {
   margin-bottom: 4px;
 
   /* Fotografía calibrada para que los botones queden libres sobre la barra Android */
-  .foto-wrapper-full {
-    position: relative;
-    width: 100%;
-    height: 230px;
-    overflow: hidden;
-    background: #d8d0bd;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.foto-wrapper-full {
+  width: 100%;
+  height: 280px; /* 👈 Ajusta esta altura según lo alto que quieras que sea la tarjeta de la foto */
+  position: relative;
+  overflow: hidden;
+  background-color: #1a1a1a; /* Un fondo por si la foto es PNG transparente o carga lento */
+  border-radius: 12px; /* Opcional, por si quieres las puntas redondeadas */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    .cliente-foto {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      object-position: center;
-      display: block;
-    }
+  .cliente-foto {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Mantiene la proporción de la foto sin recortarla */
+    object-position: center;
+    display: block;
+  }
+
 
     .badge-estado {
       position: absolute;

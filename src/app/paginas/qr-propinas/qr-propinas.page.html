@@ -1,0 +1,57 @@
+<ion-content [fullscreen]="true" class="fondo-qr" [scrollY]="true">
+  <div class="pantalla-qr">
+    <app-navbar [rutaInicio]="rutaInicio" titulo="QR de propinas" [modoVolver]="true"></app-navbar>
+
+    <main class="contenido-qr">
+      <p class="instruccion">Mostrá el código según el nivel de satisfacción del cliente.</p>
+
+      <div class="selector-niveles" role="tablist" aria-label="Niveles de satisfacción">
+        @for (op of opciones; track op.nivel; let i = $index) {
+          <button
+            type="button"
+            role="tab"
+            class="chip-nivel"
+            [class.activo]="i === indice()"
+            [attr.aria-selected]="i === indice()"
+            (click)="seleccionar(i)">
+            {{ op.porcentaje }} %
+          </button>
+        }
+      </div>
+
+      @if (opcionActual(); as op) {
+        <section class="tarjeta-qr">
+          <div class="encabezado-qr">
+            <ion-icon [name]="op.icono"></ion-icon>
+            <div>
+              <h2>{{ op.etiqueta }}</h2>
+              <span>Propina del {{ op.porcentaje }} %</span>
+            </div>
+          </div>
+
+          <div class="marco-qr">
+            @if (imagenes()[indice()]; as imagen) {
+              <img [src]="imagen" [alt]="'Código QR de propina ' + op.etiqueta">
+            } @else if (error()) {
+              <p class="error-qr">{{ error() }}</p>
+            }
+          </div>
+
+          <code class="contenido-codigo">{{ op.codigoQr }}</code>
+        </section>
+      }
+
+      <div class="navegacion">
+        <button type="button" class="btn-navegar" (click)="anterior()" aria-label="Código anterior">
+          <ion-icon name="chevron-back-outline"></ion-icon>
+          Anterior
+        </button>
+        <span class="contador">{{ indice() + 1 }} de {{ opciones.length }}</span>
+        <button type="button" class="btn-navegar" (click)="siguiente()" aria-label="Código siguiente">
+          Siguiente
+          <ion-icon name="chevron-forward-outline"></ion-icon>
+        </button>
+      </div>
+    </main>
+  </div>
+</ion-content>

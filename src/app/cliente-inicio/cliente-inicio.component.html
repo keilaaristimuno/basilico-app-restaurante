@@ -117,9 +117,42 @@
 
 
         <!-- =====================================================
+             PUNTO 21: EL MOZO CONFIRMÓ EL PAGO -> CIERRE DE LA VISITA
+             ===================================================== -->
+        @if (cuentaConfirmada() && cuentaCliente(); as cuenta) {
+          <div class="card-estadia-recibida card-pago-confirmado">
+            <div class="encabezado-estadia-recibida">
+              <div class="badge-estado estado-confirmado">
+                <ion-icon name="checkmark-done-circle-outline"></ion-icon>
+                <span>¡Pago confirmado!</span>
+              </div>
+              <p class="explicacion-estado">
+                El mozo confirmó tu pago de {{ formatearMoneda(cuenta.total) }}. ¡Gracias por visitar Basílico!
+              </p>
+            </div>
+
+            <div class="acciones-estadia-recibida">
+              <ion-button expand="block" class="btn-accion-estadia btn-estadia-cuenta" (click)="irACuenta()">
+                <div class="contenido-btn-estadia">
+                  <ion-icon name="receipt-outline"></ion-icon>
+                  <span>Ver comprobante</span>
+                </div>
+              </ion-button>
+
+              <ion-button expand="block" class="btn-accion-estadia btn-estadia-juegos" (click)="finalizarVisitaTrasPago()">
+                <div class="contenido-btn-estadia">
+                  <ion-icon name="home-outline"></ion-icon>
+                  <span>Finalizar visita</span>
+                </div>
+              </ion-button>
+            </div>
+          </div>
+        }
+
+        <!-- =====================================================
              CASO A: NO HAY PEDIDO ACTIVO -> PRIMERO EL BOTÓN PARA PEDIR
              ===================================================== -->
-        @if (!pedidoService.pedidoActivo()) {
+        @if (!pedidoService.pedidoActivo() && !cuentaConfirmada()) {
           <div class="card-bienvenida-pedido">
             <h3>¿Listo para ordenar?</h3>
             <p>Elegí los platos y bebidas para todos los comensales de la mesa desde nuestra carta.</p>
@@ -156,7 +189,7 @@
         <!-- =====================================================
              CASO B: PEDIDO REALIZADO -> UI Y ESTADO DEL PEDIDO (PUNTOS 12 AL 20)
              ===================================================== -->
-        @if (pedidoService.pedidoActivo(); as pedido) {
+        @if (!cuentaConfirmada() && pedidoService.pedidoActivo(); as pedido) {
           @if (pedido.estado !== 'recibido') {
             <div class="tarjeta-seguimiento-pedido">
 
@@ -387,29 +420,46 @@
                   </div>
                 </ion-button>
 
-                <ion-button
-                  expand="block"
-                  class="btn-accion-estadia btn-estadia-cuenta"
-                  (click)="pedirLaCuenta()">
-                  <div class="contenido-btn-estadia">
-                    <ion-icon name="receipt-outline"></ion-icon>
-                    <span>Pedir la Cuenta</span>
-                  </div>
-                </ion-button>
+                <!-- PUNTO 21: PEDIR LA CUENTA / VER EL ESTADO DE LA CUENTA -->
+                @if (cuentaCliente(); as cuenta) {
+                  <ion-button
+                    expand="block"
+                    class="btn-accion-estadia btn-estadia-cuenta"
+                    (click)="irACuenta()">
+                    <div class="contenido-btn-estadia contenido-btn-cuenta">
+                      <ion-icon name="wallet-outline"></ion-icon>
+                      <span>Ver mi cuenta</span>
+                      <small class="estado-cuenta-btn">{{ descripcionEstadoCuenta(cuenta.estado) }}</small>
+                    </div>
+                  </ion-button>
+                } @else {
+                  <ion-button
+                    expand="block"
+                    class="btn-accion-estadia btn-estadia-cuenta"
+                    (click)="pedirLaCuenta()">
+                    <div class="contenido-btn-estadia">
+                      <ion-icon name="receipt-outline"></ion-icon>
+                      <span>Pedir la Cuenta</span>
+                    </div>
+                  </ion-button>
+                }
               </div>
 
-              <div class="zona-realizar-otro-pedido">
-                <ion-button
-                  expand="block"
-                  fill="outline"
-                  class="btn-realizar-otro-pedido"
-                  (click)="realizarOtroPedido()">
-                  <div class="contenido-btn-icono">
-                    <ion-icon name="refresh-outline"></ion-icon>
-                    <span>Realizar otro pedido</span>
-                  </div>
-                </ion-button>
-              </div>
+              <!-- Con la cuenta solicitada no se puede reiniciar la estadía (evita perder consumos a cobrar) -->
+              @if (!cuentaCliente()) {
+                <div class="zona-realizar-otro-pedido">
+                  <ion-button
+                    expand="block"
+                    fill="outline"
+                    class="btn-realizar-otro-pedido"
+                    (click)="realizarOtroPedido()">
+                    <div class="contenido-btn-icono">
+                      <ion-icon name="refresh-outline"></ion-icon>
+                      <span>Realizar otro pedido</span>
+                    </div>
+                  </ion-button>
+                </div>
+              }
             </div>
           }
         }

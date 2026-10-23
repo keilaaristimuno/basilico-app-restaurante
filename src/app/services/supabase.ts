@@ -639,12 +639,12 @@ export class Supabase {
     importeTotal: number,
     tiempoEstimado: number
   ) {
-    const { data, error } = await this.clienteSupabase
+    const insertar = (clienteIdPedido: string | null) => this.clienteSupabase
       .from('pedidos')
       .insert([
         {
           mesa_id: mesaId,
-          cliente_id: null,
+          cliente_id: clienteIdPedido,
           estado: 'enviado',
           importe_total: importeTotal,
           tiempo_estimado: tiempoEstimado,
@@ -653,6 +653,15 @@ export class Supabase {
       ])
       .select()
       .single();
+
+    // Se asocia el pedido al cliente (necesario para agrupar la cuenta del Punto 21).
+    // Si el esquema rechaza el id (clave foránea 23503 o tipo 22P02), se mantiene el
+    // comportamiento anterior (cliente_id nulo) para no bloquear la toma de pedidos.
+    let { data, error } = await insertar(clienteId || null);
+    if (error && clienteId && (error.code === '23503' || error.code === '22P02')) {
+      console.warn('No se pudo asociar el cliente al pedido, se guarda sin cliente:', error.message);
+      ({ data, error } = await insertar(null));
+    }
 
     if (error) {
       console.error('Error al guardar el nuevo pedido:', error.message);

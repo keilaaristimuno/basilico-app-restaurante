@@ -11,6 +11,7 @@ import { signal } from '@angular/core';
 import {ChatComponent} from '../../components/chat/chat.component';
 import { listOutline, receiptOutline, checkmarkDoneOutline, chatbubblesOutline } from 'ionicons/icons';
 import { ChatEstadoService } from '../../services/chat-servicio';
+import { CuentaService } from '../../services/cuenta.service';
 @Component({
   selector: 'app-mozo-inicio',
   templateUrl: './mozo-inicio.component.html',
@@ -21,13 +22,22 @@ import { ChatEstadoService } from '../../services/chat-servicio';
 export class MozoInicioComponent  implements OnInit {
   abrirChatModal = signal<boolean>(false);
 
+  /**
+   * Cantidad de pagos simulados pendientes de confirmación (Punto 21)
+   */
+  pagosPendientes = signal<number>(0);
+
   readonly chatsNoLeidos = this.chatEstado.chatsNoLeidos;
-  constructor(private chatEstado: ChatEstadoService) { 
+  constructor(private chatEstado: ChatEstadoService, private cuentaService: CuentaService) { 
     addIcons({ listOutline, receiptOutline, checkmarkDoneOutline, chatbubblesOutline });
   }
 
   ngOnInit() {
     this.cargarNombreChat();
+  }
+
+  async ionViewWillEnter() {
+    this.pagosPendientes.set(await this.cuentaService.contarPagosPendientes());
   }
 
 

@@ -1,4 +1,4 @@
-﻿<ion-header class="header-transparente">
+<ion-header class="header-transparente">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button
@@ -17,7 +17,6 @@
 </ion-header>
 
 <ion-content
-  [fullscreen]="true"
   [scrollY]="false"
   class="carta-content">
 
@@ -34,20 +33,6 @@
       <h2>
         Nuestra carta
       </h2>
-
-      @if (pedidoService.modoEdicion()) {
-        <div class="banner-edicion-pedido">
-          <ion-icon name="alert-circle-outline"></ion-icon>
-          <div>
-            <strong>Modificación de Pedido</strong>
-            <p>Agregá, modificá o quitá productos según lo solicitado por el mozo y reenviálo.</p>
-          </div>
-        </div>
-      } @else {
-        <p>
-          Descubrí nuestros platos y bebidas seleccionados para tu mesa
-        </p>
-      }
 
       <div class="decoracion-header"></div>
 
@@ -222,6 +207,8 @@
                       (click)="alternarDescripcion(producto)">
                       {{ descripcionExpandida[producto.id] ? 'Ver menos' : 'Ver más' }}
                     </button>
+                  } @else {
+                    <span class="boton-descripcion boton-descripcion-vacio" aria-hidden="true"></span>
                   }
 
                   <!-- TIEMPO ESTIMADO -->
@@ -305,39 +292,54 @@
 
   </div>
 
-  <!-- =========================================================
-       BARRA FIJA INFERIOR DEL PEDIDO (PUNTO 12)
-       Visible en todo momento con importe acumulado y tiempo
-       ========================================================= -->
-  @if (!esEmpleado && pedidoService.cantidadTotal() > 0) {
-    <div class="barra-resumen-pedido">
-      <div class="info-resumen-barra">
-        <div class="columna-precio">
-          <span class="texto-etiqueta">IMPORTE ACUMULADO</span>
-          <span class="monto-acumulado">${{ formatearPrecio(pedidoService.importeTotal()) }}</span>
+  </ion-content>
+
+<!-- =========================================================
+     BARRA INFERIOR DEL PEDIDO (PUNTO 12)
+     Fija siempre en pantalla en ion-footer
+     ========================================================= -->
+@if (!esEmpleado) {
+  <ion-footer class="ion-no-border footer-resumen-pedido">
+    <div
+      class="barra-resumen-pedido"
+      [class.barra-vacia]="pedidoService.cantidadTotal() === 0"
+      [class.barra-edicion]="pedidoService.modoEdicion()">
+      @if (pedidoService.cantidadTotal() > 0) {
+        <div class="info-resumen-barra">
+          <div class="columna-precio">
+            <span class="texto-etiqueta">IMPORTE ACUMULADO</span>
+            <span class="monto-acumulado">${{ formatearPrecio(pedidoService.importeTotal()) }}</span>
+          </div>
+
+          <div class="columna-tiempo">
+            <span class="texto-etiqueta">TIEMPO ESTIMADO</span>
+            <span class="tiempo-acumulado">
+              <ion-icon name="time-outline"></ion-icon>
+              {{ pedidoService.tiempoEstimado() }} min
+            </span>
+          </div>
         </div>
 
-        <div class="columna-tiempo">
-          <span class="texto-etiqueta">TIEMPO ESTIMADO</span>
-          <span class="tiempo-acumulado">
-            <ion-icon name="time-outline"></ion-icon>
-            {{ pedidoService.tiempoEstimado() }} min
+        <button
+          type="button"
+          class="btn-revisar-pedido"
+          (click)="abrirModalPedido()">
+          <ion-icon name="cart-outline"></ion-icon>
+          <span class="texto-btn-pedido">
+            {{ pedidoService.modoEdicion() ? 'Revisar Pedido' : 'Ver Pedido' }} ({{ pedidoService.cantidadTotal() }})
+          </span>
+        </button>
+      } @else {
+        <div class="mensaje-carrito-vacio">
+          <ion-icon name="cart-outline"></ion-icon>
+          <span>
+            {{ pedidoService.modoEdicion() ? 'Tu pedido modificado está vacío. Agregá productos para reenviarlo.' : 'Tu pedido está vacío. Agregá productos para enviarlo al mozo.' }}
           </span>
         </div>
-      </div>
-
-      <button
-        type="button"
-        class="btn-revisar-pedido"
-        (click)="abrirModalPedido()">
-        <ion-icon name="cart-outline"></ion-icon>
-        <span class="texto-btn-pedido">
-          {{ pedidoService.modoEdicion() ? 'Revisar Modificación' : 'Ver Pedido' }} ({{ pedidoService.cantidadTotal() }})
-        </span>
-      </button>
+      }
     </div>
-  }
-</ion-content>
+  </ion-footer>
+}
 
 <!-- =========================================================
      MODAL DE REVISIÓN Y CONFIRMACIÓN DE PEDIDO (PUNTOS 12 Y 13)
@@ -363,7 +365,7 @@
       </ion-toolbar>
     </ion-header>
 
-    <ion-content class="contenido-modal-pedido" [class.con-scroll]="pedidoService.carrito().length >= 4">
+    <ion-content class="contenido-modal-pedido contenido-pedido-envio" [scrollY]="pedidoService.carrito().length >= 5" [class.con-scroll]="pedidoService.carrito().length >= 5" [class.pocos-items]="pedidoService.carrito().length === 1" [class.muchos-items]="pedidoService.carrito().length >= 4">
       <div class="contenedor-resumen-modal">
 
         <!-- Banner informativo -->
@@ -375,8 +377,21 @@
         </div>
 
         <!-- Listado de ítems seleccionados -->
-        <div class="lista-items-pedido">
-          @for (item of pedidoService.carrito(); track item.producto.id) {
+        <div class="lista-items-pedido" [class.es-vacio]="pedidoService.carrito().length === 0">
+          @if (pedidoService.carrito().length === 0) {
+            <div class="mensaje-pedido-vacio">
+              <div class="icono-contenedor-vacio">
+                <ion-icon name="cart-outline"></ion-icon>
+              </div>
+              <h4>{{ pedidoService.modoEdicion() ? 'Tu pedido modificado está vacío' : 'Tu pedido está vacío' }}</h4>
+              <p>
+                {{ pedidoService.modoEdicion()
+                  ? 'Quitaste todos los productos. Volvé a la carta para agregar los productos requeridos y reenviarlo al mozo.'
+                  : 'No tenés productos seleccionados. Podés volver a la carta para agregar platos o bebidas.' }}
+              </p>
+            </div>
+          } @else {
+            @for (item of pedidoService.carrito(); track item.producto.id) {
             <div class="tarjeta-item-pedido">
               <div class="info-item-pedido">
                 <span class="tipo-tag" [class.tipo-bebida]="item.producto.tipo === 'bebida'">
@@ -422,6 +437,7 @@
                 </button>
               </div>
             </div>
+          }
           }
         </div>
 

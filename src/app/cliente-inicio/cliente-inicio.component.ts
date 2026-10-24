@@ -324,12 +324,11 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
         this.mesaEscaneada.set(false);
       }
 
-      // 3. Consultar pedido activo
-      if (this.numeroMesa()) {
-        const pedido = await this.pedidoService.consultarPedidoActivo(idCliente, this.mesaId());
-        if (pedido) {
-          this.mesaEscaneada.set(true);
-        }
+      // 3. Consultar pedido activo (únicamente si el cliente ya escaneó su mesa en esta estadía)
+      if (this.numeroMesa() && this.mesaEscaneada()) {
+        await this.pedidoService.consultarPedidoActivo(idCliente, this.mesaId());
+      } else if (!this.mesaEscaneada()) {
+        this.pedidoService.pedidoActivo.set(null);
       }
 
       // 4. Verificar si ya completó la encuesta en la estadía actual (Punto 20)
@@ -429,6 +428,51 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
       return;
     }
 
+    // Limpiar y archivar pedidos previos del cliente y de su mesa para arrancar siempre limpio
+    try {
+      if (idCliente) {
+        await this.supabase.clienteSupabase
+          .from('pedidos')
+          .update({ estado: 'finalizado' })
+          .eq('cliente_id', idCliente)
+          .not('estado', 'in', '("finalizado","pagado")');
+
+        await this.supabase.clienteSupabase
+          .from('mesas')
+          .update({ disponibilidad: 'vacia', cliente_id: null })
+          .eq('cliente_id', idCliente);
+      }
+      if (this.mesaId()) {
+        await this.supabase.clienteSupabase
+          .from('pedidos')
+          .update({ estado: 'finalizado' })
+          .eq('mesa_id', this.mesaId())
+          .not('estado', 'in', '("finalizado","pagado")');
+      }
+    } catch (e) {
+      console.warn('Error al archivar pedidos anteriores al ingresar a espera:', e);
+    }
+
+    // Reiniciar estado local y reactivo
+    this.pedidoService.limpiarCarrito();
+    this.pedidoService.pedidoActivo.set(null);
+    this.pedidoService.mesaActual.set(null);
+    this.numeroMesa.set('');
+    this.mesaId.set('');
+    this.mesaEscaneada.set(false);
+    this.encuestaCompletada.set(false);
+
+    Object.keys(localStorage).forEach((k) => {
+      if (
+        k.startsWith('mesa_escaneada_') ||
+        k.startsWith('recepcion_confirmada_') ||
+        k.startsWith('pedido_finalizado_')
+      ) {
+        localStorage.removeItem(k);
+      }
+    });
+    localStorage.removeItem('identificador');
+
     // Si quedó una cuenta anterior en pago_confirmado de una visita previa sin tocar "Finalizar visita", se da por cerrada
     const cuentaPrevia = this.cuentaCliente();
     if (cuentaPrevia && cuentaPrevia.estado === 'pago_confirmado') {
@@ -474,9 +518,11 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
 
       // Verificamos si el cliente YA HABÍA escaneado esta mesa antes (guardado en localStorage)
       const guardada = localStorage.getItem(`mesa_escaneada_${mesaEncontrada.numero}`);
-      if (mesaEncontrada.disponibilidad === 'ocupada' || guardada === 'true') {
+      if (mesaEncontrada.disponibilidad === 'ocupada' && guardada === 'true') {
         localStorage.setItem(`mesa_escaneada_${mesaEncontrada.numero}`, 'true');
         this.mesaEscaneada.set(true); // Solo si ya fue escaneada previamente en esta estadía
+      } else {
+        this.mesaEscaneada.set(false);
       }
 
       this.pedidoService.setMesa(mesaEncontrada.id, mesaEncontrada.numero);
@@ -526,6 +572,32 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
           }
         }
 
+        // SEGURIDAD: Archivar pedidos anteriores no finalizados para arrancar siempre limpio
+        try {
+          if (this.mesaId()) {
+            await this.supabase.clienteSupabase
+              .from('pedidos')
+              .update({ estado: 'finalizado' })
+              .eq('mesa_id', this.mesaId())
+              .not('estado', 'in', '("finalizado","pagado")');
+          }
+          if (this.clienteId()) {
+            await this.supabase.clienteSupabase
+              .from('pedidos')
+              .update({ estado: 'finalizado' })
+              .eq('cliente_id', this.clienteId())
+              .not('estado', 'in', '("finalizado","pagado")');
+          }
+        } catch (e) {
+          console.warn('Error al archivar pedidos anteriores:', e);
+        }
+
+        // Iniciar siempre desde 0
+        this.pedidoService.limpiarCarrito();
+        this.pedidoService.pedidoActivo.set(null);
+        this.pedidoService.setMesa(this.mesaId(), Number(nro));
+        this.pedidoService.setCliente(this.clienteId(), this.nombreCliente());
+
         await this.mostrarToast(`¡Mesa N° ${nro} vinculada con éxito! Ya podés hacer tu pedido.`, 'success');
       } else {
         await this.vibracion.errorFuerte();
@@ -545,6 +617,9 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
     if (!this.numeroMesa()) {
       await this.mostrarToast('Debés tener una mesa asignada para hacer un pedido.', 'warning');
       return;
+    }
+    if (!this.pedidoService.pedidoActivo()) {
+      this.pedidoService.limpiarCarrito();
     }
     this.pedidoService.setMesa(this.mesaId(), Number(this.numeroMesa()));
     this.pedidoService.setCliente(this.clienteId(), this.nombreCliente());

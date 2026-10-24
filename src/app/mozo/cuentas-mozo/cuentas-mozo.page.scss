@@ -4,15 +4,31 @@ $terracota: #b24d39;
 $beige-oscuro: #ddd2b8;
 $salvia: #8fa382;
 
+:host {
+  display: block;
+  height: 100%;
+}
+
 .fondo-cuentas {
   --background: #283720;
+  --overflow: hidden;
+
+  &::part(scroll) {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
 }
 
 .pantalla-cuentas {
+  height: 100%;
   min-height: 100%;
   display: flex;
   flex-direction: column;
   font-family: var(--font-body);
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .contenido-cuentas {
@@ -20,81 +36,85 @@ $salvia: #8fa382;
   width: 100%;
   max-width: 680px;
   margin: 0 auto;
-  padding: 16px 16px calc(28px + env(safe-area-inset-bottom, 0px));
+  padding: 6px 14px calc(10px + env(safe-area-inset-bottom, 0px));
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-}
-
-.encabezado {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  color: $beige;
-
-  .logo {
-    width: 64px;
-    flex-shrink: 0;
-  }
-
-  h1 {
-    margin: 0;
-    font-size: 1.4rem;
-    font-weight: 800;
-    text-transform: uppercase;
-  }
-
-  p {
-    margin: 4px 0 0;
-    font-size: 0.9rem;
-  }
+  gap: 8px;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .enlace-qr {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  min-height: 56px;
-  border-radius: 14px;
+  gap: 8px;
+  min-height: 44px;
+  border-radius: 12px;
   border: 2px solid $beige;
+  background: rgba(237, 229, 210, 0.08);
   color: $beige;
   text-decoration: none;
   font-weight: 700;
+  font-size: 0.92rem;
+  box-sizing: border-box;
+  width: 100%;
+  flex-shrink: 0;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+
+  &:active {
+    transform: scale(0.99);
+    background: rgba(237, 229, 210, 0.16);
+  }
 
   ion-icon {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
 }
 
 .pestanias {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  gap: 6px;
+  width: 100%;
+  box-sizing: border-box;
+  flex-shrink: 0;
 
   button {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
-    min-height: 74px;
-    padding: 8px 4px;
-    border-radius: 16px;
+    justify-content: center;
+    min-height: 58px;
+    padding: 6px 4px;
+    border-radius: 12px;
     border: none;
     background: #3e4b36;
     color: $beige;
     font-family: var(--font-body);
-    font-size: 0.78rem;
+    font-size: 0.74rem;
     font-weight: 700;
     line-height: 1.15;
+    text-align: center;
+    transition: background-color 0.2s ease, color 0.2s ease;
 
     .numero {
-      font-size: 1.5rem;
+      font-size: 1.35rem;
+      line-height: 1;
+      margin-bottom: 5px;
 
       &.alerta {
         color: #f0b09f;
       }
+    }
+
+    .texto-tab {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      line-height: 1.15;
     }
 
     &.activa {
@@ -110,73 +130,196 @@ $salvia: #8fa382;
 
 .tarjeta-vacia {
   flex: 1;
+  min-height: 0;
+  width: 100%;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 30px 20px;
+  padding: clamp(20px, 3.5vh, 32px) 16px;
   border-radius: 20px;
-  background: #3e4b36;
-  color: $beige;
+  background: $beige;
+  color: $oliva;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  border-left: 8px solid $salvia;
 
-  ion-icon {
-    font-size: 3.4rem;
+  .icono-vacio {
+    width: clamp(50px, 8vh, 66px);
+    height: clamp(50px, 8vh, 66px);
+    border-radius: 50%;
+    background: rgba(40, 55, 32, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-bottom: 10px;
+
+    ion-icon {
+      font-size: clamp(1.8rem, 3.5vh, 2.3rem);
+      color: $oliva;
+    }
   }
 
   h2 {
-    margin: 0 0 8px;
-    font-size: 1.2rem;
+    margin: 0 0 6px;
+    font-size: clamp(1.1rem, 2.2vh, 1.35rem);
+    font-weight: 800;
+    color: $oliva;
   }
 
   p {
     margin: 0;
-    font-size: 0.9rem;
+    font-size: clamp(0.86rem, 1.7vh, 0.98rem);
+    color: rgba(40, 55, 32, 0.85);
+    line-height: 1.4;
+    max-width: 400px;
+  }
+
+  .badge-vacio {
+    margin-top: 12px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: rgba(40, 55, 32, 0.1);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: $oliva;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+
+    ion-icon {
+      font-size: 1rem;
+    }
   }
 }
 
-.lista-cuentas {
+/* =========================================================
+   CONTENEDOR CARRUSEL (1 CUENTA POR PANTALLA, TAMAÑO UNIFORME)
+   ========================================================= */
+.contenedor-carrusel-cuenta {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 8px;
+  box-sizing: border-box;
+  touch-action: pan-y;
+  overflow: hidden;
 }
 
+/* Barra superior de navegación entre cuentas (botones y "1 de X" agrandados) */
+.carrusel-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  background: rgba(237, 229, 210, 0.09);
+  border: 1px solid rgba(237, 229, 210, 0.18);
+  border-radius: 14px;
+  flex-shrink: 0;
+
+  .btn-nav-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border-radius: 999px;
+    background: rgba(237, 229, 210, 0.16);
+    border: 1px solid rgba(237, 229, 210, 0.32);
+    color: $beige;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: background 0.2s ease, opacity 0.2s ease, transform 0.15s ease;
+
+    &:disabled {
+      opacity: 0.25;
+      cursor: not-allowed;
+    }
+
+    &:not(:disabled):active {
+      transform: scale(0.97);
+      background: rgba(237, 229, 210, 0.28);
+    }
+
+    ion-icon {
+      font-size: 1.3rem;
+    }
+  }
+
+  .nav-centro {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .nav-texto {
+      font-family: var(--font-body);
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: $beige;
+      letter-spacing: 0.5px;
+    }
+  }
+}
+
+/* Tarjeta individual de la cuenta: ocupa todo el alto disponible */
 .tarjeta-cuenta {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  box-sizing: border-box;
   background: $beige;
   color: $oliva;
-  border-radius: 22px;
-  padding: 20px 18px;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.32);
-  border-left: 10px solid $salvia;
+  border-radius: 20px;
+  padding: clamp(12px, 2vh, 18px) clamp(14px, 2.5vw, 20px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  border-left: 8px solid $salvia;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 
   &.destacada {
     border-left-color: $terracota;
   }
 }
 
+/* SECCIÓN SUPERIOR: CABECERA Y DATOS */
 .cabecera {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  flex-wrap: wrap;
+  gap: 8px;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
 
   .mesa {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 1.45rem;
+    gap: 7px;
+    font-size: clamp(1.22rem, 2.45vh, 1.38rem);
     font-weight: 800;
+    white-space: nowrap;
+    flex-shrink: 0;
+
+    ion-icon {
+      font-size: 1.35rem;
+    }
   }
 
   .estado {
-    padding: 6px 14px;
+    padding: 4px 11px;
     border-radius: 999px;
-    font-size: 0.86rem;
+    font-size: clamp(0.78rem, 1.6vh, 0.86rem);
     font-weight: 700;
     background: $oliva;
     color: $beige;
+    white-space: nowrap;
+    flex-shrink: 0;
+    text-align: center;
+    line-height: 1.2;
 
     &[data-estado='pago_pendiente_confirmacion'] {
       background: $terracota;
@@ -191,33 +334,49 @@ $salvia: #8fa382;
 .datos {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  margin: 10px 0;
-  font-size: 0.96rem;
+  gap: 3px;
+  margin: 6px 0 8px;
+  font-size: clamp(0.86rem, 1.7vh, 0.92rem);
+  line-height: 1.25;
+  flex-shrink: 0;
 
   span {
     display: flex;
     align-items: center;
     gap: 6px;
+
+    ion-icon {
+      font-size: 1.05rem;
+    }
   }
 }
 
+/* =========================================================
+   SECCIÓN DEL MEDIO: LISTA DE ITEMS (DISTRIBUCIÓN EQUITATIVA)
+   ========================================================= */
 .items {
   list-style: none;
   margin: 0;
-  padding: 8px 0;
-  border-top: 1px dashed rgba(40, 55, 32, 0.35);
-  border-bottom: 1px dashed rgba(40, 55, 32, 0.35);
+  padding: 4px 0;
+  border-top: 1px dashed rgba(40, 55, 32, 0.25);
+  border-bottom: 1px dashed rgba(40, 55, 32, 0.25);
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  overflow-y: auto;
 
   li {
     display: flex;
+    align-items: center;
     gap: 8px;
-    padding: 4px 0;
-    font-size: 1rem;
+    padding: 3px 0;
+    line-height: 1.25;
 
     .cant {
       font-weight: 700;
-      min-width: 30px;
+      min-width: 26px;
     }
 
     .nombre {
@@ -232,18 +391,22 @@ $salvia: #8fa382;
   }
 }
 
+/* =========================================================
+   SECCIÓN INFERIOR: RESUMEN, NOTAS Y ACCIONES
+   ========================================================= */
 .resumen {
-  margin-top: 10px;
-  padding: 12px 16px;
-  border-radius: 14px;
+  margin-top: clamp(6px, 1.1vh, 8px);
+  padding: clamp(7px, 1.3vh, 10px) clamp(12px, 2.2vw, 16px);
+  border-radius: 12px;
   background: $beige-oscuro;
+  flex-shrink: 0;
 
   .fila {
     display: flex;
     justify-content: space-between;
-    gap: 10px;
-    padding: 3px 0;
-    font-size: 0.98rem;
+    gap: 8px;
+    padding: 2px 0;
+    font-size: clamp(0.86rem, 1.7vh, 0.94rem);
 
     span:first-child {
       display: inline-flex;
@@ -261,52 +424,55 @@ $salvia: #8fa382;
     }
 
     &.total {
-      margin-top: 6px;
-      padding-top: 8px;
-      border-top: 2px solid $oliva;
-      font-size: 1.38rem;
+      margin-top: 4px;
+      padding-top: 4px;
+      border-top: 1.5px solid $oliva;
+      font-size: clamp(1.22rem, 2.45vh, 1.38rem);
       font-weight: 800;
     }
   }
 }
 
 .referencia {
-  margin: 10px 0 0;
-  font-size: 0.8rem;
+  margin: 3px 0 0;
+  font-size: 0.76rem;
   overflow-wrap: anywhere;
+  flex-shrink: 0;
 }
 
 .nota {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin: 12px 0 0;
-  font-size: 0.96rem;
+  gap: 6px;
+  margin: 6px 0 0;
+  font-size: clamp(0.82rem, 1.6vh, 0.88rem);
   font-weight: 600;
+  flex-shrink: 0;
 
   ion-icon {
-    font-size: 1.3rem;
+    font-size: 1.18rem;
     flex-shrink: 0;
   }
 }
 
 .confirmacion {
-  margin-top: 14px;
-  padding: 12px;
-  border-radius: 14px;
+  margin-top: 8px;
+  padding: 8px 10px;
+  border-radius: 12px;
   background: $oliva;
   color: $beige;
+  flex-shrink: 0;
 
   p {
-    margin: 0 0 10px;
-    font-size: 0.92rem;
+    margin: 0 0 6px;
+    font-size: 0.88rem;
     font-weight: 600;
   }
 
   .botones {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 8px;
   }
 }
 
@@ -315,11 +481,11 @@ $salvia: #8fa382;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  min-height: 52px;
-  border-radius: 14px;
+  gap: 6px;
+  min-height: 46px;
+  border-radius: 12px;
   font-family: var(--font-body);
-  font-size: 1.08rem;
+  font-size: clamp(0.94rem, 1.95vh, 1.02rem);
   font-weight: 800;
 
   &:disabled {
@@ -331,15 +497,16 @@ $salvia: #8fa382;
   border: none;
   background: $terracota;
   color: $beige;
+  flex-shrink: 0;
 
   &.ancho {
     width: 100%;
-    margin-top: 14px;
-    min-height: 58px;
+    margin-top: 8px;
+    min-height: 48px;
   }
 
   ion-icon {
-    font-size: 1.4rem;
+    font-size: 1.25rem;
   }
 }
 
@@ -347,4 +514,194 @@ $salvia: #8fa382;
   border: 2px solid $beige;
   background: transparent;
   color: $beige;
+}
+
+/* =========================================================
+   ADAPTACIÓN DE TEXTOS Y ESPACIADOS SEGÚN CANTIDAD DE ITEMS
+   ========================================================= */
+
+// 1 PRODUCTO: textos aumentados en las 3 secciones para llenar la card armoniosamente
+.tarjeta-cuenta[data-items="1"] {
+  // Sección superior
+  .cabecera {
+    .mesa {
+      font-size: clamp(1.36rem, 2.8vh, 1.58rem);
+      ion-icon { font-size: 1.5rem; }
+    }
+    .estado {
+      font-size: clamp(0.86rem, 1.75vh, 0.95rem);
+      padding: 5px 14px;
+    }
+  }
+
+  .datos {
+    margin: clamp(8px, 1.6vh, 12px) 0 clamp(10px, 1.8vh, 14px);
+    gap: 5px;
+    font-size: clamp(0.96rem, 1.95vh, 1.06rem);
+    span ion-icon { font-size: 1.2rem; }
+  }
+
+  // Sección del medio
+  .items {
+    padding: 8px 0;
+    li {
+      padding: 10px 0;
+      font-size: clamp(1.15rem, 2.3vh, 1.28rem);
+      .cant { min-width: 36px; font-size: 1.25rem; }
+      .importe { font-size: 1.22rem; }
+    }
+  }
+
+  // Sección inferior
+  .resumen {
+    margin-top: clamp(8px, 1.6vh, 14px);
+    padding: clamp(10px, 1.8vh, 14px) clamp(14px, 2.5vw, 18px);
+    .fila {
+      padding: 3px 0;
+      font-size: clamp(0.96rem, 1.9vh, 1.06rem);
+      &.total {
+        margin-top: 5px;
+        padding-top: 6px;
+        font-size: clamp(1.36rem, 2.8vh, 1.58rem);
+      }
+    }
+  }
+
+  .nota {
+    font-size: clamp(0.88rem, 1.7vh, 0.96rem);
+    ion-icon { font-size: 1.25rem; }
+  }
+}
+
+// 2 PRODUCTOS: textos aumentados en las 3 secciones
+.tarjeta-cuenta[data-items="2"] {
+  // Sección superior
+  .cabecera {
+    .mesa {
+      font-size: clamp(1.3rem, 2.6vh, 1.48rem);
+      ion-icon { font-size: 1.42rem; }
+    }
+    .estado {
+      font-size: clamp(0.82rem, 1.65vh, 0.9rem);
+      padding: 4px 12px;
+    }
+  }
+
+  .datos {
+    margin: clamp(6px, 1.3vh, 10px) 0 clamp(8px, 1.5vh, 12px);
+    gap: 4px;
+    font-size: clamp(0.92rem, 1.8vh, 1rem);
+    span ion-icon { font-size: 1.12rem; }
+  }
+
+  // Sección del medio
+  .items {
+    padding: 6px 0;
+    li {
+      padding: 8px 0;
+      font-size: clamp(1.08rem, 2.15vh, 1.2rem);
+      .cant { min-width: 32px; font-size: 1.16rem; }
+      .importe { font-size: 1.15rem; }
+    }
+  }
+
+  // Sección inferior
+  .resumen {
+    margin-top: clamp(6px, 1.3vh, 10px);
+    padding: clamp(8px, 1.6vh, 12px) clamp(12px, 2.3vw, 16px);
+    .fila {
+      padding: 2.5px 0;
+      font-size: clamp(0.92rem, 1.8vh, 1rem);
+      &.total {
+        margin-top: 4px;
+        padding-top: 5px;
+        font-size: clamp(1.3rem, 2.6vh, 1.48rem);
+      }
+    }
+  }
+
+  .nota {
+    font-size: clamp(0.84rem, 1.65vh, 0.92rem);
+    ion-icon { font-size: 1.2rem; }
+  }
+}
+
+// 3 PRODUCTOS (estándar equilibrado)
+.tarjeta-cuenta[data-items="3"] {
+  .items li {
+    font-size: clamp(0.94rem, 1.85vh, 1.02rem);
+    .cant { min-width: 28px; }
+  }
+}
+
+// 4 PRODUCTOS
+.tarjeta-cuenta[data-items="4"] {
+  .items li {
+    font-size: clamp(0.9rem, 1.75vh, 0.98rem);
+    .cant { min-width: 26px; }
+  }
+}
+
+// MÁS DE 4 PRODUCTOS (5 O MÁS): tamaño equilibrado y legible en las 3 secciones (sin verse chico)
+.tarjeta-cuenta:not([data-items="1"]):not([data-items="2"]):not([data-items="3"]):not([data-items="4"]) {
+  // Sección superior
+  .cabecera {
+    .mesa {
+      font-size: clamp(1.24rem, 2.45vh, 1.38rem);
+      ion-icon {
+        font-size: 1.35rem;
+      }
+    }
+    .estado {
+      font-size: clamp(0.80rem, 1.6vh, 0.88rem);
+      padding: 4px 11px;
+    }
+  }
+
+  .datos {
+    margin: clamp(4px, 1vh, 6px) 0 clamp(5px, 1.1vh, 7px);
+    gap: 3px;
+    font-size: clamp(0.88rem, 1.72vh, 0.94rem);
+    span ion-icon {
+      font-size: 1.05rem;
+    }
+  }
+
+  // Sección del medio
+  .items {
+    padding: 3px 0;
+    li {
+      font-size: clamp(0.90rem, 1.76vh, 0.98rem);
+      padding: clamp(2.5px, 0.6vh, 4px) 0;
+      .cant {
+        min-width: 28px;
+        font-size: clamp(0.94rem, 1.8vh, 1.02rem);
+      }
+      .importe {
+        font-size: clamp(0.90rem, 1.76vh, 0.98rem);
+      }
+    }
+  }
+
+  // Sección inferior
+  .resumen {
+    margin-top: clamp(4px, 1vh, 7px);
+    padding: clamp(6px, 1.3vh, 9px) clamp(11px, 2.2vw, 15px);
+    .fila {
+      padding: 2px 0;
+      font-size: clamp(0.88rem, 1.72vh, 0.95rem);
+      &.total {
+        margin-top: 3px;
+        padding-top: 4px;
+        font-size: clamp(1.26rem, 2.5vh, 1.42rem);
+      }
+    }
+  }
+
+  .nota {
+    font-size: clamp(0.84rem, 1.62vh, 0.90rem);
+    ion-icon {
+      font-size: 1.18rem;
+    }
+  }
 }

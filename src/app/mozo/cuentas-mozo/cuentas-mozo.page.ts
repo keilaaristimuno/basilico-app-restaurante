@@ -7,6 +7,8 @@ import {
   alertCircleOutline,
   cashOutline,
   checkmarkDoneCircleOutline,
+  chevronBackOutline,
+  chevronForwardOutline,
   giftOutline,
   heartOutline,
   hourglassOutline,
@@ -61,8 +63,18 @@ export class CuentasMozoPage implements OnInit, OnDestroy {
     }
   });
 
+  readonly indiceActual = signal<number>(0);
+  readonly cuentaActual = computed<Cuenta | null>(() => {
+    const lista = this.listaVisible();
+    if (lista.length === 0) return null;
+    const idx = Math.min(Math.max(0, this.indiceActual()), lista.length - 1);
+    return lista[idx] ?? null;
+  });
+
   private canal: RealtimeChannel | null = null;
   private subPush: Subscription | null = null;
+  private touchStartX = 0;
+  private touchStartY = 0;
 
   constructor(
     private cuentaService: CuentaService,
@@ -72,9 +84,9 @@ export class CuentasMozoPage implements OnInit, OnDestroy {
     private toastCtrl: ToastController
   ) {
     addIcons({
-      alertCircleOutline, cashOutline, checkmarkDoneCircleOutline, giftOutline, heartOutline,
-      hourglassOutline, personOutline, qrCodeOutline, receiptOutline, restaurantOutline,
-      timeOutline, walletOutline
+      alertCircleOutline, cashOutline, checkmarkDoneCircleOutline, chevronBackOutline,
+      chevronForwardOutline, giftOutline, heartOutline, hourglassOutline, personOutline,
+      qrCodeOutline, receiptOutline, restaurantOutline, timeOutline, walletOutline
     });
   }
 
@@ -112,6 +124,10 @@ export class CuentasMozoPage implements OnInit, OnDestroy {
       if (conSpinner && this.pagosPendientes().length === 0 && this.solicitadas().length > 0) {
         this.pestania.set('solicitadas');
       }
+
+      if (this.indiceActual() >= this.listaVisible().length) {
+        this.indiceActual.set(Math.max(0, this.listaVisible().length - 1));
+      }
     } catch (error: any) {
       await this.vibracion.errorFuerte();
       await this.mostrarToast(error?.message ?? 'No se pudieron obtener las cuentas.', 'danger');
@@ -121,6 +137,50 @@ export class CuentasMozoPage implements OnInit, OnDestroy {
   cambiarPestania(pestania: Pestania) {
     this.pestania.set(pestania);
     this.confirmandoId.set(null);
+    this.indiceActual.set(0);
+  }
+
+  cuentaAnterior() {
+    if (this.indiceActual() > 0) {
+      this.indiceActual.update(i => i - 1);
+      this.confirmandoId.set(null);
+    }
+  }
+
+  cuentaSiguiente() {
+    if (this.indiceActual() < this.listaVisible().length - 1) {
+      this.indiceActual.update(i => i + 1);
+      this.confirmandoId.set(null);
+    }
+  }
+
+  irACuenta(index: number) {
+    this.indiceActual.set(index);
+    this.confirmandoId.set(null);
+  }
+
+  onTouchStart(event: TouchEvent) {
+    if (event.changedTouches?.length > 0) {
+      this.touchStartX = event.changedTouches[0].clientX;
+      this.touchStartY = event.changedTouches[0].clientY;
+    }
+  }
+
+  onTouchEnd(event: TouchEvent) {
+    if (event.changedTouches?.length > 0) {
+      const touchEndX = event.changedTouches[0].clientX;
+      const touchEndY = event.changedTouches[0].clientY;
+      const difX = this.touchStartX - touchEndX;
+      const difY = Math.abs(this.touchStartY - touchEndY);
+
+      if (Math.abs(difX) > 40 && Math.abs(difX) > difY) {
+        if (difX > 0) {
+          this.cuentaSiguiente();
+        } else {
+          this.cuentaAnterior();
+        }
+      }
+    }
   }
 
   pedirConfirmacion(cuenta: Cuenta) {
@@ -153,6 +213,9 @@ export class CuentasMozoPage implements OnInit, OnDestroy {
         'success'
       );
       await this.cargar(false);
+      if (this.indiceActual() >= this.listaVisible().length) {
+        this.indiceActual.set(Math.max(0, this.listaVisible().length - 1));
+      }
     } catch (error: any) {
       await this.vibracion.errorFuerte();
       await this.mostrarToast(error?.message ?? 'No se pudo confirmar el pago.', 'danger');
@@ -186,6 +249,10 @@ export class CuentasMozoPage implements OnInit, OnDestroy {
 
   unidades(cuenta: Cuenta): number {
     return (cuenta.cuenta_items ?? []).reduce((total, it) => total + it.cantidad, 0);
+  }
+
+  cantidadItems(cuenta: Cuenta): number {
+    return (cuenta.cuenta_items ?? []).length;
   }
 
   fechaHora(iso: string | null | undefined): string {

@@ -27,6 +27,20 @@ Deno.serve(async (req: Request) => {
       );
     }
 
+    // Solo se envían correos a las direcciones autorizadas (secreto CORREOS_PERMITIDOS,
+    // separadas por coma). Evita que cualquiera use la función para mandar spam.
+    const permitidos = (Deno.env.get("CORREOS_PERMITIDOS") || "")
+      .split(",")
+      .map((c: string) => c.trim().toLowerCase())
+      .filter(Boolean);
+
+    if (!permitidos.includes(String(destino).trim().toLowerCase())) {
+      return new Response(
+        JSON.stringify({ error: "Destino no autorizado en la demo" }),
+        { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     const fromMap: Record<string, string> = {
       notificaciones: "Basílico Registro <notificaciones@restobasilico.com.ar>",
       factura: "Basílico Facturación <tufactura@restobasilico.com.ar>",
@@ -44,7 +58,7 @@ Deno.serve(async (req: Request) => {
     // Plantilla visual con la identidad de marca de Basílico
     const html = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; border: 1px solid #e0e0e0; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
-        
+
         <!-- Banner Superior con Logo Completo (Olive #283720) -->
         <div style="background-color: #283720; padding: 24px 20px; text-align: center;">
           <img src="https://xmlcpvfjlnuakqehrvom.supabase.co/storage/v1/object/public/assets/Basiloco_beige.png" alt="Basílico" style="max-width: 170px; width: 170px; height: auto; display: block; margin: 0 auto;" />

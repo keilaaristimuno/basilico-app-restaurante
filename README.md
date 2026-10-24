@@ -1,25 +1,67 @@
 # Basilico - Proyecto de Gestión de Restaurante 🍽️
 ### **Grupo:** Basilico - 2026
-
+ 
 ### **Tecnicatura Universitaria en Programación - UTN Avellaneda**
-
- `Link del proyecto Supabase:` https://xmlcpvfjlnuakqehrvom.supabase.co --> integrado al repo
-
+ 
 ---
-
+ 
+<a id="sobre-el-proyecto"></a>
+ 
+## 🌿 Sobre el proyecto
+ 
+**Basílico** es una aplicación móvil para la gestión integral de un restaurante italiano, desarrollada como Trabajo Final Integrador de la Tecnicatura Universitaria en Programación (UTN Avellaneda, 2026). Acompaña toda la visita del cliente: desde que escanea el QR de ingreso al local hasta que paga la cuenta y completa la encuesta, conectando en tiempo real a clientes, metre, mozos, cocina, bar y dueños/supervisores.
+ 
+### ✨ Funcionalidades principales
+ 
+- **Ingreso por QR**: el cliente escanea el QR del local, se anota en la lista de espera y el metre le asigna una mesa.
+- **Registro de clientes** (con foto y lectura del QR del DNI) o ingreso como **cliente anónimo**, con aprobación del dueño/supervisor y **correos automáticos** personalizados.
+- **Carta digital** con carrusel de fotos, armado del pedido con importe siempre visible y seguimiento del estado en tiempo real.
+- **Cocina y bar**: pedidos pendientes agrupados por mesa, marcado de productos listos y aviso automático al mozo.
+- **Mozo / metre**: confirmación de pedidos, entrega, chat de consultas con la mesa y liberación de mesas.
+- **Juegos con descuentos** (Bingo, Mayor o Menor y Trivia culinaria) de 10%, 15% y 20%.
+- **Cuenta y propina por QR**, comprobante de pago y notificación al dueño/supervisor.
+- **Encuesta de satisfacción** con resultados en gráficos de barras, torta y evolución.
+- **Notificaciones push**, sonidos y vibración para cada evento importante.
+### 🛠️ Tecnologías
+ 
+| Capa | Tecnología |
+| :--- | :--- |
+| App | Angular + Ionic, Capacitor (Android) |
+| Backend | Supabase (Auth, Postgres, Realtime, Storage, Edge Functions) |
+| Notificaciones | Firebase Cloud Messaging (push) y Resend (correos) |
+| Plugins | Cámara, lector de QR/código de barras (ML Kit), vibración |
+ 
+### 🚀 Cómo correrlo localmente
+ 
+```bash
+npm install
+npm start                # versión web en http://localhost:4200
+npx cap sync android     # para generar y abrir la app en Android Studio
+npx cap open android
+```
+ 
+Las Edge Functions de `supabase/functions` (`enviar-correo` y `enviar-push`) leen sus credenciales de los secretos del proyecto de Supabase (`RESEND_API_KEY`, `FIREBASE_SERVICE_ACCOUNT_JSON`, `SUPABASE_SERVICE_ROLE_KEY`), que no se incluyen en este repositorio.
+ 
+### 💬 Feedback
+ 
+¡Cualquier comentario, sugerencia o mejora es bienvenido! Podés abrir un *issue* en este repositorio.
+ 
+---
+ 
 ## 📑 Índice
-
-1. [👥 Integrantes y Responsabilidades](#integrantes)
-2. [🗓️ Planificación de Tareas](#planificacion)
+ 
+1. [🌿 Sobre el proyecto](#sobre-el-proyecto)
+2. [👥 Integrantes y Responsabilidades](#integrantes)
+3. [🗓️ Planificación de Tareas](#planificacion)
    - [Aristimuño, Keila](#plan-keila)
    - [Cuenca, Francisco](#plan-francisco)
    - [Arriaga, Ignacio](#plan-ignacio)
    - [Seggiaro, Agustina](#plan-agustina)
-3. [📲 Códigos QR del Proyecto](#codigos-qr)
+4. [📲 Códigos QR del Proyecto](#codigos-qr)
    - [QR de Ingreso al Local](#qr-ingreso)
    - [QRs de Mesas](#qr-mesas)
    - [QRs de Propinas](#qr-propinas)
-4. [🖼️ Índice de Imágenes del Proyecto](#imagenes)
+5. [🖼️ Índice de Imágenes del Proyecto](#imagenes)
    - [🌐 Pantallas Generales](#pantallas-generales)
    - [👤 Dueño / Supervisor](#duenio-supervisor)
    - [🍳 Cocinero / Cantinero](#cocinero-cantinero)

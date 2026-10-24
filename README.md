@@ -239,8 +239,6 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 
 *Requisito excluyente: Todos los códigos QR deben estar disponibles para las pruebas.*
 
-> Los códigos QR se incorporarán en esta sección a medida que sean generados y validados.
-
 <a id="qr-ingreso"></a>
 
 ### 🚪 QR de Ingreso al Local
@@ -301,7 +299,7 @@ Qr para escanear mesa 7
 
 ### 💰 QRs de Propinas
 
-Al pedir la cuenta (Punto 21), el cliente **debe** escanear uno de estos cinco códigos para indicar su satisfacción. El porcentaje lo define el servidor a partir del código: no se aceptan otros valores ni QR de mesa, ingreso o DNI.
+Al pedir la cuenta, el cliente **debe** escanear uno de estos cinco códigos para indicar su satisfacción. El porcentaje lo define el servidor a partir del código: no se aceptan otros valores ni QR de mesa, ingreso o DNI.
 También se pueden mostrar en pantalla desde la app: **Mozo → Cuentas y liberación → Mostrar los QR de propina** (ruta `/qr-propinas`).
 
 | Satisfacción | Propina | Contenido del QR |

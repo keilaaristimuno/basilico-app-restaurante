@@ -324,12 +324,11 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
         this.mesaEscaneada.set(false);
       }
 
-      // 3. Consultar pedido activo
-      if (this.numeroMesa()) {
-        const pedido = await this.pedidoService.consultarPedidoActivo(idCliente, this.mesaId());
-        if (pedido) {
-          this.mesaEscaneada.set(true);
-        }
+      // 3. Consultar pedido activo (únicamente si el cliente ya escaneó su mesa en esta estadía)
+      if (this.numeroMesa() && this.mesaEscaneada()) {
+        await this.pedidoService.consultarPedidoActivo(idCliente, this.mesaId());
+      } else if (!this.mesaEscaneada()) {
+        this.pedidoService.pedidoActivo.set(null);
       }
 
       // 4. Verificar si ya completó la encuesta en la estadía actual (Punto 20)
@@ -428,6 +427,51 @@ export class ClienteInicioComponent implements OnInit, OnDestroy {
       await this.mostrarToast('Error al anotarse en la lista de espera.', 'danger');
       return;
     }
+
+    // Limpiar y archivar pedidos previos del cliente y de su mesa para arrancar siempre limpio
+    try {
+      if (idCliente) {
+        await this.supabase.clienteSupabase
+          .from('pedidos')
+          .update({ estado: 'finalizado' })
+          .eq('cliente_id', idCliente)
+          .not('estado', 'in', '("finalizado","pagado")');
+
+        await this.supabase.clienteSupabase
+          .from('mesas')
+          .update({ disponibilidad: 'vacia', cliente_id: null })
+          .eq('cliente_id', idCliente);
+      }
+      if (this.mesaId()) {
+        await this.supabase.clienteSupabase
+          .from('pedidos')
+          .update({ estado: 'finalizado' })
+          .eq('mesa_id', this.mesaId())
+          .not('estado', 'in', '("finalizado","pagado")');
+      }
+    } catch (e) {
+      console.warn('Error al archivar pedidos anteriores al ingresar a espera:', e);
+    }
+
+    // Reiniciar estado local y reactivo
+    this.pedidoService.limpiarCarrito();
+    this.pedidoService.pedidoActivo.set(null);
+    this.pedidoService.mesaActual.set(null);
+    this.numeroMesa.set('');
+    this.mesaId.set('');
+    this.mesaEscaneada.set(false);
+    this.encuestaCompletada.set(false);
+
+    Object.keys(localStorage).forEach((k) => {
+      if (
+        k.startsWith('mesa_escaneada_') ||
+        k.startsWith('recepcion_confirmada_') ||
+        k.startsWith('pedido_finalizado_')
+      ) {
+        localStorage.removeItem(k);
+      }
+    });
+    localStorage.removeItem('identificador');
 
     // Si quedó una cuenta anterior en pago_confirmado de una visita previa sin tocar "Finalizar visita", se da por cerrada
     const cuentaPrevia = this.cuentaCliente();

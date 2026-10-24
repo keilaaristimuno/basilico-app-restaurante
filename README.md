@@ -344,7 +344,7 @@ Actualmente permite acceder a:
 - **Clientes pendientes:** visualización y gestión de clientes registrados que se encuentran pendientes de aprobación.
 
 <p align="center">
-  <img src="docs/capturas/duenio-supervisor/01-pantalla-inicio-duenio.png" width="300">
+  <img src="docs/capturas/duenio-supervisor/01-pantalla-inicio-duenio.jpeg" width="300">
 </p>
 
 ---
@@ -436,7 +436,7 @@ Pantalla destinada a la visualización de los productos disponibles en la carta 
 Cada producto presenta su información correspondiente, incluyendo nombre, descripción, precio y tiempo estimado de elaboración. Las fotografías pueden recorrerse mediante el carrusel de imágenes disponible en cada producto.
 
 <p align="center">
-  <img src="docs/capturas/cocina-bar/03-carta-platos.png" width="300">
+  <img src="docs/capturas/cocina-bar/03-carta-platos.jpeg" width="300">
 </p>
 
 **Editar menu**
@@ -582,6 +582,14 @@ El **importe acumulado** y el **tiempo estimado** se mantienen siempre visibles 
   <img src="docs/capturas/cliente/09-carta-pedido.png" width="300">
 </p>
 
+**Carta sin productos agregados**
+
+Mientras el pedido no tenga productos, la barra inferior indica que el pedido está vacío e invita a agregar productos para enviarlo al mozo.
+
+<p align="center">
+  <img src="docs/capturas/cliente/21-carta-pedido-vacio.png" width="300">
+</p>
+
 ---
 
 ### 7. Confirmar Pedido
@@ -592,6 +600,14 @@ Al finalizar, el mozo recibe una notificación automática para autorizar el ped
 
 <p align="center">
   <img src="docs/capturas/cliente/18-confirmar-pedido.png" width="300">
+</p>
+
+**Pedido vacío**
+
+Si el cliente elimina todos los productos, se muestra el aviso **"Tu pedido está vacío"**, el importe y el tiempo estimado vuelven a cero y el botón **Terminar y Enviar Pedido** queda deshabilitado hasta que se vuelva a la carta a agregar platos o bebidas.
+
+<p align="center">
+  <img src="docs/capturas/cliente/20-confirmar-pedido-vacio.png" width="300">
 </p>
 
 ---
@@ -685,7 +701,7 @@ El detalle y el pago se habilitan recién después de escanear el QR.
 <p align="center">
   <img src="docs/capturas/cliente/cliente-propina.png" width="300">
 </p>
-
+<!--COMENTADO
 **Sin cuenta abierta**
 
 Si el cliente ingresa a la cuenta sin haberla pedido, se le indica que primero debe recibir su pedido y tocar «Pedir la cuenta» desde la pantalla de su mesa.
@@ -693,6 +709,7 @@ Si el cliente ingresa a la cuenta sin haberla pedido, se le indica que primero d
 <p align="center">
   <img src="docs/capturas/cliente/sin-cuenta.png" width="300">
 </p>
+ -->
 
 ---
 
@@ -849,9 +866,8 @@ Desde la lista de espera, el metre puede visualizar los clientes que solicitaron
 
 Una vez disponible una mesa, el metre puede asignarla al cliente correspondiente para continuar con el flujo de atención.
 
-
 <p align="center">
-  <img src="docs/capturas/mozo-metre/clientes_pendientes.jpg" width="300">
+  <img src="docs/capturas/mozo-metre/08-lista-espera-una-solicitud.jpeg" width="300">
 </p>
 
 **Sin clientes pendientes**
@@ -868,7 +884,7 @@ Al seleccionar un cliente de la lista de espera, el metre visualiza las mesas di
 Al asignarse la mesa, el cliente recibe una push notification para escanear el QR de su mesa.
 
 <p align="center">
-  <img src="docs/capturas/mozo-metre/asignar_mesa.jpg" width="300">
+  <img src="docs/capturas/mozo-metre/asignar_mesa.jpeg" width="300">
 </p>
 
 ---
@@ -879,12 +895,11 @@ Pantalla principal correspondiente al perfil mozo. Desde esta sección se centra
 
 Actualmente dispone de los siguientes accesos:
 
-- **Pedidos:** pedidos enviados por los clientes que requieren autorización o rechazo por parte del mozo.
-- **Pedidos listos:** pedidos cuya preparación fue finalizada y se encuentran disponibles para ser entregados.
-- **Cuentas y liberación:** gestión del proceso de cobro y posterior liberación de la mesa.
+- **Pedidos:** pedidos enviados por los clientes para autorizar, rechazar o entregar una vez listos.
+- **Cuentas y liberación:** cuentas solicitadas por los clientes y confirmación de los pagos para liberar la mesa.
 - **Chat de consultas:** acceso a las consultas y conversaciones iniciadas por los clientes.
 
-Cada acceso muestra un contador con la cantidad de elementos pendientes (por ejemplo, pedidos a autorizar o chats nuevos).
+Los accesos muestran un indicador con la cantidad de elementos pendientes (por ejemplo, pedidos a gestionar).
 
 <p align="center">
   <img src="docs/capturas/mozo-metre/02-inicio-mozo.png" width="300">
@@ -911,7 +926,7 @@ Cada pedido muestra la mesa, el comensal, la fecha y hora, los productos solicit
 
 ### 6. Pedidos Listos
 
-Sección destinada a visualizar los pedidos cuya preparación fue completada por los sectores correspondientes.
+Dentro de la sección **Pedidos**, el mozo también visualiza los pedidos cuya preparación fue completada por los sectores correspondientes.
 
 El pedido deberá estar disponible para entrega una vez que todos los productos que lo componen se encuentren listos. Desde esta sección, el mozo podrá identificar los pedidos preparados y continuar con la entrega al cliente.
 
@@ -946,16 +961,21 @@ Cada cuenta muestra la mesa, el cliente, los horarios (solicitada, pagada y conf
 Cuando un cliente pide la cuenta, el mozo recibe una push notification y la cuenta aparece en **Cuentas solicitadas** con el estado **"Esperando propina"**, hasta que el cliente escanee un QR de propina. Una vez escaneado, se aplica la propina correspondiente y la cuenta pasa a **"Lista para pagar"**, a la espera del pago del cliente.
 
 <p align="center">
-  <img src="docs/capturas/mozo-metre/cuenta-solicitada-esperando-propina.png" width="300">
   <img src="docs/capturas/mozo-metre/cuenta-solicitada-lista-pagar.png" width="300">
 </p>
 
 **Pago por confirmar**
 
-Al tocar **Confirmar pago y liberar mesa**, se confirma el pago del cliente y la mesa vuelve a quedar disponible.
+Al tocar **Confirmar pago y liberar mesa**, se pide una confirmación con el monto recibido. Al aceptar, se confirma el pago del cliente y la mesa vuelve a quedar disponible.
 
 <p align="center">
   <img src="docs/capturas/mozo-metre/05-pago-por-confirmar.png" width="300">
+  <img src="docs/capturas/mozo-metre/05-confirmar-pago-dialogo.png" width="300">
+</p>
+
+**Sin pagos por confirmar**
+<p align="center">
+  <img src="docs/capturas/mozo-metre/05-pagos-por-confirmar-vacio.png" width="300">
 </p>
 
 **Cuentas cerradas**

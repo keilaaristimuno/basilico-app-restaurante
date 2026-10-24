@@ -83,6 +83,10 @@
             class="icono">
           </ion-icon>
 
+          @if (pedidosPendientes() > 0) {
+            <span class="badge-pendientes">{{ pedidosPendientes() }}</span>
+          }
+
           <div class="informacion">
 
             <h2>Pedidos pendientes</h2>

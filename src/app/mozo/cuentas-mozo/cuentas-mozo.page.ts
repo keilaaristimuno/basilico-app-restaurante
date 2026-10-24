@@ -227,8 +227,9 @@ export class CuentasMozoPage implements OnInit, OnDestroy {
   nombreCliente(cuenta: Cuenta): string {
     const cli = cuenta.clientes;
     if (!cli) return 'Cliente';
-    if ((cli.perfil ?? '').toLowerCase() === 'anonimo') {
-      return `${(cli.nombres ?? '').trim()} (cliente anónimo)`;
+    const perfil = (cli.perfil ?? '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    if (perfil === 'anonimo') {
+      return `${(cli.nombres ?? '').trim()} (Cliente Anónimo)`;
     }
     return `${cli.nombres ?? ''} ${cli.apellidos ?? ''}`.trim() || 'Cliente registrado';
   }

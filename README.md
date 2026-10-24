@@ -4,9 +4,34 @@
 ### **Tecnicatura Universitaria en Programación - UTN Avellaneda**
 
  `Link del proyecto Supabase:` https://xmlcpvfjlnuakqehrvom.supabase.co --> integrado al repo
-### **Grupo:** Basilico - 2026
 
 ---
+
+## 📑 Índice
+
+1. [👥 Integrantes y Responsabilidades](#integrantes)
+2. [🗓️ Planificación de Tareas](#planificacion)
+   - [Aristimuño, Keila](#plan-keila)
+   - [Cuenca, Francisco](#plan-francisco)
+   - [Arriaga, Ignacio](#plan-ignacio)
+   - [Seggiaro, Agustina](#plan-agustina)
+3. [📲 Códigos QR del Proyecto](#codigos-qr)
+   - [QR de Ingreso al Local](#qr-ingreso)
+   - [QRs de Mesas](#qr-mesas)
+   - [QRs de Propinas](#qr-propinas)
+4. [🖼️ Índice de Imágenes del Proyecto](#imagenes)
+   - [🌐 Pantallas Generales](#pantallas-generales)
+   - [👤 Dueño / Supervisor](#duenio-supervisor)
+   - [🍳 Cocinero / Cantinero](#cocinero-cantinero)
+   - [👤 Cliente](#cliente)
+     - [Juegos y Descuentos](#juegos)
+   - [🧑‍🍳 Mozo / Metre](#mozo-metre)
+   - [📊 Encuestas y Gráficos](#encuestas)
+   - [📧 Correos Electrónicos Automáticos](#correos)
+
+---
+
+<a id="integrantes"></a>
 
 ## 👥 Integrantes y Responsabilidades
 
@@ -50,6 +75,13 @@ Punto 19 — Entrega del pedido completo + cambio de estado
 Liderar el servicio central de Supabase y el sistema de notificaciones push (por ser quien más interactúacon todos los flujos)
 
 ---
+
+<a id="planificacion"></a>
+
+## 🗓️ Planificación de Tareas
+
+<a id="plan-keila"></a>
+
 ### 👤 Aristimuño, Keila - Líder del Grupo
 
 * **Planificación de Tareas:**
@@ -79,6 +111,8 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 
 ---
 
+<a id="plan-francisco"></a>
+
 ### 👤 Cuenca, Francisco
 
 * **Planificación de Tareas:**
@@ -100,6 +134,9 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 | Correciones en diseño y funcionalidades del flujo del pedido | 21/09/2026 | 23/10/2026 | `feature/correciones-flujo-pedidos` | Finalizado |
 
 ---
+
+<a id="plan-ignacio"></a>
+
 ### 👤 Ignacio Arriaga
 * **Módulos / Objetivos a desarrollar:**
   - Puntos 12, 13, 14 — Armado de pedido, PedidoService e integración con la carta
@@ -118,6 +155,9 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 | Punto 15 — Rediseño de la pantalla de juegos (pantalla completa, botones XXL, navbar con título) | 16/10/2026 | 16/10/2026 | `feature/juegos` | Finalizado |
 
 ---
+
+<a id="plan-agustina"></a>
+
 ### 👤 Seggiaro, Agustina Anabel
 * **Módulos / Objetivos a desarrollar:**
  - Login principal
@@ -151,11 +191,15 @@ Liderar el servicio central de Supabase y el sistema de notificaciones push (por
 
 ---
 
+<a id="codigos-qr"></a>
+
 ## 📲 Códigos QR del Proyecto
 
 *Requisito excluyente: Todos los códigos QR deben estar disponibles para las pruebas.*
 
 > Los códigos QR se incorporarán en esta sección a medida que sean generados y validados.
+
+<a id="qr-ingreso"></a>
 
 ### 🚪 QR de Ingreso al Local
 
@@ -164,6 +208,8 @@ Qr al ingresar un cliente al local para figurar en listad e espera
 <p align="center">
   <img src="docs/qr/qr-ingreso-local.png" width="300">
 </p>
+
+<a id="qr-mesas"></a>
 
 ### 🍽️ QRs de Mesas
 Qr para escanear mesa 1
@@ -209,6 +255,8 @@ Qr para escanear mesa 7
 </p>
 
 
+<a id="qr-propinas"></a>
+
 ### 💰 QRs de Propinas
 
 Al pedir la cuenta (Punto 21), el cliente **debe** escanear uno de estos cinco códigos para indicar su satisfacción. El porcentaje lo define el servidor a partir del código: no se aceptan otros valores ni QR de mesa, ingreso o DNI.
@@ -249,9 +297,13 @@ Malo (0%)
 
 ---
 
+<a id="imagenes"></a>
+
 # 🖼️ Índice de Imágenes del Proyecto
 
 *Índice de las imágenes, pantallas, formularios y elementos visuales implementados en la aplicación.*
+
+<a id="pantallas-generales"></a>
 
 ## 🌐 Pantallas Generales
 
@@ -331,6 +383,8 @@ Los perfiles disponibles son:
 
 ---
 
+<a id="duenio-supervisor"></a>
+
 ## 👤 Dueño / Supervisor
 
 ### 1. Pantalla Principal del Dueño
@@ -387,6 +441,8 @@ Desde esta sección se puede consultar la información del cliente y gestionar s
 </p>
 
 ---
+
+<a id="cocinero-cantinero"></a>
 
 ## 🍳 Cocinero / Cantinero
 
@@ -510,6 +566,8 @@ Cuando todos los productos de un pedido están listos, el sistema avisa automát
 </p>
 
 ---
+
+<a id="cliente"></a>
 
 ## 👤 Cliente
 
@@ -775,6 +833,8 @@ Al finalizar la visita, la mesa queda liberada y el cliente vuelve a la pantalla
 
 ---
 
+<a id="juegos"></a>
+
 ### 19. Juegos y Descuentos
 
 Sección destinada a los juegos disponibles para clientes registrados. Los juegos permiten obtener descuentos sobre la cuenta final según las condiciones establecidas para cada uno.
@@ -840,6 +900,8 @@ Trivia de 5 preguntas sobre cocina italiana organizadas por categoría (salsas, 
 
 
 ---
+
+<a id="mozo-metre"></a>
 
 ## 🧑‍🍳 Mozo / Metre
 
@@ -1005,6 +1067,8 @@ El sistema permitirá mantener una sala de conversación entre clientes y mozos,
 
 ---
 
+<a id="encuestas"></a>
+
 ## 📊 Encuestas y Gráficos
 
 ### 1. Acceso a la Encuesta desde la Pantalla del Cliente
@@ -1084,6 +1148,8 @@ Tercera pantalla de estadísticas. Muestra la tendencia de satisfacción en las 
 </p>
 
 ---
+
+<a id="correos"></a>
 
 ## 📧 Correos Electrónicos Automáticos
 

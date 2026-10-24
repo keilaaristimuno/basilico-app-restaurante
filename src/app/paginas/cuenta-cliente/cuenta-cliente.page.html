@@ -1,4 +1,4 @@
-<ion-content [fullscreen]="true" class="fondo-cuenta">
+<ion-content [fullscreen]="true" class="fondo-cuenta" [class.sin-scroll]="cuenta()?.estado === 'pendiente_propina'" [scrollY]="cuenta()?.estado !== 'pendiente_propina'">
   <div class="pantalla-cuenta">
     <app-navbar rutaInicio="/clienteInicio" titulo="Tu cuenta"></app-navbar>
 

@@ -12,6 +12,16 @@ $beige-oscuro: #ddd2b8;
 
 .fondo-cuenta {
   --background: #283720;
+
+  &.sin-scroll {
+    --overflow: hidden;
+
+    .pantalla-cuenta {
+      height: 100%;
+      max-height: 100%;
+      overflow: hidden;
+    }
+  }
 }
 
 .pantalla-cuenta {
@@ -352,8 +362,11 @@ $beige-oscuro: #ddd2b8;
    en pantallas altas (≥ ~860px) quedan los valores originales y en
    celulares bajos se compactan para que todo entre sin scroll. */
 .contenido-cuenta.modo-propina {
-  padding: clamp(8px, 1.6vh, 14px) 16px clamp(10px, 2.8vh, 24px);
-  gap: clamp(8px, 1.6vh, 14px);
+  flex: 1;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 8px 16px 10px;
+  gap: 8px;
 
   .paso {
     gap: clamp(3px, 0.7vh, 6px);
@@ -378,8 +391,10 @@ $beige-oscuro: #ddd2b8;
   }
 
   .tarjeta-propina {
-    padding: clamp(12px, 2.3vh, 20px) 18px;
-    gap: clamp(8px, 1.86vh, 16px);
+    padding: 12px 16px;
+    gap: 8px;
+    margin-bottom: 2px;
+    box-sizing: border-box;
 
     .cabecera-propina h2 {
       font-size: clamp(1.12rem, 2.5vh, 1.35rem);
@@ -426,6 +441,7 @@ $beige-oscuro: #ddd2b8;
   }
 
   .btn-escanear {
+    margin-top: clamp(6px, 1.1vh, 9px);
     min-height: clamp(60px, 10.7vh, 92px);
     padding: clamp(8px, 1.4vh, 12px) 18px;
 

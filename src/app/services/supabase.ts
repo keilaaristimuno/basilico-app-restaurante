@@ -520,6 +520,25 @@ export class Supabase {
       console.warn('No se pudo limpiar mesa previa del cliente:', e);
     }
 
+    // Buscamos la mesa para archivar cualquier pedido previo que haya quedado pendiente en ella
+    try {
+      const { data: mesaData } = await this.clienteSupabase
+        .from('mesas')
+        .select('id')
+        .eq('numero', numeroMesa)
+        .single();
+
+      if (mesaData?.id) {
+        await this.clienteSupabase
+          .from('pedidos')
+          .update({ estado: 'finalizado' })
+          .eq('mesa_id', mesaData.id)
+          .not('estado', 'in', '("finalizado","pagado")');
+      }
+    } catch (e) {
+      console.warn('No se pudo archivar pedidos previos de la mesa asignada:', e);
+    }
+
     // El metre asigna → disponibilidad pasa a 'asignada' (no 'ocupada').
     // 'ocupada' se establece recién cuando el cliente escanea el QR de la mesa.
     const { error: errorMesa } = await this.clienteSupabase
@@ -831,9 +850,7 @@ export class Supabase {
       .order('created_at', { ascending: false })
       .limit(1);
 
-    if (mesaId && clienteId) {
-      query = query.eq('mesa_id', mesaId).eq('cliente_id', clienteId);
-    } else if (mesaId) {
+    if (mesaId) {
       query = query.eq('mesa_id', mesaId);
     } else if (clienteId) {
       query = query.eq('cliente_id', clienteId);

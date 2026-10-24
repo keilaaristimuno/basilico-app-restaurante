@@ -185,12 +185,15 @@ export class CuentaClientePage implements OnInit, OnDestroy {
     try {
       contenido = await this.qrService.leerQR();
     } catch (error: any) {
+      const msg = String(error?.message || error || '').toLowerCase();
+      if (msg.includes('cancel')) {
+        return;
+      }
       await this.mostrarError(error?.message || 'No se pudo abrir el lector de códigos QR.');
       return;
     }
 
     if (!contenido) {
-      await this.mostrarError('No se leyó ningún código. Verificá que la aplicación tenga permiso para usar la cámara y volvé a intentar.');
       return;
     }
 

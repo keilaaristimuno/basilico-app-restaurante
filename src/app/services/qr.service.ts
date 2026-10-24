@@ -33,3 +33,4 @@ export class QrService {
     return barcodes.length > 0 ? (barcodes[0].rawValue ?? null) : null;
   }
 }
+

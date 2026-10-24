@@ -16,10 +16,12 @@
     <section class="acciones">
       <ion-card class="tarjeta" routerLink="/pedidos-mozo">
         <ion-card-content>
-          <ion-icon name="list-outline" class="icono"></ion-icon>
-          @if (pedidosActivos() > 0) {
-            <span class="badge-pendientes">{{ pedidosActivos() }}</span>
-          }
+          <div class="icono-contenedor">
+            <ion-icon name="list-outline" class="icono"></ion-icon>
+            @if (pedidosActivos() > 0) {
+              <span class="badge-pendientes">{{ pedidosActivos() }}</span>
+            }
+          </div>
           <div class="informacion">
             <h2>Pedidos</h2>
             <p>
@@ -31,13 +33,12 @@
 
       <ion-card class="tarjeta" routerLink="/cuentas-mozo">
         <ion-card-content>
-          <ion-icon
-            name="receipt-outline"
-            class="icono">
-          </ion-icon>
-          @if (pagosPendientes() > 0) {
-            <span class="badge-pendientes">{{ pagosPendientes() }}</span>
-          }
+          <div class="icono-contenedor">
+            <ion-icon name="receipt-outline" class="icono"></ion-icon>
+            @if (pagosPendientes() > 0) {
+              <span class="badge-pendientes">{{ pagosPendientes() }}</span>
+            }
+          </div>
           <div class="informacion">
             <h2>Cuentas y liberación</h2>
             <p>
@@ -50,13 +51,12 @@
 
       <ion-card class="tarjeta" (click)="alternarChat()">
         <ion-card-content>
-          <ion-icon
-            name="chatbubbles-outline"
-            class="icono">
-          </ion-icon>
-        @if (chatsNoLeidos() > 0) {
-          <span class="badge-pendientes">{{ chatsNoLeidos() }}</span>
-        }
+          <div class="icono-contenedor">
+            <ion-icon name="chatbubbles-outline" class="icono"></ion-icon>
+            @if (chatsNoLeidos() > 0) {
+              <span class="badge-pendientes">{{ chatsNoLeidos() }}</span>
+            }
+          </div>
 
           <div class="informacion">
             <h2>Chat de consultas</h2>

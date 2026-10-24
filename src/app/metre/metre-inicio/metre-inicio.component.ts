@@ -10,8 +10,8 @@ import { Supabase } from '../../services/supabase';
 import { WritableSignal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PushNotificationsService } from '../../services/push-notifications.service';
-import { timeOutline } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
+import { listOutline, personAddOutline } from 'ionicons/icons';
 
 
 @Component({
@@ -30,11 +30,21 @@ export class MetreInicioComponent  {
   idSeleccionadoCliente = signal<string>('');
 
   constructor( private supabase: Supabase, private pushNotificationsService: PushNotificationsService) { 
-    addIcons({ timeOutline });
+    addIcons({ listOutline, personAddOutline });
   }
 
   ngOnInit() {
+    void this.pushNotificationsService.inicializar().then(() =>
+      this.pushNotificationsService.asociarTokenDelUsuarioActual()
+    );
     this.obtenerListaEspera();
+  }
+
+  ionViewWillEnter() {
+    void this.pushNotificationsService.inicializar().then(() =>
+      this.pushNotificationsService.asociarTokenDelUsuarioActual()
+    );
+    void this.obtenerListaEspera();
   }
 
   async obtenerListaEspera() {
@@ -49,13 +59,22 @@ export class MetreInicioComponent  {
 
   async rechazarCliente(idCliente:string){
     try{
-      await this.supabase.eliminarDeListaDeEspera(idCliente)
-      await this.pushNotificationsService.enviarNotificacion(
+      await this.supabase.eliminarDeListaDeEspera(idCliente);
+      const resPush = await this.pushNotificationsService.enviarNotificacion(
         '¡Solicitud rechazada!',
-        `El metre te ha rechazado su solicitud de mesa.`,
-        { userIds: [idCliente] }, // Destinatario específico
-        { ruta: '/clienteInicio' }  // Redirige al inicio
+        `El metre ha rechazado tu solicitud en la lista de espera.`,
+        { userIds: [idCliente] },
+        { ruta: '/clienteInicio' }
       );
+      if (!resPush?.sent) {
+        await this.pushNotificationsService.enviarNotificacion(
+          '¡Solicitud rechazada!',
+          `El metre ha rechazado tu solicitud en la lista de espera.`,
+          { profiles: ['cliente'] },
+          { ruta: '/clienteInicio' }
+        );
+      }
+      await this.obtenerListaEspera();
     } catch(error){
       console.log('error ', error)
     }
@@ -66,12 +85,20 @@ export class MetreInicioComponent  {
     try {
       await this.supabase.asignarMesaACliente(idCliente, numeroMesa);
       
-      await this.pushNotificationsService.enviarNotificacion(
+      const resPush = await this.pushNotificationsService.enviarNotificacion(
         '¡Mesa Asignada!',
-        `El metre te ha asignado la Mesa N° ${numeroMesa}. Ya puedes escanear el código QR correspondiente.`,
-        { userIds: [idCliente] }, // Destinatario específico
-        //{ ruta: '/escanear-qr' }  // Ruta a la que viajará cuando el cliente haga tap en la notificación
+        `El metre te ha asignado la Mesa N° ${numeroMesa}. Ya podés escanear el código QR de tu mesa.`,
+        { userIds: [idCliente] },
+        { ruta: '/clienteInicio' }
       );
+      if (!resPush?.sent) {
+        await this.pushNotificationsService.enviarNotificacion(
+          '¡Mesa Asignada!',
+          `El metre te ha asignado la Mesa N° ${numeroMesa}. Ya podés escanear el código QR de tu mesa.`,
+          { profiles: ['cliente'] },
+          { ruta: '/clienteInicio' }
+        );
+      }
 
       console.log('Notificación push enviada al cliente');
 

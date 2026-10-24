@@ -1,12 +1,12 @@
-<ion-content  [fullscreen]="true" class="fondo">
-  <app-navbar></app-navbar>
-  <div class="contenedor">
+<ion-content [fullscreen]="true" class="fondo" [scrollY]="false">
+  <div class="pantalla-completa">
+  <app-navbar rutaInicio="/mozoInicio"></app-navbar>
+  <div class="contenedor-mozo">
     <section class="encabezado">
       <img
         src="assets/Basilico/Logo_beige.png"
         alt="Logotipo de Basílico"
         class="logo">
-
       <h1>Mozo</h1>
       <p>
         Seleccione la opción que desea realizar
@@ -14,55 +14,49 @@
     </section>
 
     <section class="acciones">
-      <ion-card class="tarjeta" routerLink="/alta-plato" button="true">
+      <ion-card class="tarjeta" routerLink="/pedidos-mozo">
         <ion-card-content>
-
+          <div class="icono-contenedor">
+            <ion-icon name="list-outline" class="icono"></ion-icon>
+            @if (pedidosActivos() > 0) {
+              <span class="badge-pendientes">{{ pedidosActivos() }}</span>
+            }
+          </div>
           <div class="informacion">
-
-            <h2>Nuevos pedidos</h2>
+            <h2>Pedidos</h2>
             <p>
-              Visualizar los pedidos para autorizar o rechazar.
+              Visualizar los pedidos para autorizar, rechazar o entregar.
             </p>
-
           </div>
         </ion-card-content>
       </ion-card>
 
-      <ion-card class="tarjeta" routerLink="/carta" button="true">
+      <ion-card class="tarjeta" routerLink="/cuentas-mozo">
         <ion-card-content>
-          <div class="informacion">
-            <h2>Pedidos listos</h2>
-            <p>
-              Visualizar los pedidos listos para entregar al cliente.
-            </p>
-
+          <div class="icono-contenedor">
+            <ion-icon name="receipt-outline" class="icono"></ion-icon>
+            @if (pagosPendientes() > 0) {
+              <span class="badge-pendientes">{{ pagosPendientes() }}</span>
+            }
           </div>
-        </ion-card-content>
-      </ion-card>
-
-      <ion-card class="tarjeta tarjeta-deshabilitada" >
-        <ion-card-content>
-          <!-- <ion-icon
-            name="receipt-outline"
-            class="icono">
-          </ion-icon> -->
-
           <div class="informacion">
             <h2>Cuentas y liberación</h2>
             <p>
-              Visualizar los pedidos listos para facturar.
+              Visualizar las cuentas solicitadas y confirmar los pagos.
             </p>
 
           </div>
         </ion-card-content>
       </ion-card>
 
-      <ion-card class="tarjeta tarjeta-deshabilitada" >
+      <ion-card class="tarjeta" (click)="alternarChat()">
         <ion-card-content>
-          <!-- <ion-icon
-            name="receipt-outline"
-            class="icono">
-          </ion-icon> -->
+          <div class="icono-contenedor">
+            <ion-icon name="chatbubbles-outline" class="icono"></ion-icon>
+            @if (chatsNoLeidos() > 0) {
+              <span class="badge-pendientes">{{ chatsNoLeidos() }}</span>
+            }
+          </div>
 
           <div class="informacion">
             <h2>Chat de consultas</h2>
@@ -75,4 +69,11 @@
       </ion-card>
     </section>
     </div>
+  </div>
 </ion-content>
+
+@if (abrirChatModal()) {
+  <div class="chat-contenedor-overlay">
+    <app-chat></app-chat>
+  </div>
+}

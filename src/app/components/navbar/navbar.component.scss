@@ -4,39 +4,118 @@
   --color: #8fa382;
   --color-selected: #ede5d2;
   
-  height: 85px; 
+  height: 68px; 
   display: flex;
   align-items: center;
-  padding: 0 10px;
-  box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+  justify-content: space-between;
+  padding: 0 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.25);
 
   ion-tab-button {
     --color: #8fa382;
     --color-selected: #ede5d2;
+    --padding-start: 4px;
+    --padding-end: 4px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 4px;
+    max-width: 72px;
+    min-width: 60px;
 
     ion-icon {
-      font-size: 2rem; 
+      font-size: 1.8rem; 
     }
 
     ion-label {
       font-family: 'Montserrat', sans-serif;
       color: #ede5d2;
-      font-size: 0.9rem; 
+      font-size: 0.85rem; 
       font-weight: 700;
       margin: 0; 
       text-align: center;
+
+      &.label-cerrar-sesion {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        line-height: 1.15;
+        font-weight: 800;
+        white-space: nowrap;
+
+        span {
+          display: block;
+          white-space: nowrap;
+        }
+      }
     }
+  }
+
+  .navbar-centro {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 8px;
+    overflow: hidden;
+
+    .textoTitulo {
+      font-family: 'Montserrat', sans-serif;
+      color: #ede5d2;
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
+    .textoNombre {
+      font-family: 'Montserrat', sans-serif;
+      color: #ede5d2;
+      font-size: 0.95rem;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .tab-btn-volver {
+    max-width: 90px;
+    min-width: 78px;
+
+    .contenido-volver-nav {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 2px;
+      color: #ede5d2;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.92rem;
+
+      ion-icon {
+        font-size: 1.45rem;
+        color: #ede5d2;
+      }
+    }
+  }
+
+  .espaciador-volver-derecha {
+    width: 78px;
+    flex-shrink: 0;
   }
 }
 
 .logoChico {
-  width: 65px; 
-  height: 65px;
+  width: 48px; 
+  height: 48px;
   object-fit: contain;
-  margin-right: 15px;
 }

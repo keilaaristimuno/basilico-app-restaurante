@@ -7,6 +7,7 @@ import {
   PushNotifications,
   Token
 } from '@capacitor/push-notifications';
+import { Subject } from 'rxjs';
 import { Supabase } from './supabase';
 
 @Injectable({
@@ -15,6 +16,7 @@ import { Supabase } from './supabase';
 export class PushNotificationsService {
   private inicializado = false;
   private tokenActual = '';
+  readonly notificacionRecibida$ = new Subject<PushNotificationSchema>();
 
   constructor(
     private supabase: Supabase,
@@ -92,6 +94,9 @@ export class PushNotificationsService {
       'pushNotificationReceived',
       async (notification: PushNotificationSchema) => {
         console.log('[Push Foreground] Notificación recibida:', notification);
+        this.ngZone.run(() => {
+          this.notificacionRecibida$.next(notification);
+        });
       }
     );
 
@@ -162,7 +167,16 @@ export class PushNotificationsService {
 
   async asociarTokenDelUsuarioActual(): Promise<void> {
     const token = this.tokenActual || localStorage.getItem('fcm_device_token');
-    if (!token) return;
+    if (!token) {
+      if (Capacitor.isNativePlatform()) {
+        try {
+          await PushNotifications.register();
+        } catch (e) {
+          console.warn('[Push] Error al solicitar token del dispositivo:', e);
+        }
+      }
+      return;
+    }
     await this.guardarTokenSegunSesion(token);
   }
 

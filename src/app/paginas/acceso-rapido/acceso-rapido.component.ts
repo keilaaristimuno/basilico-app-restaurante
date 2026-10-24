@@ -38,64 +38,14 @@ export class AccesoRapidoComponent {
     }
   }
 
-  async ingresar(mail:string, clave:string){   
-    const { data, error } = await this.supabase.iniciarSesion(mail,clave);
-    if (error){
-      console.error('Error: ',error?.message);
+  seleccionarPerfil(mail: string, clave: string) {
+    this.router.navigate(['/login'], {
+      queryParams: { mail, clave },
+      state: { mail, clave }
+    });
+  }
 
-    }else{
-
-      const cliente = await this.supabase.obtenerClientePorCorreo(mail);
-
-      if (cliente) {
-        if (cliente.estado !== 'aprobado') {
-          await this.supabase.cerrarSesion();
-          console.warn('El cliente no puede ingresar. Estado:', cliente.estado);
-          return;
-        }
-
-        localStorage.setItem('nombre', `${cliente.nombres} ${cliente.apellidos}`);
-        localStorage.setItem('perfil', 'cliente');
-
-        await this.inicializarNotificaciones();
-
-        await this.router.navigate(['/clienteInicio'], { replaceUrl: true });
-        return;
-      }
-
-      await this.inicializarNotificaciones();
-
-      /* OBTIENE EL PERFIL */
-      const dataUsuarioLogueado =  await this.supabase.obtenerPerfilUsuarioLogueado();
-      console.log('nombre del usuario:', dataUsuarioLogueado?.nombres);
-      if(dataUsuarioLogueado){
-        localStorage.setItem('nombre', dataUsuarioLogueado?.nombres);
-        localStorage.setItem('perfil', dataUsuarioLogueado?.perfil);
-        this.perfil.set(dataUsuarioLogueado?.perfil);
-      }
-
-      const navOptions = { replaceUrl: true };
-      if(this.perfil() === 'cocinero'){
-        await this.router.navigate(['/inicio-cocinero'], navOptions);
-      }
-      if(this.perfil() === 'cantinero'){
-        await this.router.navigate(['/inicio-cantinero'], navOptions);
-      }
-      if(this.perfil() === 'mozo'){
-        await this.router.navigate(['/mozoInicio'], navOptions);
-      }
-      if(this.perfil() === 'cliente'){
-        await this.router.navigate(['/clienteInicio'], navOptions);
-      }
-      if(this.perfil() === 'metre'){
-        await this.router.navigate(['/metreInicio'], navOptions);
-      }
-      if(this.perfil() === 'duenio'){
-        await this.router.navigate(['/duenioInicio'], navOptions);
-      }
-      if(this.perfil() === 'supervisor'){
-        await this.router.navigate(['/duenioInicio'], navOptions);
-      }
-    }
+  ingresar(mail: string, clave: string) {   
+    this.seleccionarPerfil(mail, clave);
   }
 }

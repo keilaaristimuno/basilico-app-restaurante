@@ -1,0 +1,328 @@
+.fondo-trivia {
+  --background: #283720;
+  --overflow: hidden;
+  height: 100%;
+  color: #ede5d2;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.pantalla-juego-completa {
+  height: calc(100% - 68px);
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 8px 12px 12px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+/* =========================================================
+   MARCADOR Y PROGRESO COMPACTO
+   ========================================================= */
+.marcador-progreso-compacto {
+  flex-shrink: 0;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(237, 229, 210, 0.2);
+  border-radius: 12px;
+  padding: 6px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  .stats-fila {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .stat-lbl {
+        font-size: 0.68rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #c5d4be;
+        font-weight: 600;
+      }
+
+      .stat-val {
+        font-size: 1.05rem;
+        font-weight: 800;
+        color: #ede5d2;
+
+        &.highlight {
+          color: #ffb74d;
+        }
+      }
+    }
+
+    .stat-divisor {
+      width: 1px;
+      height: 24px;
+      background: rgba(237, 229, 210, 0.2);
+    }
+  }
+
+  .barra-progreso {
+    --progress-background: #b85d38;
+    --background: rgba(237, 229, 210, 0.2);
+    height: 6px;
+    border-radius: 3px;
+  }
+}
+
+/* =========================================================
+   PREGUNTA ACTUAL
+   ========================================================= */
+.seccion-pregunta-xxl {
+  flex-shrink: 0;
+
+  .tarjeta-pregunta {
+    background: linear-gradient(135deg, rgba(237, 229, 210, 0.12) 0%, rgba(237, 229, 210, 0.05) 100%);
+    border: 2px solid rgba(237, 229, 210, 0.25);
+    border-radius: 16px;
+    padding: 10px 14px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+
+    .etiqueta-categoria {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #b85d38;
+      color: #ede5d2;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      margin-bottom: 6px;
+    }
+
+    .texto-pregunta {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #ede5d2;
+      line-height: 1.3;
+      margin: 0;
+    }
+  }
+}
+
+/* =========================================================
+   OPCIONES DE RESPUESTA XXL
+   ========================================================= */
+.seccion-opciones-xxl {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+
+  .lista-opciones-xxl {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    height: 100%;
+
+    .boton-opcion-xxl {
+      flex: 1;
+      min-height: 52px;
+      background: rgba(237, 229, 210, 0.15);
+      border: 2px solid rgba(237, 229, 210, 0.32);
+      border-radius: 14px;
+      padding: 6px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #ede5d2;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-align: left;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      transition: all 0.15s ease;
+
+      &:active:not(:disabled) {
+        transform: scale(0.97);
+        background: rgba(237, 229, 210, 0.25);
+      }
+
+      .letra-opcion-xxl {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        background: rgba(0, 0, 0, 0.35);
+        border: 1px solid rgba(237, 229, 210, 0.4);
+        border-radius: 8px;
+        font-weight: 900;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+        color: #ede5d2;
+      }
+
+      .texto-opcion-xxl {
+        flex: 1;
+        line-height: 1.25;
+      }
+
+      .icono-veredicto {
+        font-size: 1.5rem;
+        flex-shrink: 0;
+
+        &.acierto {
+          color: #81c784;
+        }
+
+        &.error {
+          color: #e57373;
+        }
+      }
+
+      &.correcta {
+        background: rgba(46, 125, 50, 0.55);
+        border-color: #81c784;
+        box-shadow: 0 0 14px rgba(129, 199, 132, 0.4);
+      }
+
+      &.incorrecta {
+        background: rgba(184, 93, 56, 0.55);
+        border-color: #e57373;
+      }
+    }
+  }
+}
+
+/* =========================================================
+   FEEDBACK Y BOTÓN SIGUIENTE XXL
+   ========================================================= */
+.seccion-feedback-xxl {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  .tarjeta-curiosidad-compacta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(237, 229, 210, 0.12);
+    border: 1px solid rgba(237, 229, 210, 0.25);
+    border-radius: 12px;
+    padding: 6px 10px;
+
+    .icono-curiosidad {
+      font-size: 1.4rem;
+      color: #ffd700;
+      flex-shrink: 0;
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.78rem;
+      color: #ede5d2;
+      line-height: 1.25;
+    }
+  }
+
+  .boton-siguiente-xxl {
+    height: 60px;
+    min-height: 56px;
+    --border-radius: 16px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin: 0;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+  }
+}
+
+/* =========================================================
+   PANEL FIN DE PARTIDA XXL
+   ========================================================= */
+.tarjeta-fin-partida-xxl {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.45);
+  border: 2px solid rgba(237, 229, 210, 0.25);
+  border-radius: 22px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+
+  .icono-resultado-xxl {
+    font-size: 4rem;
+  }
+
+  .titulo-fin {
+    font-size: 1.6rem;
+    font-weight: 900;
+    margin: 0;
+    color: #ede5d2;
+  }
+
+  .subtitulo-fin {
+    font-size: 0.9rem;
+    margin: 0;
+    color: #c5d4be;
+  }
+
+  .caja-premio-xxl {
+    background: linear-gradient(135deg, rgba(46, 125, 50, 0.5), rgba(76, 175, 80, 0.3));
+    border: 2px solid #81c784;
+    border-radius: 16px;
+    padding: 12px 18px;
+    width: 100%;
+
+    .badge-premio-otorgado {
+      background: #ffd700;
+      color: #283720;
+      font-weight: 800;
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+    }
+
+    h3 {
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: #ede5d2;
+      margin: 6px 0 2px;
+    }
+
+    p {
+      font-size: 0.8rem;
+      color: #c5d4be;
+      margin: 0;
+    }
+  }
+
+  .zona-botones-fin-xxl {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 6px;
+
+    .boton-accion-xxl {
+      height: 62px;
+      --border-radius: 16px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin: 0;
+    }
+  }
+}

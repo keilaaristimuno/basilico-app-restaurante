@@ -1,73 +1,220 @@
-@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Montserrat:ital,wght@0,100..900;1,100..900&family=SN+Pro:ital,wght@0,200..900;1,200..900&display=swap');
+﻿@import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Montserrat:ital,wght@0,100..900;1,100..900&family=SN+Pro:ital,wght@0,200..900;1,200..900&display=swap');
+
 .login-content {
-  --background: var(--basilico-olive);
+  --background: var(--basilico-olive, #283720);
+  --overflow: hidden;
+  height: 100%;
 }
 
-.contenido-cliente {
+.pantalla-completa-cliente {
   width: 100%;
-  max-width: 580px;
+  max-width: 540px;
+  height: calc(100% - 68px);
   margin: 0 auto;
-  padding: 1.5rem 1.25rem 2rem;
+  padding: 16px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
-/* =========================
-   LOGO
-   ========================= */
-.contenedorLogo {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 0.8rem;
-
-  img {
-    width: clamp(55px, 18vw, 85px);
-    height: auto;
-    display: block;
-  }
-}
-
-/* =========================
-   BIENVENIDA
-   ========================= */
-.header-section {
-  width: 100%;
-  text-align: center;
-  margin-bottom: 1.2rem;
-}
-
-.titulo {
-  font-family: 'Alex Brush', cursive;
-  font-size: clamp(2.6rem, 13vw, 4rem);
-  line-height: 1;
-  color: #ede5d2;
-  margin: 0 0 0.8rem;
-}
-
-.texto {
-  display: block;
-  font-family: 'Montserrat', sans-serif;
-  font-size: clamp(0.85rem, 3.8vw, 1rem);
-  line-height: 1.35;
-  color: #ede5d2;
-  text-align: center;
-  max-width: 420px;
-  margin: 0 auto;
-}
-
-/* =========================
-   BOTONES
-   ========================= */
-.acciones-cliente {
+.tarjeta-pantalla-completa {
+  flex: 1;
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
-  margin-top: 0.5rem;
+  justify-content: space-between;
+  background: rgba(237, 229, 210, 0.08);
+  border: 2px solid rgba(237, 229, 210, 0.22);
+  border-radius: 24px;
+  padding: 20px 16px;
+  box-sizing: border-box;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+
+  .info-superior {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+
+    .badge-bienvenida,
+    .badge-espera,
+    .badge-asignada {
+      display: inline-block;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 20px;
+    }
+
+    .badge-bienvenida {
+      background: #ede5d2;
+      color: #283720;
+    }
+
+    .badge-espera {
+      background: #d48b1d;
+      color: #ede5d2;
+    }
+
+    .badge-asignada {
+      background: #2e7d32;
+      color: #ede5d2;
+    }
+
+    .numero-mesa-destacado {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 8px 0;
+      padding: 8px 20px;
+      background: rgba(237, 229, 210, 0.15);
+      border-radius: 16px;
+      border: 1px solid rgba(237, 229, 210, 0.3);
+
+      .etiqueta-mesa {
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+        color: #c5d4be;
+        font-weight: 700;
+      }
+
+      .valor-mesa {
+        font-size: 2.8rem;
+        font-weight: 900;
+        color: #ede5d2;
+        line-height: 1;
+      }
+    }
+
+    .subtexto-instruccion {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      color: #ede5d2;
+      opacity: 0.92;
+      max-width: 360px;
+      margin: 4px auto 0;
+    }
+  }
+
+  .zona-boton-xxl {
+    flex: 1;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    margin-top: 18px;
+    min-height: 180px;
+
+    .boton-xxl {
+      width: 100%;
+      height: 100%;
+      min-height: 180px;
+      --border-radius: 22px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+      margin: 0;
+
+      .contenido-boton-xxl {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        padding: 16px;
+
+        .icono-xxl {
+          font-size: 4.2rem;
+          color: #283720;
+          filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+        }
+
+        .texto-boton-xxl {
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1.3rem;
+          font-weight: 900;
+          letter-spacing: 0.5px;
+          color: #283720;
+          text-transform: uppercase;
+          line-height: 1.2;
+        }
+
+        .subtexto-boton-xxl {
+          font-family: 'Montserrat', sans-serif;
+          font-size: 0.8rem;
+          color: #4a5643;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+  .zona-espera-xxl {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px 0;
+
+    .circulo-espera-animado {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: rgba(237, 229, 210, 0.12);
+      border: 3px solid rgba(237, 229, 210, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: pulsar 2s ease-in-out infinite;
+
+      .icono-espera-xxl {
+        font-size: 4rem;
+        color: #ede5d2;
+      }
+    }
+
+    .texto-estado-espera {
+      text-align: center;
+
+      h3 {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.35rem;
+        font-weight: 800;
+        color: #ede5d2;
+        margin: 0 0 6px;
+      }
+
+      p {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.9rem;
+        color: #c5d4be;
+        margin: 0;
+      }
+    }
+  }
+}
+
+.acciones-espera-encuesta {
+  margin-top: 14px;
+  flex-shrink: 0;
+  width: 100%;
+
+  .btn-ver-encuestas-espera {
+    --background: #b24d39;
+    --background-activated: #943e2d;
+    --color: #ede5d2;
+    --border-radius: 16px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 0.95rem;
+    min-height: 52px;
+    margin: 0;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.28);
+  }
 }
 
 
@@ -285,6 +432,1149 @@ ion-modal.modal-basilico {
           font-size: 0.75rem;
         }
       }
+    }
+  }
+}
+
+/* =========================
+   INDICADOR DE ESPERA
+   ========================= */
+.waiting-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  padding: 1.2rem 1.5rem;
+  background: rgba(237, 229, 210, 0.12);
+  border: 1px solid rgba(237, 229, 210, 0.3);
+  border-radius: 16px;
+
+  .icono-espera {
+    font-size: 2.4rem;
+    color: #ede5d2;
+    opacity: 0.85;
+    animation: pulsar 1.6s ease-in-out infinite;
+  }
+
+  .texto-espera {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    color: #ede5d2;
+    opacity: 0.8;
+    letter-spacing: 0.02em;
+  }
+}
+
+@keyframes pulsar {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.12); }
+}
+/* =========================================================
+   ESTILOS DE MESA Y SEGUIMIENTO DE PEDIDO (PUNTOS 11 AL 14)
+   ========================================================= */
+
+.tarjeta-aviso {
+  background: rgba(237, 229, 210, 0.15);
+  border: 1px solid rgba(237, 229, 210, 0.3);
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin: 1.2rem auto;
+  color: #ede5d2;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  max-width: 440px;
+
+  ion-icon {
+    font-size: 2rem;
+    color: #bca085;
+    flex-shrink: 0;
+  }
+
+  p {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.88rem;
+    line-height: 1.35;
+  }
+
+  &.aviso-mesa-lista {
+    background: rgba(184, 93, 56, 0.25);
+    border: 1.5px solid var(--basilico-terracotta, #b85d38);
+
+    ion-icon {
+      color: #e28762;
+    }
+
+    strong {
+      display: block;
+      font-size: 1rem;
+      color: #ede5d2;
+      margin-bottom: 3px;
+    }
+  }
+}
+
+.seccion-mesa-activa {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 0.5rem;
+}
+
+.badge-mesa-vinculada {
+  background: var(--basilico-terracotta, #b85d38);
+  color: #ede5d2;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0 auto;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+
+  ion-icon {
+    font-size: 1.2rem;
+  }
+}
+
+/* Card bienvenida a hacer pedido */
+.card-bienvenida-pedido {
+  background: #ede5d2;
+  border-radius: 18px;
+  padding: 24px 20px;
+  color: #283720;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  text-align: center;
+
+  h3 {
+    margin: 0 0 8px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  p {
+    margin: 0 0 18px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.92rem;
+    opacity: 0.85;
+    line-height: 1.4;
+  }
+
+  .acciones-pedido-cliente {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .btn-hacer-pedido {
+      --background: #283720;
+      --color: #ede5d2;
+      font-weight: 800;
+      font-size: 1.05rem;
+      height: 52px;
+      margin: 0;
+      box-shadow: 0 4px 12px rgba(40, 55, 32, 0.35);
+    }
+  }
+}
+
+/* Tarjeta de seguimiento de pedido activo */
+.tarjeta-seguimiento-pedido {
+  background: #ede5d2;
+  border-radius: 18px;
+  padding: 20px 18px;
+  color: #283720;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+
+  .encabezado-estado-pedido {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .subtitulo-estado {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.8px;
+      color: #666;
+      text-transform: uppercase;
+    }
+
+    .badge-estado {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 0.92rem;
+
+      ion-icon {
+        font-size: 1.25rem;
+        flex-shrink: 0;
+      }
+
+      &.estado-pendiente {
+        background: #fdf3d8;
+        color: #8c6b12;
+        border: 1.5px solid #d9b64c;
+      }
+
+      &.estado-rechazado {
+        background: #fbeae8;
+        color: #b52b2b;
+        border: 1.5px solid #e05d52;
+      }
+
+      &.estado-confirmado {
+        background: #e6f4ea;
+        color: #1e6638;
+        border: 1.5px solid #34a853;
+      }
+    }
+
+    .explicacion-estado {
+      margin: 6px 0 4px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.42;
+      color: #2f3b28;
+    }
+
+    .btn-confirmar-recepcion,
+    .btn-juegos {
+      width: 100%;
+      margin: 6px 0 0;
+      --background: #283720;
+      --background-activated: #1c2716;
+      --color: #ede5d2;
+      --border-radius: 12px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 1rem;
+      min-height: 54px;
+    }
+
+    .btn-modificar {
+      width: 100%;
+      margin: 6px 0 0;
+      --background: #b85d38;
+      --color: #ede5d2;
+      --border-radius: 12px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      min-height: 52px;
+    }
+
+    /* AVANCE POR SECTOR (PUNTO 15) */
+    .avance-sectores {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+
+      .fila-sector {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(40, 55, 32, 0.06);
+        border-radius: 8px;
+        padding: 8px 12px;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 700;
+        font-size: 0.88rem;
+
+        span:first-child {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+        }
+      }
+
+      .estado-sector {
+        font-size: 0.72rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        padding: 3px 8px;
+        border-radius: 6px;
+        background: #fdf3d8;
+        color: #8c6b12;
+        border: 1px solid #d9b64c;
+
+        &.sector-listo {
+          background: #e6f4ea;
+          color: #1e6638;
+          border-color: #34a853;
+        }
+      }
+    }
+  }
+
+  /* TOTALES VISIBLES (PUNTO 12) */
+  .totales-pedido-activo {
+    background: #e2d9bf;
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .bloque-total-destacado {
+      display: flex;
+      flex-direction: column;
+
+      .label-acumulado-ui {
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        color: #555;
+        text-transform: uppercase;
+      }
+
+      .monto-acumulado-ui {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1.85rem;
+        font-weight: 900;
+        color: #283720;
+        line-height: 1.1;
+      }
+    }
+
+    .bloque-tiempo-destacado {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.9rem;
+      color: #444;
+
+      ion-icon {
+        font-size: 1.15rem;
+        color: #b85d38;
+      }
+
+      strong {
+        color: #283720;
+      }
+    }
+  }
+
+  /* Desglose de ítems */
+  .desglose-items-pedido {
+    h4 {
+      margin: 0 0 10px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: #283720;
+      text-transform: uppercase;
+    }
+
+    .lista-items-compacta {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .item-fila {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.88rem;
+      padding: 6px 0;
+      border-bottom: 1px dashed rgba(40, 55, 32, 0.2);
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      .item-cantidad-badge {
+        font-weight: 800;
+        background: #283720;
+        color: #ede5d2;
+        padding: 2px 6px;
+        border-radius: 6px;
+        font-size: 0.78rem;
+      }
+
+      .item-nombre {
+        flex: 1;
+        font-weight: 600;
+        color: #283720;
+      }
+
+      .item-precio {
+        font-weight: 800;
+        color: #283720;
+      }
+    }
+  }
+
+  .acciones-inferiores-pedido {
+    margin-top: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+.contenido-btn-icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  text-align: center;
+
+  ion-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  span {
+    line-height: 1.2;
+  }
+}
+
+.btn-encuesta-cliente {
+  --background: #b24d39;
+  --background-activated: #943e2d;
+  --color: #ede5d2;
+  --border-radius: 12px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  margin: 0;
+}
+
+.btn-encuesta-completada {
+  --background: #283720;
+  --background-activated: #1c2716;
+  --color: #ede5d2;
+  --border-radius: 12px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  margin: 0;
+}
+
+.btonBeigeOutline {
+  --color: #283720;
+  --border-color: #283720;
+  --border-width: 2px;
+  --border-radius: 12px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  font-size: 0.98rem;
+  min-height: 52px;
+  margin: 0;
+}
+
+/* =========================================================
+   ESTADO 3 (MESA VINCULADA): CONTENIDO SCROLLEABLE
+   Solo hay scroll si hay 4 o más productos diferentes.
+   Con hasta 4 productos el overflow queda completamente bloqueado
+   y sin rebote elástico ("gelatina").
+   ========================================================= */
+.login-content.con-scroll {
+  --overflow: auto;
+}
+
+.login-content:not(.con-scroll) {
+  --overflow: hidden !important;
+  overflow: hidden !important;
+
+  &::part(scroll) {
+    overflow: hidden !important;
+    overscroll-behavior-y: none !important;
+    touch-action: none;
+  }
+
+  .contenido-cliente {
+    height: calc(100% - 68px);
+    max-height: calc(100% - 68px);
+    overflow: hidden;
+
+    .seccion-mesa-activa {
+      height: 100%;
+      min-height: 0;
+    }
+  }
+}
+
+/* Sin rebote elástico (efecto "gelatina") al arrastrar en el área de contenido */
+.login-content::part(scroll) {
+  overscroll-behavior-y: none;
+}
+
+.contenido-cliente {
+  width: 100%;
+  max-width: 580px;
+  min-height: calc(100% - 68px);
+  margin: 0 auto;
+  padding: 12px 16px 16px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &[hidden] {
+    display: none;
+  }
+
+  // Sin pedido activo o con recepción confirmada la pantalla no scrollea y la card ocupa hasta el margen inferior
+  &.sin-pedido {
+    height: calc(100% - 68px);
+    min-height: 0;
+    overflow: hidden;
+
+    .seccion-mesa-activa,
+    .card-bienvenida-pedido,
+    .acciones-pedido-cliente,
+    .card-estadia-recibida,
+    .acciones-estadia-recibida {
+      min-height: 0;
+    }
+
+    .card-bienvenida-pedido .acciones-pedido-cliente .btn-hacer-pedido,
+    .card-bienvenida-pedido .acciones-pedido-cliente .btn-consulta-mozo,
+    .card-estadia-recibida .acciones-estadia-recibida .btn-accion-estadia {
+      min-height: 0;
+    }
+  }
+
+  // La sección ocupa todo el alto disponible debajo de la navbar
+  .seccion-mesa-activa {
+    flex: 1;
+    max-width: 540px;
+    margin-top: 0;
+  }
+
+  // Card de estadía luego de confirmar la recepción del pedido (ocupa casi toda la pantalla hasta el margen inferior)
+  .card-estadia-recibida {
+    flex: 1;
+    width: 100%;
+    background: #ede5d2;
+    color: #283720;
+    border-radius: 24px;
+    padding: 20px 18px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 16px;
+    box-sizing: border-box;
+
+    .encabezado-estadia-recibida {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      text-align: center;
+
+      .badge-estado {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 16px;
+        border-radius: 12px;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 800;
+        font-size: 1rem;
+
+        ion-icon {
+          font-size: 1.35rem;
+          flex-shrink: 0;
+        }
+
+        &.estado-confirmado {
+          background: #e6f4ea;
+          color: #1e6638;
+          border: 1.5px solid #34a853;
+        }
+      }
+
+      .explicacion-estado {
+        margin: 2px 0 0;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        line-height: 1.4;
+        color: #2f3b28;
+      }
+    }
+
+    .acciones-estadia-recibida {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(4, 1fr);
+      gap: 14px;
+      min-height: 0;
+
+      .btn-accion-estadia {
+        width: 100%;
+        height: 100%;
+        min-height: 78px;
+        margin: 0;
+        --border-radius: 20px;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 900;
+        font-size: 1.2rem;
+        letter-spacing: 0.4px;
+        text-transform: uppercase;
+
+        &::part(native) {
+          width: 100%;
+          height: 100%;
+          padding: 12px 18px;
+        }
+
+        .contenido-btn-estadia {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 16px;
+          width: 100%;
+          text-align: center;
+          white-space: normal;
+
+          ion-icon {
+            font-size: 2.2rem;
+            flex-shrink: 0;
+          }
+
+          span {
+            line-height: 1.2;
+          }
+        }
+      }
+
+      .btn-estadia-juegos {
+        --background: #283720;
+        --background-activated: #1c2716;
+        --color: #ede5d2;
+      }
+
+      .btn-estadia-encuesta {
+        --background: #b24d39;
+        --background-activated: #943e2d;
+        --color: #ede5d2;
+      }
+
+      .btn-estadia-encuesta-completada {
+        --background: #3a5230;
+        --background-activated: #283720;
+        --color: #ede5d2;
+      }
+
+      .btn-estadia-resultados {
+        --color: #283720;
+        --border-color: #283720;
+        --border-width: 2.5px;
+        --background: rgba(40, 55, 32, 0.06);
+        --background-activated: rgba(40, 55, 32, 0.14);
+      }
+
+      .btn-estadia-cuenta {
+        --background: #283720;
+        --background-activated: #1c2716;
+        --color: #ede5d2;
+      }
+    }
+  }
+
+  // Sin pedido activo: la card se estira y el botón principal toma el espacio libre
+  .card-bienvenida-pedido {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border-radius: 24px;
+    padding: 24px 18px;
+
+    // Celular: los dos botones apilados, cada uno con la mitad del alto
+    .acciones-pedido-cliente {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 14px;
+      min-height: 0;
+
+      .btn-hacer-pedido,
+      .btn-consulta-mozo {
+        width: 100%;
+        height: 100%;
+        min-height: 140px;
+        margin: 0;
+        --border-radius: 22px;
+
+        &::part(native) {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      .btn-hacer-pedido {
+        --background: #283720;
+        --color: #ede5d2;
+        --box-shadow: 0 10px 24px rgba(40, 55, 32, 0.4);
+        box-shadow: none;
+      }
+
+      .btn-consulta-mozo {
+        --color: #283720;
+        --border-color: #283720;
+        --border-width: 2px;
+        --background: transparent;
+        --background-activated: rgba(40, 55, 32, 0.08);
+
+        .subtexto-btn-pedido {
+          color: #4a5643;
+        }
+      }
+
+      .btn-hacer-pedido,
+      .btn-consulta-mozo {
+        .contenido-btn-pedido {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 12px;
+          padding: 16px;
+          white-space: normal;
+
+          .icono-btn-pedido {
+            font-size: 4.2rem;
+          }
+
+          .texto-btn-pedido {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            line-height: 1.2;
+          }
+
+          .subtexto-btn-pedido {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            opacity: 0.8;
+          }
+        }
+      }
+
+    }
+  }
+}
+
+// Tablet: card más ancha y los dos botones lado a lado, mismo tamaño
+@media (min-width: 768px) {
+  .contenido-cliente {
+    max-width: 860px;
+    padding: 24px;
+
+    .seccion-mesa-activa {
+      max-width: 820px;
+    }
+
+    .card-bienvenida-pedido {
+      padding: 32px 28px;
+
+      h3 {
+        font-size: 1.7rem;
+      }
+
+      p {
+        font-size: 1.05rem;
+        margin-bottom: 24px;
+      }
+
+      .acciones-pedido-cliente {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr;
+        gap: 20px;
+
+        .contenido-btn-pedido {
+          .icono-btn-pedido {
+            font-size: 5.5rem;
+          }
+
+          .texto-btn-pedido {
+            font-size: 1.6rem;
+          }
+
+          .subtexto-btn-pedido {
+            font-size: 0.95rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Celulares con poca altura: botones e íconos más compactos
+@media (max-height: 640px) {
+  .contenido-cliente .card-bienvenida-pedido {
+    padding: 18px 14px;
+
+    .acciones-pedido-cliente {
+      gap: 10px;
+
+      .btn-hacer-pedido,
+      .btn-consulta-mozo {
+        min-height: 110px;
+      }
+
+      .contenido-btn-pedido {
+        gap: 6px;
+
+        .icono-btn-pedido {
+          font-size: 2.8rem;
+        }
+
+        .texto-btn-pedido {
+          font-size: 1.05rem;
+        }
+      }
+    }
+  }
+}
+
+/* =========================================================
+   PUNTO 21: ESTADO DE LA CUENTA EN LA PANTALLA DE LA MESA
+   ========================================================= */
+.contenido-cliente .card-estadia-recibida .acciones-estadia-recibida .btn-accion-estadia .contenido-btn-cuenta {
+  flex-wrap: wrap;
+  row-gap: 4px;
+
+  .estado-cuenta-btn {
+    flex-basis: 100%;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0;
+    line-height: 1.2;
+  }
+}
+
+.contenido-cliente .card-estadia-recibida.card-pago-confirmado .acciones-estadia-recibida {
+  grid-template-rows: repeat(2, 1fr);
+}
+
+/* =========================================================
+   PANTALLA DE CARGA INICIAL (SPINNER BASILICO)
+   ========================================================= */
+.pantalla-carga-mesa-inicial {
+  width: 100%;
+  max-width: 540px;
+  height: calc(100% - 68px);
+  margin: 0 auto;
+  padding: 16px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .tarjeta-carga-mesa {
+    width: min(88%, 340px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 34px 24px;
+    box-sizing: border-box;
+    background: #ede5d2;
+    border-radius: 24px;
+    color: #283720;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+    animation: fadeInCargaMesa 0.25s ease-out;
+
+    .logo-carga-mesa {
+      width: 115px;
+      height: auto;
+      margin-bottom: 22px;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+    }
+
+    .spinner-carga-mesa {
+      width: 52px;
+      height: 52px;
+      margin-bottom: 16px;
+      color: #b85d38; // Terracota Basilico
+    }
+
+    .texto-carga-mesa {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      text-align: center;
+      color: #283720;
+    }
+  }
+}
+
+@keyframes fadeInCargaMesa {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* =========================================================
+   PEDIDO ACTIVO: TARJETA DE SEGUIMIENTO A PANTALLA COMPLETA
+   (esperando confirmación, rechazado, en preparación, listo, entregado)
+   Todo se dimensiona en función del alto de la pantalla (vh) para
+   que con 1 a 3 productos la tarjeta entre en una sola pantalla
+   sin scroll ni tambaleo, aprovechando el espacio disponible.
+   Con 4 o más productos la tarjeta crece por su contenido y
+   recién ahí aparece el scroll.
+   ========================================================= */
+.contenido-cliente .seccion-mesa-activa > .tarjeta-seguimiento-pedido {
+  flex: 1 1 auto;
+  min-height: 0;
+  justify-content: space-between;
+  border-radius: 24px;
+  padding: clamp(12px, 1.8vh, 22px) clamp(14px, 2.2vh, 20px);
+  gap: clamp(7px, 1.2vh, 16px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+  box-sizing: border-box;
+
+  .encabezado-estado-pedido {
+    gap: clamp(6px, 1vh, 11px);
+
+    .subtitulo-estado {
+      font-size: clamp(0.68rem, 1.35vh, 0.78rem);
+    }
+
+    .badge-estado {
+      padding: clamp(6px, 1vh, 10px) 14px;
+      font-size: clamp(0.86rem, 1.55vh, 0.98rem);
+
+      ion-icon {
+        font-size: clamp(1.15rem, 2.1vh, 1.35rem);
+      }
+    }
+
+    .explicacion-estado {
+      margin: 2px 0;
+      font-size: clamp(0.88rem, 1.65vh, 1.02rem);
+      line-height: 1.38;
+    }
+
+    .btn-confirmar-recepcion,
+    .btn-juegos {
+      margin-top: clamp(3px, 0.7vh, 8px);
+      min-height: clamp(42px, 5.4vh, 54px);
+      font-size: clamp(0.92rem, 1.6vh, 1.02rem);
+    }
+
+    .btn-modificar {
+      margin-top: clamp(3px, 0.7vh, 8px);
+      min-height: clamp(42px, 5.4vh, 54px);
+      font-size: clamp(0.92rem, 1.6vh, 1.02rem);
+    }
+
+    .avance-sectores {
+      gap: clamp(4px, 0.7vh, 7px);
+
+      .fila-sector {
+        padding: clamp(5px, 0.9vh, 9px) 12px;
+        font-size: clamp(0.82rem, 1.45vh, 0.92rem);
+      }
+
+      .estado-sector {
+        font-size: clamp(0.66rem, 1.25vh, 0.74rem);
+        padding: 2px 8px;
+      }
+    }
+  }
+
+  /* El importe acumulado absorbe parte del espacio sobrante (con tope) y queda centrado */
+  .totales-pedido-activo {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: clamp(130px, 23vh, 220px);
+    justify-content: center;
+    padding: clamp(10px, 1.8vh, 20px) 16px;
+    gap: clamp(5px, 1vh, 12px);
+
+    .bloque-total-destacado {
+      .label-acumulado-ui {
+        font-size: clamp(0.74rem, 1.4vh, 0.86rem);
+        letter-spacing: 0.6px;
+      }
+
+      .monto-acumulado-ui {
+        font-size: clamp(1.7rem, 3.6vh, 2.4rem);
+      }
+    }
+
+    .bloque-tiempo-destacado {
+      font-size: clamp(0.86rem, 1.5vh, 1.04rem);
+
+      ion-icon {
+        font-size: clamp(1.05rem, 1.9vh, 1.25rem);
+      }
+    }
+  }
+
+  /* Desglose de ítems del pedido: tamaño de fuente y precio destacados */
+  .desglose-items-pedido {
+    h4 {
+      margin-bottom: clamp(5px, 0.9vh, 10px);
+      font-size: clamp(0.88rem, 1.5vh, 1rem);
+      letter-spacing: 0.5px;
+    }
+
+    .lista-items-compacta {
+      gap: clamp(4px, 0.7vh, 8px);
+    }
+
+    .item-fila {
+      flex-shrink: 0;
+      padding: clamp(4px, 0.75vh, 8px) 0;
+      gap: 10px;
+
+      .item-cantidad-badge {
+        padding: 3px 8px;
+        font-size: clamp(0.82rem, 1.45vh, 0.94rem);
+        border-radius: 6px;
+      }
+
+      .item-nombre {
+        font-size: clamp(0.92rem, 1.65vh, 1.06rem);
+        font-weight: 700;
+        line-height: 1.25;
+      }
+
+      .item-precio {
+        font-size: clamp(0.96rem, 1.75vh, 1.12rem);
+        font-weight: 800;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  .acciones-inferiores-pedido {
+    margin-top: 0;
+
+    .btonBeigeOutline {
+      min-height: clamp(42px, 5.4vh, 54px);
+      font-size: clamp(0.9rem, 1.6vh, 1.02rem);
+    }
+  }
+
+  /* PEDIDO RECHAZADO: menos contenido que otros estados, por lo que se
+     distribuye de forma equilibrada para llenar la tarjeta sin desbordar */
+  &.pedido-rechazado {
+    padding: clamp(12px, 2vh, 22px) clamp(14px, 2vh, 20px);
+    gap: clamp(7px, 1.3vh, 16px);
+
+    .encabezado-estado-pedido {
+      gap: clamp(7px, 1.2vh, 13px);
+
+      .subtitulo-estado {
+        font-size: clamp(0.7rem, 1.35vh, 0.8rem);
+      }
+
+      .badge-estado {
+        padding: clamp(7px, 1.2vh, 11px) 14px;
+        font-size: clamp(0.88rem, 1.6vh, 1.02rem);
+      }
+
+      .explicacion-estado {
+        margin: clamp(2px, 0.4vh, 5px) 0;
+        font-size: clamp(0.92rem, 1.7vh, 1.06rem);
+        line-height: 1.42;
+      }
+
+      .btn-modificar {
+        margin-top: clamp(4px, 1vh, 12px);
+        min-height: clamp(44px, 5.8vh, 56px);
+        font-size: clamp(0.95rem, 1.7vh, 1.06rem);
+      }
+    }
+
+    .totales-pedido-activo {
+      min-height: 0;
+      max-height: clamp(140px, 24vh, 230px);
+      gap: clamp(6px, 1.1vh, 12px);
+
+      .bloque-total-destacado {
+        .label-acumulado-ui {
+          font-size: clamp(0.76rem, 1.4vh, 0.88rem);
+        }
+
+        .monto-acumulado-ui {
+          font-size: clamp(1.75rem, 3.8vh, 2.5rem);
+        }
+      }
+
+      .bloque-tiempo-destacado {
+        font-size: clamp(0.88rem, 1.5vh, 1.04rem);
+      }
+    }
+
+    .desglose-items-pedido {
+      h4 {
+        font-size: clamp(0.9rem, 1.55vh, 1.02rem);
+        margin-bottom: clamp(6px, 1vh, 10px);
+      }
+
+      .lista-items-compacta {
+        gap: clamp(4px, 0.8vh, 8px);
+      }
+
+      .item-fila {
+        flex-shrink: 0;
+        padding: clamp(5px, 0.85vh, 9px) 0;
+        gap: 10px;
+
+        .item-cantidad-badge {
+          padding: 3px 8px;
+          font-size: clamp(0.84rem, 1.5vh, 0.96rem);
+          border-radius: 6px;
+        }
+
+        .item-nombre {
+          font-size: clamp(0.96rem, 1.75vh, 1.1rem);
+          font-weight: 700;
+          line-height: 1.25;
+        }
+
+        .item-precio {
+          font-size: clamp(1rem, 1.85vh, 1.16rem);
+          font-weight: 800;
+          white-space: nowrap;
+        }
+      }
+    }
+
+    .acciones-inferiores-pedido .btonBeigeOutline {
+      min-height: clamp(44px, 5.8vh, 56px);
+      font-size: clamp(0.94rem, 1.65vh, 1.05rem);
     }
   }
 }

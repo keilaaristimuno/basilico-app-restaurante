@@ -36,7 +36,7 @@
           <p class="empty-subtitulo">
             Todas las solicitudes fueron asignadas
           </p>
-          <ion-button routerLink="/duenioInicio" class="btn-volver-duenio">
+          <ion-button routerLink="/metreInicio" class="btn-volver-duenio">
             <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
             Volver al panel
           </ion-button>
@@ -94,10 +94,9 @@
       <!-- FOTOGRAFÍA DE PERFIL -->
       <div class="foto-wrapper-full">
         <img
-          [src]="cliente.foto_url || cliente.foto || 'assets/icon/favicon.png'"
+          [src]="cliente.foto_url"
           [alt]="'Foto de ' + cliente.nombre"
           class="cliente-foto"
-          (error)="onFotoError($event)"
         />
         <div class="badge-estado">
           <span class="punto-pulso"></span>
@@ -117,7 +116,7 @@
           <div class="dato-row comensales-row">
             <ion-icon name="people-outline" class="dato-icono"></ion-icon>
             <span class="dato-texto">
-              <strong>Comensales:</strong> {{ cliente.cantidad_comensales || cliente.comensales || 1 }}
+              <strong>Comensales: {{ cliente.cantidad_comensales || cliente.comensales || 1 }}</strong>
             </span>
           </div>
         </div>
@@ -129,12 +128,12 @@
               expand="block"
               class="btn-aceptar"
               [disabled]="procesandoId() === cliente.id"
-              (click)="abrirModuleMesas(cliente.id)">
+              (click)="abrirModuleMesas(cliente.cliente_id)">
               @if (procesandoId() === cliente.id) {
                 <ion-spinner name="crescent"></ion-spinner>
               } @else {
                 <ion-icon slot="start" name="restaurant-outline"></ion-icon>
-                Asignar mesa
+                Asignar
               }
             </ion-button>
 
@@ -142,7 +141,7 @@
               expand="block"
               class="btn-rechazar"
               [disabled]="procesandoId() === cliente.id"
-              (click)="rechazarCliente(cliente.id)">
+              (click)="rechazarCliente(cliente)">
               <ion-icon slot="start" name="close-circle-outline"></ion-icon>
               Rechazar
             </ion-button>
@@ -158,7 +157,7 @@
     <p class="sin-clientes">No hay clientes en la lista de espera.</p>
   </div>
 }
-      
+
     }
   </div>
 </ion-content>
@@ -186,7 +185,7 @@
               </ion-button>
             </ion-item>
           }
-          
+
         } @empty {
           <ion-item lines="none">
             <ion-label class="ion-text-center">

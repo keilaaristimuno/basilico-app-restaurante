@@ -87,63 +87,91 @@ async function createGoogleAccessToken(account: FirebaseServiceAccount): Promise
 }
 
 async function getTargetTokens(
-  supabaseAdmin: ReturnType<typeof createClient>,
+  supabaseAdmin: any,
   payload: PushPayload
 ): Promise<string[]> {
-  let query = supabaseAdmin
-    .from("device_tokens")
-    .select("token")
-    .eq("activo", true);
+  if (!payload.userIds?.length && !payload.profiles?.length) {
+    throw new Error("Debe indicar userIds o profiles como destinatarios");
+  }
+
+  const candidateIds = new Set<string>();
+  const targetEmails = new Set<string>();
 
   if (payload.userIds?.length) {
-    query = query.in("user_id", payload.userIds);
-  } else if (payload.profiles?.length) {
-    const employeeProfiles = payload.profiles.filter((p) => p !== "cliente");
-    const targetEmails: string[] = [];
+    const validIds = payload.userIds.filter(Boolean);
+    validIds.forEach((id) => candidateIds.add(id));
 
-    if (employeeProfiles.length) {
-      const { data: employees, error } = await supabaseAdmin
+    if (validIds.length) {
+      const { data: clientesResp } = await supabaseAdmin
+        .from("clientes")
+        .select("correo")
+        .in("id", validIds);
+
+      const { data: empleadosResp } = await supabaseAdmin
         .from("empleados")
         .select("correo")
+        .in("id", validIds);
+
+      ((clientesResp as any[]) ?? []).forEach((cli: any) => {
+        if (cli?.correo) targetEmails.add(cli.correo.toLowerCase());
+      });
+      ((empleadosResp as any[]) ?? []).forEach((emp: any) => {
+        if (emp?.correo) targetEmails.add(emp.correo.toLowerCase());
+      });
+    }
+  }
+
+  if (payload.profiles?.length) {
+    const employeeProfiles = payload.profiles.filter((p) => p !== "cliente");
+
+    if (employeeProfiles.length) {
+      const { data: empleadosResp, error } = await supabaseAdmin
+        .from("empleados")
+        .select("id, correo")
         .in("perfil", employeeProfiles);
       if (error) throw error;
-      (employees ?? []).forEach((emp) => {
-        if (emp.correo) targetEmails.push(emp.correo.toLowerCase());
+      ((empleadosResp as any[]) ?? []).forEach((emp: any) => {
+        if (emp?.id) candidateIds.add(String(emp.id));
+        if (emp?.correo) targetEmails.add(emp.correo.toLowerCase());
       });
     }
 
     if (payload.profiles.includes("cliente")) {
-      const { data: clients, error } = await supabaseAdmin
+      const { data: clientesResp, error } = await supabaseAdmin
         .from("clientes")
-        .select("correo")
+        .select("id, correo")
         .eq("estado", "aprobado");
       if (error) throw error;
-      (clients ?? []).forEach((cli) => {
-        if (cli.correo) targetEmails.push(cli.correo.toLowerCase());
+      ((clientesResp as any[]) ?? []).forEach((cli: any) => {
+        if (cli?.id) candidateIds.add(String(cli.id));
+        if (cli?.correo) targetEmails.add(cli.correo.toLowerCase());
       });
     }
+  }
 
-    if (!targetEmails.length) return [];
-
+  if (targetEmails.size > 0) {
     const { data: users, error: usersError } = await supabaseAdmin.auth.admin.listUsers({
       page: 1,
       perPage: 1000
     });
-    if (usersError) throw usersError;
-
-    const emailSet = new Set(targetEmails);
-    const ids = (users.users ?? [])
-      .filter((user) => user.email && emailSet.has(user.email.toLowerCase()))
-      .map((user) => user.id);
-    if (!ids.length) return [];
-    query = query.in("user_id", ids);
-  } else {
-    throw new Error("Debe indicar userIds o profiles como destinatarios");
+    if (!usersError && users?.users?.length) {
+      users.users
+        .filter((u: any) => u.email && targetEmails.has(u.email.toLowerCase()))
+        .forEach((u: any) => candidateIds.add(u.id));
+    }
   }
 
-  const { data, error } = await query;
+  const finalIds = [...candidateIds];
+  if (!finalIds.length) return [];
+
+  const { data, error } = await supabaseAdmin
+    .from("device_tokens")
+    .select("token")
+    .eq("activo", true)
+    .in("user_id", finalIds);
+
   if (error) throw error;
-  return [...new Set((data ?? []).map((row) => row.token).filter(Boolean))];
+  return [...new Set(((data as any[]) ?? []).map((row: any) => row.token).filter(Boolean))];
 }
 
 Deno.serve(async (request) => {

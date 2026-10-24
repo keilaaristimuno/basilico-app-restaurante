@@ -255,6 +255,26 @@ ion-alert.perfil-alert .alert-radio-button {
 }
 
 
+/* =========================================================
+   DIÁLOGO ELIMINAR PRODUCTO - CARTA
+   Modal chico centrado que se ajusta a su contenido
+   ========================================================= */
+ion-modal.dialogo-eliminar-basilico {
+  --width: 88%;
+  --max-width: 360px;
+  --height: auto;
+  --border-radius: 18px;
+  --backdrop-opacity: 0.65;
+  --box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+ion-modal.dialogo-eliminar-basilico .ion-page {
+  position: relative;
+  display: block;
+  contain: content;
+}
+
+
 //Paginas de inicio
 
 .fondo {

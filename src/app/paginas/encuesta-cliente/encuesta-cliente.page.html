@@ -1,0 +1,234 @@
+<ion-header class="header-transparente">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button
+        defaultHref="/clienteInicio"
+        text="Volver"
+        icon="chevron-back-outline">
+      </ion-back-button>
+    </ion-buttons>
+    <ion-title>Encuesta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="fondo-encuesta" [scrollY]="false">
+  <div class="contenedor-encuesta">
+    @if (cargando()) {
+      <div class="estado-carga">
+        <ion-spinner name="crescent"></ion-spinner>
+        <p>Verificando estado de tu estadía...</p>
+      </div>
+    } @else {
+      <!-- ENCABEZADO CON BUENA SEPARACIÓN SUPERIOR E INFERIOR -->
+      <div class="encabezado-encuesta">
+        <span class="indicador-paso">PASO {{ pasoActual() }} DE 2</span>
+        <h1>Tu opinión importa</h1>
+        <p>Calificá tu experiencia hoy en Basílico del 1 al 10</p>
+      </div>
+
+      @if (pasoActual() === 1) {
+        <!-- =========================================
+             PANTALLA 1: PREGUNTAS 1 Y 2
+             ========================================= -->
+        <div class="lista-preguntas">
+          <!-- PREGUNTA 1: SLIDER (ion-range) -->
+          <div class="tarjeta-pregunta">
+            <div class="cabecera-pregunta">
+              <div class="titulo-con-icono">
+                <ion-icon name="restaurant-outline"></ion-icon>
+                <h2>1. Calidad de la comida</h2>
+              </div>
+            </div>
+            <p class="subtexto-pregunta">Deslizá para puntuar el sabor y presentación de los platos</p>
+
+            <div class="control-slider">
+              <ion-range
+                [min]="1"
+                [max]="10"
+                [step]="1"
+                [snaps]="true"
+                [pin]="true"
+                [value]="comida()"
+                (ionChange)="cambiarComida($event)">
+                <span slot="start" class="extremo-rango">1</span>
+                <span slot="end" class="extremo-rango">10</span>
+              </ion-range>
+            </div>
+          </div>
+
+          <!-- PREGUNTA 2: RADIO GROUP (ion-radio-group) -->
+          <div class="tarjeta-pregunta">
+            <div class="cabecera-pregunta">
+              <div class="titulo-con-icono">
+                <ion-icon name="people-outline"></ion-icon>
+                <h2>2. Atención del mozo</h2>
+              </div>
+            </div>
+            <p class="subtexto-pregunta">Seleccioná un número según la cordialidad y rapidez</p>
+
+            <ion-radio-group
+              [value]="atencion()"
+              (ionChange)="cambiarAtencion($event)"
+              class="grilla-radios">
+              @for (num of opcionesAtencion; track num) {
+                <div
+                  class="item-radio-num"
+                  [class.activo]="atencion() === num"
+                  (click)="atencion.set(num)">
+                  <ion-radio [value]="num" mode="md"></ion-radio>
+                  <span class="etiqueta-num">{{ num }}</span>
+                </div>
+              }
+            </ion-radio-group>
+          </div>
+        </div>
+
+        <!-- ACCIONES PANTALLA 1 -->
+        <div class="acciones-encuesta">
+          <ion-button
+            expand="block"
+            class="btn-enviar-encuesta"
+            (click)="irAPaso(2)">
+            Siguiente
+            <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          </ion-button>
+        </div>
+      } @else {
+        <!-- =========================================
+             PANTALLA 2: PREGUNTAS 3 Y 4
+             ========================================= -->
+        <div class="lista-preguntas">
+          <!-- PREGUNTA 3: STEPPER + ESCALA DE ESTRELLAS (1 a 10) -->
+          <div class="tarjeta-pregunta">
+            <div class="cabecera-pregunta">
+              <div class="titulo-con-icono">
+                <ion-icon name="sparkles-outline"></ion-icon>
+                <h2>3. Ambiente y limpieza</h2>
+              </div>
+            </div>
+            <p class="subtexto-pregunta">Ajustá con los botones o tocá las estrellas según el estado del salón</p>
+
+            <div class="control-stepper">
+              <button
+                type="button"
+                class="btn-step"
+                [disabled]="ambiente() <= 1"
+                (click)="ajustarAmbiente(-1)">
+                <ion-icon name="remove-circle-outline"></ion-icon>
+              </button>
+
+              <div class="fila-estrellas">
+                @for (n of opcionesAtencion; track n) {
+                  <button
+                    type="button"
+                    class="btn-estrella"
+                    [class.activa]="n <= ambiente()"
+                    (click)="fijarAmbiente(n)">
+                    <ion-icon [name]="n <= ambiente() ? 'star' : 'star-outline'"></ion-icon>
+                  </button>
+                }
+              </div>
+
+              <button
+                type="button"
+                class="btn-step"
+                [disabled]="ambiente() >= 10"
+                (click)="ajustarAmbiente(1)">
+                <ion-icon name="add-circle-outline"></ion-icon>
+              </button>
+            </div>
+          </div>
+
+          <!-- PREGUNTA 4: SELECTOR SEGMENTADO EN 2 FILAS -->
+          <div class="tarjeta-pregunta">
+            <div class="cabecera-pregunta">
+              <div class="titulo-con-icono">
+                <ion-icon name="heart-outline"></ion-icon>
+                <h2>4. Experiencia general</h2>
+              </div>
+            </div>
+            <p class="subtexto-pregunta">Elegí el nivel que mejor resuma tu visita en Basílico</p>
+
+            <div class="selector-experiencia-dos-filas">
+              <div class="fila-experiencia">
+                <button
+                  type="button"
+                  class="btn-experiencia"
+                  [class.activo]="recomienda() === 2"
+                  (click)="recomienda.set(2)">
+                  Malo
+                </button>
+                <button
+                  type="button"
+                  class="btn-experiencia"
+                  [class.activo]="recomienda() === 4"
+                  (click)="recomienda.set(4)">
+                  Regular
+                </button>
+                <button
+                  type="button"
+                  class="btn-experiencia"
+                  [class.activo]="recomienda() === 6"
+                  (click)="recomienda.set(6)">
+                  Bueno
+                </button>
+              </div>
+
+              <div class="fila-experiencia">
+                <button
+                  type="button"
+                  class="btn-experiencia"
+                  [class.activo]="recomienda() === 8"
+                  (click)="recomienda.set(8)">
+                  Muy Bueno
+                </button>
+                <button
+                  type="button"
+                  class="btn-experiencia"
+                  [class.activo]="recomienda() === 10"
+                  (click)="recomienda.set(10)">
+                  Excelente
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ACCIONES PANTALLA 2 -->
+        <div class="acciones-encuesta">
+          <div class="fila-acciones-paso2">
+            <ion-button
+              fill="outline"
+              class="btn-anterior-paso"
+              (click)="irAPaso(1)">
+              <ion-icon name="chevron-back-outline" slot="start"></ion-icon>
+              Anterior
+            </ion-button>
+
+            <ion-button
+              class="btn-enviar-encuesta flex-boton-enviar"
+              [disabled]="enviando()"
+              (click)="enviarEncuesta()">
+              @if (enviando()) {
+                <ion-spinner name="crescent"></ion-spinner>
+              } @else {
+                <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+                Enviar Encuesta
+              }
+            </ion-button>
+          </div>
+
+          <ion-button
+            expand="block"
+            fill="outline"
+            class="btn-ver-graficos"
+            routerLink="/graficos-encuesta">
+            <ion-icon name="bar-chart-outline" slot="start"></ion-icon>
+            Ver Resultados Históricos
+          </ion-button>
+        </div>
+      }
+    }
+  </div>
+</ion-content>
+

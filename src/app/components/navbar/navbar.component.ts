@@ -1,26 +1,34 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { IonTabBar, IonTabButton, IonLabel} from '@ionic/angular';
+import { IonTabBar, IonTabButton, IonLabel, IonIcon } from '@ionic/angular';
 import { Router, RouterLink } from '@angular/router';
+import { addIcons } from 'ionicons';
+import { chevronBackOutline } from 'ionicons/icons';
 import { Supabase } from '../../services/supabase';
 import { PushNotificationsService } from '../../services/push-notifications.service';
+import { SonidoService } from '../../services/sonido';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
-  imports: [RouterLink, IonTabBar, IonTabButton,IonLabel],
+  imports: [RouterLink, IonTabBar, IonTabButton, IonLabel, IonIcon],
 })
 export class NavbarComponent implements OnInit {
 
   @Input() rutaInicio: string = '/';
+  @Input() titulo: string = '';
+  @Input() modoVolver: boolean = false;
 
   nombre: string | null = null;
   constructor(
     private supabase: Supabase, 
     private router: Router,
-    private pushNotifications: PushNotificationsService
-  ) { }
+    private pushNotifications: PushNotificationsService,
+    private sonido: SonidoService
+  ) {
+    addIcons({ chevronBackOutline });
+  }
   
   ngOnInit(){
     this.nombre = localStorage.getItem('nombre')?.toUpperCase() || null;
@@ -45,6 +53,8 @@ export class NavbarComponent implements OnInit {
     if (fcmToken) {
       localStorage.setItem('fcm_device_token', fcmToken);
     }
+
+    await this.sonido.cierre();
 
     await this.router.navigate(['/login'], {
       replaceUrl: true

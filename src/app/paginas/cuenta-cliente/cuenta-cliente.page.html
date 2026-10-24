@@ -1,0 +1,272 @@
+<ion-content [fullscreen]="true" class="fondo-cuenta" [class.sin-scroll]="cuenta()?.estado === 'pendiente_propina'" [scrollY]="cuenta()?.estado !== 'pendiente_propina'">
+  <div class="pantalla-cuenta">
+    <app-navbar rutaInicio="/clienteInicio" titulo="Tu cuenta"></app-navbar>
+
+    @if (cuenta(); as c) {
+      <main class="contenido-cuenta" [class.con-barra-pago]="c.estado === 'lista_para_pagar'" [class.modo-propina]="c.estado === 'pendiente_propina'">
+
+        <!-- ================= PROGRESO ================= -->
+        <ol class="pasos" aria-label="Progreso de la cuenta">
+          <li class="paso hecho">
+            <span class="punto"><ion-icon name="checkmark-circle"></ion-icon></span>
+            <span class="texto-paso">Solicitada</span>
+          </li>
+          <li class="paso" [class.hecho]="pasoActual(c) >= 2" [class.actual]="pasoActual(c) === 1">
+            <span class="punto">@if (pasoActual(c) >= 2) { <ion-icon name="checkmark-circle"></ion-icon> } @else { 2 }</span>
+            <span class="texto-paso">Propina</span>
+          </li>
+          <li class="paso" [class.hecho]="pasoActual(c) >= 3" [class.actual]="pasoActual(c) === 2">
+            <span class="punto">@if (pasoActual(c) >= 3) { <ion-icon name="checkmark-circle"></ion-icon> } @else { 3 }</span>
+            <span class="texto-paso">Pago</span>
+          </li>
+          <li class="paso" [class.hecho]="pasoActual(c) >= 4" [class.actual]="pasoActual(c) === 3">
+            <span class="punto">@if (pasoActual(c) >= 4) { <ion-icon name="checkmark-circle"></ion-icon> } @else { 4 }</span>
+            <span class="texto-paso">Confirmación</span>
+          </li>
+        </ol>
+
+        <!-- ================= AVISOS ================= -->
+        @if (aviso(); as a) {
+          <div class="aviso" [class.aviso-error]="a.tipo === 'error'" [class.aviso-exito]="a.tipo === 'exito'" role="status">
+            <ion-icon [name]="a.tipo === 'error' ? 'alert-circle-outline' : 'checkmark-circle-outline'"></ion-icon>
+            <span>{{ a.texto }}</span>
+          </div>
+        }
+
+        @if (avisoPendiente()) {
+          <div class="aviso aviso-reintento">
+            <ion-icon name="notifications-outline"></ion-icon>
+            <span>No pudimos notificar al mozo.</span>
+            <button type="button" class="btn-reintentar" [disabled]="procesando()" (click)="reintentarAviso()">
+              <ion-icon name="refresh-outline"></ion-icon>
+              Reintentar aviso
+            </button>
+          </div>
+        }
+
+        @switch (c.estado) {
+
+          <!-- ============ PASO B: PROPINA OBLIGATORIA POR QR ============ -->
+          @case ('pendiente_propina') {
+            <section class="tarjeta tarjeta-propina">
+              <div class="cabecera-propina">
+                <div class="icono-circular"><ion-icon name="heart-outline"></ion-icon></div>
+                <div>
+                  <span class="etiqueta-mini">MESA N.º {{ c.numero_mesa }} · CUENTA SOLICITADA</span>
+                  <h2>¿Cómo fue tu experiencia?</h2>
+                </div>
+              </div>
+
+              <p class="instruccion">
+                El mozo ya fue avisado. Para generar tu cuenta, escaneá <strong>uno de los cinco códigos QR de satisfacción</strong>
+                que te acerca el mozo. El código define el porcentaje de propina.
+              </p>
+
+              <ul class="niveles-propina" aria-label="Niveles de satisfacción">
+                @for (op of opcionesPropina; track op.nivel) {
+                  <li class="nivel">
+                    <ion-icon [name]="op.icono"></ion-icon>
+                    <span class="nombre-nivel">{{ op.etiqueta }}</span>
+                    <span class="porcentaje-nivel">{{ op.porcentaje }} %</span>
+                  </li>
+                }
+              </ul>
+
+              <button type="button" class="btn-principal btn-escanear" [disabled]="procesando()" (click)="escanearPropina()">
+                <ion-icon name="qr-code-outline"></ion-icon>
+                <span class="textos-btn">
+                  <span class="titulo-btn">Escanear QR de propina</span>
+                  <span class="sub-btn">Tocá para abrir la cámara</span>
+                </span>
+              </button>
+
+              <div class="bloqueo-pago">
+                <ion-icon name="lock-closed-outline"></ion-icon>
+                <span>El detalle y el pago se habilitan después de escanear el código QR.</span>
+              </div>
+            </section>
+          }
+
+          <!-- ============ PASO E: PAGO REALIZADO, ESPERA AL MOZO ============ -->
+          @case ('pago_pendiente_confirmacion') {
+            <section class="tarjeta tarjeta-resultado">
+              <div class="sello-exito"><ion-icon name="checkmark-circle"></ion-icon></div>
+              <span class="etiqueta-mini">PAGO SIMULADO REALIZADO</span>
+              <h2 class="monto-resultado">{{ formatear(c.total) }}</h2>
+              <p class="detalle-resultado">Mesa N.º {{ c.numero_mesa }} · {{ fechaHora(c.pagada_at) }}</p>
+              <p class="referencia">Operación {{ c.pago_referencia }}</p>
+
+              <div class="estado-espera">
+                <span class="pulso"></span>
+                <ion-icon name="time-outline"></ion-icon>
+                <span>Esperando la confirmación del mozo</span>
+              </div>
+              <p class="nota-resultado">Tu mesa sigue reservada para vos hasta que el mozo confirme el pago.</p>
+            </section>
+          }
+
+          <!-- ============ PAGO CONFIRMADO POR EL MOZO ============ -->
+          @case ('pago_confirmado') {
+            <section class="tarjeta tarjeta-resultado confirmado">
+              <div class="sello-exito"><ion-icon name="checkmark-done-circle"></ion-icon></div>
+              <span class="etiqueta-mini">PAGO CONFIRMADO</span>
+              <h2 class="monto-resultado">{{ formatear(c.total) }}</h2>
+              <p class="detalle-resultado">El mozo confirmó tu pago · {{ fechaHora(c.confirmada_at) }}</p>
+              <p class="referencia">Operación {{ c.pago_referencia }}</p>
+
+              <button type="button" class="btn-principal" (click)="finalizarVisita()">
+                <ion-icon name="home-outline"></ion-icon>
+                <span class="textos-btn"><span class="titulo-btn">Finalizar visita</span></span>
+              </button>
+            </section>
+          }
+
+          <!-- ============ PASO C: CUENTA GENERADA, LISTA PARA PAGAR ============ -->
+          @case ('lista_para_pagar') {
+            <section class="tarjeta tarjeta-total">
+              <span class="etiqueta-mini">TOTAL A PAGAR</span>
+              <h2 class="monto-total">{{ formatear(c.total) }}</h2>
+              <div class="chips-info">
+                <span class="chip"><ion-icon name="restaurant-outline"></ion-icon> Mesa N.º {{ c.numero_mesa }}</span>
+                <span class="chip"><ion-icon name="calendar-outline"></ion-icon> {{ fechaHora(c.propina_at || c.solicitada_at) }}</span>
+                <span class="chip"><ion-icon name="receipt-outline"></ion-icon> Cuenta N.º {{ numeroCuenta(c) }}</span>
+              </div>
+            </section>
+
+            @if (opcionElegida(); as op) {
+              <section class="tarjeta tarjeta-satisfaccion">
+                <div class="icono-circular pequeno"><ion-icon [name]="op.icono"></ion-icon></div>
+                <div class="texto-satisfaccion">
+                  <span class="etiqueta-mini">TU SATISFACCIÓN</span>
+                  <strong>{{ op.etiqueta }} · {{ op.porcentaje }} % de propina</strong>
+                </div>
+                <button type="button" class="btn-cambiar" [disabled]="procesando()" (click)="escanearPropina()">
+                  <ion-icon name="swap-horizontal-outline"></ion-icon>
+                  Cambiar
+                </button>
+              </section>
+            }
+          }
+        }
+
+        <!-- ============ DETALLE (comprobante) ============ -->
+        @if (c.estado !== 'pendiente_propina') {
+          <section class="tarjeta tarjeta-detalle">
+            <header class="cabecera-detalle">
+              <img src="assets/Basilico/Logo_verde.png" alt="Logotipo de Basílico" class="logo-detalle">
+              <div>
+                <h3>Basílico</h3>
+                <span>Mesa N.º {{ c.numero_mesa }} · Cuenta N.º {{ numeroCuenta(c) }}</span>
+              </div>
+            </header>
+
+            <h4 class="titulo-seccion">Tu consumo <span>({{ cantidadUnidades() }} {{ cantidadUnidades() === 1 ? 'unidad' : 'unidades' }})</span></h4>
+            <ul class="lista-consumo">
+              @for (item of c.cuenta_items; track item.id) {
+                <li class="item-consumo">
+                  <span class="cantidad-item">{{ item.cantidad }}×</span>
+                  <div class="descripcion-item">
+                    <span class="nombre-item">{{ item.nombre }}</span>
+                    <span class="unitario-item">{{ formatear(item.precio_unitario) }} c/u</span>
+                  </div>
+                  <span class="importe-item">{{ formatear(item.importe) }}</span>
+                </li>
+              }
+            </ul>
+
+            <div class="resumen">
+              <div class="fila-resumen">
+                <span>Subtotal</span>
+                <span>{{ formatear(c.subtotal) }}</span>
+              </div>
+
+              <div class="fila-resumen fila-descuento" [class.sin-descuento]="c.descuento_porcentaje === 0">
+                <span class="concepto">
+                  <ion-icon name="gift-outline"></ion-icon>
+                  @if (c.descuento_porcentaje > 0) {
+                    Descuento por juego ({{ nombreJuego() }} · {{ c.descuento_porcentaje }} %)
+                  } @else {
+                    Descuento por juegos
+                  }
+                </span>
+                <span>− {{ formatear(c.descuento_importe) }}</span>
+              </div>
+              @if (c.descuento_porcentaje === 0) {
+                <p class="nota-descuento">
+                  {{ esAnonimo() ? 'Los descuentos de los juegos son exclusivos para clientes registrados.' : 'No obtuviste descuentos ganando en el primer intento de un juego.' }}
+                </p>
+              }
+
+              <div class="fila-resumen">
+                <span>Subtotal con descuento</span>
+                <span>{{ formatear(c.subtotal - c.descuento_importe) }}</span>
+              </div>
+
+              <div class="fila-resumen fila-propina">
+                <span class="concepto">
+                  <ion-icon name="heart-outline"></ion-icon>
+                  Propina · {{ opcionElegida()?.etiqueta }} ({{ c.propina_porcentaje }} %)
+                </span>
+                <span>+ {{ formatear(c.propina_importe) }}</span>
+              </div>
+
+              <div class="fila-total">
+                <span>TOTAL</span>
+                <span>{{ formatear(c.total) }}</span>
+              </div>
+            </div>
+          </section>
+        }
+      </main>
+
+      <!-- ============ BARRA DE PAGO FIJA ============ -->
+      @if (c.estado === 'lista_para_pagar') {
+        <footer class="barra-pago">
+          <div class="seguridad">
+            <ion-icon name="shield-checkmark-outline"></ion-icon>
+            <span>Pago simulado: no se solicitan datos bancarios</span>
+          </div>
+          <button type="button" class="btn-pagar" [disabled]="procesando()" (click)="abrirConfirmacionPago()">
+            <ion-icon name="wallet-outline"></ion-icon>
+            Pagar {{ formatear(c.total) }}
+          </button>
+        </footer>
+      }
+    } @else if (!cargandoInicial()) {
+      <main class="contenido-cuenta">
+        <section class="tarjeta tarjeta-vacia">
+          <div class="icono-circular"><ion-icon name="receipt-outline"></ion-icon></div>
+          <h2>No tenés una cuenta abierta</h2>
+          <p>Cuando recibas tu pedido, tocá «Pedir la cuenta» desde la pantalla de tu mesa.</p>
+          <button type="button" class="btn-principal" (click)="volverAlInicio()">
+            <ion-icon name="home-outline"></ion-icon>
+            <span class="textos-btn"><span class="titulo-btn">Volver a mi mesa</span></span>
+          </button>
+        </section>
+      </main>
+    }
+  </div>
+
+  <!-- ============ CONFIRMACIÓN DE PAGO (hoja inferior) ============ -->
+  @if (mostrarConfirmacionPago() && cuenta(); as c) {
+    <div class="velo" (click)="cerrarConfirmacionPago()"></div>
+    <section class="hoja-confirmacion" role="dialog" aria-labelledby="titulo-confirmacion">
+      <div class="manija"></div>
+      <h3 id="titulo-confirmacion">Confirmá tu pago</h3>
+      <p class="monto-confirmacion">{{ formatear(c.total) }}</p>
+      <ul class="datos-confirmacion">
+        <li><span>Mesa</span><strong>N.º {{ c.numero_mesa }}</strong></li>
+        <li><span>Propina</span><strong>{{ opcionElegida()?.etiqueta }} ({{ c.propina_porcentaje }} %)</strong></li>
+        <li><span>Descuento</span><strong>{{ c.descuento_porcentaje }} %</strong></li>
+        <li><span>Medio de pago</span><strong>Pago simulado Basílico</strong></li>
+      </ul>
+      <button type="button" class="btn-pagar" [disabled]="procesando()" (click)="confirmarPago()">
+        <ion-icon name="lock-closed-outline"></ion-icon>
+        Confirmar pago
+      </button>
+      <button type="button" class="btn-cancelar" [disabled]="procesando()" (click)="cerrarConfirmacionPago()">
+        Cancelar
+      </button>
+    </section>
+  }
+</ion-content>

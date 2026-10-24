@@ -42,7 +42,7 @@ export const routes: Routes = [
     path: 'qrIngreso',
     loadComponent: () => import('./paginas/qr-ingreso/qr-ingreso.component').then( m => m.QrIngresoComponent)
   },
-   {
+  {
     path: 'clienteInicio',
     loadComponent: () => import('./cliente-inicio/cliente-inicio.component').then( m => m.ClienteInicioComponent)
   },
@@ -79,6 +79,18 @@ export const routes: Routes = [
     loadComponent: () => import('./paginas/juegos/juegos.page').then(m => m.JuegosPage)
   },
   {
+    path: 'juegos/bingo',
+    loadComponent: () => import('./paginas/juegos/bingo/bingo.component').then(m => m.BingoComponent)
+  },
+  {
+    path: 'juegos/mayor-menor',
+    loadComponent: () => import('./paginas/juegos/mayor-menor/mayor-menor.component').then(m => m.MayorMenorComponent)
+  },
+  {
+    path: 'juegos/trivia',
+    loadComponent: () => import('./paginas/juegos/trivia/trivia.component').then(m => m.TriviaComponent)
+  },
+  {
     path: 'registroAnonimo',
     loadComponent: () => import('./paginas/registro-anonimo/registro-anonimo.component').then(m => m.RegistroAnonimoComponent)
   },
@@ -99,8 +111,35 @@ export const routes: Routes = [
     loadComponent: () => import('./paginas/cantinero/pedidos-bar/pedidos-bar.page').then(m => m.PedidosBarPage)
   },
   {
+    path: 'pedidos-mozo',
+    loadComponent: () => import('./mozo/pedidos-mozo/pedidos-mozo.page').then(m => m.PedidosMozoPage)
+  },
+  {
+    path: 'chat',
+    loadComponent: () => import('./components/chat/chat.component').then(m => m.ChatComponent)
+  },
+  {
+    path: 'encuesta-cliente',
+    loadComponent: () => import('./paginas/encuesta-cliente/encuesta-cliente.page').then(m => m.EncuestaClientePage)
+  },
+  {
+    path: 'graficos-encuesta',
+    loadComponent: () => import('./paginas/graficos-encuesta/graficos-encuesta.page').then(m => m.GraficosEncuestaPage)
+  },
+  {
+    path: 'cuenta',
+    loadComponent: () => import('./paginas/cuenta-cliente/cuenta-cliente.page').then(m => m.CuentaClientePage)
+  },
+  {
+    path: 'cuentas-mozo',
+    loadComponent: () => import('./mozo/cuentas-mozo/cuentas-mozo.page').then(m => m.CuentasMozoPage)
+  },
+  {
+    path: 'qr-propinas',
+    loadComponent: () => import('./paginas/qr-propinas/qr-propinas.page').then(m => m.QrPropinasPage)
+  },
+  {
     path: '**',
     redirectTo: 'inicio'
   }
-  
 ];

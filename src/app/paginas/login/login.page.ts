@@ -1,9 +1,8 @@
 import { Component, WritableSignal, signal } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { RouterLink } from "@angular/router";
+import { RouterLink, Router, ActivatedRoute } from "@angular/router";
 import { FormsModule } from "@angular/forms";
 import { VibracionService } from '../../services/vibracion';
-import { Router } from "@angular/router";
 import { 
   IonContent, IonGrid, IonRow, IonCol, 
   IonList, IonItem, IonInput, IonButton, 
@@ -41,10 +40,40 @@ export class LoginPage {
   constructor(
     private supabase: Supabase,
     private router: Router,
+    private route: ActivatedRoute,
     private pushNotifications: PushNotificationsService,
     private vibracion: VibracionService,
     private toastController: ToastController
   ) { }
+
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      if (params['mail']) {
+        this.mail = params['mail'];
+      }
+      if (params['clave']) {
+        this.clave = params['clave'];
+      }
+    });
+  }
+
+  ionViewWillEnter() {
+    const params = this.route.snapshot.queryParams;
+    if (params['mail']) {
+      this.mail = params['mail'];
+    }
+    if (params['clave']) {
+      this.clave = params['clave'];
+    }
+
+    const state = history.state;
+    if (state?.mail) {
+      this.mail = state.mail;
+    }
+    if (state?.clave) {
+      this.clave = state.clave;
+    }
+  }
 
   ionViewDidEnter() {
     if (document.activeElement instanceof HTMLElement) {
@@ -132,6 +161,7 @@ export class LoginPage {
     if (cliente.estado === "aprobado") {
       localStorage.setItem("nombre", `${cliente.nombres} ${cliente.apellidos}`);
       localStorage.setItem("perfil", "cliente");
+      localStorage.removeItem("tipo_cliente");
       this.perfil.set("cliente");
 
       await this.inicializarNotificaciones();
@@ -175,6 +205,9 @@ export class LoginPage {
         break;
       case "cliente":
         await this.router.navigate(["/clienteInicio"], navOpts);
+        break;
+      case "mozo":
+        await this.router.navigate(["/mozoInicio"], navOpts);
         break;
       case "cantinero":
         await this.router.navigate(["/inicio-cantinero"], navOpts);

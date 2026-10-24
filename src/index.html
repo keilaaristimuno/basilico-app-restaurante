@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" style="background-color: #283720;">
 
 <head>
   <meta charset="utf-8" />
@@ -9,18 +9,107 @@
 
   <meta name="color-scheme" content="light" />
   <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <script>
+    /* En tablets se dibuja el mismo diseño del celular (480px de ancho) y se escala
+       para cubrir toda la pantalla, así los botones y textos quedan grandes y sin espacios vacíos */
+    (function () {
+      var ANCHO_CELULAR = 480;
+      var MIN_LADO_TABLET = 600;
+      var meta = document.querySelector('meta[name="viewport"]');
+
+      function ajustarViewport() {
+        var ancho = window.screen.width;
+        var ladoCorto = Math.min(window.screen.width, window.screen.height);
+        if (ladoCorto < MIN_LADO_TABLET) return;
+
+        var escala = ladoCorto / ANCHO_CELULAR;
+        var anchoLayout = Math.round(ancho / escala);
+        var e = escala.toFixed(4);
+        meta.setAttribute('content', 'viewport-fit=cover, width=' + anchoLayout +
+          ', initial-scale=' + e + ', minimum-scale=' + e + ', maximum-scale=' + e + ', user-scalable=no');
+      }
+
+      ajustarViewport();
+      window.addEventListener('orientationchange', function () { setTimeout(ajustarViewport, 200); });
+      window.addEventListener('resize', ajustarViewport);
+    })();
+  </script>
   <meta name="format-detection" content="telephone=no" />
   <meta name="msapplication-tap-highlight" content="no" />
 
   <link rel="icon" type="image/png" href="assets/Basilico/Logo_verde.png" />
+  <link rel="preload" as="image" href="assets/Basilico/Logo_beige.png" />
+  <link rel="preload" as="image" href="assets/Basilico/Arbusto_beige.png" />
+
+  <style>
+    .splash-placeholder {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #283720;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
+    .splash-placeholder .placeholder-barra-superior {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: max(38px, env(safe-area-inset-top, 38px));
+      background-color: #ede5d2;
+      z-index: 4;
+      pointer-events: none;
+    }
+    .splash-placeholder .placeholder-arbusto {
+      position: absolute;
+      top: calc(max(38px, env(safe-area-inset-top, 38px)) - 1px);
+      left: 0;
+      width: 100%;
+      height: auto;
+      display: block;
+      pointer-events: none;
+      z-index: 3;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.30));
+    }
+    .splash-placeholder .placeholder-logo-box {
+      position: absolute;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2;
+    }
+    .splash-placeholder .placeholder-logo {
+      width: clamp(170px, 48vw, 240px);
+      height: clamp(170px, 48vw, 240px);
+      object-fit: contain;
+    }
+  </style>
 
   <!-- add to homescreen for ios -->
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 </head>
 
-<body>
-  <app-root></app-root>
+<body style="background-color: #283720; margin: 0;">
+  <app-root>
+    <div class="splash-placeholder">
+      <div class="placeholder-barra-superior"></div>
+      <img class="placeholder-arbusto" src="assets/Basilico/Arbusto_beige.png" alt="" />
+      <div class="placeholder-logo-box">
+        <img class="placeholder-logo" src="assets/Basilico/Logo_beige.png" alt="Basílico" />
+      </div>
+    </div>
+  </app-root>
 </body>
 
 </html>

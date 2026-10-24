@@ -1,0 +1,155 @@
+<ion-content [fullscreen]="true" class="fondo-bingo">
+  <app-navbar rutaInicio="/juegos" titulo="Bingo Basílico" [modoVolver]="true"></app-navbar>
+
+  <div class="pantalla-juego-completa">
+    <!-- Marcadores Rápidos de la Partida -->
+    <header class="marcador-partida-compacto">
+      <div class="stat-item">
+        <span class="stat-lbl">Premio</span>
+        <span class="stat-val highlight">{{ DESCUENTO_JUEGO }}% OFF</span>
+      </div>
+      <div class="stat-divisor"></div>
+      <div class="stat-item">
+        <span class="stat-lbl">Chances</span>
+        <span class="stat-val" [class.pocas-chances]="chances() <= 3">{{ chances() }}/15</span>
+      </div>
+      <div class="stat-divisor"></div>
+      <div class="stat-item">
+        <span class="stat-lbl">Aciertos</span>
+        <span class="stat-val">{{ numerosAcertados().length }}/5</span>
+      </div>
+    </header>
+
+    @if (estadoJuego() === 'jugando') {
+      <!-- Card Central: Bolillero y Acción Principal XXL -->
+      <section class="tarjeta-bolillero-xxl">
+        <div class="fila-bolillero-visual">
+          <div class="esfera-bolilla" [class.animando]="girandoBolillero()">
+            <div class="numero-bolilla">
+              @if (girandoBolillero()) {
+                <ion-spinner name="crescent" class="spinner-bolillero"></ion-spinner>
+              } @else if (numeroActual() > 0) {
+                <span class="numero-activo">{{ numeroActual() }}</span>
+              } @else {
+                <span class="bolilla-vacia">?</span>
+              }
+            </div>
+          </div>
+
+          <!-- Historial compacto de bolillas -->
+          @if (ultimasBolillas().length > 0) {
+            <div class="historial-bolillas-compacto">
+              <span class="lbl-historial">Salieron:</span>
+              <div class="fila-mini-bolillas">
+                @for (num of ultimasBolillas(); track $index) {
+                  <span class="mini-bolilla" [class.primera]="$index === 0">{{ num }}</span>
+                }
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Botón XXL para Sacar Bolilla (Ocupa ancho completo y altura destacada) -->
+        <ion-button
+          expand="block"
+          class="boton-sacar-xxl btonTerracota"
+          [disabled]="girandoBolillero() || chances() === 0"
+          (click)="cargarBolillero()">
+          <ion-icon name="refresh-outline" slot="start" [class.rotar]="girandoBolillero()" class="icono-btn-xxl"></ion-icon>
+          <span class="texto-btn-xxl">
+            @if (girandoBolillero()) {
+              Girando Bolillero...
+            } @else if (chances() === 0) {
+              Sin Chances Restantes
+            } @else {
+              SACAR BOLILLA
+            }
+          </span>
+        </ion-button>
+      </section>
+
+      <!-- Card Inferior: Cartón Basílico con Celdas Gigantes -->
+      <section class="tarjeta-carton-xxl">
+        <div class="cabecera-carton-compacta">
+          <span class="titulo-carton">🌿 CARTÓN BASÍLICO — TOCÁ TUS NÚMEROS 🌿</span>
+        </div>
+
+        <div class="rejilla-numeros-xxl">
+          @for (numero of cartonActual(); track numero) {
+            <button
+              type="button"
+              class="casilla-numero-xxl"
+              [class.acertada]="numerosAcertados().includes(numero)"
+              [class.disponible-marcar]="!numerosAcertados().includes(numero) && ultimasBolillas().includes(numero)"
+              (click)="validarNumero(numero)">
+              @if (numerosAcertados().includes(numero)) {
+                <span class="icono-check-xxl">✓</span>
+              }
+              <span class="numero-texto-xxl">{{ numero }}</span>
+            </button>
+          }
+        </div>
+      </section>
+    }
+
+    <!-- Panel de Victoria XXL -->
+    @if (estadoJuego() === 'ganado') {
+      <section class="tarjeta-fin-partida-xxl victoria">
+        <div class="icono-resultado-xxl">🏆</div>
+        <h2 class="titulo-fin">¡BINGO BASÍLICO!</h2>
+        <p class="subtitulo-fin">¡Completaste tu cartón de 5 casillas!</p>
+
+        @if (resultadoPromo()?.exito) {
+          <div class="caja-premio-xxl">
+            <span class="badge-premio-otorgado">¡Premio Otorgado!</span>
+            <h3>{{ resultadoPromo()?.porcentajeAplicado }}% DE DESCUENTO</h3>
+            <p>Se aplicará automáticamente a la cuenta final de tu mesa.</p>
+          </div>
+        } @else if (resultadoPromo()?.mensaje) {
+          <div class="caja-aviso-xxl">
+            <p>{{ resultadoPromo()?.mensaje }}</p>
+          </div>
+        }
+
+        <div class="zona-botones-fin-xxl">
+          <ion-button expand="block" class="boton-accion-xxl btonVerde" (click)="iniciarJuego()">
+            <ion-icon name="refresh-outline" slot="start"></ion-icon>
+            Jugar Otro Cartón
+          </ion-button>
+          <ion-button expand="block" fill="outline" class="boton-accion-xxl btonBordeBeige" (click)="volverAJuegos()">
+            <ion-icon name="arrow-back-outline" slot="start"></ion-icon>
+            Volver a Juegos
+          </ion-button>
+        </div>
+      </section>
+    }
+
+    <!-- Panel de Derrota XXL -->
+    @if (estadoJuego() === 'perdido') {
+      <section class="tarjeta-fin-partida-xxl derrota">
+        <div class="icono-resultado-xxl">💔</div>
+        <h2 class="titulo-fin">¡Se agotaron las chances!</h2>
+        <p class="subtitulo-fin">
+          Lograste acertar {{ numerosAcertados().length }} de 5 números del cartón.
+        </p>
+
+        @if (resultadoPromo()?.mensaje) {
+          <div class="caja-aviso-xxl">
+            <p>{{ resultadoPromo()?.mensaje }}</p>
+          </div>
+        }
+
+        <div class="zona-botones-fin-xxl">
+          <ion-button expand="block" class="boton-accion-xxl btonTerracota" (click)="iniciarJuego()">
+            <ion-icon name="refresh-outline" slot="start"></ion-icon>
+            Intentar de Nuevo
+          </ion-button>
+          <ion-button expand="block" fill="outline" class="boton-accion-xxl btonBordeBeige" (click)="volverAJuegos()">
+            <ion-icon name="arrow-back-outline" slot="start"></ion-icon>
+            Volver a Juegos
+          </ion-button>
+        </div>
+      </section>
+    }
+  </div>
+</ion-content>

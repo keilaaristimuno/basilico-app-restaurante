@@ -1,142 +1,97 @@
-<ion-header class="header-transparente">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button
-        defaultHref="/clienteInicio"
-        text="Volver"
-        icon="chevron-back-outline">
-      </ion-back-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true" class="fondo-juegos">
+  <app-navbar rutaInicio="/clienteInicio" titulo="Zona de Juegos" [modoVolver]="true"></app-navbar>
 
-  <div class="contenedor-principal">
-    <!-- Encabezado de la Sección -->
-    <header class="encabezado-seccion">
-      <div class="icono-cabecera">
-        <ion-icon name="game-controller-outline"></ion-icon>
-      </div>
-      <h1 class="font-logo">Zona de Juegos</h1>
-      <p class="subtitulo-encabezado">
-        Divertite mientras esperás tu pedido y ganá descuentos exclusivos
-      </p>
-    </header>
-
-    <!-- Banner de Estado de Descuento -->
-    <section class="banner-descuento">
+  <div class="pantalla-juegos">
+    <!-- Banner Compacto de Descuento -->
+    <section class="banner-descuento-compacto">
       @if (juegosService.descuentoAplicado() > 0) {
-        <div class="tarjeta-premio">
-          <div class="premio-icono">
-            <ion-icon name="trophy-outline"></ion-icon>
-          </div>
-          <div class="premio-info">
-            <span class="badge-premio">¡Descuento Obtenido!</span>
-            <h2>{{ juegosService.descuentoAplicado() }}% de descuento</h2>
-            <p>Se aplicará automáticamente al pedir la cuenta final.</p>
+        <div class="tarjeta-premio-compacta">
+          <ion-icon name="trophy-outline" class="icono-premio-mini"></ion-icon>
+          <div class="texto-premio-mini">
+            <span class="badge-mini-premio">¡Descuento Obtenido!</span>
+            <strong>{{ juegosService.descuentoAplicado() }}% OFF</strong> aplicado a tu mesa
           </div>
         </div>
       } @else {
-        <div class="tarjeta-info-descuento">
-          <div class="info-icono">
-            <ion-icon name="ribbon-outline"></ion-icon>
-          </div>
-          <div class="info-texto">
-            <span class="badge-info">Regla de Promoción</span>
-            <h3>Ganás en tu primer intento</h3>
-            <p>
-              @if (juegosService.esClienteRegistrado()) {
-                Elegí con sabiduría: el primer juego que ganes aplicará su descuento a la cuenta.
-              } @else {
-                Jugá por diversión. Recordá que los descuentos aplican a clientes registrados.
-              }
-            </p>
+        <div class="tarjeta-info-compacta">
+          <ion-icon name="sparkles-outline" class="icono-info-mini"></ion-icon>
+          <div class="texto-info-mini">
+            <span>¡Ganá en tu <strong>1er intento</strong> y obtené hasta <strong>20% OFF</strong>!</span>
           </div>
         </div>
       }
     </section>
 
-    <!-- Lista de Selección de Juegos (Regla: No cortar elementos) -->
-    <section class="seccion-juegos">
-      <h2 class="titulo-listado">Elegí tu Juego</h2>
-
+    <!-- Lista de 3 Juegos en Cards que ocupan la pantalla completa -->
+    <section class="seccion-juegos-completa">
       <div class="lista-juegos-cards">
         @for (juego of juegos; track juego.id) {
-          <article class="tarjeta-juego">
-            <div class="cabecera-tarjeta">
-              <div class="icono-juego" [ngClass]="juego.colorIcono">
+          <article class="tarjeta-juego-xxl" (click)="seleccionarJuego(juego)">
+            <div class="lateral-izquierdo">
+              <div class="icono-juego-xxl" [ngClass]="juego.colorIcono">
                 <ion-icon [name]="juego.icono"></ion-icon>
               </div>
-              <div class="descuento-etiqueta">
-                <span class="porcentaje">{{ juego.descuento }}%</span>
-                <span class="texto-off">OFF</span>
+              <div class="badge-descuento-xxl">
+                <span class="numero-descuento">{{ juego.descuento }}%</span>
+                <span class="label-descuento">OFF</span>
               </div>
             </div>
 
-            <div class="cuerpo-tarjeta">
-              <h3>{{ juego.titulo }}</h3>
-              <h4>{{ juego.subtitulo }}</h4>
-              <p>{{ juego.descripcion }}</p>
-            </div>
-
-            <div class="pie-tarjeta">
-              <div class="estado-intento">
+            <div class="cuerpo-juego-xxl">
+              <h2 class="titulo-juego">{{ juego.titulo }}</h2>
+              <span class="subtitulo-juego">{{ juego.subtitulo }}</span>
+              <div class="estado-badge-juego">
                 @if (juegosService.juegoPremiado() === juego.id) {
-                  <ion-badge color="success" class="badge-estado">
-                    <ion-icon name="checkmark-circle-outline"></ion-icon>
-                    Descuento ganado
-                  </ion-badge>
+                  <span class="badge-estado ganado">
+                    <ion-icon name="checkmark-circle-outline"></ion-icon> Ganado
+                  </span>
                 } @else if (juego.disponibleParaDescuento) {
-                  <ion-badge color="warning" class="badge-estado">
-                    <ion-icon name="sparkles-outline"></ion-icon>
-                    Participa por {{ juego.descuento }}% OFF
-                  </ion-badge>
+                  <span class="badge-estado participa">
+                    <ion-icon name="sparkles-outline"></ion-icon> {{ juego.descuento }}% OFF
+                  </span>
                 } @else {
-                  <ion-badge color="medium" class="badge-estado">
-                    <ion-icon name="play-circle-outline"></ion-icon>
-                    Modo libre (sin descuento)
-                  </ion-badge>
+                  <span class="badge-estado libre">
+                    <ion-icon name="play-circle-outline"></ion-icon> Libre
+                  </span>
                 }
               </div>
+            </div>
 
+            <div class="lateral-derecho">
               <ion-button
-                expand="block"
-                class="boton-jugar"
-                (click)="seleccionarJuego(juego)">
-                <ion-icon name="play-circle-outline" slot="start"></ion-icon>
-                Jugar Ahora
-              </ion-button>
-
-              <!-- Panel rápido de pruebas para testing en emulador/dispositivo -->
-              <div class="panel-test-simulacion">
-                <span class="label-test">Simular resultado para pruebas:</span>
-                <div class="botones-test">
-                  <button
-                    type="button"
-                    class="btn-test ganar"
-                    (click)="simularResultado(juego, true)">
-                    Ganar (1er intento)
-                  </button>
-                  <button
-                    type="button"
-                    class="btn-test perder"
-                    (click)="simularResultado(juego, false)">
-                    Perder
-                  </button>
+                class="boton-jugar-xxl btonBeige"
+                (click)="$event.stopPropagation(); seleccionarJuego(juego)">
+                <div class="contenido-btn-jugar">
+                  <ion-icon name="play-circle-outline" class="icono-play"></ion-icon>
+                  <span class="texto-play">Jugar</span>
                 </div>
-              </div>
+              </ion-button>
             </div>
           </article>
         }
       </div>
     </section>
 
-    <!-- Botón de reseteo para testing continuo -->
-    <div class="contenedor-reinicio ion-text-center">
-      <ion-button fill="clear" size="small" class="boton-reiniciar" (click)="reiniciarSimulacion()">
-        Reiniciar estado de pruebas de descuentos
-      </ion-button>
-    </div>
+    <!-- Pie de Pruebas Compacto (Discreto para evaluación de cátedra) -->
+    <footer class="pie-pruebas-compacto">
+      <div class="fila-test-simulacion">
+        <span class="label-simular">Simular:</span>
+        @for (juego of juegos; track juego.id) {
+          <button
+            type="button"
+            class="btn-test-mini"
+            (click)="simularResultado(juego, true)">
+            +{{ juego.descuento }}%
+          </button>
+        }
+        <button
+          type="button"
+          class="btn-test-mini reset"
+          (click)="reiniciarSimulacion()">
+          ↺ Reset
+        </button>
+      </div>
+    </footer>
   </div>
 </ion-content>
+

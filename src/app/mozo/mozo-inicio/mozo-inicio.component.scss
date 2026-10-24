@@ -1,0 +1,151 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.fondo {
+  --overflow: hidden;
+}
+
+.pantalla-completa {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  app-navbar {
+    flex-shrink: 0;
+  }
+}
+
+.contenedor-mozo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: clamp(8px, 2vh, 24px) 20px calc(clamp(12px, 2.5vh, 28px) + env(safe-area-inset-bottom, 0px));
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* ENCABEZADO: el logo y los textos se achican según la altura disponible */
+.encabezado {
+  flex-shrink: 0;
+  margin-bottom: clamp(10px, 2.2vh, 28px);
+
+  .logo {
+    width: clamp(56px, 11vh, 120px);
+    margin-bottom: clamp(2px, 0.8vh, 10px);
+  }
+
+  h1 {
+    font-size: clamp(1.5rem, 4vh, 2.2rem);
+  }
+
+  p {
+    margin: clamp(2px, 0.6vh, 8px) 0 0;
+    font-size: clamp(0.85rem, 2vh, 1.1rem);
+  }
+}
+
+/* LAS 3 TARJETAS SE REPARTEN EL ESPACIO RESTANTE DE FORMA EQUILIBRADA */
+.acciones {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(14px, 2.2vh, 22px);
+}
+
+.tarjeta {
+  flex: 1 1 0;
+  min-height: 0;
+  max-height: clamp(160px, 22vh, 200px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+
+  ion-card-content {
+    flex: 1;
+    height: 100%;
+    min-height: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    padding: clamp(16px, 2.6vh, 28px) 22px;
+  }
+}
+
+/* CONTADOR DE PENDIENTES (mismo estilo que cocina y bar) */
+.icono-contenedor {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+}
+
+.badge-pendientes {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  box-sizing: border-box;
+  border-radius: 12px;
+  border: 2px solid #ede5d2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #b3261e;
+  color: #ffffff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 800;
+  line-height: 1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.icono {
+  font-size: clamp(2.5rem, 6vh, 3.6rem);
+}
+
+.informacion {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  h2 {
+    margin-bottom: clamp(4px, 0.8vh, 8px);
+    font-size: clamp(1.15rem, 2.8vh, 1.45rem);
+    line-height: 1.2;
+  }
+
+  p {
+    font-size: clamp(0.88rem, 2vh, 1.05rem);
+    line-height: 1.35;
+  }
+}
+
+/* TABLET */
+@media (min-width: 768px) {
+  .contenedor-mozo {
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .tarjeta {
+    max-height: 210px;
+
+    ion-card-content {
+      gap: 28px;
+      padding-left: 30px;
+      padding-right: 30px;
+    }
+  }
+}

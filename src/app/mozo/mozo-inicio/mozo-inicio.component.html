@@ -17,6 +17,9 @@
       <ion-card class="tarjeta" routerLink="/pedidos-mozo">
         <ion-card-content>
           <ion-icon name="list-outline" class="icono"></ion-icon>
+          @if (pedidosActivos() > 0) {
+            <span class="badge-pendientes">{{ pedidosActivos() }}</span>
+          }
           <div class="informacion">
             <h2>Pedidos</h2>
             <p>
@@ -32,7 +35,9 @@
             name="receipt-outline"
             class="icono">
           </ion-icon>
-          <p>{{ pagosPendientes() > 0 ? pagosPendientes() : '-' }}</p>
+          @if (pagosPendientes() > 0) {
+            <span class="badge-pendientes">{{ pagosPendientes() }}</span>
+          }
           <div class="informacion">
             <h2>Cuentas y liberación</h2>
             <p>
@@ -50,7 +55,7 @@
             class="icono">
           </ion-icon>
         @if (chatsNoLeidos() > 0) {
-          <span class="badge-notificacion">{{ chatsNoLeidos() }}</span>
+          <span class="badge-pendientes">{{ chatsNoLeidos() }}</span>
         }
 
           <div class="informacion">

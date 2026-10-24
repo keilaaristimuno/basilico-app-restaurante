@@ -1,8 +1,6 @@
-<ion-header>
-  <app-navbar rutaInicio="/inicio-cocinero"> </app-navbar>
-</ion-header>
-
 <ion-content [fullscreen]="true" class="fondo">
+  <app-navbar rutaInicio="/inicio-cocinero"></app-navbar>
+
   
   <div class="contenedor">
     <section class="encabezado">
@@ -78,14 +76,12 @@
         routerLink="/pedidos-cocina"
         button="true">
         <ion-card-content>
-          <ion-icon
-            name="receipt-outline"
-            class="icono">
-          </ion-icon>
-
-          @if (pedidosPendientes() > 0) {
-            <span class="badge-pendientes">{{ pedidosPendientes() }}</span>
-          }
+          <div class="icono-contenedor">
+            <ion-icon name="receipt-outline" class="icono"></ion-icon>
+            @if (pedidosPendientes() > 0) {
+              <span class="badge-pendientes">{{ pedidosPendientes() }}</span>
+            }
+          </div>
 
           <div class="informacion">
 

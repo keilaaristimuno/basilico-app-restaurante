@@ -1,8 +1,6 @@
-<ion-header>
-  <app-navbar rutaInicio="/inicio-cantinero"></app-navbar>
-</ion-header>
-
 <ion-content [fullscreen]="true" class="fondo">
+  <app-navbar rutaInicio="/inicio-cantinero"></app-navbar>
+
   <div class="contenedor">
     <section class="encabezado">
 
@@ -83,14 +81,12 @@
 
         <ion-card-content>
 
-          <ion-icon
-            name="receipt-outline"
-            class="icono">
-          </ion-icon>
-
-          @if (pedidosPendientes() > 0) {
-            <span class="badge-pendientes">{{ pedidosPendientes() }}</span>
-          }
+          <div class="icono-contenedor">
+            <ion-icon name="receipt-outline" class="icono"></ion-icon>
+            @if (pedidosPendientes() > 0) {
+              <span class="badge-pendientes">{{ pedidosPendientes() }}</span>
+            }
+          </div>
 
           <div class="informacion">
             <h2>Pedidos pendientes</h2>
